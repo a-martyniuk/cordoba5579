@@ -177,8 +177,8 @@ async function fetchEpokPOIs(categoria: string, searchText: string): Promise<Pla
     const searchJson = await searchRes.json();
     
     const instances = searchJson.instancias || [];
-    // Limit to 30 elements to avoid overload and keep response snappy
-    const limitInstances = instances.slice(0, 30);
+    // Limit to 50 elements to avoid overload and keep response snappy
+    const limitInstances = instances.slice(0, 50);
     
     const detailPromises = limitInstances.map(async (inst: any) => {
       try {
@@ -211,7 +211,13 @@ async function fetchEpokPOIs(categoria: string, searchText: string): Promise<Pla
         const web = getVal("web") || getVal("sitio_web") || getVal("pag_web") || "";
         
         // Map CABA category normalizations to our app's POI types
-        const type: PlaceOfInterest["type"] = (categoria === "comisarias") ? "security" : "hospital";
+        let type: PlaceOfInterest["type"] = "hospital";
+        if (categoria === "comisarias") type = "security";
+        else if (categoria === "estaciones_de_subte") type = "subway";
+        else if (categoria === "estaciones_de_metrobus") type = "metrobus";
+        else if (categoria === "centros_comerciales") type = "shopping";
+        else if (categoria === "gastronomia") type = "food";
+        else if (categoria === "lugar_emblematico") type = "tourist";
         
         return {
           name: inst.nombre,
@@ -463,6 +469,203 @@ const fallbackPlaces: PlaceOfInterest[] = [
     web: "complejoteatral.gob.ar",
     hours: "Según funciones programadas",
     address: "Av. Córdoba 6056, Colegiales"
+  },
+  {
+    name: "Casa Rosada (Sede del Gobierno)",
+    type: "tourist",
+    distance: "15 min. en auto",
+    desc: "Sede del Poder Ejecutivo de la República Argentina y monumento histórico nacional.",
+    lat: -34.608056,
+    lng: -58.370278,
+    web: "presidencia.gob.ar",
+    address: "Balcarce 50, Monserrat"
+  },
+  {
+    name: "Obelisco de Buenos Aires",
+    type: "tourist",
+    distance: "12 min. en auto",
+    desc: "El monumento icónico de la Ciudad de Buenos Aires y centro de festejos populares.",
+    lat: -34.603722,
+    lng: -58.381589,
+    address: "Av. 9 de Julio y Av. Corrientes, San Nicolás"
+  },
+  {
+    name: "Teatro Colón",
+    type: "theater",
+    distance: "12 min. en auto",
+    desc: "Uno de los teatros de ópera más importantes del mundo por su acústica y arquitectura.",
+    lat: -34.601111,
+    lng: -58.383056,
+    phone: "011 4378-7100",
+    web: "teatrocolon.org.ar",
+    address: "Cerrito 628, San Nicolás"
+  },
+  {
+    name: "Carrefour San Telmo",
+    type: "supermarket",
+    distance: "15 min. en auto",
+    desc: "Supermercado Carrefour en el histórico barrio de San Telmo.",
+    lat: -34.6203,
+    lng: -58.3735,
+    hours: "Lunes a Sábados 08:00–21:30",
+    address: "Av. San Juan 960, San Telmo"
+  },
+  {
+    name: "Cementerio de la Recoleta",
+    type: "tourist",
+    distance: "10 min. en auto",
+    desc: "Famoso cementerio que alberga las bóvedas de importantes personalidades de la historia argentina.",
+    lat: -34.5875,
+    lng: -58.3930,
+    hours: "Todos los días 08:00-18:00",
+    address: "Junín 1760, Recoleta"
+  },
+  {
+    name: "Abasto Shopping",
+    type: "shopping",
+    distance: "8 min. en auto",
+    desc: "Uno de los centros comerciales más grandes de la ciudad, en el antiguo mercado de Abasto.",
+    lat: -34.6033,
+    lng: -58.4109,
+    web: "abastoshopping.com.ar",
+    hours: "Todos los días 10:00-22:00",
+    address: "Av. Corrientes 3247, Balvanera"
+  },
+  {
+    name: "Coto Abasto",
+    type: "supermarket",
+    distance: "8 min. en auto",
+    desc: "Gran supermercado Coto con estacionamiento, ubicado frente al Abasto Shopping.",
+    lat: -34.6025,
+    lng: -58.4115,
+    phone: "011 4866-2244",
+    hours: "Lunes a Sábados 08:30–22:00",
+    address: "Anchorena 901, Balvanera"
+  },
+  {
+    name: "Caminito (La Boca)",
+    type: "tourist",
+    distance: "20 min. en auto",
+    desc: "Calle museo peatonal de gran valor cultural y turístico, famoso por sus conventillos de colores.",
+    lat: -34.639444,
+    lng: -58.362778,
+    address: "Av. Pedro de Mendoza, La Boca"
+  },
+  {
+    name: "Hospital de Pediatría Dr. J. Garrahan",
+    type: "hospital",
+    distance: "18 min. en auto",
+    desc: "Principal hospital nacional de pediatría de alta complejidad médica.",
+    lat: -34.6318,
+    lng: -58.3894,
+    phone: "4941-8772",
+    web: "garrahan.gov.ar",
+    hours: "Guardia 24 horas",
+    address: "Combate de los Pozos 1881, Parque Patricios"
+  },
+  {
+    name: "Las Violetas (Café Histórico)",
+    type: "food",
+    distance: "14 min. en auto",
+    desc: "Confitería y restaurante inaugurado en 1884, declarado lugar de interés cultural de la ciudad.",
+    lat: -34.617222,
+    lng: -58.4225,
+    phone: "011 4958-7387",
+    hours: "Todos los días 06:00-01:00",
+    address: "Av. Rivadavia 3899, Almagro"
+  },
+  {
+    name: "Parque Centenario",
+    type: "park",
+    distance: "10 min. en auto",
+    desc: "Gran espacio verde público con lago artificial, ferias de libros y anfiteatro.",
+    lat: -34.6075,
+    lng: -58.4358,
+    address: "Av. Díaz Vélez y Leopoldo Marechal, Caballito"
+  },
+  {
+    name: "Jumbo Caballito",
+    type: "supermarket",
+    distance: "12 min. en auto",
+    desc: "Hipermercado Jumbo ubicado en el centro geográfico de la ciudad.",
+    lat: -34.6186,
+    lng: -58.4358,
+    phone: "0810-999-5862",
+    hours: "Lunes a Sábados 08:30–22:00, Domingos 09:00–22:00",
+    address: "Av. Rivadavia 5100, Caballito"
+  },
+  {
+    name: "Vea Flores",
+    type: "supermarket",
+    distance: "15 min. en auto",
+    desc: "Supermercado Vea ofreciendo productos frescos y de almacén en Flores.",
+    lat: -34.6302,
+    lng: -58.4633,
+    hours: "Lunes a Sábados 08:30–21:30",
+    address: "Av. Rivadavia 6500, Flores"
+  },
+  {
+    name: "Parque de la Ciudad",
+    type: "park",
+    distance: "22 min. en auto",
+    desc: "Inmenso parque público recreativo con senderos y la icónica Torre Espacial.",
+    lat: -34.6750,
+    lng: -58.4550,
+    hours: "Sábados y Domingos 10:00-18:00",
+    address: "Av. Roca y Av. Escalada, Villa Soldati"
+  },
+  {
+    name: "Feria de Mataderos",
+    type: "tourist",
+    distance: "25 min. en auto",
+    desc: "Feria de tradiciones populares argentinas con destrezas gauchas, comidas típicas y artesanías.",
+    lat: -34.6561,
+    lng: -58.5028,
+    web: "feriademataderos.gob.ar",
+    hours: "Domingos 11:00-19:00",
+    address: "Av. Lisandro de la Torre, Mataderos"
+  },
+  {
+    name: "Devoto Shopping",
+    type: "shopping",
+    distance: "20 min. en auto",
+    desc: "Centro comercial con salas de cine, patio de comidas y locales de primeras marcas en Villa Devoto.",
+    lat: -34.6015,
+    lng: -58.5125,
+    web: "devotoshopping.com.ar",
+    hours: "Todos los días 10:00-22:00",
+    address: "Quevedo 3365, Villa Devoto"
+  },
+  {
+    name: "Carrefour Villa Urquiza",
+    type: "supermarket",
+    distance: "18 min. en auto",
+    desc: "Hipermercado Carrefour con amplio sector de bazar, electrodomésticos y alimentos.",
+    lat: -34.5721,
+    lng: -58.4879,
+    hours: "Lunes a Sábados 08:00–22:00",
+    address: "Av. Constituyentes 4850, Villa Urquiza"
+  },
+  {
+    name: "Coto Belgrano",
+    type: "supermarket",
+    distance: "10 min. en auto",
+    desc: "Gran sucursal Coto de tres niveles con gran variedad de productos en Belgrano.",
+    lat: -34.5615,
+    lng: -58.4562,
+    phone: "011 4788-3400",
+    hours: "Lunes a Sábados 08:30–22:00",
+    address: "Av. Cabildo 2230, Belgrano"
+  },
+  {
+    name: "Cementerio de la Chacarita",
+    type: "tourist",
+    distance: "10 min. en auto",
+    desc: "El cementerio más grande de la Ciudad de Buenos Aires, con importantes mausoleos históricos.",
+    lat: -34.5900,
+    lng: -58.4550,
+    hours: "Todos los días 08:00-17:00",
+    address: "Av. Guzmán 680, Chacarita"
   }
 ];
 
@@ -557,6 +760,10 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
   const [basePlaces, setBasePlaces] = useState<PlaceOfInterest[]>(fallbackPlaces);
   const [placesList, setPlacesList] = useState<PlaceOfInterest[]>(fallbackPlaces);
   const [activePlace, setActivePlace] = useState<number>(0);
+  const activePlaceRef = useRef<number>(0);
+  useEffect(() => {
+    activePlaceRef.current = activePlace;
+  }, [activePlace]);
   const [leafletLoaded, setLeafletLoaded] = useState<boolean>(false);
   const [mapReady, setMapReady] = useState<boolean>(false);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
@@ -713,11 +920,12 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
     return () => observer.disconnect();
   }, []);
 
-  // Dynamic CABA EPOK API loading for Hospitals and Security (comisarías)
+  // Dynamic CABA EPOK API loading for all supported categories
   useEffect(() => {
     const stay = basePlaces.find(p => p.type === "stay") || fallbackPlaces[0];
+    const dynamicCategories = ["hospital", "security", "subway", "metrobus", "shopping", "food", "tourist"];
     
-    if (selectedCategory === "hospital" || selectedCategory === "security") {
+    if (dynamicCategories.includes(selectedCategory)) {
       const cached = getCachedPOIs(selectedCategory);
       if (cached) {
         setPlacesList([stay, ...cached]);
@@ -726,17 +934,52 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
       
       async function loadDynamicPOIs() {
         setLoadingPOIs(true);
-        let categoryId = "comisarias";
-        let searchKeyword = "comisaria";
-        if (selectedCategory === "hospital") {
-          categoryId = "hospitales_generales_de_agudos";
-          searchKeyword = "hospital";
+        let categoryId = "";
+        let searchKeyword = "";
+        
+        switch (selectedCategory) {
+          case "hospital":
+            categoryId = "hospitales_generales_de_agudos";
+            searchKeyword = "hospital";
+            break;
+          case "security":
+            categoryId = "comisarias";
+            searchKeyword = "comisaria";
+            break;
+          case "subway":
+            categoryId = "estaciones_de_subte";
+            searchKeyword = "subte";
+            break;
+          case "metrobus":
+            categoryId = "estaciones_de_metrobus";
+            searchKeyword = "estacion";
+            break;
+          case "shopping":
+            categoryId = "centros_comerciales";
+            searchKeyword = "shopping";
+            break;
+          case "food":
+            categoryId = "gastronomia";
+            searchKeyword = "restaurante";
+            break;
+          case "tourist":
+            categoryId = "lugar_emblematico";
+            searchKeyword = "museo";
+            break;
+          default:
+            break;
         }
         
-        const pois = await fetchEpokPOIs(categoryId, searchKeyword);
-        if (pois && pois.length > 0) {
-          setCachedPOIs(selectedCategory, pois);
-          setPlacesList([stay, ...pois]);
+        if (categoryId) {
+          const pois = await fetchEpokPOIs(categoryId, searchKeyword);
+          if (pois && pois.length > 0) {
+            setCachedPOIs(selectedCategory, pois);
+            setPlacesList([stay, ...pois]);
+          } else {
+            // Fallback to static basePlaces for this category
+            const staticFiltered = basePlaces.filter(p => p.type === selectedCategory);
+            setPlacesList([stay, ...staticFiltered]);
+          }
         }
         setLoadingPOIs(false);
       }
@@ -1025,6 +1268,17 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
         }
       });
 
+      marker.on("mouseover", () => {
+        marker.openPopup();
+      });
+
+      marker.on("mouseout", () => {
+        const originalIndex = placesList.findIndex(p => p.name === place.name);
+        if (activePlaceRef.current !== originalIndex) {
+          marker.closePopup();
+        }
+      });
+
       group.addLayer(marker);
     });
 
@@ -1092,6 +1346,8 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
         });
         const m = L.marker([pt.lat, pt.lng], { icon });
         m.bindPopup(`<b>${pt.name}</b><br/>${pt.dist}`);
+        m.on("mouseover", () => m.openPopup());
+        m.on("mouseout", () => m.closePopup());
         return m;
       });
       
@@ -1141,6 +1397,8 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
         });
         const m = L.marker([pt.lat, pt.lng], { icon });
         m.bindPopup(`<b>${pt.name}</b><br/>${pt.info}`);
+        m.on("mouseover", () => m.openPopup());
+        m.on("mouseout", () => m.closePopup());
         return m;
       });
       
