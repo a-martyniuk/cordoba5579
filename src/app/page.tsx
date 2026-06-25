@@ -291,37 +291,13 @@ export default function Home() {
       amenityPool: "Piscina exterior, Solárium y Parrilla en terraza",
       amenitySecurity: "Seguridad por cámaras en espacios comunes y Caja fuerte",
       reviewsTitle: "Reseñas de Huéspedes",
-      reviewsAvg: "promedio (82 reseñas)",
-      review1Text: "\"El departamento es un sueño. Impecable, decorado con un gusto exquisito y súper funcional para trabajar remoto. La pileta y la vista del rooftop son espectaculares. ¡Volvería sin dudarlo!\"",
-      review1Author: "María Alejandra G.",
-      review1Date: "Marzo 2026 · Huésped Verificado",
-      review2Text: "\"Jorge is an incredible host. The digital check-in guide was so clear, and the wine selection in the bar was a lovely touch. The location is perfect, close to everything in Palermo.\"",
-      review2Author: "John S.",
-      review2Date: "Febrero 2026 · Huésped Verificado",
-      review3Text: "\"Ubicación insuperable para ir al Movistar Arena. Muy seguro el edificio, check-in autónomo súper rápido y las sábanas de algodón egipcio son de otro mundo. Sin dudas de los mejores lugares en Palermo.\"",
-      review3Author: "Francisco R.",
-      review3Date: "Enero 2026 · Huésped Verificado",
+      reviewsNewTitle: "Sincronización de Reseñas en Proceso",
+      reviewsNewDesc: "Este espectacular departamento de diseño es completamente nuevo en el mercado. Muy pronto podrás ver aquí las reseñas reales sincronizadas directamente desde nuestra publicación oficial de Airbnb cuando esté vinculada.",
+      reviewsConfidenceTitle: "Reserva con Confianza",
+      reviewsConfidenceText: "Jorge Orlando (tu anfitrión) cuenta con una amplia trayectoria y excelentes valoraciones en hospitalidad en Buenos Aires. Está 100% comprometido en brindarte una estadía impecable.",
+      reviewsFirstGuest: "Sé uno de los primeros en dejar tu reseña y calificar tu experiencia.",
       guideTitle: "Guía Gastronómica del Anfitrión",
       guideSubtitle: "Palermo Hollywood está lleno de opciones, pero estas son las recomendaciones personales de Jorge para comer y trabajar como un local.",
-      guideBreakfast: "Café y Desayuno",
-      guideBreakfastSub: "Mis 5 favoritos a pie:",
-      guideB1: "Cuervo Café (Fitz Roy y Paraguay) - El mejor espresso y pastelería a 3 min.",
-      guideB2: "Atelier Fuerza - Famoso por su panadería de masa madre y facturas tradicionales.",
-      guideB3: "La Kitchen - Exquisitos scons y tartas en un ambiente súper relajante.",
-      guideB4: "Ninina (Holmberg) - Brunch muy completo y excelente pastelería artesanal.",
-      guideB5: "Soria Café - Mesas al aire libre, ideal para un roll de canela matutino.",
-      guideParrilla: "La Mejor Parrilla",
-      guideParrillaSub: "Don Julio y alternativas:",
-      guideP1: "Don Julio (Guatemala y Gurruchaga) - Elegida entre las mejores del mundo. Reservar con meses de anticipación.",
-      guideP2: "La Cabrera - Excelente ojo de bife y sus famosas cazuelitas frías y calientes.",
-      guideP3: "Las Cabras (Fitz Roy) - Más informal, porciones abundantes y excelente relación precio-calidad a 2 min.",
-      guideP4: "Parrilla El Secretito - Un secreto de bodegón de barrio con porciones enormes.",
-      guideWork: "Trabajo Remoto",
-      guideWorkSub: "WiFi rápido y enchufes:",
-      guideW1: "Café Registrado (Costa Rica) - Tuestan su propio café, tiene enchufes individuales y gran conexión.",
-      guideW2: "Libros del Pasaje - Café literario hermoso para leer o trabajar en un patio interno.",
-      guideW3: "Usina Cafetera - Mesas de trabajo cómodas, café de filtro y brunch.",
-      guideW4: "Coffee Town - Rincón tranquilo con gran variedad de granos de especialidad.",
       rulesHeader: "Normas de Convivencia",
       rulesCheck: "Check-In: A partir de las 15:00 hs. / Check-Out: Hasta las 11:00 hs.",
       rulesSmoke: "Prohibido fumar dentro del departamento y en pasillos comunes.",
@@ -390,37 +366,13 @@ export default function Home() {
       amenityPool: "Outdoor Pool, Solarium and Rooftop Grill",
       amenitySecurity: "Security Cameras in common areas & Safety Box",
       reviewsTitle: "Guest Reviews",
-      reviewsAvg: "average (82 reviews)",
-      review1Text: "\"The apartment is a dream. Spotless, decorated with exquisite taste, and super functional for remote work. The pool and rooftop views are spectacular. I would return without hesitation!\"",
-      review1Author: "María Alejandra G.",
-      review1Date: "March 2026 · Verified Guest",
-      review2Text: "\"Jorge is an incredible host. The digital check-in guide was so clear, and the wine selection in the bar was a lovely touch. The location is perfect, close to everything in Palermo.\"",
-      review2Author: "John S.",
-      review2Date: "February 2026 · Verified Guest",
-      review3Text: "\"Unbeatable location for going to the Movistar Arena. The building is very secure, self-check-in was super fast, and the Egyptian cotton sheets are out of this world. Definitely one of the best places in Palermo.\"",
-      review3Author: "Francisco R.",
-      review3Date: "January 2026 · Verified Guest",
+      reviewsNewTitle: "Reviews Sync in Progress",
+      reviewsNewDesc: "This spectacular designer apartment is brand new to the market. Real reviews synced directly from our official Airbnb listing will be available here as soon as we link it.",
+      reviewsConfidenceTitle: "Book with Confidence",
+      reviewsConfidenceText: "Jorge Orlando (your host) has a proven track record of providing top-tier hospitality in Buenos Aires. 100% committed to offering you an impeccable stay and 24/7 support.",
+      reviewsFirstGuest: "Be one of the first guests to leave a review and share your experience.",
       guideTitle: "Host's Curated Food Guide",
       guideSubtitle: "Palermo Hollywood is filled with options, but these are Jorge's personal recommendations to eat and work like a local.",
-      guideBreakfast: "Coffee & Breakfast",
-      guideBreakfastSub: "My top 5 within walking distance:",
-      guideB1: "Cuervo Café (Fitz Roy & Paraguay) - Best espresso and pastries, 3 min away.",
-      guideB2: "Atelier Fuerza - Famous for sourdough bakery and traditional Argentine pastries.",
-      guideB3: "La Kitchen - Delicious scones and tarts in a super relaxing backyard vibe.",
-      guideB4: "Ninina (Holmberg) - Rich brunch options and excellent artisanal cakes.",
-      guideB5: "Soria Café - Cozy outdoor seating, perfect for a morning cinnamon roll.",
-      guideParrilla: "The Best Steakhouse",
-      guideParrillaSub: "Don Julio & local alternatives:",
-      guideP1: "Don Julio (Guatemala & Gurruchaga) - Voted among the best in the world. Book months in advance.",
-      guideP2: "La Cabrera - Excellent ribeye steak and their famous complimentary side dishes.",
-      guideP3: "Las Cabras (Fitz Roy) - More informal, huge portions, and great value, 2 min away.",
-      guideP4: "Parrilla El Secretito - A hidden neighborhood steakhouse with massive portions.",
-      guideWork: "Remote Work Cafe",
-      guideWorkSub: "Fast WiFi & outlets:",
-      guideW1: "Café Registrado (Costa Rica) - Coffee roasters, individual outlets, and great connection.",
-      guideW2: "Libros del Pasaje - Beautiful bookshop café to read or work in a covered patio.",
-      guideW3: "Usina Cafetera - Comfortable work tables, drip coffee, and great brunch.",
-      guideW4: "Coffee Town - Quiet spot with a wide variety of specialty coffee beans.",
       rulesHeader: "House Rules",
       rulesCheck: "Check-In: From 3:00 PM onwards / Check-Out: By 11:00 AM.",
       rulesSmoke: "No smoking inside the apartment or in building common areas.",
@@ -846,80 +798,37 @@ export default function Home() {
             <div className="space-y-6 border-b border-[#EFEBE4] pb-8" id="resenas">
               <div className="flex items-center justify-between">
                 <h3 className="font-serif text-xl md:text-2xl text-neutral-900 font-semibold">{t.reviewsTitle}</h3>
-                <span className="text-xs text-neutral-500 font-semibold flex items-center gap-1">
-                  <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
-                  <span><strong>4.9⭐</strong> {t.reviewsAvg}</span>
+                <span className="text-xs text-neutral-500 font-semibold flex items-center gap-1.5">
+                  <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
+                  <span>{language === "es" ? "Opiniones reales próximamente" : "Real reviews coming soon"}</span>
                 </span>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                {/* Review 1 */}
-                <div className="bg-white border border-[#EFEBE4] rounded-2xl p-5 shadow-sm space-y-3.5 flex flex-col justify-between transition-all hover:shadow-md duration-200">
-                  <div className="space-y-2.5">
-                    <div className="flex items-center gap-0.5 text-amber-500">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="w-3.5 h-3.5 fill-current text-amber-500" />
-                      ))}
-                    </div>
-                    <p className="text-neutral-600 text-xs leading-relaxed italic">
-                      {t.review1Text}
-                    </p>
+              <div className="bg-white border border-[#EFEBE4] rounded-3xl p-6 md:p-8 shadow-sm space-y-6 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div className="space-y-3 max-w-xl">
+                  <div className="flex items-center gap-1.5">
+                    <span className="bg-emerald-50 text-emerald-700 text-xs font-bold px-2.5 py-1 rounded-md">
+                      {language === "es" ? "✨ ¡Lanzamiento a Estrenar!" : "✨ Brand New Launch!"}
+                    </span>
                   </div>
-                  <div className="flex items-center gap-3 pt-2.5 border-t border-neutral-100 mt-2">
-                    <div className="w-9 h-9 bg-neutral-100 rounded-full flex items-center justify-center font-bold text-xs text-neutral-700">
-                      MA
-                    </div>
-                    <div>
-                      <h5 className="font-bold text-xs text-neutral-900">{t.review1Author}</h5>
-                      <p className="text-[10px] text-neutral-400">{t.review1Date}</p>
-                    </div>
-                  </div>
+                  <h4 className="font-serif text-base sm:text-lg font-bold text-neutral-900 leading-tight">
+                    {t.reviewsNewTitle}
+                  </h4>
+                  <p className="text-neutral-600 text-xs sm:text-sm leading-relaxed">
+                    {t.reviewsNewDesc}
+                  </p>
+                  <p className="text-[#5F6F52] text-xs font-semibold">
+                    ⭐ {t.reviewsFirstGuest}
+                  </p>
                 </div>
 
-                {/* Review 2 */}
-                <div className="bg-white border border-[#EFEBE4] rounded-2xl p-5 shadow-sm space-y-3.5 flex flex-col justify-between transition-all hover:shadow-md duration-200">
-                  <div className="space-y-2.5">
-                    <div className="flex items-center gap-0.5 text-amber-500">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="w-3.5 h-3.5 fill-current text-amber-500" />
-                      ))}
-                    </div>
-                    <p className="text-neutral-600 text-xs leading-relaxed italic">
-                      {t.review2Text}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-3 pt-2.5 border-t border-neutral-100 mt-2">
-                    <div className="w-9 h-9 bg-neutral-100 rounded-full flex items-center justify-center font-bold text-xs text-neutral-700">
-                      JS
-                    </div>
-                    <div>
-                      <h5 className="font-bold text-xs text-neutral-900">{t.review2Author}</h5>
-                      <p className="text-[10px] text-neutral-400">{t.review2Date}</p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Review 3 */}
-                <div className="bg-white border border-[#EFEBE4] rounded-2xl p-5 shadow-sm space-y-3.5 flex flex-col justify-between transition-all hover:shadow-md duration-200">
-                  <div className="space-y-2.5">
-                    <div className="flex items-center gap-0.5 text-amber-500">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="w-3.5 h-3.5 fill-current text-amber-500" />
-                      ))}
-                    </div>
-                    <p className="text-neutral-600 text-xs leading-relaxed italic">
-                      {t.review3Text}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-3 pt-2.5 border-t border-neutral-100 mt-2">
-                    <div className="w-9 h-9 bg-neutral-100 rounded-full flex items-center justify-center font-bold text-xs text-neutral-700">
-                      FR
-                    </div>
-                    <div>
-                      <h5 className="font-bold text-xs text-neutral-900">{t.review3Author}</h5>
-                      <p className="text-[10px] text-neutral-400">{t.review3Date}</p>
-                    </div>
-                  </div>
+                <div className="bg-[#FAF9F7] border border-[#EFEBE4] p-5 rounded-2xl md:max-w-xs space-y-2 flex-shrink-0">
+                  <h5 className="font-bold text-xs sm:text-sm text-neutral-900 flex items-center gap-1.5">
+                    🛡️ {t.reviewsConfidenceTitle}
+                  </h5>
+                  <p className="text-neutral-500 text-xs leading-relaxed">
+                    {t.reviewsConfidenceText}
+                  </p>
                 </div>
               </div>
             </div>
