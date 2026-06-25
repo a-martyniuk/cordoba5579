@@ -31,7 +31,10 @@ export default function CalendarWidget({
       
       if (diffDays > 0) {
         setTotalNights(diffDays);
-        setTotalPrice(diffDays * pricePerNight + cleaningFee);
+        const extraGuests = Math.max(0, guests - 2);
+        const extraGuestCostPerNight = 10;
+        const total = (diffDays * pricePerNight) + (diffDays * extraGuests * extraGuestCostPerNight) + cleaningFee;
+        setTotalPrice(total);
       } else {
         setTotalNights(0);
         setTotalPrice(0);
@@ -40,7 +43,7 @@ export default function CalendarWidget({
       setTotalNights(0);
       setTotalPrice(0);
     }
-  }, [checkIn, checkOut, pricePerNight, cleaningFee]);
+  }, [checkIn, checkOut, pricePerNight, cleaningFee, guests]);
 
   const handleWhatsAppRedirect = () => {
     if (!checkIn || !checkOut) {
@@ -73,13 +76,29 @@ export default function CalendarWidget({
   return (
     <div className="bg-white border border-[#EFEBE4] rounded-3xl p-6 shadow-lg shadow-neutral-100 sticky top-28">
       {/* Price Header */}
-      <div className="flex items-baseline justify-between mb-6">
-        <div>
-          <span className="text-2xl font-semibold text-neutral-900">${pricePerNight}</span>
-          <span className="text-neutral-500 text-sm"> / noche</span>
+      <div className="flex flex-col gap-2 mb-6">
+        <div className="flex items-baseline justify-between">
+          <div>
+            <span className="text-2xl font-semibold text-neutral-900">${pricePerNight}</span>
+            <span className="text-neutral-500 text-sm"> / noche</span>
+          </div>
+          <div className="text-xs text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full font-medium">
+            Directo sin comisiones
+          </div>
         </div>
-        <div className="text-xs text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full font-medium">
-          Directo sin comisiones
+        <div className="bg-neutral-50 rounded-xl p-2.5 border border-[#EFEBE4] text-[11px] text-neutral-500 space-y-1">
+          <p className="flex justify-between">
+            <span>👥 Capacidad Base:</span>
+            <span className="font-semibold text-neutral-800">2 huéspedes</span>
+          </p>
+          <p className="flex justify-between">
+            <span>➕ Huésped adicional:</span>
+            <span className="font-semibold text-neutral-800">USD 10 / noche</span>
+          </p>
+          <p className="flex justify-between">
+            <span>🧹 Limpieza:</span>
+            <span className="font-semibold text-neutral-800">USD {cleaningFee} (pago único)</span>
+          </p>
         </div>
       </div>
 
@@ -172,10 +191,18 @@ export default function CalendarWidget({
         <div className="mt-6 pt-6 border-t border-[#EFEBE4] space-y-3 text-sm text-neutral-600">
           <div className="flex justify-between">
             <span className="underline decoration-dotted">
-              ${pricePerNight} x {totalNights} noches
+              ${pricePerNight} x {totalNights} noches (base 2 huéspedes)
             </span>
             <span className="font-medium text-neutral-800">${pricePerNight * totalNights}</span>
           </div>
+          {guests > 2 && (
+            <div className="flex justify-between">
+              <span className="underline decoration-dotted">
+                Huéspedes extra (USD 10 x {guests - 2} x {totalNights} noches)
+              </span>
+              <span className="font-medium text-neutral-800">${(guests - 2) * 10 * totalNights}</span>
+            </div>
+          )}
           <div className="flex justify-between">
             <span className="underline decoration-dotted">Limpieza</span>
             <span className="font-medium text-neutral-800">${cleaningFee}</span>

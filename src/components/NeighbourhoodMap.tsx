@@ -748,11 +748,10 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
     if (selectedCategory !== "all" && filtered.length > 1) {
       const bounds = L.latLngBounds(filtered.map(p => [p.lat, p.lng]));
       map.fitBounds(bounds, { padding: [50, 50], maxZoom: 16 });
-    } else if (selectedCategory === "all" && placesList.length > 1) {
-      const bounds = L.latLngBounds(placesList.map(p => [p.lat, p.lng]));
-      map.fitBounds(bounds, { padding: [40, 40] });
-    } else if (placesList.length > 0) {
-      map.setView([placesList[0].lat, placesList[0].lng], 15);
+    } else {
+      // Center on the stay (Airbnb) location by default to show Palermo Hollywood around it
+      const stay = placesList.find(p => p.type === "stay") || fallbackPlaces[0];
+      map.setView([stay.lat, stay.lng], 15);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mapReady, selectedCategory, placesList]);
