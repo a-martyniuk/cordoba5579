@@ -355,6 +355,48 @@ const fallbackPlaces: PlaceOfInterest[] = [
     address: "Av. Córdoba 5625, Palermo"
   },
   {
+    name: "DIA Av. Córdoba 5799",
+    type: "supermarket",
+    distance: "3 min. a pie",
+    desc: "Supermercado de proximidad DIA con productos de almacén, lácteos, carnes y artículos de limpieza al mejor precio.",
+    lat: -34.5861,
+    lng: -58.4424,
+    hours: "Lunes a Sábados 08:00–21:00, Domingos 09:00–20:00",
+    address: "Av. Córdoba 5799, Palermo"
+  },
+  {
+    name: "Vea Av. Córdoba 6103",
+    type: "supermarket",
+    distance: "6 min. a pie",
+    desc: "Supermercado Vea (Cencosud) con buena variedad de frescos, fiambres y bebidas. Sucursal sobre Av. Córdoba en Villa Crespo.",
+    lat: -34.5838,
+    lng: -58.4465,
+    hours: "Lunes a Sábados 08:00–21:30, Domingos 09:00–21:00",
+    address: "Av. Córdoba 6103, Villa Crespo"
+  },
+  {
+    name: "Disco Palermo (Paraguay 4302)",
+    type: "supermarket",
+    distance: "17 min. a pie",
+    desc: "Supermercado Disco con amplia selección de frescos, panadería, carnicería y productos gourmet. Estacionamiento disponible.",
+    lat: -34.5862,
+    lng: -58.4223,
+    phone: "0800-888-4726",
+    hours: "Lunes a Sábados 08:00–22:00, Domingos 09:00–21:00",
+    address: "Paraguay 4302, Palermo"
+  },
+  {
+    name: "Coto Botánico (Av. Santa Fe 3760)",
+    type: "supermarket",
+    distance: "19 min. a pie",
+    desc: "Gran sucursal Coto frente al Jardín Botánico, con supermercado completo, electrónica y bazar. A metros del Zoológico.",
+    lat: -34.5848,
+    lng: -58.4165,
+    phone: "011 4805-1266",
+    hours: "Lunes a Sábados 08:30–22:00, Domingos 09:00–22:00",
+    address: "Av. Santa Fe 3760, Palermo"
+  },
+  {
     name: "Jumbo Palermo",
     type: "supermarket",
     distance: "9 min. a pie",
