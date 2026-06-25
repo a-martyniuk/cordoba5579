@@ -205,9 +205,9 @@ export default function InventoryList({ sheetUrl, lang = "es" }: InventoryListPr
                   isWine ? "ring-1 ring-amber-100 bg-amber-50/10 border-amber-200" : ""
                 }`}
               >
-                <div>
+                <div className="flex-grow min-w-0">
                   <div className="flex items-start justify-between gap-3">
-                    <span className="font-semibold text-sm text-neutral-950 font-sans tracking-tight">
+                    <span className="font-semibold text-sm text-neutral-950 font-sans tracking-tight break-words">
                       {item.item}
                     </span>
                     <span
@@ -221,7 +221,7 @@ export default function InventoryList({ sheetUrl, lang = "es" }: InventoryListPr
                     </span>
                   </div>
                   {item.detail && (
-                    <p className="text-neutral-500 text-xs mt-2 leading-relaxed">
+                    <p className="text-neutral-500 text-xs mt-2 leading-relaxed break-words">
                       {item.detail}
                     </p>
                   )}
