@@ -19,8 +19,8 @@ const places: PlaceOfInterest[] = [
     type: "stay",
     distance: "Ubicación",
     desc: "Moderno departamento a estrenar, ubicado estratégicamente en Palermo Hollywood.",
-    lat: -34.5819,
-    lng: -58.4364
+    lat: -34.587546,
+    lng: -58.439668
   },
   {
     name: "Movistar Arena",
