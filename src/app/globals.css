@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-color: #FAF9F7;
+    color: #1C1B19;
+  }
+}
+
+/* Custom Scrollbar Hiding Utility */
+@layer utilities {
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* Leaflet Map Elegant Dark/Warm Theme Overrides */
+.leaflet-container {
+  font-family: var(--font-sans), sans-serif !important;
+  background-color: #FAF9F7 !important;
+}
+
+.leaflet-popup-content-wrapper {
+  background: white !important;
+  color: #1C1B19 !important;
+  border-radius: 16px !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.08) !important;
+  border: 1px solid #EFEBE4 !important;
+  padding: 6px !important;
+}
+
+.leaflet-popup-tip {
+  background: white !important;
+  border: 1px solid #EFEBE4 !important;
+}
+
+/* Custom Marker Micro-animations */
+.map-marker-hover:hover {
+  transform: translate(-6px, -6px) scale(1.15) !important;
+  z-index: 1000 !important;
+}
+

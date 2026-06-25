@@ -1,0 +1,194 @@
+[
+  {
+    "category": "Vajilla y Cocina",
+    "item": "Platos playos grandes CAROL",
+    "quantity": 4,
+    "detail": "Excelente calidad, color neutro"
+  },
+  {
+    "category": "Vajilla y Cocina",
+    "item": "Platos playos chicos CAROL",
+    "quantity": 4,
+    "detail": "Color a tono con la vajilla"
+  },
+  {
+    "category": "Vajilla y Cocina",
+    "item": "Platos soperos CAROL",
+    "quantity": 4,
+    "detail": "Ideales para caldos o pastas"
+  },
+  {
+    "category": "Vajilla y Cocina",
+    "item": "Platos compoteras CAROL",
+    "quantity": 4,
+    "detail": "Para postres o desayunos"
+  },
+  {
+    "category": "Vajilla y Cocina",
+    "item": "Tazas de desayuno y café",
+    "quantity": 8,
+    "detail": "4 tazas de café con plato + 4 tazas grandes de desayuno"
+  },
+  {
+    "category": "Vajilla y Cocina",
+    "item": "Cubiertos Tramontina (Juego)",
+    "quantity": 16,
+    "detail": "4 tenedores, 4 cuchillos, 4 cucharas, 4 cucharas de té"
+  },
+  {
+    "category": "Vajilla y Cocina",
+    "item": "Juego de cuchillas de cocina Tramontina",
+    "quantity": 1,
+    "detail": "Juego profesional de corte y afilador"
+  },
+  {
+    "category": "Vajilla y Cocina",
+    "item": "Juego de utensilios siliconados",
+    "quantity": 11,
+    "detail": "Cucharones, batidores, espátulas, pinzas con contenedor"
+  },
+  {
+    "category": "Vajilla y Cocina",
+    "item": "Copas de Vino y Champagne CAROL",
+    "quantity": 8,
+    "detail": "4 copas de vino + 4 copas de champagne"
+  },
+  {
+    "category": "Vajilla y Cocina",
+    "item": "Vasos y Cristalería",
+    "quantity": 16,
+    "detail": "4 vasos de agua, 4 de jugo, 4 de whisky y 4 copas de trago largo"
+  },
+  {
+    "category": "Vajilla y Cocina",
+    "item": "Batería de cocina Tramontina",
+    "quantity": 1,
+    "detail": "4 ollas con tapas, 2 sartenes y 1 hervidor de excelente calidad"
+  },
+  {
+    "category": "Vajilla y Cocina",
+    "item": "Set de bar (Hielera + Frapera + Accesorios)",
+    "quantity": 1,
+    "detail": "Hielera y frapera de acero inoxidable, sacacorchos y destapador"
+  },
+  {
+    "category": "Vajilla y Cocina",
+    "item": "Accesorios de mesa",
+    "quantity": 1,
+    "detail": "6 individuales redondos, bandeja doble bambú, paneras y posavasos"
+  },
+  {
+    "category": "Electrodomésticos",
+    "item": "Smart TV TCL QLED 4K 55\"",
+    "quantity": 1,
+    "detail": "Ubicada en el living, ideal para entretenimiento"
+  },
+  {
+    "category": "Electrodomésticos",
+    "item": "Smart TV TCL QLED 4K 42\"",
+    "quantity": 1,
+    "detail": "Ubicada en el dormitorio principal"
+  },
+  {
+    "category": "Electrodomésticos",
+    "item": "Horno y Freidora sin Aire (Air Fryer)",
+    "quantity": 1,
+    "detail": "Para preparaciones rápidas y saludables"
+  },
+  {
+    "category": "Electrodomésticos",
+    "item": "Cafetera con espumador de leche",
+    "quantity": 1,
+    "detail": "Ideal para café de especialidad por las mañanas"
+  },
+  {
+    "category": "Electrodomésticos",
+    "item": "Licuadora con vaso de vidrio",
+    "quantity": 1,
+    "detail": "De alta potencia para licuados"
+  },
+  {
+    "category": "Electrodomésticos",
+    "item": "Pava eléctrica",
+    "quantity": 1,
+    "detail": "Para mate o infusiones rápidas"
+  },
+  {
+    "category": "Electrodomésticos",
+    "item": "Microondas y Tostadora",
+    "quantity": 2,
+    "detail": "Dispositivos esenciales de cocina"
+  },
+  {
+    "category": "Electrodomésticos",
+    "item": "Cocina equipada (Arrocera + Heladera)",
+    "quantity": 2,
+    "detail": "Arrocera eléctrica + Heladera Samsung moderna"
+  },
+  {
+    "category": "Blancos y Ropa de Cama",
+    "item": "Sábanas de Hilo Egipcio (600 Hilos)",
+    "quantity": 2,
+    "detail": "Juegos completos premium para cama Queen"
+  },
+  {
+    "category": "Blancos y Ropa de Cama",
+    "item": "Acolchados de invierno y Frazadas polares",
+    "quantity": 6,
+    "detail": "2 acolchados pesados + 4 frazadas polares extra"
+  },
+  {
+    "category": "Blancos y Ropa de Cama",
+    "item": "Toallas y Toallones de puro Algodón (400 gr)",
+    "quantity": 4,
+    "detail": "Toallas Arco Iris 100% algodón de primera calidad"
+  },
+  {
+    "category": "Cava de Vinos (Costo Extra)",
+    "item": "Vino Tinto Malbec (Botellas)",
+    "quantity": 3,
+    "detail": "Consumo opcional con aviso para reposición"
+  },
+  {
+    "category": "Cava de Vinos (Costo Extra)",
+    "item": "Vino Tinto Syrah & Cabernet Sauvignon",
+    "quantity": 6,
+    "detail": "3 botellas de Syrah + 3 botellas de Cabernet Sauvignon"
+  },
+  {
+    "category": "Cava de Vinos (Costo Extra)",
+    "item": "Vino Blanco Torrontés & Dulce Natural",
+    "quantity": 6,
+    "detail": "3 botellas de Torrontés + 3 botellas de Blanco Dulce"
+  },
+  {
+    "category": "Cava de Vinos (Costo Extra)",
+    "item": "Champagne Demi Sec & Dulce",
+    "quantity": 4,
+    "detail": "2 botellas de Demi Sec + 2 botellas de Dulce"
+  },
+  {
+    "category": "Cava de Vinos (Costo Extra)",
+    "item": "Fernet Branca (Botella)",
+    "quantity": 1,
+    "detail": "Bebida clásica argentina para disfrutar en el bar"
+  },
+  {
+    "category": "Otros y Recreativo",
+    "item": "Juegos de Mesa",
+    "quantity": 4,
+    "detail": "Cartas españolas, naipes de póker, backgammon, ajedrez/damas"
+  },
+  {
+    "category": "Otros y Recreativo",
+    "item": "Balanza personal y Caja fuerte",
+    "quantity": 2,
+    "detail": "Balanza de baño hasta 150 kg y caja fuerte digital para valores"
+  },
+  {
+    "category": "Otros y Recreativo",
+    "item": "Equipamiento de Planchado y Limpieza",
+    "quantity": 1,
+    "detail": "Plancha, tabla de planchar, aspiradora, mopa, y limpiavidrios magnético"
+  }
+]
