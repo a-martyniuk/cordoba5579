@@ -648,9 +648,9 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
 
       routePolylineRef.current = polyline;
 
-      // Adjust boundaries to fit the route
-      const bounds = L.latLngBounds(activeRoute);
-      map.fitBounds(bounds, { padding: [50, 50] });
+      // Keep map centered on active place rather than zooming out to fit the whole route (user request)
+      // const bounds = L.latLngBounds(activeRoute);
+      // map.fitBounds(bounds, { padding: [50, 50] });
     }
   }, [activeRoute, mapReady]);
 
