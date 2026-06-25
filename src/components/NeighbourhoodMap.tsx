@@ -181,7 +181,85 @@ function haversineDistanceMeters(lat1: number, lng1: number, lat2: number, lng2:
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
+// Merge static POIs and dynamic/fetched POIs, prioritizing static ones (which might have curated coordinates/descriptions)
+function mergeStaticAndDynamic(
+  staticList: PlaceOfInterest[],
+  dynamicList: PlaceOfInterest[],
+  category: string,
+  stayLat: number,
+  stayLng: number
+): PlaceOfInterest[] {
+  let staticPOIs = staticList.filter(p => p.type === category);
+  
+  // Specific requirement: supermarkets are only those within 2000m
+  if (category === "supermarket") {
+    staticPOIs = staticPOIs.filter(p => haversineDistanceMeters(stayLat, stayLng, p.lat, p.lng) <= 2000);
+  }
+
+  // Format static POI distances if they don't have them or to keep consistency
+  const formattedStatic = staticPOIs.map(p => {
+    if (p.distance && p.distance !== "Calculando...") return p;
+    const d = Math.round(haversineDistanceMeters(stayLat, stayLng, p.lat, p.lng));
+    return {
+      ...p,
+      distance: d < 1000 ? `${d} m a pie` : `${(d / 1000).toFixed(1)} km`
+    };
+  });
+
+  const merged: PlaceOfInterest[] = [...formattedStatic];
+
+  const normalizeString = (str: string) => {
+    return str
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "") // remove accents
+      .replace(/[^a-z0-9]/g, ""); // keep alphanumeric
+  };
+
+  for (const dyn of dynamicList) {
+    const dynNorm = normalizeString(dyn.name);
+    let isDuplicate = false;
+
+    for (const stat of formattedStatic) {
+      const statNorm = normalizeString(stat.name);
+      
+      // If the names are almost identical
+      if (statNorm === dynNorm || statNorm.includes(dynNorm) || dynNorm.includes(statNorm)) {
+        isDuplicate = true;
+        break;
+      }
+
+      // Proximity check: if coordinates are very close (less than 70 meters), they are likely the same POI
+      const dist = haversineDistanceMeters(stat.lat, stat.lng, dyn.lat, dyn.lng);
+      if (dist < 70) {
+        isDuplicate = true;
+        break;
+      }
+    }
+
+    if (!isDuplicate) {
+      // Calculate/format distance for dynamic POI
+      const d = Math.round(haversineDistanceMeters(stayLat, stayLng, dyn.lat, dyn.lng));
+      const distanceText = d < 1000 ? `${d} m a pie` : `${(d / 1000).toFixed(1)} km`;
+      merged.push({
+        ...dyn,
+        distance: distanceText
+      });
+    }
+  }
+
+  // Sort by distance from stay location
+  merged.sort((a, b) => {
+    const distA = haversineDistanceMeters(stayLat, stayLng, a.lat, a.lng);
+    const distB = haversineDistanceMeters(stayLat, stayLng, b.lat, b.lng);
+    return distA - distB;
+  });
+
+  return merged;
+}
+
 // Detect subway line from station name (e.g. "Linea A", "Línea D", etc.)
+
 function detectSubwayLine(name: string): string | undefined {
   const upper = name.toUpperCase();
   if (upper.includes("LINEA A") || upper.includes("LÍNEA A") || upper.includes("LíNEA A")) return "A";
@@ -1138,7 +1216,8 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
     if (dynamicCategories.includes(selectedCategory)) {
       const cached = getCachedPOIs(selectedCategory);
       if (cached) {
-        setPlacesList([stay, ...cached]);
+        const merged = mergeStaticAndDynamic(basePlaces, cached, selectedCategory, stay.lat, stay.lng);
+        setPlacesList([stay, ...merged]);
         return;
       }
       
@@ -1244,16 +1323,43 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
           
           if (pois && pois.length > 0) {
             setCachedPOIs(selectedCategory, pois);
-            setPlacesList([stay, ...pois]);
+            const merged = mergeStaticAndDynamic(basePlaces, pois, selectedCategory, stay.lat, stay.lng);
+            setPlacesList([stay, ...merged]);
           } else {
             // Fallback to static basePlaces for this category
             const staticFiltered = basePlaces.filter(p => p.type === selectedCategory);
-            setPlacesList([stay, ...staticFiltered]);
+            const formattedStatic = staticFiltered.map(p => {
+              if (p.distance) return p;
+              const d = Math.round(haversineDistanceMeters(stay.lat, stay.lng, p.lat, p.lng));
+              return {
+                ...p,
+                distance: d < 1000 ? `${d} m a pie` : `${(d / 1000).toFixed(1)} km`
+              };
+            });
+            formattedStatic.sort((a, b) => {
+              const distA = haversineDistanceMeters(stay.lat, stay.lng, a.lat, a.lng);
+              const distB = haversineDistanceMeters(stay.lat, stay.lng, b.lat, b.lng);
+              return distA - distB;
+            });
+            setPlacesList([stay, ...formattedStatic]);
           }
         } catch (err) {
           console.error("Error loading dynamic POIs:", err);
           const staticFiltered = basePlaces.filter(p => p.type === selectedCategory);
-          setPlacesList([stay, ...staticFiltered]);
+          const formattedStatic = staticFiltered.map(p => {
+            if (p.distance) return p;
+            const d = Math.round(haversineDistanceMeters(stay.lat, stay.lng, p.lat, p.lng));
+            return {
+              ...p,
+              distance: d < 1000 ? `${d} m a pie` : `${(d / 1000).toFixed(1)} km`
+            };
+          });
+          formattedStatic.sort((a, b) => {
+            const distA = haversineDistanceMeters(stay.lat, stay.lng, a.lat, a.lng);
+            const distB = haversineDistanceMeters(stay.lat, stay.lng, b.lat, b.lng);
+            return distA - distB;
+          });
+          setPlacesList([stay, ...formattedStatic]);
         }
         
         setLoadingPOIs(false);
@@ -1262,6 +1368,7 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
     } else {
       setPlacesList(basePlaces);
     }
+
     
     // Clear active route when switching categories
     setActiveRoute(null);
