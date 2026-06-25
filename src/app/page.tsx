@@ -1040,8 +1040,8 @@ export default function Home() {
                       <li className="flex items-start gap-2.5">
                         <span className="text-[#5F6F52] font-bold">✓</span>
                         <div>
-                          <span className="font-semibold">{language === "es" ? "Seguridad en el hogar:" : "Home Safety:"}</span>{" "}
-                          {language === "es" ? "Detector de monóxido de carbono, detectores de humo, botiquín y seguros en ventanas." : "Carbon monoxide detector, smoke alarms, first aid kit, and window locks."}
+                          <span className="font-semibold">{language === "es" ? "Seguridad y Prevención:" : "Home Safety & Security:"}</span>{" "}
+                          {language === "es" ? "Detectores de humo, detector de monóxido de carbono, matafuegos (extintor), botiquín de primeros auxilios y seguros en ventanas." : "Smoke alarms, carbon monoxide detector, fire extinguisher, first aid kit, and window locks."}
                         </div>
                       </li>
                       <li className="flex items-start gap-2.5">
