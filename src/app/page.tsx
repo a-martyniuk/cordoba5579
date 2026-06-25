@@ -285,8 +285,8 @@ export default function Home() {
     }
     if (q.includes("wifi") || q.includes("wi-fi") || q.includes("internet") || q.includes("clave") || q.includes("contraseña") || q.includes("password") || q.includes("network")) {
       return isEn
-        ? "The apartment features high-speed Wi-Fi (100 Mbps). The network name is 'Cordoba5579_5G' and the password is 'hola.cordoba'. You can also scan the QR code located on the framed signs inside the property."
-        : "El departamento cuenta con WiFi de alta velocidad (100 Mbps). La red es 'Cordoba5579_5G' y la contraseña es 'hola.cordoba'. Encontrarás un código QR y las credenciales en los carteles físicos enmarcados dentro de la propiedad.";
+        ? "The apartment features high-speed Wi-Fi (100 Mbps). The network name is 'Cordoba 5579_Guest' and the password is 'hola.cordoba'. You can also scan the QR code located on the framed signs inside the property."
+        : "El departamento cuenta con WiFi de alta velocidad (100 Mbps). La red es 'Cordoba 5579_Guest' y la contraseña es 'hola.cordoba'. Encontrarás un código QR y las credenciales en los carteles físicos enmarcados dentro de la propiedad.";
     }
     if (q.includes("check-in") || q.includes("checkin") || q.includes("ingres") || q.includes("llave") || q.includes("entrar") || q.includes("lockbox") || q.includes("code") || q.includes("codigo") || q.includes("código")) {
       return isEn
@@ -297,6 +297,11 @@ export default function Home() {
       return isEn
         ? "Check-out time is by 11:00 AM. Please turn off all air conditioners and lights, return the keys to the same security lockbox at the outer entrance (scrambling the code wheels), and send a WhatsApp message to Jorge."
         : "El check-out es hasta las 11:00 hs. Te pedimos que apagues los aires acondicionados, dejes las llaves en la misma caja de seguridad (lockbox) de la entrada exterior y le avises a Jorge por WhatsApp cuando te retires.";
+    }
+    if (q.includes("emergencia") || q.includes("emergency") || q.includes("policia") || q.includes("policía") || q.includes("same") || q.includes("bombero") || q.includes("fire") || q.includes("ambulance") || q.includes("ambulancia") || q.includes("911") || q.includes("hospital") || q.includes("medico") || q.includes("médico")) {
+      return isEn
+        ? "In case of emergency, please call 911 (General Police Emergencies), 107 (SAME Medical Emergencies), or 100 (Fire Department). You can also contact the host Jorge immediately at +54 9 11 4537-9500. Detailed emergency contacts are available at /checkin."
+        : "Ante cualquier emergencia, podés llamar al 911 (Emergencias Generales / Policía), 107 (SAME Urgencias Médicas) o 100 (Bomberos). También podés contactar al anfitrión Jorge de inmediato al +54 9 11 4537-9500. Encontrarás la lista de contactos de emergencia en /checkin.";
     }
     if (q.includes("cava") || q.includes("vino") || q.includes("bar") || q.includes("bebida") || q.includes("wine") || q.includes("drink")) {
       return isEn

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Key, Wifi, Copy, Check, ShieldAlert, Clock, ArrowLeft, MessageCircle } from "lucide-react";
+import { Key, Wifi, Copy, Check, ShieldAlert, Clock, ArrowLeft, MessageCircle, Phone } from "lucide-react";
 import Link from "next/link";
 
 export default function CheckInPortal() {
@@ -71,7 +71,13 @@ export default function CheckInPortal() {
       checkout2: "Guardar llaves: Cerrá la puerta del departamento tirando firmemente y colocá las llaves de regreso en la misma caja de seguridad (lockbox) del ingreso exterior, desordenando la combinación al cerrarla.",
       checkout3: "Avisar por WhatsApp: Enviale un mensaje rápido a Jorge confirmando tu salida. ¡Buen viaje de regreso!",
       supportBtn: "Contactar Soporte (Jorge - WhatsApp)",
-      supportMsg: "Hola Jorge! Estoy ingresando al departamento..."
+      supportMsg: "Hola Jorge! Estoy ingresando al departamento...",
+      emergencyTitle: "Teléfonos de Emergencia",
+      emergency911Desc: "Policía y Emergencias Generales",
+      emergency107Desc: "SAME (Urgencias Médicas)",
+      emergency100Desc: "Bomberos",
+      emergency103Desc: "Defensa Civil",
+      emergencyHostDesc: "Jorge (Anfitrión - Urgencias Depto)"
     },
     en: {
       back: "Back",
@@ -111,7 +117,13 @@ export default function CheckInPortal() {
       checkout2: "Return keys: Close the apartment door firmly behind you and return the keys to the same security lockbox at the outer entrance, scrambling the code wheels after closing it.",
       checkout3: "Notify via WhatsApp: Send a quick message to Jorge confirming your departure. Have a safe trip back!",
       supportBtn: "Contact Support (Jorge - WhatsApp)",
-      supportMsg: "Hi Jorge! I am checking into the apartment..."
+      supportMsg: "Hi Jorge! I am checking into the apartment...",
+      emergencyTitle: "Emergency Contacts",
+      emergency911Desc: "Police & General Emergencies",
+      emergency107Desc: "SAME (Medical Emergencies)",
+      emergency100Desc: "Fire Department",
+      emergency103Desc: "Civil Defense",
+      emergencyHostDesc: "Jorge (Host - Apartment Urgencies)"
     }
   }[lang];
 
@@ -169,7 +181,7 @@ export default function CheckInPortal() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="bg-[#FAF9F7] border border-[#EFEBE4] rounded-2xl p-3.5 space-y-1">
               <span className="text-[10px] font-bold text-neutral-400 uppercase">{t.wifiRed}</span>
-              <p className="font-mono text-xs sm:text-sm font-bold text-neutral-800">Cordoba5579_5G</p>
+              <p className="font-mono text-xs sm:text-sm font-bold text-neutral-800">Cordoba 5579_Guest</p>
             </div>
             
             <div className="bg-[#FAF9F7] border border-[#EFEBE4] rounded-2xl p-3.5 flex items-center justify-between gap-4">
@@ -317,6 +329,56 @@ export default function CheckInPortal() {
               <li>{t.checkout2}</li>
               <li>{t.checkout3}</li>
             </ol>
+          </div>
+        </div>
+
+        {/* Emergency Contacts */}
+        <div className="bg-white border border-[#EFEBE4] rounded-3xl p-6 shadow-sm space-y-4">
+          <div className="flex items-center gap-2.5 text-red-600 pb-3 border-b border-[#F5F2EB]">
+            <Phone className="w-5 h-5" />
+            <h3 className="font-serif text-base sm:text-lg font-bold text-neutral-900">{t.emergencyTitle}</h3>
+          </div>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            <a href="tel:911" className="flex items-center justify-between p-3 bg-red-50/50 hover:bg-red-50 border border-red-100 rounded-xl transition-all group">
+              <div className="space-y-0.5">
+                <p className="font-bold text-red-700">911</p>
+                <p className="text-neutral-500 text-[10px]">{t.emergency911Desc}</p>
+              </div>
+              <Phone className="w-3.5 h-3.5 text-red-600 group-hover:scale-110 transition-transform" />
+            </a>
+
+            <a href="tel:107" className="flex items-center justify-between p-3 bg-red-50/50 hover:bg-red-50 border border-red-100 rounded-xl transition-all group">
+              <div className="space-y-0.5">
+                <p className="font-bold text-red-700">107</p>
+                <p className="text-neutral-500 text-[10px]">{t.emergency107Desc}</p>
+              </div>
+              <Phone className="w-3.5 h-3.5 text-red-600 group-hover:scale-110 transition-transform" />
+            </a>
+
+            <a href="tel:100" className="flex items-center justify-between p-3 bg-red-50/50 hover:bg-red-50 border border-red-100 rounded-xl transition-all group">
+              <div className="space-y-0.5">
+                <p className="font-bold text-red-700">100</p>
+                <p className="text-neutral-500 text-[10px]">{t.emergency100Desc}</p>
+              </div>
+              <Phone className="w-3.5 h-3.5 text-red-600 group-hover:scale-110 transition-transform" />
+            </a>
+
+            <a href="tel:103" className="flex items-center justify-between p-3 bg-neutral-50 hover:bg-neutral-100/70 border border-[#EFEBE4] rounded-xl transition-all group">
+              <div className="space-y-0.5">
+                <p className="font-bold text-neutral-700">103</p>
+                <p className="text-neutral-500 text-[10px]">{t.emergency103Desc}</p>
+              </div>
+              <Phone className="w-3.5 h-3.5 text-neutral-500 group-hover:scale-110 transition-transform" />
+            </a>
+
+            <a href="tel:+5491145379500" className="sm:col-span-2 flex items-center justify-between p-3.5 bg-[#FAF9F7] hover:bg-[#F5F2EB] border border-[#EFEBE4] rounded-xl transition-all group">
+              <div className="space-y-0.5">
+                <p className="font-bold text-neutral-800">Jorge (Anfitrión / Host)</p>
+                <p className="text-[#5F6F52] font-semibold text-[10px]">{t.emergencyHostDesc}</p>
+              </div>
+              <Phone className="w-4 h-4 text-[#5F6F52] group-hover:scale-110 transition-transform" />
+            </a>
           </div>
         </div>
 
