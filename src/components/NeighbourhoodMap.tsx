@@ -2,11 +2,11 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { MapPin, Navigation, Compass, Landmark } from "lucide-react";
+import { MapPin, Navigation, Compass, Landmark, HeartPulse, Shield, ShoppingCart, Camera } from "lucide-react";
 
 interface PlaceOfInterest {
   name: string;
-  type: "stay" | "subway" | "arena" | "food";
+  type: "stay" | "subway" | "arena" | "food" | "hospital" | "security" | "shopping" | "tourism";
   distance: string;
   desc: string;
   lat: number;
@@ -45,6 +45,38 @@ const places: PlaceOfInterest[] = [
     desc: "Los mejores bares, cafeterías de especialidad y restaurantes de autor a metros de distancia.",
     lat: -34.5835,
     lng: -58.4325
+  },
+  {
+    name: "Sanatorio de Los Arcos (Hospital)",
+    type: "hospital",
+    distance: "10 min. a pie / 4 min. en auto",
+    desc: "Prestigioso centro médico privado de alta complejidad y urgencias 24 hs, brindando tranquilidad.",
+    lat: -34.5807,
+    lng: -58.4298
+  },
+  {
+    name: "Comisaría Vecinal 14B (Seguridad)",
+    type: "security",
+    distance: "12 min. a pie / 5 min. en auto",
+    desc: "Dependencia de la Policía de la Ciudad, garantizando presencia de seguridad y asistencia en la zona.",
+    lat: -34.5768,
+    lng: -58.4357
+  },
+  {
+    name: "Plaza Serrano / Soho (Paseo)",
+    type: "tourism",
+    distance: "10 min. a pie",
+    desc: "Epicentro comercial y gastronómico del diseño en Palermo, con cafés al aire libre y ferias de arte.",
+    lat: -34.5885,
+    lng: -58.4302
+  },
+  {
+    name: "Jumbo Palermo (Hipermercado)",
+    type: "shopping",
+    distance: "15 min. a pie / 5 min. en auto",
+    desc: "Gran hipermercado para abastecerse de alimentos y compras mayores durante estadías largas.",
+    lat: -34.5768,
+    lng: -58.4276
   }
 ];
 
@@ -183,6 +215,10 @@ export default function NeighbourhoodMap() {
       case "stay": return <MapPin className="w-5 h-5 text-[#5F6F52]" />;
       case "subway": return <Navigation className="w-5 h-5 text-neutral-600" />;
       case "arena": return <Landmark className="w-5 h-5 text-neutral-600" />;
+      case "hospital": return <HeartPulse className="w-5 h-5 text-rose-600" />;
+      case "security": return <Shield className="w-5 h-5 text-blue-600" />;
+      case "shopping": return <ShoppingCart className="w-5 h-5 text-amber-600" />;
+      case "tourism": return <Camera className="w-5 h-5 text-indigo-600" />;
       default: return <Compass className="w-5 h-5 text-neutral-600" />;
     }
   };
