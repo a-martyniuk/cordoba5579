@@ -115,6 +115,14 @@ const places: PlaceOfInterest[] = [
     lng: -58.43905
   },
   {
+    name: "Destacamento de Bomberos Palermo",
+    type: "security",
+    distance: "10 min. a pie / 4 min. en auto",
+    desc: "Cuartel oficial de Bomberos de la Ciudad de Buenos Aires en Guatemala 5966.",
+    lat: -34.5775,
+    lng: -58.4356
+  },
+  {
     name: "Plaza Mafalda (Colegiales)",
     type: "park",
     distance: "10 min. a pie",
@@ -688,6 +696,19 @@ export default function NeighbourhoodMap() {
           )}
           <div ref={mapContainerRef} className="w-full h-full z-10" />
         </div>
+      </div>
+
+      <div className="text-[10px] text-neutral-400 flex flex-wrap items-center gap-1 mt-4 border-t border-[#F5F2EB] pt-4">
+        <span>🌐 Datos obtenidos de</span>
+        <a 
+          href="https://data.buenosaires.gob.ar/" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="underline hover:text-neutral-600 font-semibold"
+        >
+          Portal de Datos Abiertos de la Ciudad de Buenos Aires (BA Data)
+        </a>
+        <span>• Ciclovías, Ecobici y coordenadas oficiales de seguridad, cultura y transporte.</span>
       </div>
     </div>
   );
