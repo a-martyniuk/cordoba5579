@@ -102,8 +102,8 @@ export default function InventoryList({ sheetUrl }: InventoryListProps) {
           />
         </div>
 
-        {/* Categories Carousel */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+        {/* Categories Grid/Wrap */}
+        <div className="flex flex-wrap items-center gap-2">
           {categories.map((category) => (
             <button
               key={category}
