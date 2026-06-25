@@ -23,13 +23,37 @@ import {
 import { parseCSV } from "../utils/csvParser";
 import proj4 from "proj4";
 
-// Configure EPSG:9498 / EPSG:9497 (CABA 2019 / POSGAR 2007) local projected coordinate system
+// Configure EPSG:9498 / POSGAR 2007 CABA 2019 local grid
 proj4.defs("EPSG:9498", "+proj=tmerc +lat_0=-34.6292666666667 +lon_0=-58.4633083333333 +k=1 +x_0=20000 +y_0=70000 +ellps=WGS84 +units=m +no_defs");
 
-function convertEPSG9498ToWGS84(x: number, y: number): { lat: number; lng: number } {
-  // proj4 returns [longitude, latitude]
-  const [lon, lat] = proj4("EPSG:9498", "WGS84", [x, y]);
-  return { lat, lng: lon };
+// Configure older CABA local grid (used in EPOK and older maps)
+proj4.defs("CABA_LOCAL", "+proj=tmerc +lat_0=-34.6292666666667 +lon_0=-58.4633083333333 +k=1 +x_0=100000 +y_0=100000 +ellps=intl +units=m +no_defs");
+
+function convertProjectedToWGS84(x: number, y: number): { lat: number; lng: number } {
+  // If either coordinate is around 100000 (old grid range), use CABA_LOCAL
+  const isOldGrid = (val: number) => val > 75000 && val < 130000;
+  if (isOldGrid(x) || isOldGrid(y)) {
+    let x_coord = x;
+    let y_coord = y;
+    if (y > 75000 && y < 130000 && x < 75000) {
+      // Swapped
+      x_coord = y;
+      y_coord = x;
+    }
+    const [lon, lat] = proj4("CABA_LOCAL", "WGS84", [x_coord, y_coord]);
+    return { lat, lng: lon };
+  } else {
+    // New EPSG:9498 grid
+    let x_coord = x;
+    let y_coord = y;
+    if (x > 50000 && y < 50000) {
+      // Swapped
+      x_coord = y;
+      y_coord = x;
+    }
+    const [lon, lat] = proj4("EPSG:9498", "WGS84", [x_coord, y_coord]);
+    return { lat, lng: lon };
+  }
 }
 
 // Helper to parse coordinate strings (e.g. "[26549.56, 69922.54]" or "-58.43, -34.58")
@@ -44,18 +68,8 @@ function parseCoordinatesString(str: string): { lat: number; lng: number } | nul
     if (!isNaN(val1) && !isNaN(val2)) {
       const isLocalGrid = (val: number) => val > 5000 && val < 150000;
       if (isLocalGrid(val1) || isLocalGrid(val2)) {
-        let x = val1;
-        let y = val2;
-        // In GeoJSON, coordinates are ordered [longitude, latitude] (i.e. [X, Y])
-        if (val1 > 5000 && val1 < 50000) {
-          x = val1;
-          y = val2;
-        } else if (val2 > 5000 && val2 < 50000) {
-          x = val2;
-          y = val1;
-        }
         try {
-          return convertEPSG9498ToWGS84(x, y);
+          return convertProjectedToWGS84(val1, val2);
         } catch (e) {
           console.error("Error converting coordinates string:", e);
           return null;
@@ -74,6 +88,38 @@ function parseCoordinatesString(str: string): { lat: number; lng: number } | nul
   }
   return null;
 }
+
+// LocalStorage caching helpers for EPOK queries
+const CACHE_KEY_PREFIX = "epok_pois_";
+const CACHE_EXPIRY_MS = 24 * 60 * 60 * 1000; // 24 hours
+
+function getCachedPOIs(key: string): PlaceOfInterest[] | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const cached = localStorage.getItem(CACHE_KEY_PREFIX + key);
+    if (!cached) return null;
+    const { timestamp, data } = JSON.parse(cached);
+    if (Date.now() - timestamp < CACHE_EXPIRY_MS) {
+      return data;
+    }
+  } catch (e) {
+    console.error("Error reading cache:", e);
+  }
+  return null;
+}
+
+function setCachedPOIs(key: string, data: PlaceOfInterest[]) {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.setItem(CACHE_KEY_PREFIX + key, JSON.stringify({
+      timestamp: Date.now(),
+      data
+    }));
+  } catch (e) {
+    console.error("Error setting cache:", e);
+  }
+}
+
 
 // Client-side CABA geocoder
 async function geocodeAddress(address: string): Promise<{ lat: number; lng: number } | null> {
@@ -121,6 +167,79 @@ async function geocodeAddress(address: string): Promise<{ lat: number; lng: numb
 
   return null;
 }
+
+// Fetch POIs from CABA's official EPOK API
+async function fetchEpokPOIs(categoria: string, searchText: string): Promise<PlaceOfInterest[]> {
+  try {
+    const searchUrl = `https://epok.buenosaires.gob.ar/buscar/?texto=${encodeURIComponent(searchText)}&categoria=${categoria}`;
+    const searchRes = await fetch(searchUrl);
+    if (!searchRes.ok) throw new Error(`Search failed for ${categoria}`);
+    const searchJson = await searchRes.json();
+    
+    const instances = searchJson.instancias || [];
+    // Limit to 30 elements to avoid overload and keep response snappy
+    const limitInstances = instances.slice(0, 30);
+    
+    const detailPromises = limitInstances.map(async (inst: any) => {
+      try {
+        const detailUrl = `https://epok.buenosaires.gob.ar/getObjectContent/?id=${inst.id}`;
+        const detailRes = await fetch(detailUrl);
+        if (!detailRes.ok) return null;
+        const detailJson = await detailRes.json();
+        
+        // Extract centroid coordinates from WKT: e.g. "POINT (108260.56 103031.93)"
+        const centroid = detailJson.ubicacion?.centroide;
+        if (!centroid) return null;
+        const match = centroid.match(/POINT\s*\(\s*([-\d.]+)\s+([-\d.]+)\s*\)/i);
+        if (!match) return null;
+        
+        const x = parseFloat(match[1]);
+        const y = parseFloat(match[2]);
+        if (isNaN(x) || isNaN(y)) return null;
+        
+        const coords = convertProjectedToWGS84(x, y);
+        
+        const contenido = detailJson.contenido || [];
+        const getVal = (id: string) => {
+          const item = contenido.find((c: any) => c.nombreId === id);
+          return item ? item.valor : undefined;
+        };
+        
+        const address = detailJson.direccionNormalizada || getVal("direccion") || "";
+        const phone = getVal("telefonos") || getVal("telefono") || "";
+        const email = getVal("email") || getVal("correo") || getVal("mail") || "";
+        const web = getVal("web") || getVal("sitio_web") || getVal("pag_web") || "";
+        
+        // Map CABA category normalizations to our app's POI types
+        const type: PlaceOfInterest["type"] = (categoria === "comisarias") ? "security" : "hospital";
+        
+        return {
+          name: inst.nombre,
+          type,
+          distance: "Calculando...", // Will be resolved dynamically by OSRM
+          desc: inst.clase || detailJson.clase || "",
+          lat: coords.lat,
+          lng: coords.lng,
+          phone,
+          email,
+          web,
+          address,
+          hours: "Guardia 24 horas"
+        } as PlaceOfInterest;
+      } catch (err) {
+        console.error("Error fetching EPOK object content:", err);
+        return null;
+      }
+    });
+    
+    const results = (await Promise.all(detailPromises)).filter((p): p is PlaceOfInterest => p !== null);
+    return results;
+  } catch (e) {
+    console.error("Error fetching from EPOK API:", e);
+    return [];
+  }
+}
+
 
 interface PlaceOfInterest {
   name: string;
@@ -432,12 +551,19 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
   const markersLayerRef = useRef<any>(null);
+  const tileLayerRef = useRef<any>(null);
+  const routePolylineRef = useRef<any>(null);
   
+  const [basePlaces, setBasePlaces] = useState<PlaceOfInterest[]>(fallbackPlaces);
   const [placesList, setPlacesList] = useState<PlaceOfInterest[]>(fallbackPlaces);
   const [activePlace, setActivePlace] = useState<number>(0);
   const [leafletLoaded, setLeafletLoaded] = useState<boolean>(false);
   const [mapReady, setMapReady] = useState<boolean>(false);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [loadingPOIs, setLoadingPOIs] = useState<boolean>(false);
+  const [activeRoute, setActiveRoute] = useState<[number, number][] | null>(null);
+  const [activeRouteInfo, setActiveRouteInfo] = useState<{ distance: string; duration: string } | null>(null);
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
 
   // USIG Interactive Layer States
   const [showEcobici, setShowEcobici] = useState<boolean>(false);
@@ -451,6 +577,7 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
   // Load places dynamically if sheetUrl is provided
   useEffect(() => {
     if (!sheetUrl) {
+      setBasePlaces(fallbackPlaces);
       setPlacesList(fallbackPlaces);
       return;
     }
@@ -465,6 +592,7 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
         const parsedData = parseCSV(csvText);
 
         if (parsedData.length <= 1) {
+          setBasePlaces(fallbackPlaces);
           setPlacesList(fallbackPlaces);
           return;
         }
@@ -516,19 +644,12 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
           if (!isNaN(lat) && !isNaN(lng)) {
             const isLocalGrid = (val: number) => val > 5000 && val < 150000;
             if (isLocalGrid(lat) || isLocalGrid(lng)) {
-              let x = lng;
-              let y = lat;
-              // Swapped case detection based on standard CABA grid ranges
-              if (lat > 5000 && lat < 50000) {
-                x = lat;
-                y = lng;
-              }
               try {
-                const wgs84 = convertEPSG9498ToWGS84(x, y);
+                const wgs84 = convertProjectedToWGS84(lng, lat);
                 lat = wgs84.lat;
                 lng = wgs84.lng;
               } catch (e) {
-                console.error("Error converting EPSG:9498 coordinates:", e);
+                console.error("Error converting coordinates:", e);
               }
             }
             return { name, type: category, distance, desc, lat, lng, phone, email, web, hours, address } as PlaceOfInterest;
@@ -558,18 +679,124 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
         }
 
         if (parsedPlaces.length > 0) {
+          setBasePlaces(parsedPlaces);
           setPlacesList(parsedPlaces);
         } else {
+          setBasePlaces(fallbackPlaces);
           setPlacesList(fallbackPlaces);
         }
       } catch (error) {
         console.error("Error loading remote map points, using local fallback:", error);
+        setBasePlaces(fallbackPlaces);
         setPlacesList(fallbackPlaces);
       }
     }
 
     loadPlaces(sheetUrl);
   }, [sheetUrl]);
+
+  // Observe Dark Mode changes on document.documentElement
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    
+    const checkDark = () => {
+      setIsDarkMode(document.documentElement.classList.contains("dark"));
+    };
+    checkDark();
+    
+    const observer = new MutationObserver(checkDark);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"]
+    });
+    
+    return () => observer.disconnect();
+  }, []);
+
+  // Dynamic CABA EPOK API loading for Hospitals and Security (comisarías)
+  useEffect(() => {
+    const stay = basePlaces.find(p => p.type === "stay") || fallbackPlaces[0];
+    
+    if (selectedCategory === "hospital" || selectedCategory === "security") {
+      const cached = getCachedPOIs(selectedCategory);
+      if (cached) {
+        setPlacesList([stay, ...cached]);
+        return;
+      }
+      
+      async function loadDynamicPOIs() {
+        setLoadingPOIs(true);
+        let categoryId = "comisarias";
+        let searchKeyword = "comisaria";
+        if (selectedCategory === "hospital") {
+          categoryId = "hospitales_generales_de_agudos";
+          searchKeyword = "hospital";
+        }
+        
+        const pois = await fetchEpokPOIs(categoryId, searchKeyword);
+        if (pois && pois.length > 0) {
+          setCachedPOIs(selectedCategory, pois);
+          setPlacesList([stay, ...pois]);
+        }
+        setLoadingPOIs(false);
+      }
+      loadDynamicPOIs();
+    } else {
+      setPlacesList(basePlaces);
+    }
+    
+    // Clear active route when switching categories
+    setActiveRoute(null);
+    setActiveRouteInfo(null);
+  }, [selectedCategory, basePlaces]);
+
+  // Fetch route geometry and distance/duration info using OSRM
+  const fetchRoute = async (origin: { lat: number; lng: number }, dest: { lat: number; lng: number }) => {
+    try {
+      const url = `https://router.project-osrm.org/route/v1/driving/${origin.lng},${origin.lat};${dest.lng},${dest.lat}?overview=full&geometries=geojson`;
+      const res = await fetch(url);
+      if (res.ok) {
+        const json = await res.json();
+        if (json.routes && json.routes.length > 0) {
+          const route = json.routes[0];
+          const coords = route.geometry.coordinates.map((c: any) => [c[1], c[0]] as [number, number]);
+          setActiveRoute(coords);
+          
+          const meters = route.distance;
+          
+          // Walking duration calculation (approx 80m/min)
+          const walkingMin = Math.round(meters / 80);
+          // Driving duration calculation (approx 250m/min in CABA)
+          const drivingMin = Math.max(1, Math.round(meters / 250));
+          
+          let distText = "";
+          if (meters < 1000) {
+            distText = `${Math.round(meters)} m`;
+          } else {
+            distText = `${(meters / 1000).toFixed(1)} km`;
+          }
+          
+          const durationText = `${walkingMin} min. a pie / ${drivingMin} min. en auto (${distText})`;
+          setActiveRouteInfo({
+            distance: distText,
+            duration: durationText
+          });
+          
+          // Dynamically update the distance in state list for the selected POI
+          setPlacesList(prev => prev.map(p => {
+            if (p.lat === dest.lat && p.lng === dest.lng) {
+              return { ...p, distance: durationText };
+            }
+            return p;
+          }));
+        }
+      }
+    } catch (e) {
+      console.error("Error fetching OSRM route:", e);
+      setActiveRoute(null);
+      setActiveRouteInfo(null);
+    }
+  };
 
   // Dynamic Leaflet Script loader
   useEffect(() => {
@@ -619,12 +846,17 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
       scrollWheelZoom: false
     });
 
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
+    const initialUrl = isDarkMode
+      ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+      : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
+
+    const tileLayer = L.tileLayer(initialUrl, {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
       subdomains: "abcd",
       maxZoom: 20
     }).addTo(map);
 
+    tileLayerRef.current = tileLayer;
     mapInstanceRef.current = map;
     setMapReady(prev => !prev);
 
@@ -634,7 +866,49 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
         mapInstanceRef.current = null;
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [leafletLoaded, placesList]);
+
+  // Manage Dark Mode Leaflet Tiles
+  useEffect(() => {
+    const map = mapInstanceRef.current;
+    if (!map || !tileLayerRef.current) return;
+    
+    const newUrl = isDarkMode
+      ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+      : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
+      
+    tileLayerRef.current.setUrl(newUrl);
+  }, [isDarkMode, mapReady]);
+
+  // Manage Route Polyline on map dynamically
+  useEffect(() => {
+    const map = mapInstanceRef.current;
+    if (!map) return;
+    const L = (window as any).L;
+    if (!L) return;
+
+    if (routePolylineRef.current) {
+      map.removeLayer(routePolylineRef.current);
+      routePolylineRef.current = null;
+    }
+
+    if (activeRoute && activeRoute.length > 0) {
+      const polyline = L.polyline(activeRoute, {
+        color: "#5F6F52", // Olive Green to match the stay theme
+        weight: 5,
+        opacity: 0.85,
+        lineCap: "round",
+        lineJoin: "round"
+      }).addTo(map);
+
+      routePolylineRef.current = polyline;
+
+      // Adjust boundaries to fit the route
+      const bounds = L.latLngBounds(activeRoute);
+      map.fitBounds(bounds, { padding: [50, 50] });
+    }
+  }, [activeRoute, mapReady]);
 
   // Listener to toggle the visibility of Palermo-specific layers
   useEffect(() => {
@@ -747,7 +1021,7 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
       marker.on("click", () => {
         const originalIndex = placesList.findIndex(p => p.name === place.name);
         if (originalIndex !== -1) {
-          setActivePlace(originalIndex);
+          handlePlaceSelect(originalIndex);
         }
       });
 
@@ -767,6 +1041,7 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
     } else if (placesList.length > 0) {
       map.setView([placesList[0].lat, placesList[0].lng], 15);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mapReady, selectedCategory, placesList]);
 
   // Manage USIG dynamic layers when state changes (Ecobici and SUBE)
@@ -885,6 +1160,15 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
         duration: 0.8
       });
       
+      // Dynamic routing to active place (if not the stay location itself)
+      if (place.type !== "stay") {
+        const stay = placesList.find(p => p.type === "stay") || fallbackPlaces[0];
+        fetchRoute({ lat: stay.lat, lng: stay.lng }, { lat: place.lat, lng: place.lng });
+      } else {
+        setActiveRoute(null);
+        setActiveRouteInfo(null);
+      }
+      
       // Attempt to open popup of active marker
       mapInstanceRef.current.eachLayer((layer: any) => {
         if (layer.getLatLng && layer.getPopup) {
@@ -995,8 +1279,8 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-        {/* Left Column: Place selector */}
-        <div className="lg:col-span-5 flex flex-col justify-between space-y-4">
+        {/* Left Column: Place selector (order-2 on mobile, order-1 on large screens) */}
+        <div className="order-2 lg:order-1 lg:col-span-5 flex flex-col justify-between space-y-4">
           {selectedCategory !== "all" && datasetUrls[selectedCategory] && (
             <div className="bg-[#FAF9F7] border border-[#EFEBE4] rounded-2xl p-3.5 text-xs text-neutral-600 flex items-center justify-between shadow-sm">
               <span className="font-semibold text-neutral-500">Fuente oficial BA Data:</span>
@@ -1011,81 +1295,136 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
               </a>
             </div>
           )}
-          <div className="space-y-2.5 max-h-[440px] overflow-y-auto pr-1">
-            {filteredPlacesForList.map((place, idx) => {
-              const originalIndex = placesList.findIndex(p => p.name === place.name);
-              const isActive = activePlace === originalIndex;
-              
-              return (
-                <button
-                  key={idx}
-                  onClick={() => handlePlaceSelect(originalIndex)}
-                  className={`w-full text-left p-4 rounded-2xl border transition-all duration-200 flex gap-4 items-start ${
-                    isActive
-                      ? "bg-[#FAF9F7] border-[#5F6F52] ring-1 ring-[#5F6F52] shadow-sm"
-                      : "bg-white border-[#EFEBE4] hover:bg-neutral-50"
-                  }`}
-                >
-                  <div className={`p-2.5 rounded-full ${isActive ? "bg-white text-[#5F6F52]" : "bg-neutral-100 text-neutral-600"} flex-shrink-0 mt-0.5`}>
-                    {getPlaceIcon(place.type)}
-                  </div>
-                  <div className="space-y-1 w-full min-w-0">
-                    <p className="font-semibold text-sm text-neutral-900 leading-snug break-words">{place.name}</p>
-                    <p className="text-[#5F6F52] font-semibold text-xs">{place.distance}</p>
-                    
-                    {/* Expanded details when active */}
-                    {isActive && (
-                      <div className="mt-3 space-y-2.5 pt-2.5 border-t border-[#F0EBE0] text-xs text-neutral-600 w-full animate-fadeIn">
-                        <p className="text-neutral-500 leading-relaxed break-words">{place.desc}</p>
-                        
-                        {place.address && (
-                          <div className="flex gap-1.5 items-start mt-1">
-                            <span className="font-bold text-neutral-500 flex-shrink-0">Dir:</span>
-                            <span className="text-neutral-600 break-words">{place.address}</span>
-                          </div>
-                        )}
-                        
-                        {place.phone && (
-                          <div className="flex items-center gap-1.5 mt-1">
-                            <Phone className="w-3.5 h-3.5 text-neutral-400" />
-                            <a href={`tel:${place.phone}`} className="text-[#5F6F52] hover:underline font-semibold">{place.phone}</a>
-                          </div>
-                        )}
-                        
-                        {place.email && (
-                          <div className="flex items-center gap-1.5 mt-1">
-                            <Mail className="w-3.5 h-3.5 text-neutral-400" />
-                            <a href={`mailto:${place.email}`} className="text-[#5F6F52] hover:underline break-all">{place.email}</a>
-                          </div>
-                        )}
-
-                        {place.hours && (
-                          <div className="flex gap-1.5 items-start mt-1">
-                            <Clock className="w-3.5 h-3.5 text-neutral-400 mt-0.5" />
-                            <span className="text-neutral-600 break-words">{place.hours}</span>
-                          </div>
-                        )}
-
-                        {place.web && (
-                          <div className="flex items-center gap-1.5 mt-1 pt-1">
-                            <Globe className="w-3.5 h-3.5 text-neutral-400" />
-                            <a 
-                              href={place.web.startsWith("http") ? place.web : `https://${place.web}`} 
-                              target="_blank" 
-                              rel="noopener noreferrer" 
-                              className="text-[#5F6F52] hover:underline font-semibold flex items-center gap-0.5"
-                            >
-                              <span>Visitar Sitio Web</span>
-                              <span>↗</span>
-                            </a>
+          <div className="space-y-2.5 max-h-[250px] lg:max-h-[440px] overflow-y-auto pr-1">
+            {loadingPOIs ? (
+              <div className="space-y-2.5">
+                {/* Keep stay location pinned at the top even while loading */}
+                {filteredPlacesForList.filter(p => p.type === "stay").map((place, idx) => {
+                  const originalIndex = placesList.findIndex(p => p.name === place.name);
+                  const isActive = activePlace === originalIndex;
+                  return (
+                    <button
+                      key={`loading-stay-${idx}`}
+                      onClick={() => handlePlaceSelect(originalIndex)}
+                      className={`w-full text-left p-4 rounded-2xl border transition-all duration-200 flex gap-4 items-start ${
+                        isActive
+                          ? "bg-[#FAF9F7] border-[#5F6F52] ring-1 ring-[#5F6F52] shadow-sm"
+                          : "bg-white border-[#EFEBE4] hover:bg-neutral-50"
+                      }`}
+                    >
+                      <div className={`p-2.5 rounded-full ${isActive ? "bg-white text-[#5F6F52]" : "bg-neutral-100 text-neutral-600"} flex-shrink-0 mt-0.5`}>
+                        {getPlaceIcon(place.type)}
+                      </div>
+                      <div className="space-y-1 w-full min-w-0">
+                        <p className="font-semibold text-sm text-neutral-900 leading-snug break-words">{place.name}</p>
+                        <p className="text-[#5F6F52] font-semibold text-xs">{place.distance}</p>
+                        {isActive && (
+                          <div className="mt-3 space-y-2.5 pt-2.5 border-t border-[#F0EBE0] text-xs text-neutral-600 w-full animate-fadeIn">
+                            <p className="text-neutral-500 leading-relaxed break-words">{place.desc}</p>
                           </div>
                         )}
                       </div>
-                    )}
+                    </button>
+                  );
+                })}
+                {/* Premium Loading Spinner Block */}
+                <div className="flex flex-col items-center justify-center py-10 px-4 space-y-3 bg-[#FAF9F7]/50 rounded-2xl border border-dashed border-[#EFEBE4] animate-pulse">
+                  <div className="w-7 h-7 border-2 border-[#5F6F52] border-t-transparent rounded-full animate-spin"></div>
+                  <div className="text-center space-y-1">
+                    <p className="text-xs font-semibold text-neutral-700">
+                      Buscando {selectedCategory === "hospital" ? "hospitales" : "comisarías"}...
+                    </p>
+                    <p className="text-[10px] text-neutral-500">Consultando API EPOK (GCBA) en tiempo real</p>
                   </div>
-                </button>
-              );
-            })}
+                </div>
+              </div>
+            ) : (
+              filteredPlacesForList.map((place, idx) => {
+                const originalIndex = placesList.findIndex(p => p.name === place.name);
+                const isActive = activePlace === originalIndex;
+                
+                return (
+                  <button
+                    key={idx}
+                    onClick={() => handlePlaceSelect(originalIndex)}
+                    className={`w-full text-left p-4 rounded-2xl border transition-all duration-200 flex gap-4 items-start ${
+                      isActive
+                        ? "bg-[#FAF9F7] border-[#5F6F52] ring-1 ring-[#5F6F52] shadow-sm"
+                        : "bg-white border-[#EFEBE4] hover:bg-neutral-50"
+                    }`}
+                  >
+                    <div className={`p-2.5 rounded-full ${isActive ? "bg-white text-[#5F6F52]" : "bg-neutral-100 text-neutral-600"} flex-shrink-0 mt-0.5`}>
+                      {getPlaceIcon(place.type)}
+                    </div>
+                    <div className="space-y-1 w-full min-w-0">
+                      <p className="font-semibold text-sm text-neutral-900 leading-snug break-words">{place.name}</p>
+                      <p className="text-[#5F6F52] font-semibold text-xs">{place.distance}</p>
+                      
+                      {/* Expanded details when active */}
+                      {isActive && (
+                        <div className="mt-3 space-y-2.5 pt-2.5 border-t border-[#F0EBE0] text-xs text-neutral-600 w-full animate-fadeIn">
+                          {/* Route duration detailed badge */}
+                          {activeRouteInfo && place.type !== "stay" && (
+                            <div className="bg-[#FAF9F7] border border-[#5F6F52]/10 rounded-xl p-2.5 flex items-start gap-2 text-neutral-700 shadow-sm">
+                              <span className="text-sm">📍</span>
+                              <div>
+                                <p className="font-bold text-[9px] uppercase tracking-wider text-[#5F6F52]">Ruta sugerida desde el depto:</p>
+                                <p className="text-[11px] text-neutral-800 mt-0.5 leading-snug">{activeRouteInfo.duration}</p>
+                              </div>
+                            </div>
+                          )}
+
+                          <p className="text-neutral-500 leading-relaxed break-words">{place.desc}</p>
+                          
+                          {place.address && (
+                            <div className="flex gap-1.5 items-start mt-1">
+                              <span className="font-bold text-neutral-500 flex-shrink-0">Dir:</span>
+                              <span className="text-neutral-600 break-words">{place.address}</span>
+                            </div>
+                          )}
+                          
+                          {place.phone && (
+                            <div className="flex items-center gap-1.5 mt-1">
+                              <Phone className="w-3.5 h-3.5 text-neutral-400" />
+                              <a href={`tel:${place.phone}`} className="text-[#5F6F52] hover:underline font-semibold">{place.phone}</a>
+                            </div>
+                          )}
+                          
+                          {place.email && (
+                            <div className="flex items-center gap-1.5 mt-1">
+                              <Mail className="w-3.5 h-3.5 text-neutral-400" />
+                              <a href={`mailto:${place.email}`} className="text-[#5F6F52] hover:underline break-all">{place.email}</a>
+                            </div>
+                          )}
+
+                          {place.hours && (
+                            <div className="flex gap-1.5 items-start mt-1">
+                              <Clock className="w-3.5 h-3.5 text-neutral-400 mt-0.5" />
+                              <span className="text-neutral-600 break-words">{place.hours}</span>
+                            </div>
+                          )}
+
+                          {place.web && (
+                            <div className="flex items-center gap-1.5 mt-1 pt-1">
+                              <Globe className="w-3.5 h-3.5 text-neutral-400" />
+                              <a 
+                                href={place.web.startsWith("http") ? place.web : `https://${place.web}`} 
+                                target="_blank" 
+                                rel="noopener noreferrer" 
+                                className="text-[#5F6F52] hover:underline font-semibold flex items-center gap-0.5"
+                              >
+                                <span>Visitar Sitio Web</span>
+                                <span>↗</span>
+                              </a>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </button>
+                );
+              })
+            )}
           </div>
 
           <div className="bg-[#FAF9F7] border border-[#EFEBE4] rounded-2xl p-4 text-xs text-neutral-500 leading-relaxed">
@@ -1093,8 +1432,8 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
           </div>
         </div>
 
-        {/* Right Column: Leaflet Map Container */}
-        <div className="lg:col-span-7 h-[300px] lg:h-auto min-h-[420px] rounded-2xl border border-[#EFEBE4] overflow-hidden relative shadow-inner">
+        {/* Right Column: Leaflet Map Container (order-1 on mobile, order-2 on large screens) */}
+        <div className="order-1 lg:order-2 lg:col-span-7 h-[300px] lg:h-auto min-h-[420px] rounded-2xl border border-[#EFEBE4] overflow-hidden relative shadow-inner">
           {!leafletLoaded && (
             <div className="absolute inset-0 bg-neutral-100 flex items-center justify-center text-sm text-neutral-500">
               <div className="text-center space-y-2">
