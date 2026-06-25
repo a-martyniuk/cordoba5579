@@ -15,6 +15,64 @@ import {
   Ticket, 
   Compass 
 } from "lucide-react";
+import { parseCSV } from "../utils/csvParser";
+import proj4 from "proj4";
+
+// Configure EPSG:9498 / EPSG:9497 (CABA 2019 / POSGAR 2007) local projected coordinate system
+proj4.defs("EPSG:9498", "+proj=tmerc +lat_0=-34.6292666666667 +lon_0=-58.4633083333333 +k=1 +x_0=20000 +y_0=70000 +ellps=WGS84 +units=m +no_defs");
+
+function convertEPSG9498ToWGS84(x: number, y: number): { lat: number; lng: number } {
+  // proj4 returns [longitude, latitude]
+  const [lon, lat] = proj4("EPSG:9498", "WGS84", [x, y]);
+  return { lat, lng: lon };
+}
+
+// Client-side CABA geocoder
+async function geocodeAddress(address: string): Promise<{ lat: number; lng: number } | null> {
+  // 1. Try Argentina National GeoRef API (HTTPS, CORS-enabled, highly reliable)
+  try {
+    let queryAddr = address;
+    if (!address.toLowerCase().includes("buenos aires") && !address.toLowerCase().includes("caba")) {
+      queryAddr = `${address}, CABA`;
+    }
+    const url = `https://apis.datos.gob.ar/georef/api/direcciones?direccion=${encodeURIComponent(queryAddr)}&provincia=caba`;
+    const res = await fetch(url);
+    if (res.ok) {
+      const json = await res.json();
+      if (json.direcciones && json.direcciones.length > 0) {
+        const loc = json.direcciones[0].ubicacion;
+        if (loc && typeof loc.lat === "number" && typeof loc.lon === "number") {
+          return { lat: loc.lat, lng: loc.lon };
+        }
+      }
+    }
+  } catch (e) {
+    console.error("GeoRef geocoding failed, trying fallback:", e);
+  }
+
+  // 2. Try USIG Normalizer API (CABA local geocoder, HTTP/HTTPS)
+  try {
+    const url = `https://servicios.usig.buenosaires.gob.ar/normalizar/?direccion=${encodeURIComponent(address)}&geocodificar=TRUE&srid=4326`;
+    const res = await fetch(url);
+    if (res.ok) {
+      const json = await res.json();
+      if (json.direccionesNormalizadas && json.direccionesNormalizadas.length > 0) {
+        const coords = json.direccionesNormalizadas[0].coordenadas;
+        if (coords) {
+          const x = parseFloat(coords.x);
+          const y = parseFloat(coords.y);
+          if (!isNaN(x) && !isNaN(y)) {
+            return { lat: y, lng: x };
+          }
+        }
+      }
+    }
+  } catch (e) {
+    console.error("USIG normalizer geocoding failed:", e);
+  }
+
+  return null;
+}
 
 interface PlaceOfInterest {
   name: string;
@@ -25,7 +83,7 @@ interface PlaceOfInterest {
   lng: number;
 }
 
-const places: PlaceOfInterest[] = [
+const fallbackPlaces: PlaceOfInterest[] = [
   {
     name: "Av. Córdoba 5579 (El Departamento)",
     type: "stay",
@@ -225,7 +283,7 @@ const getCategoryHtmlIcon = (type: string): string => {
     case "food":
       return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg>`;
     case "hospital":
-      return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>`;
+      return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>`;
     case "security":
       return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`;
     case "park":
@@ -239,11 +297,16 @@ const getCategoryHtmlIcon = (type: string): string => {
   }
 };
 
-export default function NeighbourhoodMap() {
+interface NeighbourhoodMapProps {
+  sheetUrl?: string;
+}
+
+export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
   const markersLayerRef = useRef<any>(null);
   
+  const [placesList, setPlacesList] = useState<PlaceOfInterest[]>(fallbackPlaces);
   const [activePlace, setActivePlace] = useState<number>(0);
   const [leafletLoaded, setLeafletLoaded] = useState<boolean>(false);
   const [mapReady, setMapReady] = useState<boolean>(false);
@@ -253,11 +316,115 @@ export default function NeighbourhoodMap() {
   const [showBicisendas, setShowBicisendas] = useState<boolean>(false);
   const [showEcobici, setShowEcobici] = useState<boolean>(false);
   const [showSube, setShowSube] = useState<boolean>(false);
+  const [shouldDrawLocalLayers, setShouldDrawLocalLayers] = useState<boolean>(true);
 
   // Layer refs to add/remove Leaflet elements dynamically
   const bicisendasLayerRef = useRef<any>(null);
   const ecobiciLayerRef = useRef<any>(null);
   const subeLayerRef = useRef<any>(null);
+
+  // Load places dynamically if sheetUrl is provided
+  useEffect(() => {
+    if (!sheetUrl) {
+      setPlacesList(fallbackPlaces);
+      return;
+    }
+
+    async function loadPlaces(targetUrl: string) {
+      try {
+        const response = await fetch(targetUrl);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch sheet content: ${response.statusText}`);
+        }
+        const csvText = await response.text();
+        const parsedData = parseCSV(csvText);
+
+        if (parsedData.length <= 1) {
+          setPlacesList(fallbackPlaces);
+          return;
+        }
+
+        const headers = parsedData[0].map(h => h.trim().toLowerCase());
+        const nameIdx = headers.findIndex(h => h.includes("nom") || h.includes("name"));
+        const categoryIdx = headers.findIndex(h => h.includes("cat"));
+        const distIdx = headers.findIndex(h => h.includes("dist"));
+        const detailIdx = headers.findIndex(h => h.includes("det") || h.includes("desc"));
+        const latIdx = headers.findIndex(h => h.includes("lat") || h.includes("y_coord") || h.includes("coor_y"));
+        const lngIdx = headers.findIndex(h => h.includes("lng") || h.includes("lon") || h.includes("long") || h.includes("x_coord") || h.includes("coor_x"));
+        const addressIdx = headers.findIndex(h => h.includes("dir") || h.includes("add") || h.includes("calle") || h.includes("ubic"));
+
+        const parsePromises = parsedData.slice(1).map(async (row) => {
+          if (!row || row.length === 0) return null;
+          
+          const name = nameIdx !== -1 && nameIdx < row.length ? row[nameIdx].trim() : "";
+          if (!name) return null;
+
+          const category = categoryIdx !== -1 && categoryIdx < row.length ? (row[categoryIdx] as any) : "stay";
+          const distance = distIdx !== -1 && distIdx < row.length ? row[distIdx].trim() : "";
+          const desc = detailIdx !== -1 && detailIdx < row.length ? row[detailIdx].trim() : "";
+          let lat = latIdx !== -1 && latIdx < row.length ? parseFloat(row[latIdx]) : NaN;
+          let lng = lngIdx !== -1 && lngIdx < row.length ? parseFloat(row[lngIdx]) : NaN;
+          const address = addressIdx !== -1 && addressIdx < row.length ? row[addressIdx].trim() : "";
+
+          // 1. If coordinates are present, check if they are EPSG:9498 or WGS84
+          if (!isNaN(lat) && !isNaN(lng)) {
+            const isLocalGrid = (val: number) => val > 5000 && val < 150000;
+            if (isLocalGrid(lat) || isLocalGrid(lng)) {
+              let x = lng;
+              let y = lat;
+              // Swapped case detection based on standard CABA grid ranges
+              // X range is ~10000 to ~45000, Y range is ~55000 to ~85000
+              if (lat > 5000 && lat < 50000) {
+                x = lat;
+                y = lng;
+              }
+              try {
+                const wgs84 = convertEPSG9498ToWGS84(x, y);
+                lat = wgs84.lat;
+                lng = wgs84.lng;
+              } catch (e) {
+                console.error("Error converting EPSG:9498 coordinates:", e);
+              }
+            }
+            return { name, type: category, distance, desc, lat, lng };
+          }
+
+          // 2. If coordinates are missing, attempt to geocode using the address
+          if (address) {
+            try {
+              const coords = await geocodeAddress(address);
+              if (coords) {
+                return { name, type: category, distance, desc, lat: coords.lat, lng: coords.lng };
+              }
+            } catch (err) {
+              console.error(`Error geocoding address "${address}":`, err);
+            }
+          }
+
+          return null;
+        });
+
+        const parsedPlaces = (await Promise.all(parsePromises)).filter((p): p is PlaceOfInterest => p !== null);
+
+        // Fail-safe: Ensure there is always a 'stay' point representing the Airbnb location.
+        const hasStay = parsedPlaces.some(p => p.type === "stay");
+        if (!hasStay) {
+          parsedPlaces.unshift(fallbackPlaces[0]);
+        }
+
+        if (parsedPlaces.length > 0) {
+          setPlacesList(parsedPlaces);
+        } else {
+          setPlacesList(fallbackPlaces);
+        }
+      } catch (error) {
+        console.error("Error loading remote map points, using local fallback:", error);
+        setPlacesList(fallbackPlaces);
+      }
+    }
+
+    loadPlaces(sheetUrl);
+  }, [sheetUrl]);
 
   // Dynamic Leaflet Script loader
   useEffect(() => {
@@ -299,7 +466,8 @@ export default function NeighbourhoodMap() {
       mapInstanceRef.current = null;
     }
 
-    const defaultCenter = [places[0].lat, places[0].lng];
+    // Center on the stay point
+    const defaultCenter = [placesList[0]?.lat || -34.587546, placesList[0]?.lng || -58.439668];
     const map = L.map(mapContainerRef.current, {
       center: defaultCenter,
       zoom: 14,
@@ -321,7 +489,37 @@ export default function NeighbourhoodMap() {
         mapInstanceRef.current = null;
       }
     };
-  }, [leafletLoaded]);
+  }, [leafletLoaded, placesList]);
+
+  // Listener to toggle the visibility of Palermo-specific layers
+  useEffect(() => {
+    const map = mapInstanceRef.current;
+    if (!map) return;
+    
+    const updateVisibility = () => {
+      const currentZoom = map.getZoom();
+      const currentBounds = map.getBounds();
+      const stayLat = placesList[0]?.lat || -34.587546;
+      const stayLng = placesList[0]?.lng || -58.439668;
+      const L = (window as any).L;
+      if (L) {
+        const stayLatLng = L.latLng(stayLat, stayLng);
+        const isPalermoVisible = currentBounds.contains(stayLatLng);
+        setShouldDrawLocalLayers(currentZoom >= 12 && isPalermoVisible);
+      }
+    };
+
+    map.on("moveend", updateVisibility);
+    map.on("zoomend", updateVisibility);
+    
+    // Initial check
+    updateVisibility();
+
+    return () => {
+      map.off("moveend", updateVisibility);
+      map.off("zoomend", updateVisibility);
+    };
+  }, [mapReady, placesList]);
 
   // Manage Markers reactively based on Category Filters
   useEffect(() => {
@@ -339,7 +537,7 @@ export default function NeighbourhoodMap() {
     const group = L.layerGroup();
     
     // Filter places: always show stay, otherwise match category
-    const filtered = places.filter(
+    const filtered = placesList.filter(
       place => place.type === "stay" || selectedCategory === "all" || place.type === selectedCategory
     );
 
@@ -384,7 +582,7 @@ export default function NeighbourhoodMap() {
       `);
 
       marker.on("click", () => {
-        const originalIndex = places.findIndex(p => p.name === place.name);
+        const originalIndex = placesList.findIndex(p => p.name === place.name);
         if (originalIndex !== -1) {
           setActivePlace(originalIndex);
         }
@@ -400,13 +598,13 @@ export default function NeighbourhoodMap() {
     if (selectedCategory !== "all" && filtered.length > 1) {
       const bounds = L.latLngBounds(filtered.map(p => [p.lat, p.lng]));
       map.fitBounds(bounds, { padding: [50, 50], maxZoom: 16 });
-    } else if (selectedCategory === "all") {
-      const bounds = L.latLngBounds(places.map(p => [p.lat, p.lng]));
+    } else if (selectedCategory === "all" && placesList.length > 1) {
+      const bounds = L.latLngBounds(placesList.map(p => [p.lat, p.lng]));
       map.fitBounds(bounds, { padding: [40, 40] });
-    } else {
-      map.setView([places[0].lat, places[0].lng], 15);
+    } else if (placesList.length > 0) {
+      map.setView([placesList[0].lat, placesList[0].lng], 15);
     }
-  }, [mapReady, selectedCategory]);
+  }, [mapReady, selectedCategory, placesList]);
 
   // Manage USIG dynamic layers when state changes
   useEffect(() => {
@@ -420,21 +618,25 @@ export default function NeighbourhoodMap() {
       map.removeLayer(bicisendasLayerRef.current);
       bicisendasLayerRef.current = null;
     }
-    if (showBicisendas) {
+    if (showBicisendas && shouldDrawLocalLayers) {
+      // Anchored relative to default stay point for reference in neighborhood
+      const stayLat = placesList[0]?.lat || -34.587546;
+      const stayLng = placesList[0]?.lng || -58.439668;
+      
       const fitzRoyCoords = [
-        [-34.587546, -58.439668],
-        [-34.5847, -58.4350],
-        [-34.5818, -58.4300]
+        [stayLat, stayLng],
+        [stayLat + 0.0028, stayLng + 0.0046],
+        [stayLat + 0.0057, stayLng + 0.0096]
       ];
       const gorritiCoords = [
-        [-34.5818, -58.4370],
-        [-34.5855, -58.4330],
-        [-34.5895, -58.4290]
+        [stayLat + 0.0057, stayLng + 0.0026],
+        [stayLat + 0.0020, stayLng + 0.0066],
+        [stayLat - 0.0020, stayLng + 0.0106]
       ];
       const humboldtCoords = [
-        [-34.5895, -58.4370],
-        [-34.5865, -58.4320],
-        [-34.5835, -58.4270]
+        [stayLat - 0.0020, stayLng + 0.0026],
+        [stayLat + 0.0010, stayLng + 0.0076],
+        [stayLat + 0.0040, stayLng + 0.0126]
       ];
       
       const fitzRoyPoly = L.polyline(fitzRoyCoords, { color: "#5F6F52", weight: 4.5, opacity: 0.8 });
@@ -451,11 +653,14 @@ export default function NeighbourhoodMap() {
       map.removeLayer(ecobiciLayerRef.current);
       ecobiciLayerRef.current = null;
     }
-    if (showEcobici) {
+    if (showEcobici && shouldDrawLocalLayers) {
+      const stayLat = placesList[0]?.lat || -34.587546;
+      const stayLng = placesList[0]?.lng || -58.439668;
+
       const ecobiciPoints = [
-        { name: "Estación Ecobici 144 - Fitz Roy y Paraguay", lat: -34.5818, lng: -58.4315, dist: "5 min. a pie" },
-        { name: "Estación Ecobici 112 - Distrito Arcos", lat: -34.5805, lng: -58.4295, dist: "6 min. a pie" },
-        { name: "Estación Ecobici 219 - Honduras y Bonpland", lat: -34.5855, lng: -58.4345, dist: "4 min. a pie" }
+        { name: "Estación Ecobici 144 - Fitz Roy y Paraguay", lat: stayLat + 0.0057, lng: stayLng + 0.0081, dist: "5 min. a pie" },
+        { name: "Estación Ecobici 112 - Distrito Arcos", lat: stayLat + 0.0070, lng: stayLng + 0.0101, dist: "6 min. a pie" },
+        { name: "Estación Ecobici 219 - Honduras y Bonpland", lat: stayLat + 0.0020, lng: stayLng + 0.0051, dist: "4 min. a pie" }
       ];
       
       const markers = ecobiciPoints.map(pt => {
@@ -497,11 +702,14 @@ export default function NeighbourhoodMap() {
       map.removeLayer(subeLayerRef.current);
       subeLayerRef.current = null;
     }
-    if (showSube) {
+    if (showSube && shouldDrawLocalLayers) {
+      const stayLat = placesList[0]?.lat || -34.587546;
+      const stayLng = placesList[0]?.lng || -58.439668;
+
       const subePoints = [
-        { name: "Carga SUBE - Kiosco Córdoba y Fitz Roy", lat: -34.5872, lng: -58.4393, info: "Carga 24 hs · 1 min a pie" },
-        { name: "Carga SUBE - Locutorio Carranza", lat: -34.5765, lng: -58.4375, info: "Carga SUBE · 8 min a pie" },
-        { name: "Parada Metrobús J.B. Justo (Paraguay)", lat: -34.5801, lng: -58.4290, info: "Líneas 34, 166 · 6 min a pie" }
+        { name: "Carga SUBE - Kiosco Córdoba y Fitz Roy", lat: stayLat + 0.0003, lng: stayLng + 0.0003, info: "Carga 24 hs · 1 min a pie" },
+        { name: "Carga SUBE - Locutorio Carranza", lat: stayLat + 0.0110, lng: stayLng + 0.0021, info: "Carga SUBE · 8 min a pie" },
+        { name: "Parada Metrobús J.B. Justo (Paraguay)", lat: stayLat + 0.0074, lng: stayLng + 0.0106, info: "Líneas 34, 166 · 6 min a pie" }
       ];
       
       const markers = subePoints.map(pt => {
@@ -537,13 +745,13 @@ export default function NeighbourhoodMap() {
       group.addTo(map);
       subeLayerRef.current = group;
     }
-  }, [showBicisendas, showEcobici, showSube, mapReady]);
+  }, [showBicisendas, showEcobici, showSube, mapReady, placesList, shouldDrawLocalLayers]);
 
   // Center map on selected place
   const handlePlaceSelect = (originalIndex: number) => {
     setActivePlace(originalIndex);
-    const place = places[originalIndex];
-    if (mapInstanceRef.current) {
+    const place = placesList[originalIndex];
+    if (mapInstanceRef.current && place) {
       mapInstanceRef.current.setView([place.lat, place.lng], 16, {
         animate: true,
         duration: 0.8
@@ -578,7 +786,7 @@ export default function NeighbourhoodMap() {
   };
 
   // Filtered places displayed in the left panel
-  const filteredPlacesForList = places.filter(place => {
+  const filteredPlacesForList = placesList.filter(place => {
     if (place.type === "stay") return true;
     if (selectedCategory === "all") return true;
     return place.type === selectedCategory;
@@ -587,9 +795,9 @@ export default function NeighbourhoodMap() {
   return (
     <div className="bg-white border border-[#EFEBE4] rounded-3xl p-6 md:p-8 space-y-6">
       <div>
-        <h3 className="font-serif text-2xl text-neutral-900 font-semibold">El Barrio: Palermo Hollywood</h3>
+        <h3 className="font-serif text-2xl text-neutral-900 font-semibold">Ubicaciones y Puntos de Interés</h3>
         <p className="text-neutral-500 text-sm mt-1">
-          Av. Córdoba 5579. Un punto estratégico conectado con la mejor oferta de transporte, cultura y gastronomía de la ciudad.
+          Explora la conectividad, cultura, salud y recreación de la ciudad. Soporta coordenadas precisas de toda la Ciudad de Buenos Aires.
         </p>
       </div>
 
@@ -620,41 +828,51 @@ export default function NeighbourhoodMap() {
       </div>
 
       {/* USIG-inspired interactive layers */}
-      <div className="flex flex-wrap items-center gap-2.5 pb-2">
-        <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider mr-2">Capas de Interés CABA:</span>
-        <button
-          onClick={() => setShowBicisendas(!showBicisendas)}
-          className={`text-xs px-3.5 py-2 rounded-full border transition-all flex items-center gap-1.5 ${
-            showBicisendas 
-              ? "bg-[#5F6F52] text-white border-[#5F6F52] font-semibold"
-              : "bg-white text-neutral-600 border-[#EFEBE4] hover:bg-neutral-50"
-          }`}
-        >
-          <span>🚲</span>
-          <span>Ver Bicisendas</span>
-        </button>
-        <button
-          onClick={() => setShowEcobici(!showEcobici)}
-          className={`text-xs px-3.5 py-2 rounded-full border transition-all flex items-center gap-1.5 ${
-            showEcobici 
-              ? "bg-[#E2725B] text-white border-[#E2725B] font-semibold"
-              : "bg-white text-neutral-600 border-[#EFEBE4] hover:bg-neutral-50"
-          }`}
-        >
-          <span>🚴</span>
-          <span>Estaciones Ecobici</span>
-        </button>
-        <button
-          onClick={() => setShowSube(!showSube)}
-          className={`text-xs px-3.5 py-2 rounded-full border transition-all flex items-center gap-1.5 ${
-            showSube 
-              ? "bg-[#2F80ED] text-white border-[#2F80ED] font-semibold"
-              : "bg-white text-neutral-600 border-[#EFEBE4] hover:bg-neutral-50"
-          }`}
-        >
-          <span>💳</span>
-          <span>Carga SUBE y Metrobús</span>
-        </button>
+      <div className="flex flex-col gap-3 pb-2 border-b border-[#F5F2EB]">
+        <div className="flex flex-wrap items-center gap-2.5">
+          <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider mr-2">Capas de Interés CABA:</span>
+          <button
+            onClick={() => setShowBicisendas(!showBicisendas)}
+            className={`text-xs px-3.5 py-2 rounded-full border transition-all flex items-center gap-1.5 ${
+              showBicisendas 
+                ? "bg-[#5F6F52] text-white border-[#5F6F52] font-semibold"
+                : "bg-white text-neutral-600 border-[#EFEBE4] hover:bg-neutral-50"
+            }`}
+          >
+            <span>🚲</span>
+            <span>Ver Bicisendas</span>
+          </button>
+          <button
+            onClick={() => setShowEcobici(!showEcobici)}
+            className={`text-xs px-3.5 py-2 rounded-full border transition-all flex items-center gap-1.5 ${
+              showEcobici 
+                ? "bg-[#E2725B] text-white border-[#E2725B] font-semibold"
+                : "bg-white text-neutral-600 border-[#EFEBE4] hover:bg-neutral-50"
+            }`}
+          >
+            <span>🚴</span>
+            <span>Estaciones Ecobici</span>
+          </button>
+          <button
+            onClick={() => setShowSube(!showSube)}
+            className={`text-xs px-3.5 py-2 rounded-full border transition-all flex items-center gap-1.5 ${
+              showSube 
+                ? "bg-[#2F80ED] text-white border-[#2F80ED] font-semibold"
+                : "bg-white text-neutral-600 border-[#EFEBE4] hover:bg-neutral-50"
+            }`}
+          >
+            <span>💳</span>
+            <span>Carga SUBE y Metrobús</span>
+          </button>
+        </div>
+
+        {/* Warning notice if Palermo layers are toggled but Palermo is not visible */}
+        {!shouldDrawLocalLayers && (showBicisendas || showEcobici || showSube) && (
+          <div className="text-xs text-amber-600 bg-amber-50/50 border border-amber-200/50 rounded-xl p-3 flex items-center gap-2 animate-pulse">
+            <span>⚠️</span>
+            <span>Las capas de ciclovías y Ecobici son locales de Palermo. Mueve o acerca el mapa al departamento para visualizarlas.</span>
+          </div>
+        )}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
@@ -676,7 +894,7 @@ export default function NeighbourhoodMap() {
           )}
           <div className="space-y-2.5 max-h-[440px] overflow-y-auto pr-1">
             {filteredPlacesForList.map((place, idx) => {
-              const originalIndex = places.findIndex(p => p.name === place.name);
+              const originalIndex = placesList.findIndex(p => p.name === place.name);
               const isActive = activePlace === originalIndex;
               
               return (

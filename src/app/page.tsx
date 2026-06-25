@@ -27,6 +27,9 @@ export default function Home() {
 
   // Optional: Replace this with your public Google Sheets CSV URL when ready
   const googleSheetInventoryUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlUx7LNTseRM1DhoYGmw-9ZfuWpobnDFF5pLt4AuIdMiLLVEqVN_54OTZm0YbMUTp3-iHsk6Dbx4YP/pub?output=csv"; 
+  
+  // Optional: Replace this with your public Google Sheets CSV URL for map points
+  const googleSheetPlacesUrl = ""; 
 
   return (
     <div className="min-h-screen flex flex-col font-sans antialiased text-neutral-800 bg-[#FAF9F7]">
@@ -265,7 +268,7 @@ export default function Home() {
 
             {/* Neighbourhood Map Section */}
             <div id="barrio">
-              <NeighbourhoodMap />
+              <NeighbourhoodMap sheetUrl={googleSheetPlacesUrl} />
             </div>
 
             {/* House Rules / Norms */}
