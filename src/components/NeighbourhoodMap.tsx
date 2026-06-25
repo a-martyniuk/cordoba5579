@@ -168,19 +168,43 @@ async function geocodeAddress(address: string): Promise<{ lat: number; lng: numb
   return null;
 }
 
-// Fetch POIs from CABA's official EPOK API
-async function fetchEpokPOIs(categoria: string, searchText: string): Promise<PlaceOfInterest[]> {
+// Detect subway line from station name (e.g. "Linea A", "Línea D", etc.)
+function detectSubwayLine(name: string): string | undefined {
+  const upper = name.toUpperCase();
+  if (upper.includes("LINEA A") || upper.includes("LÍNEA A") || upper.includes("LíNEA A")) return "A";
+  if (upper.includes("LINEA B") || upper.includes("LÍNEA B")) return "B";
+  if (upper.includes("LINEA C") || upper.includes("LÍNEA C")) return "C";
+  if (upper.includes("LINEA D") || upper.includes("LÍNEA D")) return "D";
+  if (upper.includes("LINEA E") || upper.includes("LÍNEA E")) return "E";
+  if (upper.includes("LINEA H") || upper.includes("LÍNEA H")) return "H";
+  return undefined;
+}
+
+// Get official SBASE color for each subway line
+function getSubwayLineColor(line: string | undefined): string {
+  switch (line) {
+    case "A": return "#18A7E8"; // Light Blue
+    case "B": return "#E4002B"; // Red
+    case "C": return "#0072BB"; // Royal Blue
+    case "D": return "#008000"; // Green
+    case "E": return "#7A0080"; // Purple
+    case "H": return "#F5A800"; // Yellow/Gold
+    default:  return "#2D9CDB"; // Default blue for unknown
+  }
+}
+
+// Fetch a single page of EPOK POIs (max 50 per page)
+async function fetchEpokPOIsPage(categoria: string, searchText: string, start: number = 0): Promise<{ results: PlaceOfInterest[]; total: number }> {
   try {
-    const searchUrl = `https://epok.buenosaires.gob.ar/buscar/?texto=${encodeURIComponent(searchText)}&categoria=${categoria}`;
+    const searchUrl = `https://epok.buenosaires.gob.ar/buscar/?texto=${encodeURIComponent(searchText)}&categoria=${categoria}&start=${start}`;
     const searchRes = await fetch(searchUrl);
     if (!searchRes.ok) throw new Error(`Search failed for ${categoria}`);
     const searchJson = await searchRes.json();
     
     const instances = searchJson.instancias || [];
-    // Limit to 50 elements to avoid overload and keep response snappy
-    const limitInstances = instances.slice(0, 50);
+    const total = searchJson.totalInstancias || instances.length;
     
-    const detailPromises = limitInstances.map(async (inst: any) => {
+    const detailPromises = instances.map(async (inst: any) => {
       try {
         const detailUrl = `https://epok.buenosaires.gob.ar/getObjectContent/?id=${inst.id}`;
         const detailRes = await fetch(detailUrl);
@@ -213,16 +237,24 @@ async function fetchEpokPOIs(categoria: string, searchText: string): Promise<Pla
         // Map CABA category normalizations to our app's POI types
         let type: PlaceOfInterest["type"] = "hospital";
         if (categoria === "comisarias") type = "security";
+        else if (categoria === "cuarteles_de_bomberos") type = "security";
         else if (categoria === "estaciones_de_subte") type = "subway";
         else if (categoria === "estaciones_de_metrobus") type = "metrobus";
         else if (categoria === "centros_comerciales") type = "shopping";
         else if (categoria === "gastronomia") type = "food";
         else if (categoria === "lugar_emblematico") type = "tourist";
         
+        // Detect subway line from name for color coding
+        const subLine = categoria === "estaciones_de_subte" 
+          ? detectSubwayLine(inst.nombre) 
+          : undefined;
+        
+        const isFireStation = categoria === "cuarteles_de_bomberos";
+        
         return {
           name: inst.nombre,
           type,
-          distance: "Calculando...", // Will be resolved dynamically by OSRM
+          distance: "Calculando...",
           desc: inst.clase || detailJson.clase || "",
           lat: coords.lat,
           lng: coords.lng,
@@ -230,7 +262,9 @@ async function fetchEpokPOIs(categoria: string, searchText: string): Promise<Pla
           email,
           web,
           address,
-          hours: "Guardia 24 horas"
+          hours: "Guardia 24 horas",
+          subLine,
+          isFireStation
         } as PlaceOfInterest;
       } catch (err) {
         console.error("Error fetching EPOK object content:", err);
@@ -239,11 +273,33 @@ async function fetchEpokPOIs(categoria: string, searchText: string): Promise<Pla
     });
     
     const results = (await Promise.all(detailPromises)).filter((p): p is PlaceOfInterest => p !== null);
-    return results;
+    return { results, total };
   } catch (e) {
     console.error("Error fetching from EPOK API:", e);
-    return [];
+    return { results: [], total: 0 };
   }
+}
+
+// Fetch ALL POIs from EPOK using pagination (loops until all results are retrieved)
+async function fetchAllEpokPOIs(categoria: string, searchText: string, maxResults: number = 300): Promise<PlaceOfInterest[]> {
+  const allResults: PlaceOfInterest[] = [];
+  let start = 0;
+  const pageSize = 50;
+  let total = Infinity;
+  
+  while (start < total && allResults.length < maxResults) {
+    const { results, total: pageTotal } = await fetchEpokPOIsPage(categoria, searchText, start);
+    total = pageTotal;
+    allResults.push(...results);
+    
+    if (results.length === 0) break; // No more results
+    start += pageSize;
+    
+    // Safety: never exceed maxResults
+    if (allResults.length >= maxResults) break;
+  }
+  
+  return allResults;
 }
 
 
@@ -259,6 +315,8 @@ interface PlaceOfInterest {
   web?: string;
   hours?: string;
   address?: string;
+  subLine?: string; // Subway line identifier: "A", "B", "C", "D", "E", "H"
+  isFireStation?: boolean; // Distinguish bomberos from comisarias
 }
 
 const fallbackPlaces: PlaceOfInterest[] = [
@@ -697,16 +755,16 @@ const datasetUrls: Record<string, { name: string; url: string }> = {
   tourist: { name: "Atractivos Turísticos", url: "https://data.buenosaires.gob.ar/dataset/atractivos-turisticos" }
 };
 
-const getCategoryColor = (type: string): string => {
+const getCategoryColor = (type: string, subLine?: string, isFireStation?: boolean): string => {
   switch (type) {
     case "stay": return "#5F6F52"; // Olive Green
-    case "subway": return "#2D9CDB"; // Light Blue
+    case "subway": return getSubwayLineColor(subLine); // Oficial SBASE line color
     case "metrobus": return "#F2C94C"; // Amber Yellow
     case "shopping": return "#9B51E0"; // Purple
     case "supermarket": return "#3F51B5"; // Indigo Blue
     case "food": return "#EB5757"; // Coral Red
     case "hospital": return "#27AE60"; // Soft Green
-    case "security": return "#2F80ED"; // Royal Blue
+    case "security": return isFireStation ? "#E55A1C" : "#2F80ED"; // Orange for fire stations, Blue for police
     case "park": return "#219653"; // Dark Green
     case "museum": return "#828282"; // Slate Gray
     case "theater": return "#F2994A"; // Warm Orange
@@ -715,7 +773,19 @@ const getCategoryColor = (type: string): string => {
   }
 };
 
-const getCategoryHtmlIcon = (type: string): string => {
+const getFireStationHtmlIcon = (): string => {
+  // Flame icon for fire stations
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>`;
+};
+
+const getSubwayLineLabel = (subLine?: string): string => {
+  if (!subLine) return "";
+  return `<span style="font-size: 10px; font-weight: 900; line-height: 1;">${subLine}</span>`;
+};
+
+const getCategoryHtmlIcon = (type: string, subLine?: string, isFireStation?: boolean): string => {
+  if (type === "security" && isFireStation) return getFireStationHtmlIcon();
+  if (type === "subway" && subLine) return getSubwayLineLabel(subLine);
   switch (type) {
     case "stay":
       return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`;
@@ -934,44 +1004,83 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
       
       async function loadDynamicPOIs() {
         setLoadingPOIs(true);
-        let categoryId = "";
-        let searchKeyword = "";
         
-        switch (selectedCategory) {
-          case "hospital":
-            categoryId = "hospitales_generales_de_agudos";
-            searchKeyword = "hospital";
-            break;
-          case "security":
-            categoryId = "comisarias";
-            searchKeyword = "comisaria";
-            break;
-          case "subway":
-            categoryId = "estaciones_de_subte";
-            searchKeyword = "subte";
-            break;
-          case "metrobus":
-            categoryId = "estaciones_de_metrobus";
-            searchKeyword = "estacion";
-            break;
-          case "shopping":
-            categoryId = "centros_comerciales";
-            searchKeyword = "shopping";
-            break;
-          case "food":
-            categoryId = "gastronomia";
-            searchKeyword = "restaurante";
-            break;
-          case "tourist":
-            categoryId = "lugar_emblematico";
-            searchKeyword = "museo";
-            break;
-          default:
-            break;
-        }
-        
-        if (categoryId) {
-          const pois = await fetchEpokPOIs(categoryId, searchKeyword);
+        try {
+          let pois: PlaceOfInterest[] = [];
+          
+          switch (selectedCategory) {
+            case "hospital": {
+              // Fetch both general and specialized hospitals across all CABA
+              const [general, specialized, maternity] = await Promise.all([
+                fetchAllEpokPOIs("hospitales_generales_de_agudos", "hospital"),
+                fetchAllEpokPOIs("hospitales_especializados", "hospital"),
+                fetchAllEpokPOIs("maternidades", "maternidad")
+              ]);
+              // Deduplicate by name
+              const seen = new Set<string>();
+              for (const p of [...general, ...specialized, ...maternity]) {
+                if (!seen.has(p.name)) { seen.add(p.name); pois.push(p); }
+              }
+              break;
+            }
+            case "security": {
+              // Fetch both police (comisarías) and fire stations (bomberos)
+              const [comisarias, bomberos] = await Promise.all([
+                fetchAllEpokPOIs("comisarias", "comisaria"),
+                fetchAllEpokPOIs("cuarteles_de_bomberos", "bomberos")
+              ]);
+              pois = [...comisarias, ...bomberos];
+              break;
+            }
+            case "subway": {
+              // Fetch all subway lines A-H using their line-specific keywords for better coverage
+              const lineKeywords = [
+                { keyword: "linea a" },
+                { keyword: "linea b" },
+                { keyword: "linea c" },
+                { keyword: "linea d" },
+                { keyword: "linea e" },
+                { keyword: "linea h" }
+              ];
+              const lineResults = await Promise.all(
+                lineKeywords.map(({ keyword }) =>
+                  fetchAllEpokPOIs("estaciones_de_subte", keyword)
+                )
+              );
+              // Merge and deduplicate
+              const seen = new Set<string>();
+              for (const lineStations of lineResults) {
+                for (const station of lineStations) {
+                  if (!seen.has(station.name)) {
+                    seen.add(station.name);
+                    // If subLine not detected from name, try to detect from the keyword used
+                    if (!station.subLine) {
+                      const idx = lineResults.indexOf(lineStations);
+                      const lineLetters = ["A", "B", "C", "D", "E", "H"];
+                      station.subLine = lineLetters[idx];
+                    }
+                    pois.push(station);
+                  }
+                }
+              }
+              break;
+            }
+            case "metrobus":
+              pois = await fetchAllEpokPOIs("estaciones_de_metrobus", "estacion");
+              break;
+            case "shopping":
+              pois = await fetchAllEpokPOIs("centros_comerciales", "shopping");
+              break;
+            case "food":
+              pois = await fetchAllEpokPOIs("gastronomia", "restaurante");
+              break;
+            case "tourist":
+              pois = await fetchAllEpokPOIs("lugar_emblematico", "museo");
+              break;
+            default:
+              break;
+          }
+          
           if (pois && pois.length > 0) {
             setCachedPOIs(selectedCategory, pois);
             setPlacesList([stay, ...pois]);
@@ -980,7 +1089,12 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
             const staticFiltered = basePlaces.filter(p => p.type === selectedCategory);
             setPlacesList([stay, ...staticFiltered]);
           }
+        } catch (err) {
+          console.error("Error loading dynamic POIs:", err);
+          const staticFiltered = basePlaces.filter(p => p.type === selectedCategory);
+          setPlacesList([stay, ...staticFiltered]);
         }
+        
         setLoadingPOIs(false);
       }
       loadDynamicPOIs();
@@ -1204,8 +1318,8 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
     );
 
     filtered.forEach((place) => {
-      const markerColor = getCategoryColor(place.type);
-      const markerHtmlIcon = getCategoryHtmlIcon(place.type);
+      const markerColor = getCategoryColor(place.type, place.subLine, place.isFireStation);
+      const markerHtmlIcon = getCategoryHtmlIcon(place.type, place.subLine, place.isFireStation);
 
       const customHtml = `
         <div style="
@@ -1553,6 +1667,47 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
               </a>
             </div>
           )}
+
+          {/* Subway Line Color Legend */}
+          {selectedCategory === "subway" && (
+            <div className="bg-[#FAF9F7] border border-[#EFEBE4] rounded-2xl p-3 text-xs">
+              <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-2">Red de Subterráneos CABA</p>
+              <div className="flex flex-wrap gap-1.5">
+                {[
+                  { line: "A", color: "#18A7E8", label: "Línea A" },
+                  { line: "B", color: "#E4002B", label: "Línea B" },
+                  { line: "C", color: "#0072BB", label: "Línea C" },
+                  { line: "D", color: "#008000", label: "Línea D" },
+                  { line: "E", color: "#7A0080", label: "Línea E" },
+                  { line: "H", color: "#F5A800", label: "Línea H" },
+                ].map(({ line, color, label }) => (
+                  <div key={line} className="flex items-center gap-1 px-2 py-1 rounded-full" style={{ backgroundColor: color + "20", border: `1px solid ${color}40` }}>
+                    <div className="w-4 h-4 rounded-full flex items-center justify-center text-white font-black text-[9px]" style={{ backgroundColor: color }}>
+                      {line}
+                    </div>
+                    <span className="text-[10px] font-semibold" style={{ color }}>{label}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Security Type Legend */}
+          {selectedCategory === "security" && (
+            <div className="bg-[#FAF9F7] border border-[#EFEBE4] rounded-2xl p-3 text-xs">
+              <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-2">Fuerzas de Seguridad</p>
+              <div className="flex gap-2">
+                <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-[#2F80ED]/10 border border-[#2F80ED]/30">
+                  <div className="w-3.5 h-3.5 rounded-full bg-[#2F80ED]"></div>
+                  <span className="text-[10px] font-semibold text-[#2F80ED]">Comisarías</span>
+                </div>
+                <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-[#E55A1C]/10 border border-[#E55A1C]/30">
+                  <div className="w-3.5 h-3.5 rounded-full bg-[#E55A1C]"></div>
+                  <span className="text-[10px] font-semibold text-[#E55A1C]">Bomberos</span>
+                </div>
+              </div>
+            </div>
+          )}
           <div className="space-y-2.5 max-h-[250px] lg:max-h-[440px] overflow-y-auto pr-1">
             {loadingPOIs ? (
               <div className="space-y-2.5">
@@ -1590,9 +1745,15 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
                   <div className="w-7 h-7 border-2 border-[#5F6F52] border-t-transparent rounded-full animate-spin"></div>
                   <div className="text-center space-y-1">
                     <p className="text-xs font-semibold text-neutral-700">
-                      Buscando {selectedCategory === "hospital" ? "hospitales" : "comisarías"}...
+                      {selectedCategory === "hospital" && "Buscando hospitales de toda CABA..."}
+                      {selectedCategory === "security" && "Buscando comisarías y bomberos..."}
+                      {selectedCategory === "subway" && "Cargando todas las líneas de subte..."}
+                      {selectedCategory === "metrobus" && "Cargando estaciones de Metrobús..."}
+                      {selectedCategory === "shopping" && "Buscando centros comerciales..."}
+                      {selectedCategory === "food" && "Buscando gastronomía..."}
+                      {selectedCategory === "tourist" && "Buscando lugares emblemáticos..."}
                     </p>
-                    <p className="text-[10px] text-neutral-500">Consultando API EPOK (GCBA) en tiempo real</p>
+                    <p className="text-[10px] text-neutral-500">Consultando API EPOK (GCBA) — puede tardar unos segundos</p>
                   </div>
                 </div>
               </div>
@@ -1615,7 +1776,21 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
                       {getPlaceIcon(place.type)}
                     </div>
                     <div className="space-y-1 w-full min-w-0">
-                      <p className="font-semibold text-sm text-neutral-900 leading-snug break-words">{place.name}</p>
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <p className="font-semibold text-sm text-neutral-900 leading-snug break-words">{place.name}</p>
+                        {place.subLine && (
+                          <span className="inline-flex items-center justify-center w-5 h-5 rounded-full text-white font-black text-[9px] flex-shrink-0"
+                            style={{ backgroundColor: (() => { const c: Record<string,string> = {A:"#18A7E8",B:"#E4002B",C:"#0072BB",D:"#008000",E:"#7A0080",H:"#F5A800"}; return c[place.subLine!] || "#2D9CDB"; })() }}>
+                            {place.subLine}
+                          </span>
+                        )}
+                        {place.isFireStation && (
+                          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full text-[9px] font-bold text-white flex-shrink-0"
+                            style={{ backgroundColor: "#E55A1C" }}>
+                            🔥 Bomberos
+                          </span>
+                        )}
+                      </div>
                       <p className="text-[#5F6F52] font-semibold text-xs">{place.distance}</p>
                       
                       {/* Expanded details when active */}
