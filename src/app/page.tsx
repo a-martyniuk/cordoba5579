@@ -19,11 +19,12 @@ import {
   Users,
   UserCheck,
   ChevronDown,
-  ExternalLink
+  ExternalLink,
+  ClipboardList
 } from "lucide-react";
+import Link from "next/link";
 import Gallery from "../components/Gallery";
 import CalendarWidget from "../components/CalendarWidget";
-import InventoryList from "../components/InventoryList";
 import NeighbourhoodMap from "../components/NeighbourhoodMap";
 
 interface FoodPlace {
@@ -256,6 +257,9 @@ export default function Home() {
       navDept: "EL DEPARTAMENTO",
       navAmen: "AMENIDADES",
       navInve: "INVENTARIO",
+      inventoryCtaTitle: "Equipamiento e Inventario Completo",
+      inventoryCtaDesc: "Consulta el listado detallado de vajilla, electrodomésticos, blanquería, elementos de seguridad y comodidades que encontrarás en el departamento para planificar tu estadía sin sorpresas.",
+      inventoryCtaBtn: "Ver Inventario Completo ↗",
       navBarr: "EL BARRIO",
       navNorm: "NORMAS",
       navFaq: "PREGUNTAS",
@@ -331,6 +335,9 @@ export default function Home() {
       navDept: "THE APARTMENT",
       navAmen: "AMENITIES",
       navInve: "INVENTORY",
+      inventoryCtaTitle: "Complete Equipment & Inventory",
+      inventoryCtaDesc: "Browse the detailed list of dinnerware, appliances, linens, safety features, and amenities available in the apartment to plan your stay with peace of mind.",
+      inventoryCtaBtn: "View Full Inventory ↗",
       navBarr: "THE NEIGHBORHOOD",
       navNorm: "RULES",
       navFaq: "FAQ",
@@ -485,9 +492,7 @@ export default function Home() {
     setOpenFaq(openFaq === idx ? null : idx);
   };
 
-  // Optional: Replace this with your public Google Sheets CSV URL when ready
-  const googleSheetInventoryUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlUx7LNTseRM1DhoYGmw-9ZfuWpobnDFF5pLt4AuIdMiLLVEqVN_54OTZm0YbMUTp3-iHsk6Dbx4YP/pub?output=csv"; 
-  
+
   // Optional: Replace this with your public Google Sheets CSV URL for map points
   const googleSheetPlacesUrl = ""; 
 
@@ -509,7 +514,7 @@ export default function Home() {
               <a href="#detalles" className="hover:text-neutral-900 transition-colors">{t.navDept}</a>
               <a href="#amenidades" className="hover:text-neutral-900 transition-colors">{t.navAmen}</a>
               <a href="#resenas" className="hover:text-neutral-900 transition-colors">{t.reviewsTitle.toUpperCase()}</a>
-              <a href="#inventario" className="hover:text-neutral-900 transition-colors">{t.navInve}</a>
+              <Link href="/inventario" className="hover:text-neutral-900 transition-colors">{t.navInve}</Link>
               <a href="#barrio" className="hover:text-neutral-900 transition-colors">{t.navBarr}</a>
               <a href="#reglas" className="hover:text-neutral-900 transition-colors">{t.navNorm}</a>
               <a href="#faq" className="hover:text-neutral-900 transition-colors">{t.navFaq}</a>
@@ -592,13 +597,13 @@ export default function Home() {
             >
               {t.reviewsTitle}
             </a>
-            <a 
-              href="#inventario" 
+            <Link 
+              href="/inventario" 
               onClick={() => setMobileMenuOpen(false)}
               className="block py-2 text-neutral-600 hover:text-neutral-900"
             >
               {t.navInve}
-            </a>
+            </Link>
             <a 
               href="#barrio" 
               onClick={() => setMobileMenuOpen(false)}
@@ -833,9 +838,27 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Dynamic Inventory Section */}
-            <div id="inventario">
-              <InventoryList sheetUrl={googleSheetInventoryUrl} lang={language} />
+            {/* Dynamic Inventory Section Link Card */}
+            <div id="inventario" className="bg-[#FAF9F7] border border-[#EFEBE4] rounded-3xl p-6 md:p-8 flex flex-col sm:flex-row items-center gap-6 shadow-sm">
+              <div className="p-4 bg-white border border-[#EFEBE4] text-[#5F6F52] rounded-2xl shadow-sm flex-shrink-0">
+                <ClipboardList className="w-8 h-8" />
+              </div>
+              <div className="space-y-2 text-center sm:text-left flex-grow">
+                <h4 className="font-serif text-lg font-bold text-neutral-900 leading-tight">
+                  {t.inventoryCtaTitle}
+                </h4>
+                <p className="text-neutral-500 text-xs sm:text-sm leading-relaxed">
+                  {t.inventoryCtaDesc}
+                </p>
+              </div>
+              <div className="flex-shrink-0">
+                <Link 
+                  href="/inventario"
+                  className="inline-flex items-center justify-center bg-[#5F6F52] hover:bg-[#4F5D43] text-white text-xs font-semibold tracking-wider px-5 py-3 rounded-xl transition-all shadow-sm"
+                >
+                  {t.inventoryCtaBtn}
+                </Link>
+              </div>
             </div>
           </div>
 

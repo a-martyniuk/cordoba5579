@@ -663,36 +663,44 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
     );
 
     filtered.forEach((place) => {
+      const isStay = place.type === "stay";
       const markerColor = getCategoryColor(place.type, place.subLine, place.isFireStation);
       const markerHtmlIcon = getCategoryHtmlIcon(place.type, place.subLine, place.isFireStation);
+
+      const markerSize = isStay ? 38 : 32;
+      const anchorVal = markerSize / 2;
+      const translateOffset = isStay ? -9 : -6;
 
       const customHtml = `
         <div style="
           background-color: ${markerColor}; 
           color: white; 
-          width: 32px; 
-          height: 32px; 
+          width: ${markerSize}px; 
+          height: ${markerSize}px; 
           border-radius: 50%; 
           display: flex; 
           align-items: center; 
           justify-content: center; 
-          box-shadow: 0 4px 10px rgba(0,0,0,0.15); 
+          box-shadow: ${isStay ? "0 4px 14px rgba(95, 111, 82, 0.45)" : "0 4px 10px rgba(0,0,0,0.15)"}; 
           border: 2.5px solid white;
-          transform: translate(-6px, -6px);
+          transform: translate(${translateOffset}px, ${translateOffset}px);
           transition: all 0.2s;
-        " class="map-marker-hover">
+        " class="${isStay ? "stay-marker" : "map-marker-hover"}">
           ${markerHtmlIcon}
         </div>
       `;
 
       const customIcon = L.divIcon({
         html: customHtml,
-        className: "custom-leaflet-icon",
-        iconSize: [32, 32],
-        iconAnchor: [16, 16]
+        className: isStay ? "custom-leaflet-icon-stay" : "custom-leaflet-icon",
+        iconSize: [markerSize, markerSize],
+        iconAnchor: [anchorVal, anchorVal]
       });
 
-      const marker = L.marker([place.lat, place.lng], { icon: customIcon });
+      const marker = L.marker([place.lat, place.lng], { 
+        icon: customIcon,
+        zIndexOffset: isStay ? 10000 : 0 
+      });
 
       // Structured Popup HTML
       let popupHtml = `
