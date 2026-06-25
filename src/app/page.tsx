@@ -432,7 +432,14 @@ export default function Home() {
     const q = query.toLowerCase();
     const isEn = language === "en";
 
-    // 1. Wifi
+    // 1. Gastronomía (Desayunar, comer, restaurantes, cafés - Deber ser la máxima prioridad)
+    if (q.includes("desayun") || q.includes("almuerz") || q.includes("cafe") || q.includes("café") || q.includes("comer") || q.includes("gastronom") || q.includes("breakfast") || q.includes("eat") || q.includes("food") || q.includes("restaurant") || q.includes("cena") || q.includes("brunch")) {
+      return isEn
+        ? "For specialty coffee and brunch, we love 'Cuervo Café', 'Vive Café', and 'Café Registrado'. For traditional steakhouses, check out 'Don Julio', 'La Cabrera', or 'Las Cabras' (just 2 blocks away). All these recommendations are visible on our map!"
+        : "Para café de especialidad y brunch, te recomendamos 'Cuervo Café', 'Vive Café' y 'Café Registrado'. Si buscás parrilla tradicional, tenés 'Don Julio', 'La Cabrera' o 'Las Cabras' (a solo 2 cuadras). ¡Todas están en el mapa interactivo!";
+    }
+
+    // 2. Wifi
     if (q.includes("wifi") || q.includes("wi-fi") || q.includes("internet") || q.includes("clave") || q.includes("contraseña") || q.includes("password") || q.includes("network") || q.includes("ssid")) {
       return isEn
         ? "The apartment features high-speed internet. The network credentials and auto-connect QR code are printed on framed signs inside the property. Wifi password is 'hola.cordoba'."
@@ -507,13 +514,6 @@ export default function Home() {
       return isEn
         ? "Strict rules: No smoking inside or in building hallways. No pets allowed. No parties. Unregistered guests are not allowed in amenity areas. Walking shirtless in common building areas is prohibited (except pool area)."
         : "Reglas estrictas: Prohibido fumar en el departamento o pasillos. No se admiten mascotas. Prohibido realizar fiestas. No se permite el ingreso de visitas a los amenities. Prohibido circular con el torso desnudo en áreas comunes (excepto zona de piscina).";
-    }
-
-    // 14. Gastronomía (Debe ir arriba para que 'Desayunar cerca' entre acá y no en ubicación)
-    if (q.includes("desayun") || q.includes("almuerz") || q.includes("cafe") || q.includes("café") || q.includes("comer") || q.includes("gastronom") || q.includes("breakfast") || q.includes("eat") || q.includes("food") || q.includes("restaurant") || q.includes("cena") || q.includes("brunch")) {
-      return isEn
-        ? "For specialty coffee and brunch, we love 'Cuervo Café', 'Vive Café', and 'Café Registrado'. For traditional steakhouses, check out 'Don Julio', 'La Cabrera', or 'Las Cabras' (just 2 blocks away). All these recommendations are visible on our map!"
-        : "Para café de especialidad y brunch, te recomendamos 'Cuervo Café', 'Vive Café' y 'Café Registrado'. Si buscás parrilla tradicional, tenés 'Don Julio', 'La Cabrera' o 'Las Cabras' (a solo 2 cuadras). ¡Todas están en el mapa interactivo!";
     }
 
     // 12. Localización / Ubicación / Atracciones
