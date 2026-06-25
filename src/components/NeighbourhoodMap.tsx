@@ -518,14 +518,7 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
             distance: distText,
             duration: durationText
           });
-          
-          // Dynamically update the distance in state list for the selected POI
-          setPlacesList(prev => prev.map(p => {
-            if (p.lat === dest.lat && p.lng === dest.lng) {
-              return { ...p, distance: durationText };
-            }
-            return p;
-          }));
+          // Dynamically update active route info only, no placesList mutation to avoid map resets
         }
       }
     } catch (e) {
