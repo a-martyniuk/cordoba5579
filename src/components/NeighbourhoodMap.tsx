@@ -375,6 +375,91 @@ const fallbackPlaces: PlaceOfInterest[] = [
     address: "Av. Córdoba 6103, Villa Crespo"
   },
   {
+    name: "Autoservicio Hollywood (Fitz Roy 1587)",
+    type: "supermarket",
+    distance: "4 min. a pie",
+    desc: "Autoservicio completo en pleno corazón de Palermo Hollywood, abierto hasta la medianoche todos los días.",
+    lat: -34.5851,
+    lng: -58.4372,
+    hours: "Lun–Sáb 09:00–24:00, Dom 15:00–23:00",
+    address: "Fitz Roy 1587, Palermo Hollywood"
+  },
+  {
+    name: "Carrefour Express (Av. Córdoba y Warnes)",
+    type: "supermarket",
+    distance: "12 min. a pie",
+    desc: "Sucursal Carrefour Express de cercanía, con frescos, lácteos, panadería y bebidas.",
+    lat: -34.5859,
+    lng: -58.4542,
+    hours: "Lunes a Sábados 08:00–21:30, Domingos 09:00–20:00",
+    address: "Av. Córdoba y Warnes, Villa Crespo"
+  },
+  {
+    name: "Carrefour Express (Av. Santa Fe 5052)",
+    type: "supermarket",
+    distance: "15 min. a pie",
+    desc: "Carrefour Express sobre Av. Santa Fe en Palermo, con amplia variedad de productos cotidianos.",
+    lat: -34.5769,
+    lng: -58.4311,
+    phone: "+54 11 3788-1233",
+    hours: "Lun–Sáb 08:30–22:00, Dom 11:00–20:00",
+    address: "Av. Santa Fe 5052, Palermo"
+  },
+  {
+    name: "Carrefour Express (Paraguay y Scalabrini)",
+    type: "supermarket",
+    distance: "15 min. a pie",
+    desc: "Sucursal Carrefour Express en Palermo, ideal para compras rápidas de almacén y frescos.",
+    lat: -34.5867,
+    lng: -58.4192,
+    hours: "Lunes a Sábados 08:00–21:30",
+    address: "Paraguay y Scalabrini Ortiz, Palermo"
+  },
+  {
+    name: "DIA Scalabrini Ortiz 367",
+    type: "supermarket",
+    distance: "16 min. a pie",
+    desc: "Supermercado DIA con precios competitivos, productos de almacén, carnes y lácteos. Villa Crespo.",
+    lat: -34.5994,
+    lng: -58.4379,
+    web: "supermercadosdia.com.ar",
+    hours: "Lunes a Sábados 08:00–21:00, Domingos 09:00–20:00",
+    address: "Av. Raúl Scalabrini Ortiz 367, Villa Crespo"
+  },
+  {
+    name: "Diarco Barrio (Av. Corrientes)",
+    type: "supermarket",
+    distance: "16 min. a pie",
+    desc: "Supermercado mayorista Diarco con precios de distribuidor, amplio surtido de almacén, bebidas y limpieza.",
+    lat: -34.5992,
+    lng: -58.4397,
+    web: "diarco.com.ar",
+    hours: "Lunes a Sábados 08:00–21:00",
+    address: "Av. Corrientes y J. Ramírez de Velasco, Villa Crespo"
+  },
+  {
+    name: "Carrefour Market (Av. Corrientes 5645)",
+    type: "supermarket",
+    distance: "17 min. a pie",
+    desc: "Supermercado Carrefour Market completo con carnes, frescos, bazar y sección de bebidas. Villa Crespo.",
+    lat: -34.5965,
+    lng: -58.4424,
+    hours: "Lunes a Sábados 08:00–22:00, Domingos 09:00–21:00",
+    address: "Av. Corrientes 5645, Villa Crespo"
+  },
+  {
+    name: "Vea Villa Crespo (Aráoz 247)",
+    type: "supermarket",
+    distance: "17 min. a pie",
+    desc: "Supermercado Vea (Cencosud) con amplia sección de frescos, fiambres y panadería. Ideal para compras semanales.",
+    lat: -34.6010,
+    lng: -58.4387,
+    phone: "+54 11 4856-3737",
+    web: "supermercadosvea.com.ar",
+    hours: "Lunes a Sábados 08:00–22:00, Domingos 09:00–21:00",
+    address: "Aráoz 247, Villa Crespo"
+  },
+  {
     name: "Disco Palermo (Paraguay 4302)",
     type: "supermarket",
     distance: "17 min. a pie",
