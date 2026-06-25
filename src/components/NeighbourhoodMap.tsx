@@ -77,6 +77,38 @@ const places: PlaceOfInterest[] = [
     desc: "Gran hipermercado para abastecerse de alimentos y compras mayores durante estadías largas.",
     lat: -34.5768,
     lng: -58.4276
+  },
+  {
+    name: "Mercado de Pulgas (Paseo Cultural)",
+    type: "tourism",
+    distance: "4 blocks (5 min. a pie)",
+    desc: "Hito cultural emblemático de Palermo Hollywood donde se venden antigüedades, arte y muebles de diseño.",
+    lat: -34.5786,
+    lng: -58.4425
+  },
+  {
+    name: "Centro Cultural de la Ciencia - C3 (Museo)",
+    type: "tourism",
+    distance: "7 min. a pie",
+    desc: "Moderno espacio de divulgación científica con muestras interactivas gratuitas, ideal para visitar.",
+    lat: -34.5828,
+    lng: -58.4285
+  },
+  {
+    name: "Farmacia 24 hs - Farmacity (Salud)",
+    type: "hospital",
+    distance: "8 min. a pie / 3 min. en auto",
+    desc: "Farmacia y tienda de conveniencia abierta las 24 horas para medicamentos de urgencia.",
+    lat: -34.5795,
+    lng: -58.4355
+  },
+  {
+    name: "Cajeros Automáticos Link / Banelco",
+    type: "shopping",
+    distance: "8 min. a pie",
+    desc: "Cajeros automáticos y sucursales bancarias (Santander / Galicia) en la Av. Santa Fe para retirar efectivo.",
+    lat: -34.5785,
+    lng: -58.4345
   }
 ];
 
@@ -85,6 +117,16 @@ export default function NeighbourhoodMap() {
   const mapInstanceRef = useRef<any>(null);
   const [activePlace, setActivePlace] = useState<number>(0);
   const [leafletLoaded, setLeafletLoaded] = useState<boolean>(false);
+
+  // USIG Interactive Layer States
+  const [showBicisendas, setShowBicisendas] = useState<boolean>(false);
+  const [showEcobici, setShowEcobici] = useState<boolean>(false);
+  const [showSube, setShowSube] = useState<boolean>(false);
+
+  // Layer refs to add/remove Leaflet elements dynamically
+  const bicisendasLayerRef = useRef<any>(null);
+  const ecobiciLayerRef = useRef<any>(null);
+  const subeLayerRef = useRef<any>(null);
 
   // Dynamic Leaflet Script loader
   useEffect(() => {
@@ -197,6 +239,137 @@ export default function NeighbourhoodMap() {
 
   }, [leafletLoaded]);
 
+  // Manage USIG dynamic layers when state changes
+  useEffect(() => {
+    const map = mapInstanceRef.current;
+    if (!map) return;
+    const L = (window as any).L;
+    if (!L) return;
+
+    // 1. Manage Bicisendas (Polylines)
+    if (bicisendasLayerRef.current) {
+      map.removeLayer(bicisendasLayerRef.current);
+      bicisendasLayerRef.current = null;
+    }
+    if (showBicisendas) {
+      const fitzRoyCoords = [
+        [-34.587546, -58.439668],
+        [-34.5847, -58.4350],
+        [-34.5818, -58.4300]
+      ];
+      const gorritiCoords = [
+        [-34.5818, -58.4370],
+        [-34.5855, -58.4330],
+        [-34.5895, -58.4290]
+      ];
+      const humboldtCoords = [
+        [-34.5895, -58.4370],
+        [-34.5865, -58.4320],
+        [-34.5835, -58.4270]
+      ];
+      
+      const fitzRoyPoly = L.polyline(fitzRoyCoords, { color: "#5F6F52", weight: 4.5, opacity: 0.8 });
+      const gorritiPoly = L.polyline(gorritiCoords, { color: "#5F6F52", weight: 4.5, opacity: 0.8 });
+      const humboldtPoly = L.polyline(humboldtCoords, { color: "#5F6F52", weight: 4.5, opacity: 0.8 });
+      
+      const group = L.layerGroup([fitzRoyPoly, gorritiPoly, humboldtPoly]);
+      group.addTo(map);
+      bicisendasLayerRef.current = group;
+    }
+
+    // 2. Manage Ecobici Markers
+    if (ecobiciLayerRef.current) {
+      map.removeLayer(ecobiciLayerRef.current);
+      ecobiciLayerRef.current = null;
+    }
+    if (showEcobici) {
+      const ecobiciPoints = [
+        { name: "Estación Ecobici 144 - Fitz Roy y Paraguay", lat: -34.5818, lng: -58.4315, dist: "5 min. a pie" },
+        { name: "Estación Ecobici 112 - Distrito Arcos", lat: -34.5805, lng: -58.4295, dist: "6 min. a pie" },
+        { name: "Estación Ecobici 219 - Honduras y Bonpland", lat: -34.5855, lng: -58.4345, dist: "4 min. a pie" }
+      ];
+      
+      const markers = ecobiciPoints.map(pt => {
+        const customHtml = `
+          <div style="
+            background-color: #E2725B; 
+            color: white; 
+            width: 26px; 
+            height: 26px; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            border: 2px solid white; 
+            box-shadow: 0 3px 6px rgba(0,0,0,0.16);
+            transform: translate(-3px, -3px);
+          " class="map-marker-hover">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="18.5" cy="17.5" r="3.5"/><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="15" cy="5" r="1"/><path d="M12 17.5V14H9.5L12 10.5h3.5L18 14H15"/></svg>
+          </div>
+        `;
+        const icon = L.divIcon({
+          html: customHtml,
+          iconSize: [26, 26],
+          iconAnchor: [13, 13],
+          className: "custom-ecobici-icon"
+        });
+        const m = L.marker([pt.lat, pt.lng], { icon });
+        m.bindPopup(`<b>${pt.name}</b><br/>${pt.dist}`);
+        return m;
+      });
+      
+      const group = L.layerGroup(markers);
+      group.addTo(map);
+      ecobiciLayerRef.current = group;
+    }
+
+    // 3. Manage SUBE / Transporte Markers
+    if (subeLayerRef.current) {
+      map.removeLayer(subeLayerRef.current);
+      subeLayerRef.current = null;
+    }
+    if (showSube) {
+      const subePoints = [
+        { name: "Carga SUBE - Kiosco Córdoba y Fitz Roy", lat: -34.5872, lng: -58.4393, info: "Carga 24 hs · 1 min a pie" },
+        { name: "Carga SUBE - Locutorio Carranza", lat: -34.5765, lng: -58.4375, info: "Carga SUBE · 8 min a pie" },
+        { name: "Parada Metrobús J.B. Justo (Paraguay)", lat: -34.5801, lng: -58.4290, info: "Líneas 34, 166 · 6 min a pie" }
+      ];
+      
+      const markers = subePoints.map(pt => {
+        const customHtml = `
+          <div style="
+            background-color: #2F80ED; 
+            color: white; 
+            width: 26px; 
+            height: 26px; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            border: 2px solid white; 
+            box-shadow: 0 3px 6px rgba(0,0,0,0.16);
+            transform: translate(-3px, -3px);
+          " class="map-marker-hover">
+            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
+          </div>
+        `;
+        const icon = L.divIcon({
+          html: customHtml,
+          iconSize: [26, 26],
+          iconAnchor: [13, 13],
+          className: "custom-sube-icon"
+        });
+        const m = L.marker([pt.lat, pt.lng], { icon });
+        m.bindPopup(`<b>${pt.name}</b><br/>${pt.info}`);
+        return m;
+      });
+      
+      const group = L.layerGroup(markers);
+      group.addTo(map);
+      subeLayerRef.current = group;
+    }
+  }, [showBicisendas, showEcobici, showSube, leafletLoaded]);
+
   // Center map on selected place
   const handlePlaceSelect = (index: number) => {
     setActivePlace(index);
@@ -206,7 +379,6 @@ export default function NeighbourhoodMap() {
         animate: true,
         duration: 1
       });
-      // Optionally open popup
     }
   };
 
@@ -232,10 +404,48 @@ export default function NeighbourhoodMap() {
         </p>
       </div>
 
+      {/* USIG-inspired interactive layers */}
+      <div className="flex flex-wrap items-center gap-2.5 pb-2">
+        <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider mr-2">Capas de Interés CABA:</span>
+        <button
+          onClick={() => setShowBicisendas(!showBicisendas)}
+          className={`text-xs px-3.5 py-2 rounded-full border transition-all flex items-center gap-1.5 ${
+            showBicisendas 
+              ? "bg-[#5F6F52] text-white border-[#5F6F52] font-semibold"
+              : "bg-white text-neutral-600 border-[#EFEBE4] hover:bg-neutral-50"
+          }`}
+        >
+          <span>🚲</span>
+          <span>Ver Bicisendas</span>
+        </button>
+        <button
+          onClick={() => setShowEcobici(!showEcobici)}
+          className={`text-xs px-3.5 py-2 rounded-full border transition-all flex items-center gap-1.5 ${
+            showEcobici 
+              ? "bg-[#E2725B] text-white border-[#E2725B] font-semibold"
+              : "bg-white text-neutral-600 border-[#EFEBE4] hover:bg-neutral-50"
+          }`}
+        >
+          <span>🚴</span>
+          <span>Estaciones Ecobici</span>
+        </button>
+        <button
+          onClick={() => setShowSube(!showSube)}
+          className={`text-xs px-3.5 py-2 rounded-full border transition-all flex items-center gap-1.5 ${
+            showSube 
+              ? "bg-[#2F80ED] text-white border-[#2F80ED] font-semibold"
+              : "bg-white text-neutral-600 border-[#EFEBE4] hover:bg-neutral-50"
+          }`}
+        >
+          <span>💳</span>
+          <span>Carga SUBE y Metrobús</span>
+        </button>
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
         {/* Left Column: Place selector */}
         <div className="lg:col-span-5 flex flex-col justify-between space-y-4">
-          <div className="space-y-2.5">
+          <div className="space-y-2.5 max-h-[480px] overflow-y-auto pr-1">
             {places.map((place, idx) => (
               <button
                 key={idx}
@@ -266,7 +476,7 @@ export default function NeighbourhoodMap() {
         </div>
 
         {/* Right Column: Leaflet Map Container */}
-        <div className="lg:col-span-7 h-[300px] lg:h-auto min-h-[350px] rounded-2xl border border-[#EFEBE4] overflow-hidden relative shadow-inner">
+        <div className="lg:col-span-7 h-[300px] lg:h-auto min-h-[420px] rounded-2xl border border-[#EFEBE4] overflow-hidden relative shadow-inner">
           {!leafletLoaded && (
             <div className="absolute inset-0 bg-neutral-100 flex items-center justify-center text-sm text-neutral-500">
               <div className="text-center space-y-2">
