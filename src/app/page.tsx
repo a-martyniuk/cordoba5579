@@ -383,7 +383,7 @@ export default function Home() {
       rulesHeader: "House Rules",
       rulesCheck: "Check-In: From 3:00 PM onwards / Check-Out: By 11:00 AM.",
       rulesSmoke: "No smoking inside the apartment or in building common areas.",
-      rulesInt: "No pets of any kind are allowed in the apartment.",
+      rulesPets: "No pets of any kind are allowed in the apartment.",
       rulesParties: "No parties, events, or loud noises are allowed.",
       rulesGuests: "Unregistered visitors are not allowed to use the pool or rooftop.",
       rulesShower: "Showering before entering the rooftop pool is mandatory.",
@@ -970,7 +970,7 @@ export default function Home() {
             </div>
             <div className="flex items-start gap-2.5">
               <span className="w-1.5 h-1.5 bg-[#5F6F52] rounded-full mt-2 flex-shrink-0" />
-              <p>{t.rulesInt}</p>
+              <p>{t.rulesPets}</p>
             </div>
             <div className="flex items-start gap-2.5">
               <span className="w-1.5 h-1.5 bg-[#5F6F52] rounded-full mt-2 flex-shrink-0" />
