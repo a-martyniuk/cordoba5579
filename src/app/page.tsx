@@ -24,6 +24,7 @@ import Link from "next/link";
 import Gallery from "../components/Gallery";
 import CalendarWidget from "../components/CalendarWidget";
 import NeighbourhoodMap from "../components/NeighbourhoodMap";
+import { cordoba5579Knowledge } from "../data/conciergeKnowledge";
 
 interface FoodPlace {
   name: string;
@@ -432,98 +433,7 @@ export default function Home() {
     const q = query.toLowerCase();
     const isEn = language === "en";
 
-    // 1. Gastronomía (Desayunar, comer, restaurantes, cafés - Deber ser la máxima prioridad)
-    if (q.includes("desayun") || q.includes("almuerz") || q.includes("cafe") || q.includes("café") || q.includes("comer") || q.includes("gastronom") || q.includes("breakfast") || q.includes("eat") || q.includes("food") || q.includes("restaurant") || q.includes("cena") || q.includes("brunch")) {
-      return isEn
-        ? "For specialty coffee and brunch, we love 'Cuervo Café', 'Vive Café', and 'Café Registrado'. For traditional steakhouses, check out 'Don Julio', 'La Cabrera', or 'Las Cabras' (just 2 blocks away). All these recommendations are visible on our map!"
-        : "Para café de especialidad y brunch, te recomendamos 'Cuervo Café', 'Vive Café' y 'Café Registrado'. Si buscás parrilla tradicional, tenés 'Don Julio', 'La Cabrera' o 'Las Cabras' (a solo 2 cuadras). ¡Todas están en el mapa interactivo!";
-    }
-
-    // 2. Wifi
-    if (q.includes("wifi") || q.includes("wi-fi") || q.includes("internet") || q.includes("clave") || q.includes("contraseña") || q.includes("password") || q.includes("network") || q.includes("ssid")) {
-      return isEn
-        ? "The apartment features high-speed internet. The network credentials and auto-connect QR code are printed on framed signs inside the property. Wifi password is 'hola.cordoba'."
-        : "El departamento cuenta con internet de alta velocidad. Las credenciales de la red y el código QR de conexión rápida se encuentran impresos en carteles enmarcados dentro del departamento. Contraseña: 'hola.cordoba'.";
-    }
-
-    // 2. Check-in
-    if (q.includes("check-in") || q.includes("checkin") || q.includes("ingres") || q.includes("llave") || q.includes("entrar") || q.includes("lockbox") || q.includes("code") || q.includes("codigo") || q.includes("código") || q.includes("caja fuerte") || q.includes("candado")) {
-      return isEn
-        ? "Self-check-in starts at 3:00 PM. Locate the lockbox labeled 'Depto 101' at the right of the outer entrance (Av. Córdoba 5579). Enter the combination code sent to you via confirmation message, slide the latch, and retrieve the keys. Use the blue/black magnetic tag on the outer lobby reader. Learn more at /checkin."
-        : "El check-in es autónomo desde las 15:00 hs. Ubicá la caja de seguridad (lockbox) 'Depto 101' a la derecha del ingreso exterior (Av. Córdoba 5579). Ingresá la combinación que te enviamos por mensaje de confirmación, deslizá la traba y retirá las llaves. Aproximá el llavero magnético azul/negro al lector del hall exterior. Más detalles en /checkin.";
-    }
-
-    // 3. Check-out
-    if (q.includes("check-out") || q.includes("checkout") || q.includes("salida") || q.includes("leave") || q.includes("irnos") || q.includes("retirar")) {
-      return isEn
-        ? "Check-out time is strictly by 11:00 AM. Please turn off all air conditioners and lights, lock the door, return the keys to the outer lockbox (scrambling the code wheels), and notify Jorge via WhatsApp."
-        : "El check-out es hasta las 11:00 hs. Recordá apagar todos los aires acondicionados y luces, cerrar la puerta, dejar las llaves en la caja de seguridad (lockbox) exterior desordenando los números, y avisar a Jorge por WhatsApp.";
-    }
-
-    // 4. Parrilla / Asador
-    if (q.includes("parrilla") || q.includes("asado") || q.includes("grill") || q.includes("bbq")) {
-      return isEn
-        ? "The grill is located on the rooftop terrace. It is available to guests but requires prior booking and carries an extra cleaning fee. Please coordinate with Jorge via WhatsApp to reserve."
-        : "La parrilla se encuentra en la terraza. Podés utilizarla reservándola previamente con Jorge por WhatsApp (tiene un costo de limpieza adicional).";
-    }
-
-    // 5. Piscina / Pileta
-    if (q.includes("piscina") || q.includes("pileta") || q.includes("pool") || q.includes("solarium") || q.includes("terraza") || q.includes("rooftop") || q.includes("solárium")) {
-      return isEn
-        ? "The outdoor pool, showers, and solarium are on the rooftop terrace (9th floor). The pool is open to guests (closes at 8:00 PM). Taking a shower before swimming is mandatory. No unregistered visitors allowed."
-        : "La piscina al aire libre, duchas y solárium están en la terraza (piso 9). Está disponible para huéspedes (cierra a las 20:00 hs). Es obligatorio ducharse antes de ingresar a la pileta. No se permite el acceso con invitados.";
-    }
-
-    // 6. Lavadero / Laundry
-    if (q.includes("laundry") || q.includes("lavadero") || q.includes("lavar") || q.includes("secar") || q.includes("washing") || q.includes("dryer") || q.includes("ropa")) {
-      return isEn
-        ? "There is a shared laundry room in the building with washing machines and dryers available for guests at no additional cost."
-        : "El edificio cuenta con un sector de laundry (lavadero) con lavadoras y secadoras de uso común para huéspedes sin costo adicional.";
-    }
-
-    // 7. Vinos / Bar / Cava
-    if (q.includes("vino") || q.includes("cava") || q.includes("botella") || q.includes("alcohol") || q.includes("wine") || q.includes("bar") || q.includes("champagne") || q.includes("fernet") || q.includes("bebida")) {
-      return isEn
-        ? "The apartment features a minibar and wine selection for an extra cost (Malbec, Syrah, Cabernet Sauvignon, Torrontés, Dulce, Champagne, and Fernet Branca). Please report any consumption to Jorge for replenishment."
-        : "El depto cuenta con un rincón bar y una dotación de vinos de coste extra (Malbec, Syrah, Cabernet Sauvignon, Torrontés, Blanco Dulce, Champagne y Fernet Branca). Por favor, avisar el consumo a Jorge para su reposición.";
-    }
-
-    // 8. Parking / Estacionamiento / Cochera
-    if (q.includes("estacionamiento") || q.includes("cochera") || q.includes("auto") || q.includes("garage") || q.includes("parking") || q.includes("vehiculo") || q.includes("vehículo")) {
-      return isEn
-        ? "The apartment does not have its own parking space. Free parking is available on the street, or you can use a paid parking garage located 50 meters away on the same avenue."
-        : "El departamento no cuenta con cochera propia. Hay estacionamiento gratis en la calle, o bien estacionamiento de pago a solo 50 metros sobre la misma avenida.";
-    }
-
-    // 9. Camas / Toallas / Ropa de cama
-    if (q.includes("cama") || q.includes("sabana") || q.includes("sábana") || q.includes("toalla") || q.includes("acolchado") || q.includes("frazada") || q.includes("blanket") || q.includes("bed") || q.includes("sheet") || q.includes("pillow") || q.includes("almohada")) {
-      return isEn
-        ? "The apartment has 1 Queen-size bed with premium 600-thread-count Egyptian cotton sheets, plus a sofa bed in the living room. For stays over 7 nights, we provide a fresh set of towels. For 14+ nights, sheets and towels are replaced, and a light cleaning is included."
-        : "El departamento cuenta con 1 cama Queen con sábanas de hilo egipcio de 600h y un sofá cama en el living. En estadías superiores a 7 noches se ofrece un nuevo juego de toallas. En estadías de 14 noches o más se reemplazan sábanas, toallas y se realiza un repaso de limpieza.";
-    }
-
-    // 10. Equipamiento de Cocina y Vajilla
-    if (q.includes("cocina") || q.includes("licuadora") || q.includes("tostadora") || q.includes("cafetera") || q.includes("horno") || q.includes("heladera") || q.includes("microondas") || q.includes("freidora") || q.includes("arrocera") || q.includes("olla") || q.includes("sarten") || q.includes("sartén") || q.includes("vajilla") || q.includes("cubiertos")) {
-      return isEn
-        ? "The kitchen is fully equipped with a Samsung refrigerator & microwave, air fryer, convection oven, rice cooker, blender, toaster, coffee maker with frother, Tramontina pots/pans, and Carol dinnerware. You can view the full list in the Inventory tab (/inventario)."
-        : "La cocina está equipada con heladera y microondas Samsung, freidora sin aceite, horno por convección, arrocera, licuadora, tostadora, cafetera con espumadera, ollas/sartenes Tramontina y vajilla Carol. Podés ver el listado completo en la pestaña de Inventario (/inventario).";
-    }
-
-    // 11. Normas: Mascotas, Fumar, Fiestas, Vestimenta
-    if (q.includes("mascota") || q.includes("perro") || q.includes("gato") || q.includes("fumar") || q.includes("cigarrillo") || q.includes("fiesta") || q.includes("ruido") || q.includes("remera") || q.includes("torso") || q.includes("pet") || q.includes("smoke") || q.includes("party") || q.includes("rules") || q.includes("normas") || q.includes("reglas")) {
-      return isEn
-        ? "Strict rules: No smoking inside or in building hallways. No pets allowed. No parties. Unregistered guests are not allowed in amenity areas. Walking shirtless in common building areas is prohibited (except pool area)."
-        : "Reglas estrictas: Prohibido fumar en el departamento o pasillos. No se admiten mascotas. Prohibido realizar fiestas. No se permite el ingreso de visitas a los amenities. Prohibido circular con el torso desnudo en áreas comunes (excepto zona de piscina).";
-    }
-
-    // 12. Localización / Ubicación / Atracciones
-    if (q.includes("ubicacion") || q.includes("ubicación") || q.includes("donde") || q.includes("dónde") || q.includes("palermo") || q.includes("arena") || q.includes("movistar") || q.includes("cerca") || q.includes("location") || q.includes("address") || q.includes("direccion") || q.includes("dirección")) {
-      return isEn
-        ? "The apartment is located at Av. Córdoba 5579 (Palermo Hollywood). It is within short walking distance to the Movistar Arena (5-minute walk) and surrounded by top restaurants, bars, and cafes."
-        : "El departamento está ubicado en Av. Córdoba 5579, en pleno Palermo Hollywood. Se encuentra a corta distancia caminando del estadio Movistar Arena (5 minutos) y rodeado de restaurantes, bares y cafés de especialidad.";
-    }
-
-    // 13. Clima y Horas locales (Hora con zona horaria GMT-3)
+    // Special Dynamic Case: Local Time & GMT-3
     if (q.includes("hora") || q.includes("time") || q.includes("gmt") || q.includes("horario")) {
       const now = new Date();
       const options: Intl.DateTimeFormatOptions = { hour: "2-digit", minute: "2-digit", timeZone: "America/Argentina/Buenos_Aires" };
@@ -533,34 +443,16 @@ export default function Home() {
         : `La hora local actual en Buenos Aires (GMT-3) es ${localTime}. Tenela en cuenta para los horarios de los locales de la zona.`;
     }
 
-    // 15. Emergencias
-    if (q.includes("emergencia") || q.includes("emergency") || q.includes("policia") || q.includes("policía") || q.includes("same") || q.includes("bombero") || q.includes("fire") || q.includes("ambulance") || q.includes("ambulancia") || q.includes("911") || q.includes("hospital") || q.includes("medico") || q.includes("médico")) {
-      return isEn
-        ? "In case of emergency, dial 911 (General Police), 107 (SAME Medical Urgent), or 100 (Fire). You can also contact host Jorge immediately at +54 9 11 4537-9500."
-        : "En caso de emergencia, podés llamar al 911 (Policía), 107 (SAME Médica) o 100 (Bomberos). El anfitrión Jorge está disponible ante urgencias al +54 9 11 4537-9500.";
+    // Traverse Modularized Knowledge Rules
+    for (const category in cordoba5579Knowledge) {
+      const rule = cordoba5579Knowledge[category];
+      const matches = rule.keys.some(key => q.includes(key));
+      if (matches) {
+        return isEn ? rule.en : rule.es;
+      }
     }
 
-    // 16. Prestaciones / Servicios incluidos
-    if (q.includes("prestacion") || q.includes("prestación") || q.includes("servicio") || q.includes("incluid") || q.includes("ofrece") || q.includes("amenities") || q.includes("feature") || q.includes("benefit") || q.includes("amenity")) {
-      return isEn
-        ? "The stay includes premium amenities: rooftop pool and solarium, free shared laundry room, high-speed Wi-Fi, 600h Egyptian cotton bed sheets, and pure cotton towels (400g). Fresh sets are provided every 7 days (and a light cleaning at 14 days)."
-        : "La estadía incluye excelentes prestaciones: piscina y solárium en terraza, laundry gratis en el edificio, Wi-Fi de alta velocidad, sábanas de algodón egipcio de 600 hilos y toallas de puro algodón de 400g. Recambio de blancos cada 7 noches (y repaso de limpieza cada 14 noches).";
-    }
-
-    // 17. Accesibilidad / Movilidad reducida
-    if (q.includes("accesib") || q.includes("silla de rued") || q.includes("rampa") || q.includes("escalera") || q.includes("discapacidad") || q.includes("movilidad") || q.includes("wheelchair") || q.includes("accessib") || q.includes("elevator") || q.includes("ascensor")) {
-      return isEn
-        ? "The building is fully accessible. There is step-free access from the street level (sidewalk) to the main lobby, and a modern, spacious elevator that goes directly up to the 1st floor where Depto 101 is located."
-        : "El edificio cuenta con accesibilidad plena: el ingreso desde la vereda de la calle hasta el hall principal es sin escalones (a nivel de suelo), y disponés de un ascensor amplio y moderno para subir directo al piso 1, donde está el Depto 101.";
-    }
-
-    // 18. Guía de llegada / Cómo llegar
-    if (q.includes("llegada") || q.includes("como llegar") || q.includes("cómo llegar") || q.includes("dirección") || q.includes("direccion") || q.includes("arriving") || q.includes("arrival") || q.includes("map") || q.includes("donde queda") || q.includes("dónde queda")) {
-      return isEn
-        ? "The apartment is at Av. Córdoba 5579, Palermo Hollywood. Arriving from Aeroparque (AEP) is a 15-min taxi drive. From Ezeiza (EZE), it is about 45-60 min. The Palermo Subway Station (Line D) is a 10-min walk, and Carranza Station is nearby. You can view all transportation hubs directly on our map!"
-        : "El departamento queda en Av. Córdoba 5579, Palermo Hollywood. Si venís de Aeroparque (AEP), son 15 min en taxi. Si venís de Ezeiza (EZE), son entre 45 y 60 min. El Subte D (estación Palermo o Carranza) te deja a unas 8-10 cuadras. ¡Tenés todos los detalles y el mapa de accesos en el portal!";
-    }
-
+    // Fallback response
     return isEn
       ? "Good question! I don't have that specific detail in my guide. You can ask Jorge directly by clicking 'Book via WhatsApp' and he will help you right away!"
       : "¡Buena pregunta! No tengo esa respuesta exacta registrada en mi guía del departamento, pero podés consultarle directamente a Jorge haciendo clic en 'Reservar por WhatsApp'. ¡Te responderá enseguida!";
