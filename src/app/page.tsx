@@ -318,6 +318,12 @@ export default function Home() {
       faq4A: "Para preservar la tranquilidad de los vecinos, están prohibidas las fiestas y eventos ruidos molestos. Las visitas adicionales deben registrarse o comunicarse previamente con el anfitrión.",
       faq5Q: "¿Cómo se organiza el acceso a la piscina y la parrilla?",
       faq5A: "La piscina exterior de la terraza está disponible de 9:00 a 20:00 hs de manera libre. Para usar la parrilla de la terraza, te pedimos que la reserves con antelación enviándole un mensaje rápido por WhatsApp a Jorge.",
+      faq6Q: "¿Qué costo y qué vinos tiene el rincón bar del departamento?",
+      faq6A: "El rincón bar cuenta con un stock de coste extra que incluye vinos tintos (Malbec, Syrah, Cabernet Sauvignon), blancos (Torrontés, dulce natural) y botellas de espumante y Fernet Branca. Los precios detallados están indicados en el bar y simplemente reportas tu consumo a Jorge al salir.",
+      faq7Q: "¿El edificio cuenta con ascensor y accesibilidad para silla de ruedas?",
+      faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de escalones. Además, el edificio cuenta con un ascensor amplio y moderno (132 cm de profundidad y puerta de 81 cm de ancho mínimo) que llega directo al piso 1 de la unidad 101.",
+      faq8Q: "¿Hay servicio de lavadero o laundry disponible?",
+      faq8A: "Sí, todos los huéspedes tienen acceso sin costo adicional al laundry de uso común en el edificio, equipado con lavarropas y secadoras. Además, el departamento cuenta con ténder para colgar la ropa.",
       bookingDirectTitle: "¿Por qué reservar directo?",
       bookingDirectText: "Reservando a través de nuestro sitio oficial vía WhatsApp ahorras hasta un 15% en tarifas de servicio e impuestos que cobran plataformas externas como Airbnb o Booking.com.",
       footerTitle: "Alquiler Temporal de Diseño · Palermo Hollywood, Buenos Aires",
@@ -396,6 +402,12 @@ export default function Home() {
       faq4A: "To preserve neighbors' quiet rest, parties and loud events are strictly prohibited. Extra visitors must be registered or authorized in advance by the host.",
       faq5Q: "How do I coordinate rooftop pool and grill access?",
       faq5A: "The rooftop pool is free to use from 9:00 AM to 8:00 PM. To use the grill (9th floor rooftop), please send a quick WhatsApp message to Jorge in advance to reserve the space.",
+      faq6Q: "What are the wine cellar options and costs in the apartment?",
+      faq6A: "The cocktail bar features an extra-cost selection of red wines (Malbec, Syrah, Cabernet Sauvignon), white wines (Torrontés, naturally sweet), Champagne, and Fernet Branca. Detailed prices are listed at the bar; simply report consumption to Jorge at checkout.",
+      faq7Q: "Is the building wheelchair accessible and does it have an elevator?",
+      faq7A: "Yes, entrance from the sidewalk to the lobby is completely step-free. The building features a spacious, modern elevator (132 cm deep, 81 cm door width) going directly to the 1st floor where Depto 101 is located.",
+      faq8Q: "Is there a laundry service available?",
+      faq8A: "Yes, guests enjoy free access to the building's shared laundry room with washers and dryers. A drying rack is also provided inside the apartment.",
       bookingDirectTitle: "Why book direct?",
       bookingDirectText: "Booking directly through our official WhatsApp saves you up to 15% in platform service fees and taxes charged by sites like Airbnb or Booking.com.",
       footerTitle: "Designer Vacation Rental · Palermo Hollywood, Buenos Aires",
@@ -647,7 +659,7 @@ export default function Home() {
 
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="text-neutral-600 hover:text-neutral-955 p-2"
+                className="text-neutral-600 hover:text-neutral-900 p-2"
               >
                 {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
               </button>
@@ -734,7 +746,7 @@ export default function Home() {
             <span>{t.tagArena}</span>
           </div>
           
-          <h1 className="font-serif text-3xl md:text-4.5xl text-neutral-955 font-bold tracking-tight leading-tight">
+          <h1 className="font-serif text-3xl md:text-4.5xl text-neutral-900 font-bold tracking-tight leading-tight">
             {t.heroTitle}
           </h1>
           
@@ -1265,7 +1277,10 @@ export default function Home() {
               { q: t.faq2Q, a: t.faq2A },
               { q: t.faq3Q, a: t.faq3A },
               { q: t.faq4Q, a: t.faq4A },
-              { q: t.faq5Q, a: t.faq5A }
+              { q: t.faq5Q, a: t.faq5A },
+              { q: t.faq6Q, a: t.faq6A },
+              { q: t.faq7Q, a: t.faq7A },
+              { q: t.faq8Q, a: t.faq8A }
             ].map((item, idx) => {
               const isOpen = openFaq === idx;
               return (
