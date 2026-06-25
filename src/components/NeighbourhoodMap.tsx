@@ -2,6 +2,8 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import { fallbackPlaces, PlaceOfInterest } from "../data/places";
+
 import { 
   MapPin, 
   Train, 
@@ -89,36 +91,7 @@ function parseCoordinatesString(str: string): { lat: number; lng: number } | nul
   return null;
 }
 
-// LocalStorage caching helpers for EPOK queries
-const CACHE_KEY_PREFIX = "epok_pois_";
-const CACHE_EXPIRY_MS = 24 * 60 * 60 * 1000; // 24 hours
 
-function getCachedPOIs(key: string): PlaceOfInterest[] | null {
-  if (typeof window === "undefined") return null;
-  try {
-    const cached = localStorage.getItem(CACHE_KEY_PREFIX + key);
-    if (!cached) return null;
-    const { timestamp, data } = JSON.parse(cached);
-    if (Date.now() - timestamp < CACHE_EXPIRY_MS) {
-      return data;
-    }
-  } catch (e) {
-    console.error("Error reading cache:", e);
-  }
-  return null;
-}
-
-function setCachedPOIs(key: string, data: PlaceOfInterest[]) {
-  if (typeof window === "undefined") return;
-  try {
-    localStorage.setItem(CACHE_KEY_PREFIX + key, JSON.stringify({
-      timestamp: Date.now(),
-      data
-    }));
-  } catch (e) {
-    console.error("Error setting cache:", e);
-  }
-}
 
 
 // Client-side CABA geocoder
@@ -182,81 +155,7 @@ function haversineDistanceMeters(lat1: number, lng1: number, lat2: number, lng2:
 }
 
 // Merge static POIs and dynamic/fetched POIs, prioritizing static ones (which might have curated coordinates/descriptions)
-function mergeStaticAndDynamic(
-  staticList: PlaceOfInterest[],
-  dynamicList: PlaceOfInterest[],
-  category: string,
-  stayLat: number,
-  stayLng: number
-): PlaceOfInterest[] {
-  let staticPOIs = staticList.filter(p => p.type === category);
-  
-  // Specific requirement: supermarkets are only those within 2000m
-  if (category === "supermarket") {
-    staticPOIs = staticPOIs.filter(p => haversineDistanceMeters(stayLat, stayLng, p.lat, p.lng) <= 2000);
-  }
 
-  // Format static POI distances if they don't have them or to keep consistency
-  const formattedStatic = staticPOIs.map(p => {
-    if (p.distance && p.distance !== "Calculando...") return p;
-    const d = Math.round(haversineDistanceMeters(stayLat, stayLng, p.lat, p.lng));
-    return {
-      ...p,
-      distance: d < 1000 ? `${d} m a pie` : `${(d / 1000).toFixed(1)} km`
-    };
-  });
-
-  const merged: PlaceOfInterest[] = [...formattedStatic];
-
-  const normalizeString = (str: string) => {
-    return str
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "") // remove accents
-      .replace(/[^a-z0-9]/g, ""); // keep alphanumeric
-  };
-
-  for (const dyn of dynamicList) {
-    const dynNorm = normalizeString(dyn.name);
-    let isDuplicate = false;
-
-    for (const stat of formattedStatic) {
-      const statNorm = normalizeString(stat.name);
-      
-      // If the names are almost identical
-      if (statNorm === dynNorm || statNorm.includes(dynNorm) || dynNorm.includes(statNorm)) {
-        isDuplicate = true;
-        break;
-      }
-
-      // Proximity check: if coordinates are very close (less than 70 meters), they are likely the same POI
-      const dist = haversineDistanceMeters(stat.lat, stat.lng, dyn.lat, dyn.lng);
-      if (dist < 70) {
-        isDuplicate = true;
-        break;
-      }
-    }
-
-    if (!isDuplicate) {
-      // Calculate/format distance for dynamic POI
-      const d = Math.round(haversineDistanceMeters(stayLat, stayLng, dyn.lat, dyn.lng));
-      const distanceText = d < 1000 ? `${d} m a pie` : `${(d / 1000).toFixed(1)} km`;
-      merged.push({
-        ...dyn,
-        distance: distanceText
-      });
-    }
-  }
-
-  // Sort by distance from stay location
-  merged.sort((a, b) => {
-    const distA = haversineDistanceMeters(stayLat, stayLng, a.lat, a.lng);
-    const distB = haversineDistanceMeters(stayLat, stayLng, b.lat, b.lng);
-    return distA - distB;
-  });
-
-  return merged;
-}
 
 // Detect subway line from station name (e.g. "Linea A", "Línea D", etc.)
 
@@ -284,666 +183,7 @@ function getSubwayLineColor(line: string | undefined): string {
   }
 }
 
-// Fetch a single page of EPOK POIs (max 50 per page)
-async function fetchEpokPOIsPage(categoria: string, searchText: string, start: number = 0): Promise<{ results: PlaceOfInterest[]; total: number }> {
-  try {
-    const searchUrl = `https://epok.buenosaires.gob.ar/buscar/?texto=${encodeURIComponent(searchText)}&categoria=${categoria}&start=${start}`;
-    const searchRes = await fetch(searchUrl);
-    if (!searchRes.ok) throw new Error(`Search failed for ${categoria}`);
-    const searchJson = await searchRes.json();
-    
-    const instances = searchJson.instancias || [];
-    const total = searchJson.totalInstancias || instances.length;
-    
-    const detailPromises = instances.map(async (inst: any) => {
-      try {
-        const detailUrl = `https://epok.buenosaires.gob.ar/getObjectContent/?id=${inst.id}`;
-        const detailRes = await fetch(detailUrl);
-        if (!detailRes.ok) return null;
-        const detailJson = await detailRes.json();
-        
-        // Extract centroid coordinates from WKT: e.g. "POINT (108260.56 103031.93)"
-        const centroid = detailJson.ubicacion?.centroide;
-        if (!centroid) return null;
-        const match = centroid.match(/POINT\s*\(\s*([-\d.]+)\s+([-\d.]+)\s*\)/i);
-        if (!match) return null;
-        
-        const x = parseFloat(match[1]);
-        const y = parseFloat(match[2]);
-        if (isNaN(x) || isNaN(y)) return null;
-        
-        const coords = convertProjectedToWGS84(x, y);
-        
-        const contenido = detailJson.contenido || [];
-        const getVal = (id: string) => {
-          const item = contenido.find((c: any) => c.nombreId === id);
-          return item ? item.valor : undefined;
-        };
-        
-        const address = detailJson.direccionNormalizada || getVal("direccion") || "";
-        const phone = getVal("telefonos") || getVal("telefono") || "";
-        const email = getVal("email") || getVal("correo") || getVal("mail") || "";
-        const web = getVal("web") || getVal("sitio_web") || getVal("pag_web") || "";
-        
-        // Map CABA category normalizations to our app's POI types
-        let type: PlaceOfInterest["type"] = "hospital";
-        if (categoria === "comisarias") type = "security";
-        else if (categoria === "cuarteles_de_bomberos") type = "security";
-        else if (categoria === "estaciones_de_subte") type = "subway";
-        else if (categoria === "estaciones_de_metrobus") type = "metrobus";
-        else if (categoria === "centros_comerciales") type = "shopping";
-        else if (categoria === "gastronomia") type = "food";
-        else if (categoria === "lugar_emblematico") type = "tourist";
-        
-        // Detect subway line from name for color coding
-        const subLine = categoria === "estaciones_de_subte" 
-          ? detectSubwayLine(inst.nombre) 
-          : undefined;
-        
-        const isFireStation = categoria === "cuarteles_de_bomberos";
-        
-        return {
-          name: inst.nombre,
-          type,
-          distance: "Calculando...",
-          desc: inst.clase || detailJson.clase || "",
-          lat: coords.lat,
-          lng: coords.lng,
-          phone,
-          email,
-          web,
-          address,
-          hours: "Guardia 24 horas",
-          subLine,
-          isFireStation
-        } as PlaceOfInterest;
-      } catch (err) {
-        console.error("Error fetching EPOK object content:", err);
-        return null;
-      }
-    });
-    
-    const results = (await Promise.all(detailPromises)).filter((p): p is PlaceOfInterest => p !== null);
-    return { results, total };
-  } catch (e) {
-    console.error("Error fetching from EPOK API:", e);
-    return { results: [], total: 0 };
-  }
-}
 
-// Fetch ALL POIs from EPOK using pagination (loops until all results are retrieved)
-async function fetchAllEpokPOIs(categoria: string, searchText: string, maxResults: number = 300): Promise<PlaceOfInterest[]> {
-  const allResults: PlaceOfInterest[] = [];
-  let start = 0;
-  const pageSize = 50;
-  let total = Infinity;
-  
-  while (start < total && allResults.length < maxResults) {
-    const { results, total: pageTotal } = await fetchEpokPOIsPage(categoria, searchText, start);
-    total = pageTotal;
-    allResults.push(...results);
-    
-    if (results.length === 0) break; // No more results
-    start += pageSize;
-    
-    // Safety: never exceed maxResults
-    if (allResults.length >= maxResults) break;
-  }
-  
-  return allResults;
-}
-
-
-interface PlaceOfInterest {
-  name: string;
-  type: "stay" | "subway" | "metrobus" | "shopping" | "supermarket" | "food" | "hospital" | "security" | "park" | "museum" | "theater" | "tourist";
-  distance: string;
-  desc: string;
-  lat: number;
-  lng: number;
-  phone?: string;
-  email?: string;
-  web?: string;
-  hours?: string;
-  address?: string;
-  subLine?: string; // Subway line identifier: "A", "B", "C", "D", "E", "H"
-  isFireStation?: boolean; // Distinguish bomberos from comisarias
-}
-
-const fallbackPlaces: PlaceOfInterest[] = [
-  {
-    name: "Av. Córdoba 5579 (El Departamento)",
-    type: "stay",
-    distance: "Ubicación",
-    desc: "Moderno departamento a estrenar, ubicado estratégicamente en Palermo Hollywood.",
-    lat: -34.587546,
-    lng: -58.439668,
-    phone: "+54 9 11 4537-9500",
-    hours: "24 hs",
-    address: "Av. Córdoba 5579, Palermo Hollywood"
-  },
-  {
-    name: "Carrefour Market (Av. Córdoba 5600)",
-    type: "supermarket",
-    distance: "1 min. a pie",
-    desc: "Supermercado express a la vuelta del departamento, ideal para compras rápidas cotidianas.",
-    lat: -34.5879,
-    lng: -58.4390,
-    hours: "Lunes a Sábados 08:00–21:30, Domingos cerrado",
-    address: "Av. Córdoba 5625, Palermo"
-  },
-  {
-    name: "DIA Av. Córdoba 5799",
-    type: "supermarket",
-    distance: "3 min. a pie",
-    desc: "Supermercado de proximidad DIA con productos de almacén, lácteos, carnes y artículos de limpieza al mejor precio.",
-    lat: -34.5861,
-    lng: -58.4424,
-    hours: "Lunes a Sábados 08:00–21:00, Domingos 09:00–20:00",
-    address: "Av. Córdoba 5799, Palermo"
-  },
-  {
-    name: "Vea Av. Córdoba 6103",
-    type: "supermarket",
-    distance: "6 min. a pie",
-    desc: "Supermercado Vea (Cencosud) con buena variedad de frescos, fiambres y bebidas. Sucursal sobre Av. Córdoba en Villa Crespo.",
-    lat: -34.5838,
-    lng: -58.4465,
-    hours: "Lunes a Sábados 08:00–21:30, Domingos 09:00–21:00",
-    address: "Av. Córdoba 6103, Villa Crespo"
-  },
-  {
-    name: "Autoservicio Hollywood (Fitz Roy 1587)",
-    type: "supermarket",
-    distance: "4 min. a pie",
-    desc: "Autoservicio completo en pleno corazón de Palermo Hollywood, abierto hasta la medianoche todos los días.",
-    lat: -34.5851,
-    lng: -58.4372,
-    hours: "Lun–Sáb 09:00–24:00, Dom 15:00–23:00",
-    address: "Fitz Roy 1587, Palermo Hollywood"
-  },
-  {
-    name: "Carrefour Express (Av. Córdoba y Warnes)",
-    type: "supermarket",
-    distance: "12 min. a pie",
-    desc: "Sucursal Carrefour Express de cercanía, con frescos, lácteos, panadería y bebidas.",
-    lat: -34.5859,
-    lng: -58.4542,
-    hours: "Lunes a Sábados 08:00–21:30, Domingos 09:00–20:00",
-    address: "Av. Córdoba y Warnes, Villa Crespo"
-  },
-  {
-    name: "Carrefour Express (Av. Santa Fe 5052)",
-    type: "supermarket",
-    distance: "15 min. a pie",
-    desc: "Carrefour Express sobre Av. Santa Fe en Palermo, con amplia variedad de productos cotidianos.",
-    lat: -34.5769,
-    lng: -58.4311,
-    phone: "+54 11 3788-1233",
-    hours: "Lun–Sáb 08:30–22:00, Dom 11:00–20:00",
-    address: "Av. Santa Fe 5052, Palermo"
-  },
-  {
-    name: "Carrefour Express (Paraguay y Scalabrini)",
-    type: "supermarket",
-    distance: "15 min. a pie",
-    desc: "Sucursal Carrefour Express en Palermo, ideal para compras rápidas de almacén y frescos.",
-    lat: -34.5867,
-    lng: -58.4192,
-    hours: "Lunes a Sábados 08:00–21:30",
-    address: "Paraguay y Scalabrini Ortiz, Palermo"
-  },
-  {
-    name: "DIA Scalabrini Ortiz 367",
-    type: "supermarket",
-    distance: "16 min. a pie",
-    desc: "Supermercado DIA con precios competitivos, productos de almacén, carnes y lácteos. Villa Crespo.",
-    lat: -34.5994,
-    lng: -58.4379,
-    web: "supermercadosdia.com.ar",
-    hours: "Lunes a Sábados 08:00–21:00, Domingos 09:00–20:00",
-    address: "Av. Raúl Scalabrini Ortiz 367, Villa Crespo"
-  },
-  {
-    name: "Diarco Barrio (Av. Corrientes)",
-    type: "supermarket",
-    distance: "16 min. a pie",
-    desc: "Supermercado mayorista Diarco con precios de distribuidor, amplio surtido de almacén, bebidas y limpieza.",
-    lat: -34.5992,
-    lng: -58.4397,
-    web: "diarco.com.ar",
-    hours: "Lunes a Sábados 08:00–21:00",
-    address: "Av. Corrientes y J. Ramírez de Velasco, Villa Crespo"
-  },
-  {
-    name: "Carrefour Market (Av. Corrientes 5645)",
-    type: "supermarket",
-    distance: "17 min. a pie",
-    desc: "Supermercado Carrefour Market completo con carnes, frescos, bazar y sección de bebidas. Villa Crespo.",
-    lat: -34.5965,
-    lng: -58.4424,
-    hours: "Lunes a Sábados 08:00–22:00, Domingos 09:00–21:00",
-    address: "Av. Corrientes 5645, Villa Crespo"
-  },
-  {
-    name: "Vea Villa Crespo (Aráoz 247)",
-    type: "supermarket",
-    distance: "17 min. a pie",
-    desc: "Supermercado Vea (Cencosud) con amplia sección de frescos, fiambres y panadería. Ideal para compras semanales.",
-    lat: -34.6010,
-    lng: -58.4387,
-    phone: "+54 11 4856-3737",
-    web: "supermercadosvea.com.ar",
-    hours: "Lunes a Sábados 08:00–22:00, Domingos 09:00–21:00",
-    address: "Aráoz 247, Villa Crespo"
-  },
-  {
-    name: "Disco Palermo (Paraguay 4302)",
-    type: "supermarket",
-    distance: "17 min. a pie",
-    desc: "Supermercado Disco con amplia selección de frescos, panadería, carnicería y productos gourmet. Estacionamiento disponible.",
-    lat: -34.5862,
-    lng: -58.4223,
-    phone: "0800-888-4726",
-    hours: "Lunes a Sábados 08:00–22:00, Domingos 09:00–21:00",
-    address: "Paraguay 4302, Palermo"
-  },
-  {
-    name: "Coto Botánico (Av. Santa Fe 3760)",
-    type: "supermarket",
-    distance: "19 min. a pie",
-    desc: "Gran sucursal Coto frente al Jardín Botánico, con supermercado completo, electrónica y bazar. A metros del Zoológico.",
-    lat: -34.5848,
-    lng: -58.4165,
-    phone: "011 4805-1266",
-    hours: "Lunes a Sábados 08:30–22:00, Domingos 09:00–22:00",
-    address: "Av. Santa Fe 3760, Palermo"
-  },
-  {
-    name: "Jumbo Palermo",
-    type: "supermarket",
-    distance: "9 min. a pie",
-    desc: "Gran supermercado hipermercado con amplia variedad de comestibles, bebidas y bazar en el centro comercial Portal Palermo.",
-    lat: -34.5750,
-    lng: -58.4252,
-    phone: "0810-999-5862",
-    hours: "Lunes a Sábados 08:30–22:00, Domingos 09:00–22:00",
-    address: "Av. Int. Bullrich 345, Palermo"
-  },
-  {
-    name: "Jardín Japonés",
-    type: "tourist",
-    distance: "8 min. en auto / 25 min. a pie",
-    desc: "Hermoso y tranquilo jardín zen administrado por la Fundación Cultural Argentino Japonesa, con restaurante y vivero.",
-    lat: -34.5750,
-    lng: -58.4098,
-    phone: "011 4804-9141",
-    web: "www.jardinjapones.org.ar",
-    hours: "Todos los días 10:00–18:45",
-    address: "Av. Casares 3450, Palermo"
-  },
-  {
-    name: "Planetario Galileo Galilei",
-    type: "tourist",
-    distance: "9 min. en auto",
-    desc: "El principal centro de divulgación de astronomía de la ciudad, con proyecciones domo de alta resolución y parque arbolado.",
-    lat: -34.5696,
-    lng: -58.4116,
-    phone: "011 4771-6629",
-    web: "planetario.buenosaires.gob.ar",
-    hours: "Martes a Domingos 09:00–19:30, Lunes cerrado",
-    address: "Av. Sarmiento y Belisario Roldán, Palermo"
-  },
-  {
-    name: "Estación Ministro Carranza (Línea D)",
-    type: "subway",
-    distance: "8 min. a pie",
-    desc: "Línea directa al Obelisco, Plaza de Mayo y combinaciones con toda la red de subtes.",
-    lat: -34.5754,
-    lng: -58.4349,
-    address: "Av. Santa Fe y Av. Dorrego, Palermo"
-  },
-  {
-    name: "Estación Palermo (Línea D)",
-    type: "subway",
-    distance: "10 min. a pie",
-    desc: "Ubicada en Av. Santa Fe y Av. Juan B. Justo, junto al centro comercial Distrito Arcos.",
-    lat: -34.5782,
-    lng: -58.4265,
-    address: "Av. Santa Fe y Av. Juan B. Justo, Palermo"
-  },
-  {
-    name: "Metrobús Juan B. Justo - Estación Córdoba",
-    type: "metrobus",
-    distance: "2 min. a pie",
-    desc: "Carril exclusivo de colectivos (líneas 34, 166) cruzando de este a oeste de la ciudad.",
-    lat: -34.5889,
-    lng: -58.4382,
-    address: "Av. Juan B. Justo y Av. Córdoba, Palermo"
-  },
-  {
-    name: "Distrito Arcos Outlet Premium",
-    type: "shopping",
-    distance: "10 min. a pie",
-    desc: "Centro comercial a cielo abierto de primeras marcas, cafeterías gourmet y locales de diseño.",
-    lat: -34.5811,
-    lng: -58.4288,
-    web: "www.distritoarcos.com",
-    hours: "Todos los días 10:00–21:00",
-    address: "Paraguay 4979, Palermo"
-  },
-  {
-    name: "Don Julio Parrilla",
-    type: "food",
-    distance: "12 min. a pie",
-    desc: "Galardonada como una de las mejores parrillas del mundo. Carnes de pastura maduradas y excelente cava.",
-    lat: -34.5863,
-    lng: -58.4243,
-    phone: "011 4833-0363",
-    web: "www.parrilladonjulio.com",
-    hours: "Todos los días 11:30–16:00, 19:00–01:00",
-    address: "Guatemala 4699, Palermo"
-  },
-  {
-    name: "La Mar Cebichería",
-    type: "food",
-    distance: "7 min. a pie",
-    desc: "Prestigioso restaurante de cocina peruana y pescados frescos, ideal para cenar en su hermoso patio.",
-    lat: -34.5786,
-    lng: -58.4385,
-    phone: "011 4776-5543",
-    web: "www.lamarcebicheria.com.ar",
-    hours: "Lunes a Domingos 12:00–16:00, 19:00–00:00",
-    address: "Arévalo 2024, Palermo"
-  },
-  {
-    name: "Sanatorio de Los Arcos",
-    type: "hospital",
-    distance: "6 min. en auto / 12 min. a pie",
-    desc: "Prestigioso sanatorio privado de alta complejidad con servicio de guardia de urgencias las 24 horas.",
-    lat: -34.58102,
-    lng: -58.42995,
-    phone: "011 4779-1000",
-    hours: "Guardia 24 horas",
-    address: "Av. Juan B. Justo 909, Palermo"
-  },
-  {
-    name: "Hospital de Agudos Dr. J. A. Fernández",
-    type: "hospital",
-    distance: "10 min. en auto",
-    desc: "Hospital público general de alta complejidad de la Ciudad de Buenos Aires con guardia de urgencias.",
-    lat: -34.5806,
-    lng: -58.4069,
-    phone: "011 4808-2600",
-    hours: "Guardia 24 horas",
-    address: "Cerviño 3356, Palermo"
-  },
-  {
-    name: "Comisaría Vecinal 14B - Policía de la Ciudad",
-    type: "security",
-    distance: "10 min. a pie",
-    desc: "Seccional oficial de policía de la Ciudad, garantizando presencia de seguridad y asistencia en la zona.",
-    lat: -34.5800,
-    lng: -58.4416,
-    phone: "011 4771-4444",
-    email: "comisaria14b@policiadelaciudad.gob.ar",
-    hours: "Abierto 24 horas",
-    address: "Av. Dorrego 1898, Palermo"
-  },
-  {
-    name: "Destacamento de Bomberos Palermo",
-    type: "security",
-    distance: "10 min. a pie / 4 min. en auto",
-    desc: "Cuartel oficial de Bomberos de la Ciudad de Buenos Aires.",
-    lat: -34.5775,
-    lng: -58.4356,
-    phone: "100 (Emergencias)",
-    hours: "Abierto 24 horas",
-    address: "Guatemala 5966, Palermo"
-  },
-  {
-    name: "Plaza Cortázar (Plaza Serrano)",
-    type: "park",
-    distance: "12 min. a pie",
-    desc: "El corazón de Palermo Soho, famoso por su feria artesanal de diseño y una vibrante oferta de bares.",
-    lat: -34.5887,
-    lng: -58.4301,
-    address: "Honduras y Serrano, Palermo"
-  },
-  {
-    name: "Centro Cultural de la Ciencia (C3)",
-    type: "museum",
-    distance: "8 min. a pie",
-    desc: "Museo científico interactivo con talleres y exhibiciones modernas, ideal para visitar.",
-    lat: -34.582566,
-    lng: -58.429118,
-    phone: "011 4899-7300",
-    web: "ccscience.gob.ar",
-    hours: "Viernes a Domingos 13:00–19:30",
-    address: "Godoy Cruz 2270, Palermo"
-  },
-  {
-    name: "MALBA (Museo de Arte Latinoamericano)",
-    type: "museum",
-    distance: "8 min. en auto",
-    desc: "Excepcional colección de arte latinoamericano moderno y contemporáneo en un edificio icónico.",
-    lat: -34.5772,
-    lng: -58.4042,
-    phone: "011 4808-6500",
-    web: "www.malba.org.ar",
-    hours: "Jueves a Lunes 12:00–20:00, Miércoles 11:00–20:00, Martes cerrado",
-    address: "Av. Figueroa Alcorta 3415, Palermo"
-  },
-  {
-    name: "Teatro Regio",
-    type: "theater",
-    distance: "7 min. a pie",
-    desc: "Pertenece al Complejo Teatral de Buenos Aires, ofreciendo obras dramáticas con grandes elencos locales.",
-    lat: -34.584361,
-    lng: -58.445889,
-    phone: "011 4772-3350",
-    web: "complejoteatral.gob.ar",
-    hours: "Según funciones programadas",
-    address: "Av. Córdoba 6056, Colegiales"
-  },
-  {
-    name: "Casa Rosada (Sede del Gobierno)",
-    type: "tourist",
-    distance: "15 min. en auto",
-    desc: "Sede del Poder Ejecutivo de la República Argentina y monumento histórico nacional.",
-    lat: -34.608056,
-    lng: -58.370278,
-    web: "presidencia.gob.ar",
-    address: "Balcarce 50, Monserrat"
-  },
-  {
-    name: "Obelisco de Buenos Aires",
-    type: "tourist",
-    distance: "12 min. en auto",
-    desc: "El monumento icónico de la Ciudad de Buenos Aires y centro de festejos populares.",
-    lat: -34.603722,
-    lng: -58.381589,
-    address: "Av. 9 de Julio y Av. Corrientes, San Nicolás"
-  },
-  {
-    name: "Teatro Colón",
-    type: "theater",
-    distance: "12 min. en auto",
-    desc: "Uno de los teatros de ópera más importantes del mundo por su acústica y arquitectura.",
-    lat: -34.601111,
-    lng: -58.383056,
-    phone: "011 4378-7100",
-    web: "teatrocolon.org.ar",
-    address: "Cerrito 628, San Nicolás"
-  },
-  {
-    name: "Carrefour San Telmo",
-    type: "supermarket",
-    distance: "15 min. en auto",
-    desc: "Supermercado Carrefour en el histórico barrio de San Telmo.",
-    lat: -34.6203,
-    lng: -58.3735,
-    hours: "Lunes a Sábados 08:00–21:30",
-    address: "Av. San Juan 960, San Telmo"
-  },
-  {
-    name: "Cementerio de la Recoleta",
-    type: "tourist",
-    distance: "10 min. en auto",
-    desc: "Famoso cementerio que alberga las bóvedas de importantes personalidades de la historia argentina.",
-    lat: -34.5875,
-    lng: -58.3930,
-    hours: "Todos los días 08:00-18:00",
-    address: "Junín 1760, Recoleta"
-  },
-  {
-    name: "Abasto Shopping",
-    type: "shopping",
-    distance: "8 min. en auto",
-    desc: "Uno de los centros comerciales más grandes de la ciudad, en el antiguo mercado de Abasto.",
-    lat: -34.6033,
-    lng: -58.4109,
-    web: "abastoshopping.com.ar",
-    hours: "Todos los días 10:00-22:00",
-    address: "Av. Corrientes 3247, Balvanera"
-  },
-  {
-    name: "Coto Abasto",
-    type: "supermarket",
-    distance: "8 min. en auto",
-    desc: "Gran supermercado Coto con estacionamiento, ubicado frente al Abasto Shopping.",
-    lat: -34.6025,
-    lng: -58.4115,
-    phone: "011 4866-2244",
-    hours: "Lunes a Sábados 08:30–22:00",
-    address: "Anchorena 901, Balvanera"
-  },
-  {
-    name: "Caminito (La Boca)",
-    type: "tourist",
-    distance: "20 min. en auto",
-    desc: "Calle museo peatonal de gran valor cultural y turístico, famoso por sus conventillos de colores.",
-    lat: -34.639444,
-    lng: -58.362778,
-    address: "Av. Pedro de Mendoza, La Boca"
-  },
-  {
-    name: "Hospital de Pediatría Dr. J. Garrahan",
-    type: "hospital",
-    distance: "18 min. en auto",
-    desc: "Principal hospital nacional de pediatría de alta complejidad médica.",
-    lat: -34.6318,
-    lng: -58.3894,
-    phone: "4941-8772",
-    web: "garrahan.gov.ar",
-    hours: "Guardia 24 horas",
-    address: "Combate de los Pozos 1881, Parque Patricios"
-  },
-  {
-    name: "Las Violetas (Café Histórico)",
-    type: "food",
-    distance: "14 min. en auto",
-    desc: "Confitería y restaurante inaugurado en 1884, declarado lugar de interés cultural de la ciudad.",
-    lat: -34.617222,
-    lng: -58.4225,
-    phone: "011 4958-7387",
-    hours: "Todos los días 06:00-01:00",
-    address: "Av. Rivadavia 3899, Almagro"
-  },
-  {
-    name: "Parque Centenario",
-    type: "park",
-    distance: "10 min. en auto",
-    desc: "Gran espacio verde público con lago artificial, ferias de libros y anfiteatro.",
-    lat: -34.6075,
-    lng: -58.4358,
-    address: "Av. Díaz Vélez y Leopoldo Marechal, Caballito"
-  },
-  {
-    name: "Jumbo Caballito",
-    type: "supermarket",
-    distance: "12 min. en auto",
-    desc: "Hipermercado Jumbo ubicado en el centro geográfico de la ciudad.",
-    lat: -34.6186,
-    lng: -58.4358,
-    phone: "0810-999-5862",
-    hours: "Lunes a Sábados 08:30–22:00, Domingos 09:00–22:00",
-    address: "Av. Rivadavia 5100, Caballito"
-  },
-  {
-    name: "Vea Flores",
-    type: "supermarket",
-    distance: "15 min. en auto",
-    desc: "Supermercado Vea ofreciendo productos frescos y de almacén en Flores.",
-    lat: -34.6302,
-    lng: -58.4633,
-    hours: "Lunes a Sábados 08:30–21:30",
-    address: "Av. Rivadavia 6500, Flores"
-  },
-  {
-    name: "Parque de la Ciudad",
-    type: "park",
-    distance: "22 min. en auto",
-    desc: "Inmenso parque público recreativo con senderos y la icónica Torre Espacial.",
-    lat: -34.6750,
-    lng: -58.4550,
-    hours: "Sábados y Domingos 10:00-18:00",
-    address: "Av. Roca y Av. Escalada, Villa Soldati"
-  },
-  {
-    name: "Feria de Mataderos",
-    type: "tourist",
-    distance: "25 min. en auto",
-    desc: "Feria de tradiciones populares argentinas con destrezas gauchas, comidas típicas y artesanías.",
-    lat: -34.6561,
-    lng: -58.5028,
-    web: "feriademataderos.gob.ar",
-    hours: "Domingos 11:00-19:00",
-    address: "Av. Lisandro de la Torre, Mataderos"
-  },
-  {
-    name: "Devoto Shopping",
-    type: "shopping",
-    distance: "20 min. en auto",
-    desc: "Centro comercial con salas de cine, patio de comidas y locales de primeras marcas en Villa Devoto.",
-    lat: -34.6015,
-    lng: -58.5125,
-    web: "devotoshopping.com.ar",
-    hours: "Todos los días 10:00-22:00",
-    address: "Quevedo 3365, Villa Devoto"
-  },
-  {
-    name: "Carrefour Villa Urquiza",
-    type: "supermarket",
-    distance: "18 min. en auto",
-    desc: "Hipermercado Carrefour con amplio sector de bazar, electrodomésticos y alimentos.",
-    lat: -34.5721,
-    lng: -58.4879,
-    hours: "Lunes a Sábados 08:00–22:00",
-    address: "Av. Constituyentes 4850, Villa Urquiza"
-  },
-  {
-    name: "Coto Belgrano",
-    type: "supermarket",
-    distance: "10 min. en auto",
-    desc: "Gran sucursal Coto de tres niveles con gran variedad de productos en Belgrano.",
-    lat: -34.5615,
-    lng: -58.4562,
-    phone: "011 4788-3400",
-    hours: "Lunes a Sábados 08:30–22:00",
-    address: "Av. Cabildo 2230, Belgrano"
-  },
-  {
-    name: "Cementerio de la Chacarita",
-    type: "tourist",
-    distance: "10 min. en auto",
-    desc: "El cementerio más grande de la Ciudad de Buenos Aires, con importantes mausoleos históricos.",
-    lat: -34.5900,
-    lng: -58.4550,
-    hours: "Todos los días 08:00-17:00",
-    address: "Av. Guzmán 680, Chacarita"
-  }
-];
 
 const categories = [
   { id: "all", name: "Todos", icon: "✨" },
@@ -1055,7 +295,7 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
   const [leafletLoaded, setLeafletLoaded] = useState<boolean>(false);
   const [mapReady, setMapReady] = useState<boolean>(false);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [loadingPOIs, setLoadingPOIs] = useState<boolean>(false);
+
   const [activeRoute, setActiveRoute] = useState<[number, number][] | null>(null);
   const [activeRouteInfo, setActiveRouteInfo] = useState<{ distance: string; duration: string } | null>(null);
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
@@ -1147,7 +387,11 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
                 console.error("Error converting coordinates:", e);
               }
             }
-            return { name, type: category, distance, desc, lat, lng, phone, email, web, hours, address } as PlaceOfInterest;
+            
+            const subLine = category === "subway" ? detectSubwayLine(name) : undefined;
+            const isFireStation = category === "security" && (name.toLowerCase().includes("bombero") || desc.toLowerCase().includes("bombero"));
+            
+            return { name, type: category, distance, desc, lat, lng, phone, email, web, hours, address, subLine, isFireStation } as PlaceOfInterest;
           }
 
           // 3. Fallback to geocoding if coordinates are completely missing
@@ -1155,7 +399,9 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
             try {
               const coords = await geocodeAddress(address);
               if (coords) {
-                return { name, type: category, distance, desc, lat: coords.lat, lng: coords.lng, phone, email, web, hours, address } as PlaceOfInterest;
+                const subLine = category === "subway" ? detectSubwayLine(name) : undefined;
+                const isFireStation = category === "security" && (name.toLowerCase().includes("bombero") || desc.toLowerCase().includes("bombero"));
+                return { name, type: category, distance, desc, lat: coords.lat, lng: coords.lng, phone, email, web, hours, address, subLine, isFireStation } as PlaceOfInterest;
               }
             } catch (err) {
               console.error(`Error geocoding address "${address}":`, err);
@@ -1208,172 +454,45 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
     return () => observer.disconnect();
   }, []);
 
-  // Dynamic CABA EPOK API loading for all supported categories
+  // Update placesList based on selectedCategory using local database
   useEffect(() => {
     const stay = basePlaces.find(p => p.type === "stay") || fallbackPlaces[0];
-    const dynamicCategories = ["hospital", "security", "subway", "metrobus", "shopping", "food", "tourist", "supermarket"];
     
-    if (dynamicCategories.includes(selectedCategory)) {
-      const cached = getCachedPOIs(selectedCategory);
-      if (cached) {
-        const merged = mergeStaticAndDynamic(basePlaces, cached, selectedCategory, stay.lat, stay.lng);
-        setPlacesList([stay, ...merged]);
-        return;
+    if (selectedCategory === "all") {
+      setPlacesList(basePlaces);
+    } else {
+      let filtered = basePlaces.filter(p => p.type === selectedCategory);
+      
+      // Special rule: supermarkets are filtered to 2000m range
+      if (selectedCategory === "supermarket") {
+        filtered = filtered.filter(p => haversineDistanceMeters(stay.lat, stay.lng, p.lat, p.lng) <= 2000);
       }
       
-      async function loadDynamicPOIs() {
-        setLoadingPOIs(true);
-        
-        try {
-          let pois: PlaceOfInterest[] = [];
-          
-          switch (selectedCategory) {
-            case "hospital": {
-              // Fetch both general and specialized hospitals across all CABA
-              const [general, specialized, maternity] = await Promise.all([
-                fetchAllEpokPOIs("hospitales_generales_de_agudos", "hospital"),
-                fetchAllEpokPOIs("hospitales_especializados", "hospital"),
-                fetchAllEpokPOIs("maternidades", "maternidad")
-              ]);
-              // Deduplicate by name
-              const seen = new Set<string>();
-              for (const p of [...general, ...specialized, ...maternity]) {
-                if (!seen.has(p.name)) { seen.add(p.name); pois.push(p); }
-              }
-              break;
-            }
-            case "security": {
-              // Fetch both police (comisarías) and fire stations (bomberos)
-              const [comisarias, bomberos] = await Promise.all([
-                fetchAllEpokPOIs("comisarias", "comisaria"),
-                fetchAllEpokPOIs("cuarteles_de_bomberos", "bomberos")
-              ]);
-              pois = [...comisarias, ...bomberos];
-              break;
-            }
-            case "subway": {
-              // Fetch all subway lines A-H using their line-specific keywords for better coverage
-              const lineKeywords = [
-                { keyword: "linea a" },
-                { keyword: "linea b" },
-                { keyword: "linea c" },
-                { keyword: "linea d" },
-                { keyword: "linea e" },
-                { keyword: "linea h" }
-              ];
-              const lineResults = await Promise.all(
-                lineKeywords.map(({ keyword }) =>
-                  fetchAllEpokPOIs("estaciones_de_subte", keyword)
-                )
-              );
-              // Merge and deduplicate
-              const seen = new Set<string>();
-              for (const lineStations of lineResults) {
-                for (const station of lineStations) {
-                  if (!seen.has(station.name)) {
-                    seen.add(station.name);
-                    // If subLine not detected from name, try to detect from the keyword used
-                    if (!station.subLine) {
-                      const idx = lineResults.indexOf(lineStations);
-                      const lineLetters = ["A", "B", "C", "D", "E", "H"];
-                      station.subLine = lineLetters[idx];
-                    }
-                    pois.push(station);
-                  }
-                }
-              }
-              break;
-            }
-            case "metrobus":
-              pois = await fetchAllEpokPOIs("estaciones_de_metrobus", "estacion");
-              break;
-            case "shopping":
-              pois = await fetchAllEpokPOIs("centros_comerciales", "shopping");
-              break;
-            case "food":
-              pois = await fetchAllEpokPOIs("gastronomia", "restaurante");
-              break;
-            case "tourist":
-              pois = await fetchAllEpokPOIs("lugar_emblematico", "museo");
-              break;
-            case "supermarket": {
-              // Filter static supermarkets within 2000m of the stay location
-              const RADIUS_METERS = 2000;
-              pois = basePlaces
-                .filter(p => p.type === "supermarket")
-                .filter(p => haversineDistanceMeters(stay.lat, stay.lng, p.lat, p.lng) <= RADIUS_METERS)
-                .map(p => ({
-                  ...p,
-                  distance: (() => {
-                    const d = Math.round(haversineDistanceMeters(stay.lat, stay.lng, p.lat, p.lng));
-                    return d < 1000 ? `${d} m a pie` : `${(d / 1000).toFixed(1)} km`;
-                  })()
-                }));
-              // Sort by distance ascending
-              pois.sort((a, b) => {
-                const dA = haversineDistanceMeters(stay.lat, stay.lng, a.lat, a.lng);
-                const dB = haversineDistanceMeters(stay.lat, stay.lng, b.lat, b.lng);
-                return dA - dB;
-              });
-              break;
-            }
-            default:
-              break;
-          }
-          
-          if (pois && pois.length > 0) {
-            setCachedPOIs(selectedCategory, pois);
-            const merged = mergeStaticAndDynamic(basePlaces, pois, selectedCategory, stay.lat, stay.lng);
-            setPlacesList([stay, ...merged]);
-          } else {
-            // Fallback to static basePlaces for this category
-            const staticFiltered = basePlaces.filter(p => p.type === selectedCategory);
-            const formattedStatic = staticFiltered.map(p => {
-              if (p.distance) return p;
-              const d = Math.round(haversineDistanceMeters(stay.lat, stay.lng, p.lat, p.lng));
-              return {
-                ...p,
-                distance: d < 1000 ? `${d} m a pie` : `${(d / 1000).toFixed(1)} km`
-              };
-            });
-            formattedStatic.sort((a, b) => {
-              const distA = haversineDistanceMeters(stay.lat, stay.lng, a.lat, a.lng);
-              const distB = haversineDistanceMeters(stay.lat, stay.lng, b.lat, b.lng);
-              return distA - distB;
-            });
-            setPlacesList([stay, ...formattedStatic]);
-          }
-        } catch (err) {
-          console.error("Error loading dynamic POIs:", err);
-          const staticFiltered = basePlaces.filter(p => p.type === selectedCategory);
-          const formattedStatic = staticFiltered.map(p => {
-            if (p.distance) return p;
-            const d = Math.round(haversineDistanceMeters(stay.lat, stay.lng, p.lat, p.lng));
-            return {
-              ...p,
-              distance: d < 1000 ? `${d} m a pie` : `${(d / 1000).toFixed(1)} km`
-            };
-          });
-          formattedStatic.sort((a, b) => {
-            const distA = haversineDistanceMeters(stay.lat, stay.lng, a.lat, a.lng);
-            const distB = haversineDistanceMeters(stay.lat, stay.lng, b.lat, b.lng);
-            return distA - distB;
-          });
-          setPlacesList([stay, ...formattedStatic]);
-        }
-        
-        setLoadingPOIs(false);
-      }
-      loadDynamicPOIs();
-    } else {
-      setPlacesList(basePlaces);
+      // Calculate missing distances for consistency
+      const formatted = filtered.map(p => {
+        if (p.distance && p.distance !== "Calculando...") return p;
+        const d = Math.round(haversineDistanceMeters(stay.lat, stay.lng, p.lat, p.lng));
+        return {
+          ...p,
+          distance: d < 1000 ? `${d} m a pie` : `${(d / 1000).toFixed(1)} km`
+        };
+      });
+      
+      // Sort by distance ascending
+      formatted.sort((a, b) => {
+        const distA = haversineDistanceMeters(stay.lat, stay.lng, a.lat, a.lng);
+        const distB = haversineDistanceMeters(stay.lat, stay.lng, b.lat, b.lng);
+        return distA - distB;
+      });
+      
+      setPlacesList([stay, ...formatted]);
     }
-
     
     // Clear active route when switching categories
     setActiveRoute(null);
     setActiveRouteInfo(null);
   }, [selectedCategory, basePlaces]);
+
 
   // Fetch route geometry and distance/duration info using OSRM
   const fetchRoute = async (origin: { lat: number; lng: number }, dest: { lat: number; lng: number }) => {
@@ -1977,155 +1096,105 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
             </div>
           )}
           <div className="space-y-2.5 max-h-[250px] lg:max-h-[440px] overflow-y-auto pr-1">
-            {loadingPOIs ? (
-              <div className="space-y-2.5">
-                {/* Keep stay location pinned at the top even while loading */}
-                {filteredPlacesForList.filter(p => p.type === "stay").map((place, idx) => {
-                  const originalIndex = placesList.findIndex(p => p.name === place.name);
-                  const isActive = activePlace === originalIndex;
-                  return (
-                    <button
-                      key={`loading-stay-${idx}`}
-                      onClick={() => handlePlaceSelect(originalIndex)}
-                      className={`w-full text-left p-4 rounded-2xl border transition-all duration-200 flex gap-4 items-start ${
-                        isActive
-                          ? "bg-[#FAF9F7] border-[#5F6F52] ring-1 ring-[#5F6F52] shadow-sm"
-                          : "bg-white border-[#EFEBE4] hover:bg-neutral-50"
-                      }`}
-                    >
-                      <div className={`p-2.5 rounded-full ${isActive ? "bg-white text-[#5F6F52]" : "bg-neutral-100 text-neutral-600"} flex-shrink-0 mt-0.5`}>
-                        {getPlaceIcon(place.type)}
-                      </div>
-                      <div className="space-y-1 w-full min-w-0">
-                        <p className="font-semibold text-sm text-neutral-900 leading-snug break-words">{place.name}</p>
-                        <p className="text-[#5F6F52] font-semibold text-xs">{place.distance}</p>
-                        {isActive && (
-                          <div className="mt-3 space-y-2.5 pt-2.5 border-t border-[#F0EBE0] text-xs text-neutral-600 w-full animate-fadeIn">
-                            <p className="text-neutral-500 leading-relaxed break-words">{place.desc}</p>
+            {filteredPlacesForList.map((place, idx) => {
+              const originalIndex = placesList.findIndex(p => p.name === place.name);
+              const isActive = activePlace === originalIndex;
+              
+              return (
+                <button
+                  key={idx}
+                  onClick={() => handlePlaceSelect(originalIndex)}
+                  className={`w-full text-left p-4 rounded-2xl border transition-all duration-200 flex gap-4 items-start ${
+                    isActive
+                      ? "bg-[#FAF9F7] border-[#5F6F52] ring-1 ring-[#5F6F52] shadow-sm"
+                      : "bg-white border-[#EFEBE4] hover:bg-neutral-50"
+                  }`}
+                >
+                  <div className={`p-2.5 rounded-full ${isActive ? "bg-white text-[#5F6F52]" : "bg-neutral-100 text-neutral-600"} flex-shrink-0 mt-0.5`}>
+                    {getPlaceIcon(place.type)}
+                  </div>
+                  <div className="space-y-1 w-full min-w-0">
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <p className="font-semibold text-sm text-neutral-900 leading-snug break-words">{place.name}</p>
+                      {place.subLine && (
+                        <span className="inline-flex items-center justify-center w-5 h-5 rounded-full text-white font-black text-[9px] flex-shrink-0"
+                          style={{ backgroundColor: (() => { const c: Record<string,string> = {A:"#18A7E8",B:"#E4002B",C:"#0072BB",D:"#008000",E:"#7A0080",H:"#F5A800"}; return c[place.subLine!] || "#2D9CDB"; })() }}>
+                          {place.subLine}
+                        </span>
+                      )}
+                      {place.isFireStation && (
+                        <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full text-[9px] font-bold text-white flex-shrink-0"
+                          style={{ backgroundColor: "#E55A1C" }}>
+                          🔥 Bomberos
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-[#5F6F52] font-semibold text-xs">{place.distance}</p>
+                    
+                    {/* Expanded details when active */}
+                    {isActive && (
+                      <div className="mt-3 space-y-2.5 pt-2.5 border-t border-[#F0EBE0] text-xs text-neutral-600 w-full animate-fadeIn">
+                        {/* Route duration detailed badge */}
+                        {activeRouteInfo && place.type !== "stay" && (
+                          <div className="bg-[#FAF9F7] border border-[#5F6F52]/10 rounded-xl p-2.5 flex items-start gap-2 text-neutral-700 shadow-sm">
+                            <span className="text-sm">📍</span>
+                            <div>
+                              <p className="font-bold text-[9px] uppercase tracking-wider text-[#5F6F52]">Ruta sugerida desde el depto:</p>
+                              <p className="text-[11px] text-neutral-800 mt-0.5 leading-snug">{activeRouteInfo.duration}</p>
+                            </div>
+                          </div>
+                        )}
+
+                        <p className="text-neutral-500 leading-relaxed break-words">{place.desc}</p>
+                        
+                        {place.address && (
+                          <div className="flex gap-1.5 items-start mt-1">
+                            <span className="font-bold text-neutral-500 flex-shrink-0">Dir:</span>
+                            <span className="text-neutral-600 break-words">{place.address}</span>
+                          </div>
+                        )}
+                        
+                        {place.phone && (
+                          <div className="flex items-center gap-1.5 mt-1">
+                            <Phone className="w-3.5 h-3.5 text-neutral-400" />
+                            <a href={`tel:${place.phone}`} className="text-[#5F6F52] hover:underline font-semibold">{place.phone}</a>
+                          </div>
+                        )}
+                        
+                        {place.email && (
+                          <div className="flex items-center gap-1.5 mt-1">
+                            <Mail className="w-3.5 h-3.5 text-neutral-400" />
+                            <a href={`mailto:${place.email}`} className="text-[#5F6F52] hover:underline break-all">{place.email}</a>
+                          </div>
+                        )}
+
+                        {place.hours && (
+                          <div className="flex gap-1.5 items-start mt-1">
+                            <Clock className="w-3.5 h-3.5 text-neutral-400 mt-0.5" />
+                            <span className="text-neutral-600 break-words">{place.hours}</span>
+                          </div>
+                        )}
+
+                        {place.web && (
+                          <div className="flex items-center gap-1.5 mt-1 pt-1">
+                            <Globe className="w-3.5 h-3.5 text-neutral-400" />
+                            <a 
+                              href={place.web.startsWith("http") ? place.web : `https://${place.web}`} 
+                              target="_blank" 
+                              rel="noopener noreferrer" 
+                              className="text-[#5F6F52] hover:underline font-semibold flex items-center gap-0.5"
+                            >
+                              <span>Visitar Sitio Web</span>
+                              <span>↗</span>
+                            </a>
                           </div>
                         )}
                       </div>
-                    </button>
-                  );
-                })}
-                {/* Premium Loading Spinner Block */}
-                <div className="flex flex-col items-center justify-center py-10 px-4 space-y-3 bg-[#FAF9F7]/50 rounded-2xl border border-dashed border-[#EFEBE4] animate-pulse">
-                  <div className="w-7 h-7 border-2 border-[#5F6F52] border-t-transparent rounded-full animate-spin"></div>
-                  <div className="text-center space-y-1">
-                    <p className="text-xs font-semibold text-neutral-700">
-                      {selectedCategory === "hospital" && "Buscando hospitales de toda CABA..."}
-                      {selectedCategory === "security" && "Buscando comisarías y bomberos..."}
-                      {selectedCategory === "subway" && "Cargando todas las líneas de subte..."}
-                      {selectedCategory === "metrobus" && "Cargando estaciones de Metrobús..."}
-                      {selectedCategory === "shopping" && "Buscando centros comerciales..."}
-                      {selectedCategory === "food" && "Buscando gastronomía..."}
-                      {selectedCategory === "tourist" && "Buscando lugares emblemáticos..."}
-                    </p>
-                    <p className="text-[10px] text-neutral-500">Consultando API EPOK (GCBA) — puede tardar unos segundos</p>
+                    )}
                   </div>
-                </div>
-              </div>
-            ) : (
-              filteredPlacesForList.map((place, idx) => {
-                const originalIndex = placesList.findIndex(p => p.name === place.name);
-                const isActive = activePlace === originalIndex;
-                
-                return (
-                  <button
-                    key={idx}
-                    onClick={() => handlePlaceSelect(originalIndex)}
-                    className={`w-full text-left p-4 rounded-2xl border transition-all duration-200 flex gap-4 items-start ${
-                      isActive
-                        ? "bg-[#FAF9F7] border-[#5F6F52] ring-1 ring-[#5F6F52] shadow-sm"
-                        : "bg-white border-[#EFEBE4] hover:bg-neutral-50"
-                    }`}
-                  >
-                    <div className={`p-2.5 rounded-full ${isActive ? "bg-white text-[#5F6F52]" : "bg-neutral-100 text-neutral-600"} flex-shrink-0 mt-0.5`}>
-                      {getPlaceIcon(place.type)}
-                    </div>
-                    <div className="space-y-1 w-full min-w-0">
-                      <div className="flex items-center gap-1.5 flex-wrap">
-                        <p className="font-semibold text-sm text-neutral-900 leading-snug break-words">{place.name}</p>
-                        {place.subLine && (
-                          <span className="inline-flex items-center justify-center w-5 h-5 rounded-full text-white font-black text-[9px] flex-shrink-0"
-                            style={{ backgroundColor: (() => { const c: Record<string,string> = {A:"#18A7E8",B:"#E4002B",C:"#0072BB",D:"#008000",E:"#7A0080",H:"#F5A800"}; return c[place.subLine!] || "#2D9CDB"; })() }}>
-                            {place.subLine}
-                          </span>
-                        )}
-                        {place.isFireStation && (
-                          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full text-[9px] font-bold text-white flex-shrink-0"
-                            style={{ backgroundColor: "#E55A1C" }}>
-                            🔥 Bomberos
-                          </span>
-                        )}
-                      </div>
-                      <p className="text-[#5F6F52] font-semibold text-xs">{place.distance}</p>
-                      
-                      {/* Expanded details when active */}
-                      {isActive && (
-                        <div className="mt-3 space-y-2.5 pt-2.5 border-t border-[#F0EBE0] text-xs text-neutral-600 w-full animate-fadeIn">
-                          {/* Route duration detailed badge */}
-                          {activeRouteInfo && place.type !== "stay" && (
-                            <div className="bg-[#FAF9F7] border border-[#5F6F52]/10 rounded-xl p-2.5 flex items-start gap-2 text-neutral-700 shadow-sm">
-                              <span className="text-sm">📍</span>
-                              <div>
-                                <p className="font-bold text-[9px] uppercase tracking-wider text-[#5F6F52]">Ruta sugerida desde el depto:</p>
-                                <p className="text-[11px] text-neutral-800 mt-0.5 leading-snug">{activeRouteInfo.duration}</p>
-                              </div>
-                            </div>
-                          )}
-
-                          <p className="text-neutral-500 leading-relaxed break-words">{place.desc}</p>
-                          
-                          {place.address && (
-                            <div className="flex gap-1.5 items-start mt-1">
-                              <span className="font-bold text-neutral-500 flex-shrink-0">Dir:</span>
-                              <span className="text-neutral-600 break-words">{place.address}</span>
-                            </div>
-                          )}
-                          
-                          {place.phone && (
-                            <div className="flex items-center gap-1.5 mt-1">
-                              <Phone className="w-3.5 h-3.5 text-neutral-400" />
-                              <a href={`tel:${place.phone}`} className="text-[#5F6F52] hover:underline font-semibold">{place.phone}</a>
-                            </div>
-                          )}
-                          
-                          {place.email && (
-                            <div className="flex items-center gap-1.5 mt-1">
-                              <Mail className="w-3.5 h-3.5 text-neutral-400" />
-                              <a href={`mailto:${place.email}`} className="text-[#5F6F52] hover:underline break-all">{place.email}</a>
-                            </div>
-                          )}
-
-                          {place.hours && (
-                            <div className="flex gap-1.5 items-start mt-1">
-                              <Clock className="w-3.5 h-3.5 text-neutral-400 mt-0.5" />
-                              <span className="text-neutral-600 break-words">{place.hours}</span>
-                            </div>
-                          )}
-
-                          {place.web && (
-                            <div className="flex items-center gap-1.5 mt-1 pt-1">
-                              <Globe className="w-3.5 h-3.5 text-neutral-400" />
-                              <a 
-                                href={place.web.startsWith("http") ? place.web : `https://${place.web}`} 
-                                target="_blank" 
-                                rel="noopener noreferrer" 
-                                className="text-[#5F6F52] hover:underline font-semibold flex items-center gap-0.5"
-                              >
-                                <span>Visitar Sitio Web</span>
-                                <span>↗</span>
-                              </a>
-                            </div>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  </button>
-                );
-              })
-            )}
+                </button>
+              );
+            })}
           </div>
 
           <div className="bg-[#FAF9F7] border border-[#EFEBE4] rounded-2xl p-4 text-xs text-neutral-500 leading-relaxed">
