@@ -13,7 +13,7 @@ interface CalendarWidgetProps {
 export default function CalendarWidget({
   pricePerNight = 45,
   cleaningFee = 15,
-  whatsAppPhone = "5491145359500", // Updated with user's phone number
+  whatsAppPhone = "5491145379500", // Updated with user's phone number
   airbnbUrl = "https://www.airbnb.com" // Placeholder URL
 }: CalendarWidgetProps) {
   const [checkIn, setCheckIn] = useState<string>("");
