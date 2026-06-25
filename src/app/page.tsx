@@ -164,7 +164,7 @@ export default function Home() {
                   Departamento entero · Anfitrión: Jorge Orlando
                 </h2>
                 <p className="text-neutral-500 text-sm">
-                  2 huéspedes · 1 dormitorio · 1 cama Queen · 1 baño completo · 1 toilette de servicio
+                  2 a 4 huéspedes · 1 dormitorio · 1 cama Queen + 1 sofá cama · 1 baño completo · 1 toilette
                 </p>
               </div>
               <div className="w-12 h-12 bg-[#5F6F52] text-white flex items-center justify-center rounded-full text-base font-bold font-serif shadow-sm flex-shrink-0">

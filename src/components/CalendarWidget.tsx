@@ -13,7 +13,7 @@ interface CalendarWidgetProps {
 export default function CalendarWidget({
   pricePerNight = 45,
   cleaningFee = 15,
-  whatsAppPhone = "5491131018899", // Placeholder phone, user can change later
+  whatsAppPhone = "5491145359500", // Updated with user's phone number
   airbnbUrl = "https://www.airbnb.com" // Placeholder URL
 }: CalendarWidgetProps) {
   const [checkIn, setCheckIn] = useState<string>("");
@@ -135,7 +135,7 @@ export default function CalendarWidget({
                 </button>
                 <button
                   type="button"
-                  onClick={() => setGuests(Math.min(2, guests + 1))}
+                  onClick={() => setGuests(Math.min(4, guests + 1))}
                   className="w-8 h-8 rounded-full border border-neutral-200 flex items-center justify-center text-neutral-600 hover:border-neutral-800 active:scale-95 transition-all text-lg font-medium"
                 >
                   +
