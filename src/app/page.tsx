@@ -3,9 +3,6 @@
 import React, { useState, useEffect } from "react";
 import { 
   Wifi, 
-  Tv, 
-  Coffee, 
-  Wind, 
   ShieldCheck, 
   Sparkles, 
   Compass, 
@@ -14,13 +11,14 @@ import {
   Menu,
   X,
   Star,
-  Flame,
   Wine,
   Users,
   UserCheck,
   ChevronDown,
   ExternalLink,
-  ClipboardList
+  ClipboardList,
+  Utensils,
+  Bed
 } from "lucide-react";
 import Link from "next/link";
 import Gallery from "../components/Gallery";
@@ -422,54 +420,138 @@ export default function Home() {
     const q = query.toLowerCase();
     const isEn = language === "en";
 
-    if (q.includes("desayun") || q.includes("desayuno") || q.includes("cafe") || q.includes("café") || q.includes("comer") || q.includes("gastronom") || q.includes("breakfast") || q.includes("eat") || q.includes("food") || q.includes("restaurant")) {
+    // 1. Wifi
+    if (q.includes("wifi") || q.includes("wi-fi") || q.includes("internet") || q.includes("clave") || q.includes("contraseña") || q.includes("password") || q.includes("network") || q.includes("ssid")) {
       return isEn
-        ? "For breakfast, I highly recommend 'Cuervo Café' (at Fitz Roy & Paraguay, just 3 blocks away). They have amazing specialty coffee and sourdough pastries. For a sweet afternoon treat, 'La Kitchen' is another local gem."
-        : "Para desayunar te súper recomiendo 'Cuervo Café' (en Fitz Roy y Paraguay, a solo 3 cuadras). Tienen café de especialidad increíble y medialunas de masa madre. Si querés algo dulce para la tarde, 'La Kitchen' es otra joya local.";
+        ? "The apartment features high-speed internet. The network credentials and auto-connect QR code are printed on framed signs inside the property. Wifi password is 'hola.cordoba'."
+        : "El departamento cuenta con internet de alta velocidad. Las credenciales de la red y el código QR de conexión rápida se encuentran impresos en carteles enmarcados dentro del departamento. Contraseña: 'hola.cordoba'.";
     }
-    if (q.includes("ezeiza") || q.includes("aeropuerto") || q.includes("llegar") || q.includes("aeroparque") || q.includes("airport") || q.includes("tax") || q.includes("uber") || q.includes("cabify")) {
+
+    // 2. Check-in
+    if (q.includes("check-in") || q.includes("checkin") || q.includes("ingres") || q.includes("llave") || q.includes("entrar") || q.includes("lockbox") || q.includes("code") || q.includes("codigo") || q.includes("código") || q.includes("caja fuerte") || q.includes("candado")) {
       return isEn
-        ? "To go to Ezeiza Airport, you can take an official taxi or use Uber/Cabify (takes 45-60 min depending on traffic). Alternatively, you can book a Tienda León bus from Retiro. For Aeroparque Airport, a taxi takes just 15 minutes."
-        : "Para ir a Ezeiza podés tomar un taxi oficial o Uber/Cabify (tarda unos 45-60 min dependiendo del tráfico). Como alternativa económica, podés tomar el bus Tienda León desde Retiro. Para Aeroparque, un taxi te lleva en 15 minutos.";
+        ? "Self-check-in starts at 3:00 PM. Locate the lockbox labeled 'Depto 101' at the right of the outer entrance (Av. Córdoba 5579). Enter the combination code sent to you via confirmation message, slide the latch, and retrieve the keys. Use the blue/black magnetic tag on the outer lobby reader. Learn more at /checkin."
+        : "El check-in es autónomo desde las 15:00 hs. Ubicá la caja de seguridad (lockbox) 'Depto 101' a la derecha del ingreso exterior (Av. Córdoba 5579). Ingresá la combinación que te enviamos por mensaje de confirmación, deslizá la traba y retirá las llaves. Aproximá el llavero magnético azul/negro al lector del hall exterior. Más detalles en /checkin.";
     }
-    if (q.includes("sube") || q.includes("tarjeta") || q.includes("colectivo") || q.includes("transporte") || q.includes("subway") || q.includes("bus") || q.includes("metro")) {
+
+    // 3. Check-out
+    if (q.includes("check-out") || q.includes("checkout") || q.includes("salida") || q.includes("leave") || q.includes("irnos") || q.includes("retirar")) {
       return isEn
-        ? "You can purchase and charge a SUBE transit card at the Open 25 Kiosk (Av. Cordoba & Fitz Roy, just around the corner) or at the Palermo Subway Station ticket counter (Line D, Av. Santa Fe & Juan B. Justo)."
-        : "Podés comprar y cargar la tarjeta SUBE en el Kiosco Open 25 (en Av. Córdoba y Fitz Roy, a la vuelta del depto) o en la boletería de la estación Palermo de la Línea D de subte (Av. Santa Fe y Juan B. Justo).";
+        ? "Check-out time is strictly by 11:00 AM. Please turn off all air conditioners and lights, lock the door, return the keys to the outer lockbox (scrambling the code wheels), and notify Jorge via WhatsApp."
+        : "El check-out es hasta las 11:00 hs. Recordá apagar todos los aires acondicionados y luces, cerrar la puerta, dejar las llaves en la caja de seguridad (lockbox) exterior desordenando los números, y avisar a Jorge por WhatsApp.";
     }
-    if (q.includes("parrilla") || q.includes("terraza") || q.includes("rooftop") || q.includes("piscina") || q.includes("pileta") || q.includes("pool") || q.includes("grill") || q.includes("bbq")) {
+
+    // 4. Parrilla / Asador
+    if (q.includes("parrilla") || q.includes("asado") || q.includes("grill") || q.includes("bbq")) {
       return isEn
-        ? "The pool and grill are on the building's rooftop (9th floor). To use the grill, please coordinate with Jorge via WhatsApp in advance to book your slot. The pool is open freely to guests from 9:00 AM to 8:00 PM."
-        : "La parrilla y la piscina están en el rooftop del edificio (piso 9). Para usar la parrilla, recordá avisarle a Jorge por WhatsApp con anticipación para reservarla. La pileta está disponible para huéspedes de 9:00 a 20:00 hs.";
+        ? "The grill is located on the rooftop terrace. It is available to guests but requires prior booking and carries an extra cleaning fee. Please coordinate with Jorge via WhatsApp to reserve."
+        : "La parrilla se encuentra en la terraza. Podés utilizarla reservándola previamente con Jorge por WhatsApp (tiene un costo de limpieza adicional).";
     }
-    if (q.includes("wifi") || q.includes("wi-fi") || q.includes("internet") || q.includes("clave") || q.includes("contraseña") || q.includes("password") || q.includes("network")) {
+
+    // 5. Piscina / Pileta
+    if (q.includes("piscina") || q.includes("pileta") || q.includes("pool") || q.includes("solarium") || q.includes("terraza") || q.includes("rooftop") || q.includes("solárium")) {
       return isEn
-        ? "The apartment features high-speed Wi-Fi (100 Mbps). The network name is 'Cordoba 5579_Guest' and the password is 'hola.cordoba'. You can also scan the QR code located on the framed signs inside the property."
-        : "El departamento cuenta con WiFi de alta velocidad (100 Mbps). La red es 'Cordoba 5579_Guest' y la contraseña es 'hola.cordoba'. Encontrarás un código QR y las credenciales en los carteles físicos enmarcados dentro de la propiedad.";
+        ? "The outdoor pool, showers, and solarium are on the rooftop terrace (9th floor). The pool is open to guests (closes at 8:00 PM). Taking a shower before swimming is mandatory. No unregistered visitors allowed."
+        : "La piscina al aire libre, duchas y solárium están en la terraza (piso 9). Está disponible para huéspedes (cierra a las 20:00 hs). Es obligatorio ducharse antes de ingresar a la pileta. No se permite el acceso con invitados.";
     }
-    if (q.includes("check-in") || q.includes("checkin") || q.includes("ingres") || q.includes("llave") || q.includes("entrar") || q.includes("lockbox") || q.includes("code") || q.includes("codigo") || q.includes("código")) {
+
+    // 6. Lavadero / Laundry
+    if (q.includes("laundry") || q.includes("lavadero") || q.includes("lavar") || q.includes("secar") || q.includes("washing") || q.includes("dryer") || q.includes("ropa")) {
       return isEn
-        ? "Self-check-in is available starting at 3:00 PM. Keys are fetched from a secure lockbox at the building's outer entrance. You can find step-by-step instructions, outer gate magnetic tag guides, and photos in the portal at /checkin."
-        : "El check-in es autónomo a partir de las 15:00 hs. Las llaves se retiran de una caja de seguridad (lockbox) en la entrada exterior del edificio. Podés ver el manual paso a paso, fotos y cómo usar el llavero magnético en /checkin.";
+        ? "There is a shared laundry room in the building with washing machines and dryers available for guests at no additional cost."
+        : "El edificio cuenta con un sector de laundry (lavadero) con lavadoras y secadoras de uso común para huéspedes sin costo adicional.";
     }
-    if (q.includes("check-out") || q.includes("checkout") || q.includes("salida") || q.includes("llaves") || q.includes("leave")) {
+
+    // 7. Vinos / Bar / Cava
+    if (q.includes("vino") || q.includes("cava") || q.includes("botella") || q.includes("alcohol") || q.includes("wine") || q.includes("bar") || q.includes("champagne") || q.includes("fernet") || q.includes("bebida")) {
       return isEn
-        ? "Check-out time is by 11:00 AM. Please turn off all air conditioners and lights, return the keys to the same security lockbox at the outer entrance (scrambling the code wheels), and send a WhatsApp message to Jorge."
-        : "El check-out es hasta las 11:00 hs. Te pedimos que apagues los aires acondicionados, dejes las llaves en la misma caja de seguridad (lockbox) de la entrada exterior y le avises a Jorge por WhatsApp cuando te retires.";
+        ? "The apartment features a minibar and wine selection for an extra cost (Malbec, Syrah, Cabernet Sauvignon, Torrontés, Dulce, Champagne, and Fernet Branca). Please report any consumption to Jorge for replenishment."
+        : "El depto cuenta con un rincón bar y una dotación de vinos de coste extra (Malbec, Syrah, Cabernet Sauvignon, Torrontés, Blanco Dulce, Champagne y Fernet Branca). Por favor, avisar el consumo a Jorge para su reposición.";
     }
+
+    // 8. Parking / Estacionamiento / Cochera
+    if (q.includes("estacionamiento") || q.includes("cochera") || q.includes("auto") || q.includes("garage") || q.includes("parking") || q.includes("vehiculo") || q.includes("vehículo")) {
+      return isEn
+        ? "The apartment does not have its own parking space. Free parking is available on the street, or you can use a paid parking garage located 50 meters away on the same avenue."
+        : "El departamento no cuenta con cochera propia. Hay estacionamiento gratis en la calle, o bien estacionamiento de pago a solo 50 metros sobre la misma avenida.";
+    }
+
+    // 9. Camas / Toallas / Ropa de cama
+    if (q.includes("cama") || q.includes("sabana") || q.includes("sábana") || q.includes("toalla") || q.includes("acolchado") || q.includes("frazada") || q.includes("blanket") || q.includes("bed") || q.includes("sheet") || q.includes("pillow") || q.includes("almohada")) {
+      return isEn
+        ? "The apartment has 1 Queen-size bed with premium 600-thread-count Egyptian cotton sheets, plus a sofa bed in the living room. For stays over 7 nights, we provide a fresh set of towels. For 14+ nights, sheets and towels are replaced, and a light cleaning is included."
+        : "El departamento cuenta con 1 cama Queen con sábanas de hilo egipcio de 600h y un sofá cama en el living. En estadías superiores a 7 noches se ofrece un nuevo juego de toallas. En estadías de 14 noches o más se reemplazan sábanas, toallas y se realiza un repaso de limpieza.";
+    }
+
+    // 10. Equipamiento de Cocina y Vajilla
+    if (q.includes("cocina") || q.includes("licuadora") || q.includes("tostadora") || q.includes("cafetera") || q.includes("horno") || q.includes("heladera") || q.includes("microondas") || q.includes("freidora") || q.includes("arrocera") || q.includes("olla") || q.includes("sarten") || q.includes("sartén") || q.includes("vajilla") || q.includes("cubiertos")) {
+      return isEn
+        ? "The kitchen is fully equipped with a Samsung refrigerator & microwave, air fryer, convection oven, rice cooker, blender, toaster, coffee maker with frother, Tramontina pots/pans, and Carol dinnerware. You can view the full list in the Inventory tab (/inventario)."
+        : "La cocina está equipada con heladera y microondas Samsung, freidora sin aceite, horno por convección, arrocera, licuadora, tostadora, cafetera con espumadera, ollas/sartenes Tramontina y vajilla Carol. Podés ver el listado completo en la pestaña de Inventario (/inventario).";
+    }
+
+    // 11. Normas: Mascotas, Fumar, Fiestas, Vestimenta
+    if (q.includes("mascota") || q.includes("perro") || q.includes("gato") || q.includes("fumar") || q.includes("cigarrillo") || q.includes("fiesta") || q.includes("ruido") || q.includes("remera") || q.includes("torso") || q.includes("pet") || q.includes("smoke") || q.includes("party") || q.includes("rules") || q.includes("normas") || q.includes("reglas")) {
+      return isEn
+        ? "Strict rules: No smoking inside or in building hallways. No pets allowed. No parties. Unregistered guests are not allowed in amenity areas. Walking shirtless in common building areas is prohibited (except pool area)."
+        : "Reglas estrictas: Prohibido fumar en el departamento o pasillos. No se admiten mascotas. Prohibido realizar fiestas. No se permite el ingreso de visitas a los amenities. Prohibido circular con el torso desnudo en áreas comunes (excepto zona de piscina).";
+    }
+
+    // 12. Localización / Ubicación / Atracciones
+    if (q.includes("ubicacion") || q.includes("ubicación") || q.includes("donde") || q.includes("dónde") || q.includes("palermo") || q.includes("arena") || q.includes("movistar") || q.includes("cerca") || q.includes("location") || q.includes("address") || q.includes("direccion") || q.includes("dirección")) {
+      return isEn
+        ? "The apartment is located at Av. Córdoba 5579 (Palermo Hollywood). It is within short walking distance to the Movistar Arena (5-minute walk) and surrounded by top restaurants, bars, and cafes."
+        : "El departamento está ubicado en Av. Córdoba 5579, en pleno Palermo Hollywood. Se encuentra a corta distancia caminando del estadio Movistar Arena (5 minutos) y rodeado de restaurantes, bares y cafés de especialidad.";
+    }
+
+    // 13. Clima y Horas locales (Hora con zona horaria GMT-3)
+    if (q.includes("hora") || q.includes("time") || q.includes("gmt") || q.includes("horario")) {
+      const now = new Date();
+      const options: Intl.DateTimeFormatOptions = { hour: "2-digit", minute: "2-digit", timeZone: "America/Argentina/Buenos_Aires" };
+      const localTime = now.toLocaleTimeString(isEn ? "en-US" : "es-AR", options);
+      return isEn
+        ? `The current local time in Buenos Aires (GMT-3) is ${localTime}. Please keep this in mind when checking local store hours!`
+        : `La hora local actual en Buenos Aires (GMT-3) es ${localTime}. Tenela en cuenta para los horarios de los locales de la zona.`;
+    }
+
+    // 14. Gastronomía
+    if (q.includes("desayun") || q.includes("almuerz") || q.includes("cafe") || q.includes("café") || q.includes("comer") || q.includes("gastronom") || q.includes("breakfast") || q.includes("eat") || q.includes("food") || q.includes("restaurant") || q.includes("cena")) {
+      return isEn
+        ? "For specialty coffee and brunch, we love 'Cuervo Café', 'Vive Café', and 'Café Registrado'. For traditional steakhouses, check out 'Don Julio', 'La Cabrera', or 'Las Cabras' (just 2 blocks away). All these recommendations are visible on our map!"
+        : "Para café de especialidad y brunch, te recomendamos 'Cuervo Café', 'Vive Café' y 'Café Registrado'. Si buscás parrilla tradicional, tenés 'Don Julio', 'La Cabrera' o 'Las Cabras' (a solo 2 cuadras). ¡Todas están en el mapa interactivo!";
+    }
+
+    // 15. Emergencias
     if (q.includes("emergencia") || q.includes("emergency") || q.includes("policia") || q.includes("policía") || q.includes("same") || q.includes("bombero") || q.includes("fire") || q.includes("ambulance") || q.includes("ambulancia") || q.includes("911") || q.includes("hospital") || q.includes("medico") || q.includes("médico")) {
       return isEn
-        ? "In case of emergency, please call 911 (General Police Emergencies), 107 (SAME Medical Emergencies), or 100 (Fire Department). You can also contact the host Jorge immediately at +54 9 11 4537-9500. Detailed emergency contacts are available at /checkin."
-        : "Ante cualquier emergencia, podés llamar al 911 (Emergencias Generales / Policía), 107 (SAME Urgencias Médicas) o 100 (Bomberos). También podés contactar al anfitrión Jorge de inmediato al +54 9 11 4537-9500. Encontrarás la lista de contactos de emergencia en /checkin.";
+        ? "In case of emergency, dial 911 (General Police), 107 (SAME Medical Urgent), or 100 (Fire). You can also contact host Jorge immediately at +54 9 11 4537-9500."
+        : "En caso de emergencia, podés llamar al 911 (Policía), 107 (SAME Médica) o 100 (Bomberos). El anfitrión Jorge está disponible ante urgencias al +54 9 11 4537-9500.";
     }
-    if (q.includes("cava") || q.includes("vino") || q.includes("bar") || q.includes("bebida") || q.includes("wine") || q.includes("drink")) {
+
+    // 16. Prestaciones / Servicios incluidos
+    if (q.includes("prestacion") || q.includes("prestación") || q.includes("servicio") || q.includes("incluid") || q.includes("ofrece") || q.includes("amenities") || q.includes("feature") || q.includes("benefit") || q.includes("amenity")) {
       return isEn
-        ? "The apartment offers a private selection of premium wines (Malbec, Syrah, Torrontés) and Champagne at the bar for an extra cost. Simply enjoy them and report your consumption to Jorge at checkout. Prices are listed at the bar."
-        : "El depto tiene una cava de vinos premium (Malbec, Syrah, Torrontés) y Champagne. Podés consumirlos libremente y simplemente le reportás tu consumo a Jorge al finalizar tu estadía. Los precios están detallados en el bar.";
+        ? "The stay includes premium amenities: rooftop pool and solarium, free shared laundry room, high-speed Wi-Fi, 600h Egyptian cotton bed sheets, and pure cotton towels (400g). Fresh sets are provided every 7 days (and a light cleaning at 14 days)."
+        : "La estadía incluye excelentes prestaciones: piscina y solárium en terraza, laundry gratis en el edificio, Wi-Fi de alta velocidad, sábanas de algodón egipcio de 600 hilos y toallas de puro algodón de 400g. Recambio de blancos cada 7 noches (y repaso de limpieza cada 14 noches).";
     }
+
+    // 17. Accesibilidad / Movilidad reducida
+    if (q.includes("accesib") || q.includes("silla de rued") || q.includes("rampa") || q.includes("escalera") || q.includes("discapacidad") || q.includes("movilidad") || q.includes("wheelchair") || q.includes("accessib") || q.includes("elevator") || q.includes("ascensor")) {
+      return isEn
+        ? "The building is fully accessible. There is step-free access from the street level (sidewalk) to the main lobby, and a modern, spacious elevator that goes directly up to the 1st floor where Depto 101 is located."
+        : "El edificio cuenta con accesibilidad plena: el ingreso desde la vereda de la calle hasta el hall principal es sin escalones (a nivel de suelo), y disponés de un ascensor amplio y moderno para subir directo al piso 1, donde está el Depto 101.";
+    }
+
+    // 18. Guía de llegada / Cómo llegar
+    if (q.includes("llegada") || q.includes("como llegar") || q.includes("cómo llegar") || q.includes("dirección") || q.includes("direccion") || q.includes("arriving") || q.includes("arrival") || q.includes("map") || q.includes("donde queda") || q.includes("dónde queda")) {
+      return isEn
+        ? "The apartment is at Av. Córdoba 5579, Palermo Hollywood. Arriving from Aeroparque (AEP) is a 15-min taxi drive. From Ezeiza (EZE), it is about 45-60 min. The Palermo Subway Station (Line D) is a 10-min walk, and Carranza Station is nearby. You can view all transportation hubs directly on our map!"
+        : "El departamento queda en Av. Córdoba 5579, Palermo Hollywood. Si venís de Aeroparque (AEP), son 15 min en taxi. Si venís de Ezeiza (EZE), son entre 45 y 60 min. El Subte D (estación Palermo o Carranza) te deja a unas 8-10 cuadras. ¡Tenés todos los detalles y el mapa de accesos en el portal!";
+    }
+
     return isEn
-      ? "Good question! I don't have that specific answer in my quick local guide. You can ask Jorge directly by clicking 'Book via WhatsApp' and he will respond right away!"
-      : "¡Buena pregunta! No tengo esa respuesta exacta registrada en mi guía rápida, pero podés consultarle directamente a Jorge haciendo clic en 'Reservar por WhatsApp'. ¡Te responderá enseguida!";
+      ? "Good question! I don't have that specific detail in my guide. You can ask Jorge directly by clicking 'Book via WhatsApp' and he will help you right away!"
+      : "¡Buena pregunta! No tengo esa respuesta exacta registrada en mi guía del departamento, pero podés consultarle directamente a Jorge haciendo clic en 'Reservar por WhatsApp'. ¡Te responderá enseguida!";
   };
 
   const handleSendMessage = (text: string) => {
@@ -769,33 +851,217 @@ export default function Home() {
             </div>
 
             {/* Amenities Grid */}
-            <div className="space-y-6 border-b border-[#EFEBE4] pb-8" id="amenidades">
-              <h3 className="font-serif text-xl md:text-2xl text-neutral-900 font-semibold">{t.amenitiesTitle}</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="flex items-center gap-3 text-sm text-neutral-700">
-                  <Wifi className="w-5 h-5 text-neutral-500" />
-                  <span>{t.amenityWifi}</span>
+            <div className="space-y-8 border-b border-[#EFEBE4] pb-10" id="amenidades">
+              <h3 className="font-serif text-2xl text-neutral-900 font-semibold">{t.amenitiesTitle}</h3>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 font-sans">
+                
+                {/* Kitchen / Cocina */}
+                <div className="space-y-4">
+                  <h4 className="font-serif text-sm font-bold tracking-wider text-neutral-500 uppercase flex items-center gap-2">
+                    <Utensils className="w-4 h-4 text-[#5F6F52]" />
+                    {language === "es" ? "Cocina y Vajilla" : "Kitchen & Dining"}
+                  </h4>
+                  <ul className="space-y-3 text-sm text-neutral-700">
+                    <li className="flex items-start gap-2.5">
+                      <span className="text-[#5F6F52] font-bold">✓</span>
+                      <div>
+                        <span className="font-semibold">{language === "es" ? "Cocina equipada:" : "Fully equipped kitchen:"}</span>{" "}
+                        {language === "es" ? "Heladera con freezer, microondas Samsung, horno eléctrico y vajilla completa." : "Samsung refrigerator & freezer, microwave, electric oven, and complete dinnerware."}
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-2.5">
+                      <span className="text-[#5F6F52] font-bold">✓</span>
+                      <div>
+                        <span className="font-semibold">{language === "es" ? "Anafe eléctrico:" : "Electric cooktop:"}</span>{" "}
+                        {language === "es" ? "Acero inoxidable, 4 hornallas de alta eficiencia." : "Stainless steel, 4-burner high-efficiency cooktop."}
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-2.5">
+                      <span className="text-[#5F6F52] font-bold">✓</span>
+                      <div>
+                        <span className="font-semibold">{language === "es" ? "Electrodomésticos premium:" : "Premium appliances:"}</span>{" "}
+                        {language === "es" ? "Freidora sin aceite, arrocera, licuadora, tostadora y pava eléctrica." : "Air fryer, rice cooker, blender, toaster, and electric kettle."}
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-2.5">
+                      <span className="text-[#5F6F52] font-bold">✓</span>
+                      <div>
+                        <span className="font-semibold">{language === "es" ? "Cafetera con espumadera y Copas de vino" : "Coffee maker with frother & Wine glasses"}</span>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-2.5">
+                      <span className="text-[#5F6F52] font-bold">✓</span>
+                      <div>
+                        <span className="font-semibold">{language === "es" ? "Mesa de comedor:" : "Dining table:"}</span>{" "}
+                        {language === "es" ? "Espacio confortable para 4 comensales." : "Comfortable dining space for 4 people."}
+                      </div>
+                    </li>
+                  </ul>
                 </div>
-                <div className="flex items-center gap-3 text-sm text-neutral-700">
-                  <Wind className="w-5 h-5 text-neutral-500" />
-                  <span>{t.amenityAc}</span>
+
+                {/* Dormitorio y Lavandería */}
+                <div className="space-y-4">
+                  <h4 className="font-serif text-sm font-bold tracking-wider text-neutral-500 uppercase flex items-center gap-2">
+                    <Bed className="w-4 h-4 text-[#5F6F52]" />
+                    {language === "es" ? "Dormitorio y Blancos" : "Bedroom & Linens"}
+                  </h4>
+                  <ul className="space-y-3 text-sm text-neutral-700">
+                    <li className="flex items-start gap-2.5">
+                      <span className="text-[#5F6F52] font-bold">✓</span>
+                      <div>
+                        <span className="font-semibold">{language === "es" ? "Ropa de cama premium:" : "Premium bedding:"}</span>{" "}
+                        {language === "es" ? "Algodón egipcio importado de 600 hilos." : "Imported 600-thread-count Egyptian cotton."}
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-2.5">
+                      <span className="text-[#5F6F52] font-bold">✓</span>
+                      <div>
+                        <span className="font-semibold">{language === "es" ? "Almohadas y mantas adicionales" : "Extra pillows and blankets"}</span>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-2.5">
+                      <span className="text-[#5F6F52] font-bold">✓</span>
+                      <div>
+                        <span className="font-semibold">{language === "es" ? "Espacio para guardar ropa:" : "Clothing storage:"}</span>{" "}
+                        {language === "es" ? "Amplio armario con perchas y cómoda." : "Spacious wardrobe with hangers and chest of drawers."}
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-2.5">
+                      <span className="text-[#5F6F52] font-bold">✓</span>
+                      <div>
+                        <span className="font-semibold">{language === "es" ? "Lavarropas gratis:" : "Free washing machine:"}</span>{" "}
+                        {language === "es" ? "Disponible en el laundry del edificio sin costo adicional + ténder." : "Available in the building laundry room for free + drying rack."}
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-2.5">
+                      <span className="text-[#5F6F52] font-bold">✓</span>
+                      <div>
+                        <span className="font-semibold">{language === "es" ? "Persianas y cortinas oscuras (Blackout)" : "Blackout curtains and shutters"}</span>
+                      </div>
+                    </li>
+                  </ul>
                 </div>
-                <div className="flex items-center gap-3 text-sm text-neutral-700">
-                  <Tv className="w-5 h-5 text-neutral-500" />
-                  <span>{t.amenityTv}</span>
+
+                {/* Baño y Aseo */}
+                <div className="space-y-4">
+                  <h4 className="font-serif text-sm font-bold tracking-wider text-neutral-500 uppercase flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-[#5F6F52]" />
+                    {language === "es" ? "Baño y Cuidado Personal" : "Bathroom & Toiletries"}
+                  </h4>
+                  <ul className="space-y-3 text-sm text-neutral-700">
+                    <li className="flex items-start gap-2.5">
+                      <span className="text-[#5F6F52] font-bold">✓</span>
+                      <div>
+                        <span className="font-semibold">{language === "es" ? "Línea Dove de cortesía:" : "Complimentary Dove products:"}</span>{" "}
+                        {language === "es" ? "Shampoo, acondicionador y jabón líquido/solido Dove." : "Dove shampoo, conditioner, and body wash."}
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-2.5">
+                      <span className="text-[#5F6F52] font-bold">✓</span>
+                      <div>
+                        <span className="font-semibold">{language === "es" ? "Agua caliente continua y Bidé" : "Continuous hot water & Bidet"}</span>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-2.5">
+                      <span className="text-[#5F6F52] font-bold">✓</span>
+                      <div>
+                        <span className="font-semibold">{language === "es" ? "Secador de pelo y Balanza digital" : "Hair dryer & Digital scale"}</span>
+                      </div>
+                    </li>
+                  </ul>
                 </div>
-                <div className="flex items-center gap-3 text-sm text-neutral-700">
-                  <Coffee className="w-5 h-5 text-neutral-500" />
-                  <span>{t.amenityKitchen}</span>
+
+                {/* Climatización, Red y Conectividad */}
+                <div className="space-y-4">
+                  <h4 className="font-serif text-sm font-bold tracking-wider text-neutral-500 uppercase flex items-center gap-2">
+                    <Wifi className="w-4 h-4 text-[#5F6F52]" />
+                    {language === "es" ? "Conectividad y Climatización" : "Connectivity & Climate"}
+                  </h4>
+                  <ul className="space-y-3 text-sm text-neutral-700">
+                    <li className="flex items-start gap-2.5">
+                      <span className="text-[#5F6F52] font-bold">✓</span>
+                      <div>
+                        <span className="font-semibold">{language === "es" ? "Wi-Fi e Internet de alta velocidad (100 Mbps)" : "High-speed Wi-Fi and Internet (100 Mbps)"}</span>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-2.5">
+                      <span className="text-[#5F6F52] font-bold">✓</span>
+                      <div>
+                        <span className="font-semibold">{language === "es" ? "Conexión Ethernet física" : "Physical Ethernet connection available"}</span>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-2.5">
+                      <span className="text-[#5F6F52] font-bold">✓</span>
+                      <div>
+                        <span className="font-semibold">{language === "es" ? "Aire Acondicionado y Calefacción Split" : "Split Air Conditioning & Heating"}</span>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-2.5">
+                      <span className="text-[#5F6F52] font-bold">✓</span>
+                      <div>
+                        <span className="font-semibold">{language === "es" ? "Smart TV OLED:" : "Smart OLED TV:"}</span>{" "}
+                        {language === "es" ? "Pantalla de 55 pulgadas en living y 42 pulgadas en dormitorio." : "55-inch display in living room and 42-inch in bedroom."}
+                      </div>
+                    </li>
+                  </ul>
                 </div>
-                <div className="flex items-center gap-3 text-sm text-neutral-700">
-                  <Flame className="w-5 h-5 text-neutral-500" />
-                  <span>{t.amenityPool}</span>
+
+                {/* Terraza, Accesibilidad y Seguridad */}
+                <div className="md:col-span-2 space-y-4">
+                  <h4 className="font-serif text-sm font-bold tracking-wider text-neutral-500 uppercase flex items-center gap-2">
+                    <ShieldCheck className="w-4 h-4 text-[#5F6F52]" />
+                    {language === "es" ? "Terraza, Accesibilidad y Seguridad" : "Rooftop, Accessibility & Safety"}
+                  </h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-neutral-700">
+                    <ul className="space-y-3">
+                      <li className="flex items-start gap-2.5">
+                        <span className="text-[#5F6F52] font-bold">✓</span>
+                        <div>
+                          <span className="font-semibold">{language === "es" ? "Piscina compartida en terraza:" : "Shared rooftop pool:"}</span>{" "}
+                          {language === "es" ? "Climatizada, al aire libre (disponible de Octubre a Abril, de 9:00 a 23:00 hs)." : "Heated, outdoor (available from October to April, 9:00 AM to 11:00 PM)."}
+                        </div>
+                      </li>
+                      <li className="flex items-start gap-2.5">
+                        <span className="text-[#5F6F52] font-bold">✓</span>
+                        <div>
+                          <span className="font-semibold">{language === "es" ? "Muebles de exterior y ducha exterior" : "Outdoor furniture & outdoor shower"}</span>
+                        </div>
+                      </li>
+                      <li className="flex items-start gap-2.5">
+                        <span className="text-[#5F6F52] font-bold">✓</span>
+                        <div>
+                          <span className="font-semibold">{language === "es" ? "Accesibilidad plena:" : "Full accessibility:"}</span>{" "}
+                          {language === "es" ? "Ascensor amplio (132 cm de profundidad, puerta de 81 cm) e ingreso a nivel de calle." : "Spacious elevator (132 cm deep, 81 cm door width) and step-free entrance."}
+                        </div>
+                      </li>
+                    </ul>
+                    <ul className="space-y-3">
+                      <li className="flex items-start gap-2.5">
+                        <span className="text-[#5F6F52] font-bold">✓</span>
+                        <div>
+                          <span className="font-semibold">{language === "es" ? "Seguridad en el hogar:" : "Home Safety:"}</span>{" "}
+                          {language === "es" ? "Detector de monóxido de carbono, detectores de humo, botiquín y seguros en ventanas." : "Carbon monoxide detector, smoke alarms, first aid kit, and window locks."}
+                        </div>
+                      </li>
+                      <li className="flex items-start gap-2.5">
+                        <span className="text-[#5F6F52] font-bold">✓</span>
+                        <div>
+                          <span className="font-semibold">{language === "es" ? "Estadías largas permitidas:" : "Long-term stays allowed:"}</span>{" "}
+                          {language === "es" ? "Apto para estadías de 28 días o más. Se permite dejar equipaje." : "Suitable for stays of 28 days or more. Luggage drop-off allowed."}
+                        </div>
+                      </li>
+                      <li className="flex items-start gap-2.5">
+                        <span className="text-[#5F6F52] font-bold">✓</span>
+                        <div>
+                          <span className="font-semibold">{language === "es" ? "Entretenimiento:" : "Entertainment:"}</span>{" "}
+                          {language === "es" ? "Libros, material de lectura y variados juegos de mesa." : "Books, reading materials, and board games."}
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
-                <div className="flex items-center gap-3 text-sm text-neutral-700">
-                  <ShieldCheck className="w-5 h-5 text-[#5F6F52]" />
-                  <span>{t.amenitySecurity}</span>
-                </div>
+
               </div>
             </div>
 
