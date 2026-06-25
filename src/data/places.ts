@@ -27,6 +27,101 @@ export const fallbackPlaces: PlaceOfInterest[] = [
     "address": "Av. Córdoba 5579, Palermo Hollywood"
   },
   {
+    "name": "Aeroparque Jorge Newbery (AEP)",
+    "type": "tourist",
+    "distance": "15 min. en auto",
+    "desc": "Aeropuerto para vuelos nacionales y regionales en plena Ciudad de Buenos Aires, frente a la Costanera.",
+    "lat": -34.5592,
+    "lng": -58.4156,
+    "address": "Av. Costanera Rafael Obligado s/n, Palermo",
+    "web": "www.aa2000.com.ar"
+  },
+  {
+    "name": "Aeropuerto Internacional de Ezeiza (EZE)",
+    "type": "tourist",
+    "distance": "45 min. en auto",
+    "desc": "Principal aeropuerto internacional de Argentina, ubicado en la provincia de Buenos Aires.",
+    "lat": -34.8222,
+    "lng": -58.5358,
+    "address": "Autopista Tte. Gral. Ricchieri Km 33.5, Ezeiza",
+    "web": "www.aa2000.com.ar"
+  },
+  {
+    "name": "Terminal Buquebus Puerto Madero",
+    "type": "tourist",
+    "distance": "20 min. en auto",
+    "desc": "Terminal de ferris que conectan Buenos Aires con Colonia del Sacramento y Montevideo (Uruguay).",
+    "lat": -34.5976,
+    "lng": -58.3668,
+    "address": "Av. Antártida Argentina 821, Puerto Madero",
+    "web": "www.buquebus.com"
+  },
+  {
+    "name": "Terminal Colonia Express",
+    "type": "tourist",
+    "distance": "25 min. en auto",
+    "desc": "Terminal de ferris rápidos que viajan a Colonia y Montevideo en Uruguay.",
+    "lat": -34.6247,
+    "lng": -58.3582,
+    "address": "Av. Elvira Rawson de Dellepiane 155, Dársena Sur, La Boca",
+    "web": "www.coloniaexpress.com"
+  },
+  {
+    "name": "Estación Retiro (Terminales Mitre / Belgrano / San Martín)",
+    "type": "tourist",
+    "distance": "18 min. en auto / 25 min. en subte",
+    "desc": "Gran terminal ferroviaria que conecta con el norte y oeste del Gran Buenos Aires, y centro neurálgico de transporte.",
+    "lat": -34.5912,
+    "lng": -58.3747,
+    "address": "Av. Dr. José María Ramos Mejía 1430, Retiro"
+  },
+  {
+    "name": "Terminal de Ómnibus de Retiro",
+    "type": "tourist",
+    "distance": "20 min. en auto",
+    "desc": "Principal terminal de micros y colectivos de larga distancia de Buenos Aires.",
+    "lat": -34.5865,
+    "lng": -58.3732,
+    "address": "Av. Antártida Argentina 1250, Retiro"
+  },
+  {
+    "name": "Estación Constitución (Terminal Roca)",
+    "type": "tourist",
+    "distance": "25 min. en auto / 30 min. en subte",
+    "desc": "Terminal ferroviaria del Ferrocarril General Roca que conecta con el sur de la provincia de Buenos Aires.",
+    "lat": -34.6277,
+    "lng": -58.3815,
+    "address": "Av. Brasil 1128, Constitución"
+  },
+  {
+    "name": "Estación Once de Setiembre (Terminal Sarmiento)",
+    "type": "tourist",
+    "distance": "20 min. en auto / 25 min. en subte",
+    "desc": "Terminal ferroviaria de la Línea Sarmiento que conecta con el oeste de la provincia de Buenos Aires.",
+    "lat": -34.6078,
+    "lng": -58.4069,
+    "address": "Bartolomé Mitre 2815, Balvanera"
+  },
+  {
+    "name": "Estación Federico Lacroze (Terminal Urquiza)",
+    "type": "tourist",
+    "distance": "8 min. en auto / 15 min. a pie",
+    "desc": "Terminal ferroviaria de la Línea Urquiza en Chacarita, combinando con la Línea B de subte.",
+    "lat": -34.5878,
+    "lng": -58.4554,
+    "address": "Av. Federico Lacroze 4181, Chacarita"
+  },
+  {
+    "name": "Terminal de Ómnibus Dellepiane",
+    "type": "tourist",
+    "distance": "25 min. en auto",
+    "desc": "Terminal de micros de larga distancia ubicada en el sur de la ciudad.",
+    "lat": -34.6565,
+    "lng": -58.4614,
+    "address": "Av. Perito Moreno 3950, Flores"
+  },
+
+  {
     "name": "Carrefour Market (Av. Córdoba 5600)",
     "type": "supermarket",
     "distance": "1 min. a pie",
