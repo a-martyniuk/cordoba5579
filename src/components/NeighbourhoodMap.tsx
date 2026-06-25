@@ -20,7 +20,9 @@ import {
   Phone,
   Mail,
   Clock,
-  Globe
+  Globe,
+  Plane,
+  Ship
 } from "lucide-react";
 import { parseCSV } from "../utils/csvParser";
 import proj4 from "proj4";
@@ -241,9 +243,46 @@ const getSubwayLineLabel = (subLine?: string): string => {
   return `<span style="font-size: 10px; font-weight: 900; line-height: 1;">${subLine}</span>`;
 };
 
-const getCategoryHtmlIcon = (type: string, subLine?: string, isFireStation?: boolean): string => {
+const getTransportType = (name: string): "plane" | "train" | "bus" | "ship" | null => {
+  const lower = name.toLowerCase();
+  if (lower.includes("aeroparque") || lower.includes("aeropuerto") || lower.includes("ezeiza")) {
+    return "plane";
+  }
+  if (lower.includes("buquebus") || lower.includes("colonia express")) {
+    return "ship";
+  }
+  if (lower.includes("retiro") || lower.includes("constitución") || lower.includes("constitucion") || lower.includes("once") || lower.includes("lacroze")) {
+    if (lower.includes("ómnibus") || lower.includes("omnibus") || lower.includes("bus")) {
+      return "bus";
+    }
+    return "train";
+  }
+  if (lower.includes("dellepiane") || lower.includes("ómnibus") || lower.includes("omnibus")) {
+    return "bus";
+  }
+  return null;
+};
+
+const getCategoryHtmlIcon = (type: string, subLine?: string, isFireStation?: boolean, name?: string): string => {
   if (type === "security" && isFireStation) return getFireStationHtmlIcon();
   if (type === "subway" && subLine) return getSubwayLineLabel(subLine);
+  
+  if (type === "tourist" && name) {
+    const transportType = getTransportType(name);
+    if (transportType === "plane") {
+      return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3.5c-.5-.5-2.5 0-4 1.5L13.5 8.5 5.3 6.7c-.9-.2-1.8.3-2 1.2-.2.9.3 1.8 1.2 2l8 1.8-3.5 3.5-3.7-1.2c-.4-.1-.8.1-1 .4L3 16.5l3.5 1 1 3.5 2.1-1.3c.3-.2.5-.6.4-1l-1.2-3.7 3.5-3.5 1.8 8c.2.9 1.1 1.4 2 1.2.9-.2 1.4-1.1 1.2-2Z"/></svg>`;
+    }
+    if (transportType === "train") {
+      return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="16" x="4" y="3" rx="2"/><path d="M4 11h16"/><path d="M12 3v8"/><path d="m8 19-2 3"/><path d="m16 19 2 3"/><circle cx="8" cy="15" r="1"/><circle cx="16" cy="15" r="1"/></svg>`;
+    }
+    if (transportType === "bus") {
+      return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="16" x="3" y="4" rx="2" ry="2"/><path d="M7 10h4v4H7zm6 0h4v4h-4zM6 20h12"/></svg>`;
+    }
+    if (transportType === "ship") {
+      return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 21h20"/><path d="M19.3 14.8C21.1 13.5 22 11.7 22 9.8c0-3.8-3.1-6.8-7-6.8a6.9 6.9 0 0 0-5 2.2A6.9 6.9 0 0 0 5 3C1.1 3 0 6 0 9.8c0 2 1 3.7 2.7 5.1L5 19h14l.3-4.2Z"/></svg>`;
+    }
+  }
+
   switch (type) {
     case "stay":
       return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`;
@@ -755,7 +794,7 @@ export default function NeighbourhoodMap({ sheetUrl, lang = "es" }: Neighbourhoo
     filtered.forEach((place) => {
       const isStay = place.type === "stay";
       const markerColor = getCategoryColor(place.type, place.subLine, place.isFireStation);
-      const markerHtmlIcon = getCategoryHtmlIcon(place.type, place.subLine, place.isFireStation);
+      const markerHtmlIcon = getCategoryHtmlIcon(place.type, place.subLine, place.isFireStation, place.name);
 
       const markerSize = isStay ? 38 : 32;
       const anchorVal = markerSize / 2;
@@ -892,7 +931,23 @@ export default function NeighbourhoodMap({ sheetUrl, lang = "es" }: Neighbourhoo
     }
   };
 
-  const getPlaceIcon = (type: string) => {
+  const getPlaceIcon = (type: string, name?: string) => {
+    if (type === "tourist" && name) {
+      const transportType = getTransportType(name);
+      if (transportType === "plane") {
+        return <Plane className="w-5 h-5 text-neutral-600" />;
+      }
+      if (transportType === "train") {
+        return <Train className="w-5 h-5 text-neutral-600" />;
+      }
+      if (transportType === "bus") {
+        return <Bus className="w-5 h-5 text-neutral-600" />;
+      }
+      if (transportType === "ship") {
+        return <Ship className="w-5 h-5 text-neutral-600" />;
+      }
+    }
+
     switch (type) {
       case "stay": return <MapPin className="w-5 h-5 text-[#5F6F52]" />;
       case "subway": return <Train className="w-5 h-5 text-neutral-600" />;
@@ -1039,7 +1094,7 @@ export default function NeighbourhoodMap({ sheetUrl, lang = "es" }: Neighbourhoo
                   }`}
                 >
                   <div className={`p-2.5 rounded-full ${isActive ? "bg-white text-[#5F6F52]" : "bg-neutral-100 text-neutral-600"} flex-shrink-0 mt-0.5`}>
-                    {getPlaceIcon(place.type)}
+                    {getPlaceIcon(place.type, place.name)}
                   </div>
                   <div className="space-y-1 w-full min-w-0">
                     <div className="flex items-center gap-1.5 flex-wrap">
