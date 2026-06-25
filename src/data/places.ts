@@ -621,6 +621,71 @@ export const fallbackPlaces: PlaceOfInterest[] = [
     "address": "Cerrito 628, San Nicolás"
   },
   {
+    "name": "Teatro Gran Rex",
+    "type": "theater",
+    "distance": "14 min. en auto / 25 min. en subte",
+    "desc": "El mítico e inmenso teatro de Buenos Aires para grandes espectáculos musicales, recitales nacionales e internacionales.",
+    "lat": -34.6033,
+    "lng": -58.3791,
+    "address": "Av. Corrientes 857, San Nicolás",
+    "web": "teatro-granrex.com.ar"
+  },
+  {
+    "name": "Teatro Ópera Orbis",
+    "type": "theater",
+    "distance": "14 min. en auto / 25 min. en subte",
+    "desc": "Histórico e icónico teatro art decó sobre la Avenida Corrientes, famoso por albergar grandes producciones teatrales y musicales de Broadway.",
+    "lat": -34.6031,
+    "lng": -58.3796,
+    "address": "Av. Corrientes 860, San Nicolás"
+  },
+  {
+    "name": "Teatro San Martín (Complejo Teatral)",
+    "type": "theater",
+    "distance": "12 min. en auto / 20 min. en subte",
+    "desc": "Emblemático complejo cultural de la Ciudad con múltiples salas teatrales, cine y artes escénicas de vanguardia.",
+    "lat": -34.6041,
+    "lng": -58.3888,
+    "address": "Av. Corrientes 1530, San Nicolás",
+    "web": "complejoteatral.gob.ar"
+  },
+  {
+    "name": "Teatro Astral",
+    "type": "theater",
+    "distance": "12 min. en auto / 20 min. en subte",
+    "desc": "Clásico y refinado teatro sobre la calle Corrientes de gran trayectoria que presenta espectáculos dramáticos y comedias de primer nivel.",
+    "lat": -34.6035,
+    "lng": -58.3892,
+    "address": "Av. Corrientes 1639, San Nicolás"
+  },
+  {
+    "name": "Teatro Metropolitan Sura",
+    "type": "theater",
+    "distance": "12 min. en auto / 20 min. en subte",
+    "desc": "Prestigioso espacio teatral en la Av. Corrientes que ofrece comedias y obras dramáticas de la cartelera comercial más exitosa.",
+    "lat": -34.6032,
+    "lng": -58.3879,
+    "address": "Av. Corrientes 1343, San Nicolás"
+  },
+  {
+    "name": "Teatro Broadway",
+    "type": "theater",
+    "distance": "13 min. en auto / 22 min. en subte",
+    "desc": "Gran sala de espectáculos con imponente fachada dedicada a comedias musicales, revistas y varieté.",
+    "lat": -34.6033,
+    "lng": -58.3807,
+    "address": "Av. Corrientes 1155, San Nicolás"
+  },
+  {
+    "name": "Multiteatro Comafi",
+    "type": "theater",
+    "distance": "12 min. en auto / 20 min. en subte",
+    "desc": "Complejo teatral que alberga múltiples salas de espectáculos y las comedias comerciales más vistas de Buenos Aires.",
+    "lat": -34.6027,
+    "lng": -58.3875,
+    "address": "Av. Corrientes 1283, San Nicolás"
+  },
+  {
     "name": "Carrefour San Telmo",
     "type": "supermarket",
     "distance": "15 min. en auto",
