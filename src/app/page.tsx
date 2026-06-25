@@ -928,154 +928,6 @@ export default function Home() {
             <div id="inventario">
               <InventoryList sheetUrl={googleSheetInventoryUrl} lang={language} />
             </div>
-
-            {/* Neighbourhood Map Section */}
-            <div id="barrio" className="space-y-6">
-              <NeighbourhoodMap sheetUrl={googleSheetPlacesUrl} />
-              
-              {/* Guía Gastronómica Curada */}
-              <div className="bg-white border border-[#EFEBE4] rounded-3xl p-6 md:p-8 space-y-6">
-                <div>
-                  <h3 className="font-serif text-xl md:text-2xl text-neutral-900 font-semibold flex items-center gap-2">
-                    <span>🍳 {t.guideTitle}</span>
-                  </h3>
-                  <p className="text-neutral-500 text-sm mt-1">
-                    {t.guideSubtitle}
-                  </p>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                  {foodGuideData.map((cat, catIdx) => (
-                    <div key={catIdx} className="bg-[#FAF9F7] border border-[#EFEBE4] rounded-2xl p-4 space-y-4 flex flex-col justify-between">
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-2 text-[#5F6F52] pb-2 border-b border-[#EFEBE4]/60">
-                          <span className="text-lg">{cat.icon}</span>
-                          <h4 className="font-bold text-sm text-neutral-900">
-                            {language === "es" ? cat.titleEs : cat.titleEn}
-                          </h4>
-                        </div>
-                        <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider pt-1">
-                          {language === "es" ? cat.subtitleEs : cat.subtitleEn}
-                        </p>
-                      </div>
-
-                      <div className="space-y-3 flex-grow mt-2">
-                        {cat.items.map((item, itemIdx) => (
-                          <div key={itemIdx} className="bg-white border border-[#EFEBE4] p-3 rounded-xl shadow-sm hover:shadow-md transition-all space-y-1.5 flex flex-col justify-between">
-                            <div>
-                              <div className="flex items-start justify-between gap-1.5">
-                                <span className="font-bold text-[12px] text-neutral-900 leading-tight">
-                                  {item.name}
-                                </span>
-                                <a 
-                                  href={item.mapsUrl}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="text-[#5F6F52] hover:text-[#4F5D43] flex-shrink-0"
-                                >
-                                  <ExternalLink className="w-3.5 h-3.5" />
-                                </a>
-                              </div>
-                              <div className="flex flex-wrap items-center gap-1.5 mt-0.5">
-                                <span className="text-[9px] bg-amber-50 text-amber-700 font-bold px-1.5 py-0.5 rounded">
-                                  ⭐ {item.rating} ({item.reviews} en Google)
-                                </span>
-                                <span className="text-[9px] text-neutral-400 font-semibold">
-                                  📍 {item.address}
-                                </span>
-                              </div>
-                              <p className="text-[10px] text-neutral-500 font-medium mt-1 leading-normal">
-                                {language === "es" ? item.tipEs : item.tipEn}
-                              </p>
-                            </div>
-                            <div className="pt-1.5 border-t border-neutral-100 flex items-center gap-1 text-[9px] text-neutral-400 font-medium">
-                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block" />
-                              <span>{item.hours}</span>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* House Rules / Norms */}
-            <div className="space-y-6 bg-amber-50/15 border border-[#EFEBE4] rounded-3xl p-6 md:p-8" id="reglas">
-              <h3 className="font-serif text-xl md:text-2xl text-neutral-900 font-semibold flex items-center gap-2">
-                <AlertTriangle className="w-5 h-5 text-amber-600" />
-                <span>{t.rulesHeader}</span>
-              </h3>
-              
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 text-xs md:text-sm text-neutral-600 font-sans">
-                <div className="flex items-start gap-2.5">
-                  <span className="w-1.5 h-1.5 bg-[#5F6F52] rounded-full mt-2 flex-shrink-0" />
-                  <p>{t.rulesCheck}</p>
-                </div>
-                <div className="flex items-start gap-2.5">
-                  <span className="w-1.5 h-1.5 bg-[#5F6F52] rounded-full mt-2 flex-shrink-0" />
-                  <p>{t.rulesSmoke}</p>
-                </div>
-                <div className="flex items-start gap-2.5">
-                  <span className="w-1.5 h-1.5 bg-[#5F6F52] rounded-full mt-2 flex-shrink-0" />
-                  <p>{t.rulesInt}</p>
-                </div>
-                <div className="flex items-start gap-2.5">
-                  <span className="w-1.5 h-1.5 bg-[#5F6F52] rounded-full mt-2 flex-shrink-0" />
-                  <p>{t.rulesParties}</p>
-                </div>
-                <div className="flex items-start gap-2.5">
-                  <span className="w-1.5 h-1.5 bg-[#5F6F52] rounded-full mt-2 flex-shrink-0" />
-                  <p>{t.rulesGuests}</p>
-                </div>
-                <div className="flex items-start gap-2.5">
-                  <span className="w-1.5 h-1.5 bg-[#5F6F52] rounded-full mt-2 flex-shrink-0" />
-                  <p>{t.rulesShower}</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Accordion FAQ Section */}
-            <div className="space-y-6 bg-white border border-[#EFEBE4] rounded-3xl p-6 md:p-8" id="faq">
-              <h3 className="font-serif text-xl md:text-2xl text-neutral-900 font-semibold">
-                {t.faqHeader}
-              </h3>
-              
-              <div className="divide-y divide-[#EFEBE4] border-t border-b border-[#EFEBE4] font-sans">
-                {[
-                  { q: t.faq1Q, a: t.faq1A },
-                  { q: t.faq2Q, a: t.faq2A },
-                  { q: t.faq3Q, a: t.faq3A },
-                  { q: t.faq4Q, a: t.faq4A },
-                  { q: t.faq5Q, a: t.faq5A }
-                ].map((item, idx) => {
-                  const isOpen = openFaq === idx;
-                  return (
-                    <div key={idx} className="py-4">
-                      <button
-                        onClick={() => handleFaqToggle(idx)}
-                        className="w-full flex items-center justify-between text-left gap-4 group"
-                      >
-                        <span className="font-semibold text-xs sm:text-sm text-neutral-800 group-hover:text-neutral-950 transition-colors">
-                          {item.q}
-                        </span>
-                        <ChevronDown className={`w-4 h-4 text-neutral-400 group-hover:text-neutral-600 transition-all duration-300 flex-shrink-0 ${
-                          isOpen ? "transform rotate-180 text-[#5F6F52]" : ""
-                        }`} />
-                      </button>
-                      
-                      {isOpen && (
-                        <p className="text-xs text-neutral-500 mt-2.5 leading-relaxed pl-1 animate-fadeIn">
-                          {item.a}
-                        </p>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
           </div>
 
           {/* Right Column: Sticky Booking Widget (4/12 width) */}
@@ -1094,6 +946,153 @@ export default function Home() {
             </div>
           </div>
 
+        </div>
+
+        {/* Neighbourhood Map Section (Full Width 12/12) */}
+        <div id="barrio" className="space-y-6">
+          <NeighbourhoodMap sheetUrl={googleSheetPlacesUrl} />
+          
+          {/* Guía Gastronómica Curada */}
+          <div className="bg-white border border-[#EFEBE4] rounded-3xl p-6 md:p-8 space-y-6">
+            <div>
+              <h3 className="font-serif text-xl md:text-2xl text-neutral-900 font-semibold flex items-center gap-2">
+                <span>🍳 {t.guideTitle}</span>
+              </h3>
+              <p className="text-neutral-500 text-sm mt-1">
+                {t.guideSubtitle}
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {foodGuideData.map((cat, catIdx) => (
+                <div key={catIdx} className="bg-[#FAF9F7] border border-[#EFEBE4] rounded-2xl p-4 space-y-4 flex flex-col justify-between">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2 text-[#5F6F52] pb-2 border-b border-[#EFEBE4]/60">
+                      <span className="text-lg">{cat.icon}</span>
+                      <h4 className="font-bold text-sm text-neutral-900">
+                        {language === "es" ? cat.titleEs : cat.titleEn}
+                      </h4>
+                    </div>
+                    <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider pt-1">
+                      {language === "es" ? cat.subtitleEs : cat.subtitleEn}
+                    </p>
+                  </div>
+
+                  <div className="space-y-3 flex-grow mt-2">
+                    {cat.items.map((item, itemIdx) => (
+                      <div key={itemIdx} className="bg-white border border-[#EFEBE4] p-3 rounded-xl shadow-sm hover:shadow-md transition-all space-y-1.5 flex flex-col justify-between">
+                        <div>
+                          <div className="flex items-start justify-between gap-1.5">
+                            <span className="font-bold text-[12px] text-neutral-900 leading-tight">
+                              {item.name}
+                            </span>
+                            <a 
+                              href={item.mapsUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-[#5F6F52] hover:text-[#4F5D43] flex-shrink-0"
+                            >
+                              <ExternalLink className="w-3.5 h-3.5" />
+                            </a>
+                          </div>
+                          <div className="flex flex-wrap items-center gap-1.5 mt-0.5">
+                            <span className="text-[9px] bg-amber-50 text-amber-700 font-bold px-1.5 py-0.5 rounded">
+                              ⭐ {item.rating} ({item.reviews} en Google)
+                            </span>
+                            <span className="text-[9px] text-neutral-400 font-semibold">
+                              📍 {item.address}
+                            </span>
+                          </div>
+                          <p className="text-[10px] text-neutral-500 font-medium mt-1 leading-normal">
+                            {language === "es" ? item.tipEs : item.tipEn}
+                          </p>
+                        </div>
+                        <div className="pt-1.5 border-t border-neutral-100 flex items-center gap-1 text-[9px] text-neutral-400 font-medium">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block" />
+                          <span>{item.hours}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* House Rules / Norms (Full Width 12/12) */}
+        <div className="space-y-6 bg-amber-50/15 border border-[#EFEBE4] rounded-3xl p-6 md:p-8" id="reglas">
+          <h3 className="font-serif text-xl md:text-2xl text-neutral-900 font-semibold flex items-center gap-2">
+            <AlertTriangle className="w-5 h-5 text-amber-600" />
+            <span>{t.rulesHeader}</span>
+          </h3>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 text-xs md:text-sm text-neutral-600 font-sans">
+            <div className="flex items-start gap-2.5">
+              <span className="w-1.5 h-1.5 bg-[#5F6F52] rounded-full mt-2 flex-shrink-0" />
+              <p>{t.rulesCheck}</p>
+            </div>
+            <div className="flex items-start gap-2.5">
+              <span className="w-1.5 h-1.5 bg-[#5F6F52] rounded-full mt-2 flex-shrink-0" />
+              <p>{t.rulesSmoke}</p>
+            </div>
+            <div className="flex items-start gap-2.5">
+              <span className="w-1.5 h-1.5 bg-[#5F6F52] rounded-full mt-2 flex-shrink-0" />
+              <p>{t.rulesInt}</p>
+            </div>
+            <div className="flex items-start gap-2.5">
+              <span className="w-1.5 h-1.5 bg-[#5F6F52] rounded-full mt-2 flex-shrink-0" />
+              <p>{t.rulesParties}</p>
+            </div>
+            <div className="flex items-start gap-2.5">
+              <span className="w-1.5 h-1.5 bg-[#5F6F52] rounded-full mt-2 flex-shrink-0" />
+              <p>{t.rulesGuests}</p>
+            </div>
+            <div className="flex items-start gap-2.5">
+              <span className="w-1.5 h-1.5 bg-[#5F6F52] rounded-full mt-2 flex-shrink-0" />
+              <p>{t.rulesShower}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Accordion FAQ Section (Full Width 12/12) */}
+        <div className="space-y-6 bg-white border border-[#EFEBE4] rounded-3xl p-6 md:p-8" id="faq">
+          <h3 className="font-serif text-xl md:text-2xl text-neutral-900 font-semibold">
+            {t.faqHeader}
+          </h3>
+          
+          <div className="divide-y divide-[#EFEBE4] border-t border-b border-[#EFEBE4] font-sans">
+            {[
+              { q: t.faq1Q, a: t.faq1A },
+              { q: t.faq2Q, a: t.faq2A },
+              { q: t.faq3Q, a: t.faq3A },
+              { q: t.faq4Q, a: t.faq4A },
+              { q: t.faq5Q, a: t.faq5A }
+            ].map((item, idx) => {
+              const isOpen = openFaq === idx;
+              return (
+                <div key={idx} className="py-4">
+                  <button
+                    onClick={() => handleFaqToggle(idx)}
+                    className="w-full flex items-center justify-between text-left gap-4 group"
+                  >
+                    <span className="font-semibold text-xs sm:text-sm text-neutral-800 group-hover:text-neutral-950 transition-colors">
+                      {item.q}
+                    </span>
+                    <ChevronDown className={`w-4 h-4 text-neutral-400 group-hover:text-neutral-600 transition-all duration-300 flex-shrink-0 ${
+                      isOpen ? "transform rotate-180 text-[#5F6F52]" : ""
+                    }`} />
+                  </button>
+                  
+                  {isOpen && (
+                    <p className="text-xs text-neutral-500 mt-2.5 leading-relaxed pl-1 animate-fadeIn">
+                      {item.a}
+                    </p>
+                  )}
+                </div>
+              );
+            })}
+          </div>
         </div>
       </main>
 
