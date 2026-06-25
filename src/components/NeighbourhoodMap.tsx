@@ -486,8 +486,8 @@ const fallbackPlaces: PlaceOfInterest[] = [
     type: "supermarket",
     distance: "9 min. a pie",
     desc: "Gran supermercado hipermercado con amplia variedad de comestibles, bebidas y bazar en el centro comercial Portal Palermo.",
-    lat: -34.5779,
-    lng: -58.4285,
+    lat: -34.5750,
+    lng: -58.4252,
     phone: "0810-999-5862",
     hours: "Lunes a Sábados 08:30–22:00, Domingos 09:00–22:00",
     address: "Av. Int. Bullrich 345, Palermo"
@@ -530,8 +530,8 @@ const fallbackPlaces: PlaceOfInterest[] = [
     type: "subway",
     distance: "10 min. a pie",
     desc: "Ubicada en Av. Santa Fe y Av. Juan B. Justo, junto al centro comercial Distrito Arcos.",
-    lat: -34.5815,
-    lng: -58.4285,
+    lat: -34.5782,
+    lng: -58.4265,
     address: "Av. Santa Fe y Av. Juan B. Justo, Palermo"
   },
   {
@@ -539,8 +539,8 @@ const fallbackPlaces: PlaceOfInterest[] = [
     type: "metrobus",
     distance: "2 min. a pie",
     desc: "Carril exclusivo de colectivos (líneas 34, 166) cruzando de este a oeste de la ciudad.",
-    lat: -34.5872,
-    lng: -58.4411,
+    lat: -34.5889,
+    lng: -58.4382,
     address: "Av. Juan B. Justo y Av. Córdoba, Palermo"
   },
   {
@@ -548,8 +548,8 @@ const fallbackPlaces: PlaceOfInterest[] = [
     type: "shopping",
     distance: "10 min. a pie",
     desc: "Centro comercial a cielo abierto de primeras marcas, cafeterías gourmet y locales de diseño.",
-    lat: -34.5815,
-    lng: -58.4285,
+    lat: -34.5811,
+    lng: -58.4288,
     web: "www.distritoarcos.com",
     hours: "Todos los días 10:00–21:00",
     address: "Paraguay 4979, Palermo"
@@ -605,8 +605,8 @@ const fallbackPlaces: PlaceOfInterest[] = [
     type: "security",
     distance: "10 min. a pie",
     desc: "Seccional oficial de policía de la Ciudad, garantizando presencia de seguridad y asistencia en la zona.",
-    lat: -34.57329,
-    lng: -58.43905,
+    lat: -34.5800,
+    lng: -58.4416,
     phone: "011 4771-4444",
     email: "comisaria14b@policiadelaciudad.gob.ar",
     hours: "Abierto 24 horas",
@@ -1751,7 +1751,7 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
       {/* Categorías de Puntos de Interés */}
       <div className="space-y-2">
         <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Filtrar por Categoría:</span>
-        <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-none -mx-6 px-6 md:mx-0 md:px-0">
+        <div className="flex flex-wrap gap-1.5">
           {categories.map((cat) => {
             const isSelected = selectedCategory === cat.id;
             const categoryColor = cat.id === "all" ? "#1C1B19" : getCategoryColor(cat.id);
@@ -1759,7 +1759,7 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
               <button
                 key={cat.id}
                 onClick={() => setSelectedCategory(cat.id)}
-                className="flex items-center gap-1.5 px-4 py-2 rounded-full border text-xs font-semibold whitespace-nowrap transition-all duration-200"
+                className="flex items-center gap-1 px-3 py-1.5 rounded-full border text-[11px] font-semibold whitespace-nowrap transition-all duration-200"
                 style={{
                   backgroundColor: isSelected ? categoryColor : "#FFFFFF",
                   borderColor: isSelected ? categoryColor : "#EFEBE4",
