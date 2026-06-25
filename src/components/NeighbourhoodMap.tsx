@@ -276,9 +276,10 @@ const getCategoryHtmlIcon = (type: string, subLine?: string, isFireStation?: boo
 
 interface NeighbourhoodMapProps {
   sheetUrl?: string;
+  lang?: "es" | "en";
 }
 
-export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
+export default function NeighbourhoodMap({ sheetUrl, lang = "es" }: NeighbourhoodMapProps) {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
   const markersLayerRef = useRef<any>(null);
@@ -299,6 +300,95 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
   const [activeRoute, setActiveRoute] = useState<[number, number][] | null>(null);
   const [activeRouteInfo, setActiveRouteInfo] = useState<{ distance: string; duration: string } | null>(null);
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+
+  const [localTime, setLocalTime] = useState<string>("");
+
+  useEffect(() => {
+    const updateTime = () => {
+      try {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString("es-AR", {
+          timeZone: "America/Argentina/Buenos_Aires",
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false
+        });
+        setLocalTime(timeString);
+      } catch (e) {
+        console.error("Error formatting local time:", e);
+      }
+    };
+
+    updateTime();
+    const interval = setInterval(updateTime, 10000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const t = {
+    es: {
+      title: "Ubicaciones y Puntos de Interés",
+      subtitle: "Explora la conectividad, cultura, salud, compras y recreación de la ciudad. Soporta coordenadas de toda la Ciudad de Buenos Aires.",
+      filterLabel: "Filtrar por Categoría:",
+      officialSource: "Fuente oficial BA Data:",
+      routeSuggested: "Ruta sugerida desde el depto:",
+      howToGet: "A pasos de la Av. Santa Fe y Av. Juan B. Justo. Múltiples líneas de colectivo (Metrobús) y la línea D de subte a minutos de distancia para moverte cómodamente por Buenos Aires.",
+      loading: "Cargando mapa interactivo...",
+      dataSource: "Datos obtenidos de",
+      portalName: "Portal de Datos Abiertos de la Ciudad de Buenos Aires (BA Data)",
+      dataDesc: "• Coordenadas oficiales de seguridad, cultura, compras y transporte.",
+      timeLabel: "Hora en Bs. As.:",
+      subwayNet: "Red de Subterráneos CABA",
+      secTitle: "Fuerzas de Seguridad",
+      secPolice: "Comisarías",
+      secFire: "Bomberos",
+      visitWeb: "Visitar Sitio Web",
+      dirLabel: "Dir:",
+      telLabel: "Tel:",
+      hoursLabel: "Horario:",
+      webLabel: "Web:",
+      visitWebLink: "Ver web ↗",
+      fireLabel: "🔥 Bomberos"
+    },
+    en: {
+      title: "Locations & Points of Interest",
+      subtitle: "Explore the city's connectivity, culture, health, shopping, and recreation. Supports coordinates for all of Buenos Aires.",
+      filterLabel: "Filter by Category:",
+      officialSource: "Official BA Data Source:",
+      routeSuggested: "Suggested route from the apt:",
+      howToGet: "Steps away from Av. Santa Fe & Av. Juan B. Justo. Multiple bus lines (Metrobus) and Subway Line D are minutes away to travel comfortably around Buenos Aires.",
+      loading: "Loading interactive map...",
+      dataSource: "Data retrieved from",
+      portalName: "Buenos Aires Open Data Portal (BA Data)",
+      dataDesc: "• Official security, culture, shopping, and transit coordinates.",
+      timeLabel: "Time in Bs. As.:",
+      subwayNet: "Buenos Aires Subway Network",
+      secTitle: "Security Forces",
+      secPolice: "Police Stations",
+      secFire: "Fire Stations",
+      visitWeb: "Visit Website",
+      dirLabel: "Addr:",
+      telLabel: "Phone:",
+      hoursLabel: "Hours:",
+      webLabel: "Web:",
+      visitWebLink: "View website ↗",
+      fireLabel: "🔥 Fire Dept"
+    }
+  }[lang];
+
+  const categoryNames: Record<string, { es: string; en: string }> = {
+    all: { es: "Todos", en: "All" },
+    subway: { es: "Subtes", en: "Subway" },
+    metrobus: { es: "Metrobús", en: "Metrobus" },
+    shopping: { es: "Shoppings", en: "Shopping Malls" },
+    supermarket: { es: "Supermercados", en: "Supermarkets" },
+    food: { es: "Gastronomía", en: "Gastronomy" },
+    hospital: { es: "Hospitales", en: "Hospitals" },
+    security: { es: "Seguridad", en: "Security" },
+    park: { es: "Parques", en: "Parks" },
+    museum: { es: "Museos", en: "Museums" },
+    theater: { es: "Teatros", en: "Theaters" },
+    tourist: { es: "Turismo", en: "Tourism" }
+  };
 
 
 
@@ -703,6 +793,11 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
       });
 
       // Structured Popup HTML
+      const dirLabel = lang === "es" ? "Dir:" : "Addr:";
+      const telLabel = lang === "es" ? "Tel:" : "Phone:";
+      const hoursLabel = lang === "es" ? "Horario:" : "Hours:";
+      const webBtnLabel = lang === "es" ? "Ver web ↗" : "View web ↗";
+
       let popupHtml = `
         <div style="font-family: sans-serif; padding: 4px; max-width: 220px; line-height: 1.4;">
           <h4 style="margin: 0 0 4px 0; font-weight: 700; color: #1C1B19; font-size: 13px;">${place.name}</h4>
@@ -711,17 +806,17 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
       `;
 
       if (place.address) {
-        popupHtml += `<p style="margin: 0 0 4px 0; color: #777; font-size: 10px;"><b>Dir:</b> ${place.address}</p>`;
+        popupHtml += `<p style="margin: 0 0 4px 0; color: #777; font-size: 10px;"><b>${dirLabel}</b> ${place.address}</p>`;
       }
       if (place.phone) {
-        popupHtml += `<p style="margin: 0 0 4px 0; color: #777; font-size: 10px;"><b>Tel:</b> <a href="tel:${place.phone}" style="color: #5F6F52; text-decoration: none; font-weight: 600;">${place.phone}</a></p>`;
+        popupHtml += `<p style="margin: 0 0 4px 0; color: #777; font-size: 10px;"><b>${telLabel}</b> <a href="tel:${place.phone}" style="color: #5F6F52; text-decoration: none; font-weight: 600;">${place.phone}</a></p>`;
       }
       if (place.hours) {
-        popupHtml += `<p style="margin: 0 0 4px 0; color: #777; font-size: 10px;"><b>Horario:</b> ${place.hours}</p>`;
+        popupHtml += `<p style="margin: 0 0 4px 0; color: #777; font-size: 10px;"><b>${hoursLabel}</b> ${place.hours}</p>`;
       }
       if (place.web) {
         const href = place.web.startsWith("http") ? place.web : `https://${place.web}`;
-        popupHtml += `<p style="margin: 0; color: #777; font-size: 10px;"><b>Web:</b> <a href="${href}" target="_blank" style="color: #5F6F52; font-weight: bold; text-decoration: underline;">Ver web ↗</a></p>`;
+        popupHtml += `<p style="margin: 0; color: #777; font-size: 10px;"><b>Web:</b> <a href="${href}" target="_blank" style="color: #5F6F52; font-weight: bold; text-decoration: underline;">${webBtnLabel}</a></p>`;
       }
 
       popupHtml += `</div>`;
@@ -824,16 +919,27 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
 
   return (
     <div className="bg-white border border-[#EFEBE4] rounded-3xl p-6 md:p-8 space-y-6">
-      <div>
-        <h3 className="font-serif text-2xl text-neutral-900 font-semibold">Ubicaciones y Puntos de Interés</h3>
-        <p className="text-neutral-500 text-sm mt-1">
-          Explora la conectividad, cultura, salud, compras y recreación de la ciudad. Soporta coordenadas precisas de toda la Ciudad de Buenos Aires.
-        </p>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h3 className="font-serif text-2xl text-neutral-900 font-semibold">{t.title}</h3>
+          <p className="text-neutral-500 text-sm mt-1">{t.subtitle}</p>
+        </div>
+        {localTime && (
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#FAF9F7] border border-[#EFEBE4] rounded-full text-xs font-semibold text-neutral-700 shadow-sm self-start sm:self-center flex-shrink-0 animate-fadeIn">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            <span>
+              {t.timeLabel} <strong className="text-neutral-900">{localTime}</strong> <span className="text-neutral-400 text-[10px] font-black">GMT-3</span>
+            </span>
+          </div>
+        )}
       </div>
 
       {/* Categorías de Puntos de Interés */}
       <div className="space-y-2">
-        <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Filtrar por Categoría:</span>
+        <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">{t.filterLabel}</span>
         <div className="flex flex-wrap gap-1.5">
           {categories.map((cat) => {
             const isSelected = selectedCategory === cat.id;
@@ -850,7 +956,7 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
                 }}
               >
                 <span>{cat.icon}</span>
-                <span>{cat.name}</span>
+                <span>{categoryNames[cat.id]?.[lang] || cat.name}</span>
               </button>
             );
           })}
@@ -864,7 +970,7 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
         <div className="order-2 lg:order-1 lg:col-span-5 flex flex-col justify-between space-y-4">
           {selectedCategory !== "all" && datasetUrls[selectedCategory] && (
             <div className="bg-[#FAF9F7] border border-[#EFEBE4] rounded-2xl p-3.5 text-xs text-neutral-600 flex items-center justify-between shadow-sm">
-              <span className="font-semibold text-neutral-500">Fuente oficial BA Data:</span>
+              <span className="font-semibold text-neutral-500">{t.officialSource}</span>
               <a
                 href={datasetUrls[selectedCategory].url}
                 target="_blank"
@@ -880,15 +986,15 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
           {/* Subway Line Color Legend */}
           {selectedCategory === "subway" && (
             <div className="bg-[#FAF9F7] border border-[#EFEBE4] rounded-2xl p-3 text-xs">
-              <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-2">Red de Subterráneos CABA</p>
+              <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-2">{t.subwayNet}</p>
               <div className="flex flex-wrap gap-1.5">
                 {[
-                  { line: "A", color: "#18A7E8", label: "Línea A" },
-                  { line: "B", color: "#E4002B", label: "Línea B" },
-                  { line: "C", color: "#0072BB", label: "Línea C" },
-                  { line: "D", color: "#008000", label: "Línea D" },
-                  { line: "E", color: "#7A0080", label: "Línea E" },
-                  { line: "H", color: "#F5A800", label: "Línea H" },
+                  { line: "A", color: "#18A7E8", label: lang === "es" ? "Línea A" : "Line A" },
+                  { line: "B", color: "#E4002B", label: lang === "es" ? "Línea B" : "Line B" },
+                  { line: "C", color: "#0072BB", label: lang === "es" ? "Línea C" : "Line C" },
+                  { line: "D", color: "#008000", label: lang === "es" ? "Línea D" : "Line D" },
+                  { line: "E", color: "#7A0080", label: lang === "es" ? "Línea E" : "Line E" },
+                  { line: "H", color: "#F5A800", label: lang === "es" ? "Línea H" : "Line H" },
                 ].map(({ line, color, label }) => (
                   <div key={line} className="flex items-center gap-1 px-2 py-1 rounded-full" style={{ backgroundColor: color + "20", border: `1px solid ${color}40` }}>
                     <div className="w-4 h-4 rounded-full flex items-center justify-center text-white font-black text-[9px]" style={{ backgroundColor: color }}>
@@ -904,15 +1010,15 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
           {/* Security Type Legend */}
           {selectedCategory === "security" && (
             <div className="bg-[#FAF9F7] border border-[#EFEBE4] rounded-2xl p-3 text-xs">
-              <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-2">Fuerzas de Seguridad</p>
+              <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-2">{t.secTitle}</p>
               <div className="flex gap-2">
                 <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-[#2F80ED]/10 border border-[#2F80ED]/30">
                   <div className="w-3.5 h-3.5 rounded-full bg-[#2F80ED]"></div>
-                  <span className="text-[10px] font-semibold text-[#2F80ED]">Comisarías</span>
+                  <span className="text-[10px] font-semibold text-[#2F80ED]">{t.secPolice}</span>
                 </div>
                 <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-[#E55A1C]/10 border border-[#E55A1C]/30">
                   <div className="w-3.5 h-3.5 rounded-full bg-[#E55A1C]"></div>
-                  <span className="text-[10px] font-semibold text-[#E55A1C]">Bomberos</span>
+                  <span className="text-[10px] font-semibold text-[#E55A1C]">{t.secFire}</span>
                 </div>
               </div>
             </div>
@@ -947,7 +1053,7 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
                       {place.isFireStation && (
                         <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full text-[9px] font-bold text-white flex-shrink-0"
                           style={{ backgroundColor: "#E55A1C" }}>
-                          🔥 Bomberos
+                          {t.fireLabel}
                         </span>
                       )}
                     </div>
@@ -961,7 +1067,7 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
                           <div className="bg-[#FAF9F7] border border-[#5F6F52]/10 rounded-xl p-2.5 flex items-start gap-2 text-neutral-700 shadow-sm">
                             <span className="text-sm">📍</span>
                             <div>
-                              <p className="font-bold text-[9px] uppercase tracking-wider text-[#5F6F52]">Ruta sugerida desde el depto:</p>
+                              <p className="font-bold text-[9px] uppercase tracking-wider text-[#5F6F52]">{t.routeSuggested}</p>
                               <p className="text-[11px] text-neutral-800 mt-0.5 leading-snug">{activeRouteInfo.duration}</p>
                             </div>
                           </div>
@@ -971,7 +1077,7 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
                         
                         {place.address && (
                           <div className="flex gap-1.5 items-start mt-1">
-                            <span className="font-bold text-neutral-500 flex-shrink-0">Dir:</span>
+                            <span className="font-bold text-neutral-500 flex-shrink-0">{t.dirLabel}</span>
                             <span className="text-neutral-600 break-words">{place.address}</span>
                           </div>
                         )}
@@ -1006,7 +1112,7 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
                               rel="noopener noreferrer" 
                               className="text-[#5F6F52] hover:underline font-semibold flex items-center gap-0.5"
                             >
-                              <span>Visitar Sitio Web</span>
+                              <span>{t.visitWeb}</span>
                               <span>↗</span>
                             </a>
                           </div>
@@ -1020,7 +1126,7 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
           </div>
 
           <div className="bg-[#FAF9F7] border border-[#EFEBE4] rounded-2xl p-4 text-xs text-neutral-500 leading-relaxed">
-            <strong>¿Cómo llegar?</strong> A pasos de la Av. Santa Fe y Av. Juan B. Justo. Múltiples líneas de colectivo (Metrobús) y la línea D de subte a minutos de distancia para moverte cómodamente por Buenos Aires.
+            <strong>{lang === "es" ? "¿Cómo llegar?" : "How to get there?"}</strong> {t.howToGet}
           </div>
         </div>
 
@@ -1030,7 +1136,7 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
             <div className="absolute inset-0 bg-neutral-100 flex items-center justify-center text-sm text-neutral-500">
               <div className="text-center space-y-2">
                 <div className="w-6 h-6 border-2 border-neutral-400 border-t-transparent rounded-full animate-spin mx-auto"></div>
-                <p>Cargando mapa interactivo...</p>
+                <p>{t.loading}</p>
               </div>
             </div>
           )}
@@ -1039,16 +1145,16 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
       </div>
 
       <div className="text-[10px] text-neutral-400 flex flex-wrap items-center gap-1 mt-4 border-t border-[#F5F2EB] pt-4">
-        <span>🌐 Datos obtenidos de</span>
+        <span>🌐 {t.dataSource}</span>
         <a 
           href="https://data.buenosaires.gob.ar/" 
           target="_blank" 
           rel="noopener noreferrer"
           className="underline hover:text-neutral-600 font-semibold"
         >
-          Portal de Datos Abiertos de la Ciudad de Buenos Aires (BA Data)
+          {t.portalName}
         </a>
-        <span>• Coordenadas oficiales de seguridad, cultura, compras y transporte.</span>
+        <span>{t.dataDesc}</span>
       </div>
     </div>
   );

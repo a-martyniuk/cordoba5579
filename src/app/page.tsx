@@ -269,9 +269,9 @@ export default function Home() {
       tagArena: "A 5 min. del Movistar Arena",
       heroTitle: "Estadía de Diseño con Rooftop y Piscina en Av. Córdoba",
       heroDesc: "Un oasis urbano de diseño contemporáneo y confort absoluto en la zona más vibrante de Buenos Aires. Totalmente equipado y pensado para nómadas digitales y viajeros exigentes.",
-      badgeAirbnb: "en Airbnb",
-      badgeGuests: "huéspedes alojados",
-      badgeVerified: "Anfitrión verificado (Superhost)",
+      badgeAirbnb: "Disponible en Airbnb",
+      badgeGuests: "Capacidad: 2 a 4 huéspedes",
+      badgeVerified: "Anfitrión verificado",
       hostHeader: "Departamento entero · Anfitrión: Jorge Orlando",
       hostDetails: "2 a 4 huéspedes · 1 dormitorio · 1 cama Queen + 1 sofá cama · 1 baño completo · 1 toilette",
       whyTitle: "Por qué elegir Córdoba 5579",
@@ -347,9 +347,9 @@ export default function Home() {
       tagArena: "5 min from Movistar Arena",
       heroTitle: "Designer Apartment with Rooftop and Pool on Av. Córdoba",
       heroDesc: "An urban oasis of contemporary design and absolute comfort in the most vibrant area of Buenos Aires. Fully equipped and tailored for digital nomads and demanding travelers.",
-      badgeAirbnb: "on Airbnb",
-      badgeGuests: "guests hosted",
-      badgeVerified: "Verified Host (Superhost)",
+      badgeAirbnb: "Available on Airbnb",
+      badgeGuests: "Capacity: 2 to 4 guests",
+      badgeVerified: "Verified Host",
       hostHeader: "Entire Apartment · Host: Jorge Orlando",
       hostDetails: "2 to 4 guests · 1 bedroom · 1 Queen bed + 1 sofa bed · 1 full bathroom · 1 half bath",
       whyTitle: "Why Choose Cordoba 5579",
@@ -664,11 +664,11 @@ export default function Home() {
           <div className="flex flex-wrap gap-3 pt-1 text-xs font-semibold text-neutral-700">
             <div className="flex items-center gap-2 bg-white border border-[#EFEBE4] px-4 py-2.5 rounded-2xl shadow-sm">
               <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
-              <span><strong>4.9⭐</strong> {t.badgeAirbnb}</span>
+              <span>{t.badgeAirbnb}</span>
             </div>
             <div className="flex items-center gap-2 bg-white border border-[#EFEBE4] px-4 py-2.5 rounded-2xl shadow-sm">
               <Users className="w-4 h-4 text-[#5F6F52]" />
-              <span><strong>120+</strong> {t.badgeGuests}</span>
+              <span>{t.badgeGuests}</span>
             </div>
             <div className="flex items-center gap-2 bg-white border border-[#EFEBE4] px-4 py-2.5 rounded-2xl shadow-sm">
               <UserCheck className="w-4 h-4 text-emerald-700" />
@@ -882,7 +882,7 @@ export default function Home() {
 
         {/* Neighbourhood Map Section (Full Width 12/12) */}
         <div id="barrio" className="space-y-6">
-          <NeighbourhoodMap sheetUrl={googleSheetPlacesUrl} />
+          <NeighbourhoodMap sheetUrl={googleSheetPlacesUrl} lang={language} />
           
           {/* Guía Gastronómica Curada */}
           <div className="bg-white border border-[#EFEBE4] rounded-3xl p-6 md:p-8 space-y-6">
