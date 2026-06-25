@@ -1,19 +1,20 @@
-Nombre,Categoría,Distancia,Detalle,Latitud,Longitud
-"Av. Córdoba 5579 (El Departamento)",stay,"Ubicación","Moderno departamento a estrenar, ubicado estratégicamente en Palermo Hollywood.",-34.587546,-58.439668
-"Estación Ministro Carranza (Línea D)",subway,"8 min. a pie","Línea directa al Obelisco, Plaza de Mayo y combinaciones con toda la red de subtes.",-34.5754,-58.4349
-"Estación Palermo (Línea D)",subway,"10 min. a pie","Ubicada en Av. Santa Fe y Av. Juan B. Justo, junto al centro comercial Distrito Arcos.",-34.5815,-58.4285
-"Metrobús Juan B. Justo - Estación Córdoba",metrobus,"2 min. a pie","Carril exclusivo de colectivos (líneas 34, 166) cruzando de este a oeste de la ciudad.",-34.5872,-58.4411
-"Metrobús Santa Fe - Estación Carranza",metrobus,"8 min. a pie","Conexión con múltiples líneas que te llevan directo a Plaza Italia, Recoleta y Microcentro.",-34.5768,-58.4357
-"Distrito Arcos Outlet Premium",shopping,"10 min. a pie","Centro comercial a cielo abierto de primeras marcas, cafeterías gourmet y locales de diseño.",-34.5815,-58.4285
-"Don Julio Parrilla",food,"12 min. a pie","Galardonada como una de las mejores parrillas del mundo. Carnes de pastura maduradas y excelente cava.",-34.5863,-58.4243
-"La Mar Cebichería",food,"7 min. a pie","Prestigioso restaurante de cocina peruana y pescados frescos, ideal para cenar en su hermoso patio.",-34.5786,-58.4385
-"Sanatorio de Los Arcos",hospital,"6 min. en auto / 12 min. a pie","Prestigioso sanatorio privado de alta complejidad con servicio de guardia de urgencias las 24 horas.",-34.58102,-58.42995
-"Hospital de Agudos Dr. J. A. Fernández",hospital,"10 min. en auto","Hospital público general de alta complejidad de la Ciudad de Buenos Aires con guardia de urgencias.",-34.5806,-58.4069
-"Comisaría Vecinal 14B - Policía de la Ciudad",security,"10 min. a pie","Seccional oficial de policía de la Ciudad, garantizando presencia de seguridad y asistencia en la zona.",-34.57329,-58.43905
-"Destacamento de Bomberos Palermo",security,"10 min. a pie / 4 min. en auto","Cuartel oficial de Bomberos de la Ciudad de Buenos Aires en Guatemala 5966.",-34.5775,-58.4356
-"Plaza Mafalda (Colegiales)",park,"10 min. a pie","Hermosa plaza arbolada con juegos infantiles y obras dedicadas a Mafalda, ideal para caminar o descansar.",-34.5775,-58.4465
-"Plaza Cortázar (Plaza Serrano)",park,"12 min. a pie","El corazón de Palermo Soho, famoso por su feria artesanal de diseño y una vibrante oferta de bares.",-34.5887,-58.4301
-"Centro Cultural de la Ciencia (C3)",museum,"8 min. a pie","Museo científico interactivo con talleres y exhibiciones modernas, ideal para visitar.",-34.582566,-58.429118
-"MALBA (Museo de Arte Latinoamericano)",museum,"8 min. en auto","Excepcional colección de arte latinoamericano moderno y contemporáneo en un edificio icónico.",-34.5772,-58.4042
-"Teatro Regio",theater,"7 min. a pie","Pertenece al Complejo Teatral de Buenos Aires, ofreciendo obras dramáticas con grandes elencos locales.",-34.584361,-58.445889
-"Teatro Vorterix",theater,"15 min. a pie","Gran espacio de espectáculos, recitales de rock nacional e internacional, y transmisiones de streaming.",-34.5719,-58.4449
+Nombre,Categoría,Distancia,Detalle,Latitud,Longitud,Telefono,Email,Web,Horario,Direccion
+"Av. Córdoba 5579 (El Departamento)",stay,Ubicación,"Moderno departamento a estrenar, ubicado estratégicamente en Palermo Hollywood.",-34.587546,-58.439668,"+54 9 11 4537-9500",,,24 hs,"Av. Córdoba 5579, Palermo Hollywood"
+"Carrefour Market (Av. Córdoba 5600)",supermarket,1 min. a pie,"Supermercado express a la vuelta del departamento, ideal para compras rápidas cotidianas.",-34.5879,-58.4390,,,,Lunes a Sábados 08:00–21:30, Av. Córdoba 5625
+"Jumbo Palermo",supermarket,9 min. a pie,"Gran supermercado hipermercado con amplia variedad de comestibles, bebidas y bazar.",-34.5779,-58.4285,"0810-999-5862",,,Lunes a Sábados 08:30–22:00, Av. Int. Bullrich 345
+"Jardín Japonés",tourist,"8 min. en auto","Hermoso y tranquilo jardín zen administrado por la Fundación Cultural Argentino Japonesa.",-34.5750,-58.4098,"011 4804-9141",,www.jardinjapones.org.ar,Todos los días 10:00–18:45,"Av. Casares 3450, Palermo"
+"Planetario Galileo Galilei",tourist,9 min. en auto,"El principal centro de divulgación de astronomía de la ciudad, con proyecciones domo.",-34.5696,-58.4116,"011 4771-6629",,planetario.buenosaires.gob.ar,Martes a Domingos 09:00–19:30,"Av. Sarmiento y Belisario Roldán"
+"Estación Ministro Carranza (Línea D)",subway,8 min. a pie,"Línea directa al Obelisco, Plaza de Mayo y combinaciones con toda la red de subtes.",-34.5754,-58.4349,,,,,"Av. Santa Fe y Av. Dorrego"
+"Estación Palermo (Línea D)",subway,10 min. a pie,"Ubicada en Av. Santa Fe y Av. Juan B. Justo, junto al centro comercial Distrito Arcos.",-34.5815,-58.4285,,,,,"Av. Santa Fe y Av. Juan B. Justo"
+"Metrobús Juan B. Justo - Estación Córdoba",metrobus,2 min. a pie,"Carril exclusivo de colectivos (líneas 34, 166) cruzando de este a oeste de la ciudad.",-34.5872,-58.4411,,,,,"Av. Juan B. Justo y Av. Córdoba"
+"Distrito Arcos Outlet Premium",shopping,10 min. a pie,"Centro comercial a cielo abierto de primeras marcas, cafeterías y locales de diseño.",-34.5815,-58.4285,,,www.distritoarcos.com,Todos los días 10:00–21:00,Paraguay 4979
+"Don Julio Parrilla",food,12 min. a pie,"Galardonada como una de las mejores parrillas del mundo. Carnes de pastura y excelente cava.",-34.5863,-58.4243,"011 4833-0363",,www.parrilladonjulio.com,"Todos los días 11:30–16:00, 19:00–01:00",Guatemala 4699
+"La Mar Cebichería",food,7 min. a pie,"Prestigioso restaurante de cocina peruana y pescados frescos, ideal para cenar en su patio.",-34.5786,-58.4385,"011 4776-5543",,www.lamarcebicheria.com.ar,"Lunes a Domingos 12:00–16:00, 19:00–00:00",Arévalo 2024
+"Sanatorio de Los Arcos",hospital,6 min. en auto,"Prestigioso sanatorio privado de alta complejidad con servicio de guardia de urgencias.",-34.58102,-58.42995,"011 4779-1000",,,Guardia 24 horas,"Av. Juan B. Justo 909"
+"Hospital de Agudos Dr. J. A. Fernández",hospital,10 min. en auto,"Hospital público general de alta complejidad de la Ciudad de Buenos Aires con guardia.",-34.5806,-58.4069,"011 4808-2600",,,Guardia 24 horas,Cerviño 3356
+"Comisaría Vecinal 14B - Policía de la Ciudad",security,10 min. a pie,"Seccional oficial de policía de la Ciudad, garantizando presencia de seguridad en la zona.",-34.57329,-58.43905,"011 4771-4444",comisaria14b@policiadelaciudad.gob.ar,,Abierto 24 horas,Av. Dorrego 1898
+"Destacamento de Bomberos Palermo",security,10 min. a pie,"Cuartel oficial de Bomberos de la Ciudad de Buenos Aires.",-34.5775,-58.4356,100,,,Abierto 24 horas,Guatemala 5966
+"Plaza Cortázar (Plaza Serrano)",park,12 min. a pie,"El corazón de Palermo Soho, famoso por su feria artesanal y vibrante oferta de bares.",-34.5887,-58.4301,,,,,"Honduras y Serrano"
+"Centro Cultural de la Ciencia (C3)",museum,8 min. a pie,"Museo científico interactivo con talleres y exhibiciones modernas, ideal para visitar.",-34.582566,-58.429118,"011 4899-7300",,ccscience.gob.ar,"Viernes a Domingos 13:00–19:30",Godoy Cruz 2270
+"MALBA (Museo de Arte Latinoamericano)",museum,8 min. en auto,"Excepcional colección de arte latinoamericano moderno y contemporáneo en un edificio icónico.",-34.5772,-58.4042,"011 4808-6500",,www.malba.org.ar,"Jueves a Lunes 12:00–20:00, Miércoles 11:00–20:00","Av. Figueroa Corta 3415"
+"Teatro Regio",theater,7 min. a pie,"Pertenece al Complejo Teatral de Buenos Aires, ofreciendo obras dramáticas.",-34.584361,-58.445889,"011 4772-3350",,complejoteatral.gob.ar,Según funciones programadas,Av. Córdoba 6056

@@ -13,7 +13,12 @@ import {
   Trees, 
   Landmark, 
   Ticket, 
-  Compass 
+  Compass,
+  ShoppingCart,
+  Phone,
+  Mail,
+  Clock,
+  Globe
 } from "lucide-react";
 import { parseCSV } from "../utils/csvParser";
 import proj4 from "proj4";
@@ -25,6 +30,49 @@ function convertEPSG9498ToWGS84(x: number, y: number): { lat: number; lng: numbe
   // proj4 returns [longitude, latitude]
   const [lon, lat] = proj4("EPSG:9498", "WGS84", [x, y]);
   return { lat, lng: lon };
+}
+
+// Helper to parse coordinate strings (e.g. "[26549.56, 69922.54]" or "-58.43, -34.58")
+function parseCoordinatesString(str: string): { lat: number; lng: number } | null {
+  if (!str) return null;
+  // Remove brackets, parentheses and split by comma or space
+  const cleanStr = str.replace(/[\[\]\(\)]/g, "").trim();
+  const parts = cleanStr.split(/[\s,]+/);
+  if (parts.length >= 2) {
+    const val1 = parseFloat(parts[0]);
+    const val2 = parseFloat(parts[1]);
+    if (!isNaN(val1) && !isNaN(val2)) {
+      const isLocalGrid = (val: number) => val > 5000 && val < 150000;
+      if (isLocalGrid(val1) || isLocalGrid(val2)) {
+        let x = val1;
+        let y = val2;
+        // In GeoJSON, coordinates are ordered [longitude, latitude] (i.e. [X, Y])
+        if (val1 > 5000 && val1 < 50000) {
+          x = val1;
+          y = val2;
+        } else if (val2 > 5000 && val2 < 50000) {
+          x = val2;
+          y = val1;
+        }
+        try {
+          return convertEPSG9498ToWGS84(x, y);
+        } catch (e) {
+          console.error("Error converting coordinates string:", e);
+          return null;
+        }
+      } else {
+        // Standard WGS84: identify which is lat (around -34.6) and which is lon (around -58.4)
+        let lat = val2;
+        let lng = val1;
+        if (val1 < -30 && val1 > -40) {
+          lat = val1;
+          lng = val2;
+        }
+        return { lat, lng };
+      }
+    }
+  }
+  return null;
 }
 
 // Client-side CABA geocoder
@@ -76,11 +124,16 @@ async function geocodeAddress(address: string): Promise<{ lat: number; lng: numb
 
 interface PlaceOfInterest {
   name: string;
-  type: "stay" | "subway" | "metrobus" | "shopping" | "food" | "hospital" | "security" | "park" | "museum" | "theater";
+  type: "stay" | "subway" | "metrobus" | "shopping" | "supermarket" | "food" | "hospital" | "security" | "park" | "museum" | "theater" | "tourist";
   distance: string;
   desc: string;
   lat: number;
   lng: number;
+  phone?: string;
+  email?: string;
+  web?: string;
+  hours?: string;
+  address?: string;
 }
 
 const fallbackPlaces: PlaceOfInterest[] = [
@@ -90,7 +143,55 @@ const fallbackPlaces: PlaceOfInterest[] = [
     distance: "Ubicación",
     desc: "Moderno departamento a estrenar, ubicado estratégicamente en Palermo Hollywood.",
     lat: -34.587546,
-    lng: -58.439668
+    lng: -58.439668,
+    phone: "+54 9 11 4537-9500",
+    hours: "24 hs",
+    address: "Av. Córdoba 5579, Palermo Hollywood"
+  },
+  {
+    name: "Carrefour Market (Av. Córdoba 5600)",
+    type: "supermarket",
+    distance: "1 min. a pie",
+    desc: "Supermercado express a la vuelta del departamento, ideal para compras rápidas cotidianas.",
+    lat: -34.5879,
+    lng: -58.4390,
+    hours: "Lunes a Sábados 08:00–21:30, Domingos cerrado",
+    address: "Av. Córdoba 5625, Palermo"
+  },
+  {
+    name: "Jumbo Palermo",
+    type: "supermarket",
+    distance: "9 min. a pie",
+    desc: "Gran supermercado hipermercado con amplia variedad de comestibles, bebidas y bazar en el centro comercial Portal Palermo.",
+    lat: -34.5779,
+    lng: -58.4285,
+    phone: "0810-999-5862",
+    hours: "Lunes a Sábados 08:30–22:00, Domingos 09:00–22:00",
+    address: "Av. Int. Bullrich 345, Palermo"
+  },
+  {
+    name: "Jardín Japonés",
+    type: "tourist",
+    distance: "8 min. en auto / 25 min. a pie",
+    desc: "Hermoso y tranquilo jardín zen administrado por la Fundación Cultural Argentino Japonesa, con restaurante y vivero.",
+    lat: -34.5750,
+    lng: -58.4098,
+    phone: "011 4804-9141",
+    web: "www.jardinjapones.org.ar",
+    hours: "Todos los días 10:00–18:45",
+    address: "Av. Casares 3450, Palermo"
+  },
+  {
+    name: "Planetario Galileo Galilei",
+    type: "tourist",
+    distance: "9 min. en auto",
+    desc: "El principal centro de divulgación de astronomía de la ciudad, con proyecciones domo de alta resolución y parque arbolado.",
+    lat: -34.5696,
+    lng: -58.4116,
+    phone: "011 4771-6629",
+    web: "planetario.buenosaires.gob.ar",
+    hours: "Martes a Domingos 09:00–19:30, Lunes cerrado",
+    address: "Av. Sarmiento y Belisario Roldán, Palermo"
   },
   {
     name: "Estación Ministro Carranza (Línea D)",
@@ -98,7 +199,8 @@ const fallbackPlaces: PlaceOfInterest[] = [
     distance: "8 min. a pie",
     desc: "Línea directa al Obelisco, Plaza de Mayo y combinaciones con toda la red de subtes.",
     lat: -34.5754,
-    lng: -58.4349
+    lng: -58.4349,
+    address: "Av. Santa Fe y Av. Dorrego, Palermo"
   },
   {
     name: "Estación Palermo (Línea D)",
@@ -106,7 +208,8 @@ const fallbackPlaces: PlaceOfInterest[] = [
     distance: "10 min. a pie",
     desc: "Ubicada en Av. Santa Fe y Av. Juan B. Justo, junto al centro comercial Distrito Arcos.",
     lat: -34.5815,
-    lng: -58.4285
+    lng: -58.4285,
+    address: "Av. Santa Fe y Av. Juan B. Justo, Palermo"
   },
   {
     name: "Metrobús Juan B. Justo - Estación Córdoba",
@@ -114,15 +217,8 @@ const fallbackPlaces: PlaceOfInterest[] = [
     distance: "2 min. a pie",
     desc: "Carril exclusivo de colectivos (líneas 34, 166) cruzando de este a oeste de la ciudad.",
     lat: -34.5872,
-    lng: -58.4411
-  },
-  {
-    name: "Metrobús Santa Fe - Estación Carranza",
-    type: "metrobus",
-    distance: "8 min. a pie",
-    desc: "Conexión con múltiples líneas que te llevan directo a Plaza Italia, Recoleta y Microcentro.",
-    lat: -34.5768,
-    lng: -58.4357
+    lng: -58.4411,
+    address: "Av. Juan B. Justo y Av. Córdoba, Palermo"
   },
   {
     name: "Distrito Arcos Outlet Premium",
@@ -130,7 +226,10 @@ const fallbackPlaces: PlaceOfInterest[] = [
     distance: "10 min. a pie",
     desc: "Centro comercial a cielo abierto de primeras marcas, cafeterías gourmet y locales de diseño.",
     lat: -34.5815,
-    lng: -58.4285
+    lng: -58.4285,
+    web: "www.distritoarcos.com",
+    hours: "Todos los días 10:00–21:00",
+    address: "Paraguay 4979, Palermo"
   },
   {
     name: "Don Julio Parrilla",
@@ -138,7 +237,11 @@ const fallbackPlaces: PlaceOfInterest[] = [
     distance: "12 min. a pie",
     desc: "Galardonada como una de las mejores parrillas del mundo. Carnes de pastura maduradas y excelente cava.",
     lat: -34.5863,
-    lng: -58.4243
+    lng: -58.4243,
+    phone: "011 4833-0363",
+    web: "www.parrilladonjulio.com",
+    hours: "Todos los días 11:30–16:00, 19:00–01:00",
+    address: "Guatemala 4699, Palermo"
   },
   {
     name: "La Mar Cebichería",
@@ -146,7 +249,11 @@ const fallbackPlaces: PlaceOfInterest[] = [
     distance: "7 min. a pie",
     desc: "Prestigioso restaurante de cocina peruana y pescados frescos, ideal para cenar en su hermoso patio.",
     lat: -34.5786,
-    lng: -58.4385
+    lng: -58.4385,
+    phone: "011 4776-5543",
+    web: "www.lamarcebicheria.com.ar",
+    hours: "Lunes a Domingos 12:00–16:00, 19:00–00:00",
+    address: "Arévalo 2024, Palermo"
   },
   {
     name: "Sanatorio de Los Arcos",
@@ -154,7 +261,10 @@ const fallbackPlaces: PlaceOfInterest[] = [
     distance: "6 min. en auto / 12 min. a pie",
     desc: "Prestigioso sanatorio privado de alta complejidad con servicio de guardia de urgencias las 24 horas.",
     lat: -34.58102,
-    lng: -58.42995
+    lng: -58.42995,
+    phone: "011 4779-1000",
+    hours: "Guardia 24 horas",
+    address: "Av. Juan B. Justo 909, Palermo"
   },
   {
     name: "Hospital de Agudos Dr. J. A. Fernández",
@@ -162,7 +272,10 @@ const fallbackPlaces: PlaceOfInterest[] = [
     distance: "10 min. en auto",
     desc: "Hospital público general de alta complejidad de la Ciudad de Buenos Aires con guardia de urgencias.",
     lat: -34.5806,
-    lng: -58.4069
+    lng: -58.4069,
+    phone: "011 4808-2600",
+    hours: "Guardia 24 horas",
+    address: "Cerviño 3356, Palermo"
   },
   {
     name: "Comisaría Vecinal 14B - Policía de la Ciudad",
@@ -170,23 +283,22 @@ const fallbackPlaces: PlaceOfInterest[] = [
     distance: "10 min. a pie",
     desc: "Seccional oficial de policía de la Ciudad, garantizando presencia de seguridad y asistencia en la zona.",
     lat: -34.57329,
-    lng: -58.43905
+    lng: -58.43905,
+    phone: "011 4771-4444",
+    email: "comisaria14b@policiadelaciudad.gob.ar",
+    hours: "Abierto 24 horas",
+    address: "Av. Dorrego 1898, Palermo"
   },
   {
     name: "Destacamento de Bomberos Palermo",
     type: "security",
     distance: "10 min. a pie / 4 min. en auto",
-    desc: "Cuartel oficial de Bomberos de la Ciudad de Buenos Aires en Guatemala 5966.",
+    desc: "Cuartel oficial de Bomberos de la Ciudad de Buenos Aires.",
     lat: -34.5775,
-    lng: -58.4356
-  },
-  {
-    name: "Plaza Mafalda (Colegiales)",
-    type: "park",
-    distance: "10 min. a pie",
-    desc: "Hermosa plaza arbolada con juegos infantiles y obras dedicadas a Mafalda, ideal para caminar o descansar.",
-    lat: -34.5775,
-    lng: -58.4465
+    lng: -58.4356,
+    phone: "100 (Emergencias)",
+    hours: "Abierto 24 horas",
+    address: "Guatemala 5966, Palermo"
   },
   {
     name: "Plaza Cortázar (Plaza Serrano)",
@@ -194,7 +306,8 @@ const fallbackPlaces: PlaceOfInterest[] = [
     distance: "12 min. a pie",
     desc: "El corazón de Palermo Soho, famoso por su feria artesanal de diseño y una vibrante oferta de bares.",
     lat: -34.5887,
-    lng: -58.4301
+    lng: -58.4301,
+    address: "Honduras y Serrano, Palermo"
   },
   {
     name: "Centro Cultural de la Ciencia (C3)",
@@ -202,7 +315,11 @@ const fallbackPlaces: PlaceOfInterest[] = [
     distance: "8 min. a pie",
     desc: "Museo científico interactivo con talleres y exhibiciones modernas, ideal para visitar.",
     lat: -34.582566,
-    lng: -58.429118
+    lng: -58.429118,
+    phone: "011 4899-7300",
+    web: "ccscience.gob.ar",
+    hours: "Viernes a Domingos 13:00–19:30",
+    address: "Godoy Cruz 2270, Palermo"
   },
   {
     name: "MALBA (Museo de Arte Latinoamericano)",
@@ -210,7 +327,11 @@ const fallbackPlaces: PlaceOfInterest[] = [
     distance: "8 min. en auto",
     desc: "Excepcional colección de arte latinoamericano moderno y contemporáneo en un edificio icónico.",
     lat: -34.5772,
-    lng: -58.4042
+    lng: -58.4042,
+    phone: "011 4808-6500",
+    web: "www.malba.org.ar",
+    hours: "Jueves a Lunes 12:00–20:00, Miércoles 11:00–20:00, Martes cerrado",
+    address: "Av. Figueroa Alcorta 3415, Palermo"
   },
   {
     name: "Teatro Regio",
@@ -218,15 +339,11 @@ const fallbackPlaces: PlaceOfInterest[] = [
     distance: "7 min. a pie",
     desc: "Pertenece al Complejo Teatral de Buenos Aires, ofreciendo obras dramáticas con grandes elencos locales.",
     lat: -34.584361,
-    lng: -58.445889
-  },
-  {
-    name: "Teatro Vorterix",
-    type: "theater",
-    distance: "15 min. a pie",
-    desc: "Gran espacio de espectáculos, recitales de rock nacional e internacional, y transmisiones de streaming.",
-    lat: -34.5719,
-    lng: -58.4449
+    lng: -58.445889,
+    phone: "011 4772-3350",
+    web: "complejoteatral.gob.ar",
+    hours: "Según funciones programadas",
+    address: "Av. Córdoba 6056, Colegiales"
   }
 ];
 
@@ -235,23 +352,27 @@ const categories = [
   { id: "subway", name: "Subtes", icon: "🚇" },
   { id: "metrobus", name: "Metrobús", icon: "🚌" },
   { id: "shopping", name: "Shoppings", icon: "🛍️" },
+  { id: "supermarket", name: "Supermercados", icon: "🛒" },
   { id: "food", name: "Gastronomía", icon: "🍽️" },
   { id: "hospital", name: "Hospitales", icon: "🏥" },
-  { id: "security", name: "Comisarías", icon: "👮" },
+  { id: "security", name: "Seguridad", icon: "👮" },
   { id: "park", name: "Parques", icon: "🌳" },
   { id: "museum", name: "Museos", icon: "🏛️" },
-  { id: "theater", name: "Teatros", icon: "🎭" }
+  { id: "theater", name: "Teatros", icon: "🎭" },
+  { id: "tourist", name: "Turismo", icon: "📍" }
 ];
 
 const datasetUrls: Record<string, { name: string; url: string }> = {
   subway: { name: "Red de Subtes", url: "https://data.buenosaires.gob.ar/dataset/subte" },
   metrobus: { name: "Corredores de Metrobús", url: "https://data.buenosaires.gob.ar/dataset/metrobus" },
   shopping: { name: "Centros Comerciales", url: "https://data.buenosaires.gob.ar/dataset/centro-comercial" },
+  supermarket: { name: "Supermercados y Autoservicios", url: "https://data.buenosaires.gob.ar/dataset/supermercados" },
   hospital: { name: "Hospitales Públicos", url: "https://data.buenosaires.gob.ar/dataset/hospitales" },
   security: { name: "Seguridad y Policía", url: "https://data.buenosaires.gob.ar/dataset/comisarias" },
   park: { name: "Espacios Verdes y Plazas", url: "https://data.buenosaires.gob.ar/dataset/espacios-verdes" },
   museum: { name: "Museos de la Ciudad", url: "https://data.buenosaires.gob.ar/dataset/museos" },
-  theater: { name: "Salas de Teatro", url: "https://data.buenosaires.gob.ar/dataset/teatros" }
+  theater: { name: "Salas de Teatro", url: "https://data.buenosaires.gob.ar/dataset/teatros" },
+  tourist: { name: "Atractivos Turísticos", url: "https://data.buenosaires.gob.ar/dataset/atractivos-turisticos" }
 };
 
 const getCategoryColor = (type: string): string => {
@@ -260,12 +381,14 @@ const getCategoryColor = (type: string): string => {
     case "subway": return "#2D9CDB"; // Light Blue
     case "metrobus": return "#F2C94C"; // Amber Yellow
     case "shopping": return "#9B51E0"; // Purple
+    case "supermarket": return "#3F51B5"; // Indigo Blue
     case "food": return "#EB5757"; // Coral Red
     case "hospital": return "#27AE60"; // Soft Green
     case "security": return "#2F80ED"; // Royal Blue
     case "park": return "#219653"; // Dark Green
     case "museum": return "#828282"; // Slate Gray
     case "theater": return "#F2994A"; // Warm Orange
+    case "tourist": return "#D4A373"; // Bronze Terracota
     default: return "#1C1B19"; // Charcoal Dark
   }
 };
@@ -280,6 +403,8 @@ const getCategoryHtmlIcon = (type: string): string => {
       return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="16" x="3" y="4" rx="2" ry="2"/><path d="M7 10h4v4H7zm6 0h4v4h-4zM6 20h12"/></svg>`;
     case "shopping":
       return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>`;
+    case "supermarket":
+      return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>`;
     case "food":
       return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg>`;
     case "hospital":
@@ -292,6 +417,8 @@ const getCategoryHtmlIcon = (type: string): string => {
       return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="18" y1="21" y2="14"/><line x1="14" x2="14" y1="21" y2="14"/><line x1="10" x2="10" y1="21" y2="14"/><line x1="6" x2="6" y1="21" y2="14"/><path d="M3 21h18"/><path d="M3 10h18"/><path d="M3 7l9-4 9 4M4 10h16v4H4z"/></svg>`;
     case "theater":
       return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M9 5v14"/><path d="M15 5v14"/><path d="M9 10h6"/><path d="M9 14h6"/></svg>`;
+    case "tourist":
+      return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>`;
     default:
       return `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>`;
   }
@@ -313,13 +440,11 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
   // USIG Interactive Layer States
-  const [showBicisendas, setShowBicisendas] = useState<boolean>(false);
   const [showEcobici, setShowEcobici] = useState<boolean>(false);
   const [showSube, setShowSube] = useState<boolean>(false);
   const [shouldDrawLocalLayers, setShouldDrawLocalLayers] = useState<boolean>(true);
 
   // Layer refs to add/remove Leaflet elements dynamically
-  const bicisendasLayerRef = useRef<any>(null);
   const ecobiciLayerRef = useRef<any>(null);
   const subeLayerRef = useRef<any>(null);
 
@@ -352,6 +477,11 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
         const latIdx = headers.findIndex(h => h.includes("lat") || h.includes("y_coord") || h.includes("coor_y"));
         const lngIdx = headers.findIndex(h => h.includes("lng") || h.includes("lon") || h.includes("long") || h.includes("x_coord") || h.includes("coor_x"));
         const addressIdx = headers.findIndex(h => h.includes("dir") || h.includes("add") || h.includes("calle") || h.includes("ubic"));
+        const coordIdx = headers.findIndex(h => h.includes("coord") || h.includes("geom") || h.includes("pos") || h.includes("geo"));
+        const phoneIdx = headers.findIndex(h => h.includes("tel") || h.includes("pho") || h.includes("llam") || h.includes("cont"));
+        const emailIdx = headers.findIndex(h => h.includes("mail") || h.includes("corr"));
+        const webIdx = headers.findIndex(h => h.includes("web") || h.includes("pag") || h.includes("sitio"));
+        const hoursIdx = headers.findIndex(h => h.includes("hor") || h.includes("open") || h.includes("atenc"));
 
         const parsePromises = parsedData.slice(1).map(async (row) => {
           if (!row || row.length === 0) return null;
@@ -362,18 +492,33 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
           const category = categoryIdx !== -1 && categoryIdx < row.length ? (row[categoryIdx] as any) : "stay";
           const distance = distIdx !== -1 && distIdx < row.length ? row[distIdx].trim() : "";
           const desc = detailIdx !== -1 && detailIdx < row.length ? row[detailIdx].trim() : "";
+          
           let lat = latIdx !== -1 && latIdx < row.length ? parseFloat(row[latIdx]) : NaN;
           let lng = lngIdx !== -1 && lngIdx < row.length ? parseFloat(row[lngIdx]) : NaN;
+          
           const address = addressIdx !== -1 && addressIdx < row.length ? row[addressIdx].trim() : "";
+          const coordinatesStr = coordIdx !== -1 && coordIdx < row.length ? row[coordIdx].trim() : "";
+          const phone = phoneIdx !== -1 && phoneIdx < row.length ? row[phoneIdx].trim() : "";
+          const email = emailIdx !== -1 && emailIdx < row.length ? row[emailIdx].trim() : "";
+          const web = webIdx !== -1 && webIdx < row.length ? row[webIdx].trim() : "";
+          const hours = hoursIdx !== -1 && hoursIdx < row.length ? row[hoursIdx].trim() : "";
 
-          // 1. If coordinates are present, check if they are EPSG:9498 or WGS84
+          // 1. Prioritize combined coordinates string (GeoJSON output) if individual ones are missing
+          if ((isNaN(lat) || isNaN(lng)) && coordinatesStr) {
+            const parsedCoords = parseCoordinatesString(coordinatesStr);
+            if (parsedCoords) {
+              lat = parsedCoords.lat;
+              lng = parsedCoords.lng;
+            }
+          }
+
+          // 2. Process individual coordinates (check if they are EPSG:9498 or WGS84)
           if (!isNaN(lat) && !isNaN(lng)) {
             const isLocalGrid = (val: number) => val > 5000 && val < 150000;
             if (isLocalGrid(lat) || isLocalGrid(lng)) {
               let x = lng;
               let y = lat;
               // Swapped case detection based on standard CABA grid ranges
-              // X range is ~10000 to ~45000, Y range is ~55000 to ~85000
               if (lat > 5000 && lat < 50000) {
                 x = lat;
                 y = lng;
@@ -386,15 +531,15 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
                 console.error("Error converting EPSG:9498 coordinates:", e);
               }
             }
-            return { name, type: category, distance, desc, lat, lng };
+            return { name, type: category, distance, desc, lat, lng, phone, email, web, hours, address } as PlaceOfInterest;
           }
 
-          // 2. If coordinates are missing, attempt to geocode using the address
+          // 3. Fallback to geocoding if coordinates are completely missing
           if (address) {
             try {
               const coords = await geocodeAddress(address);
               if (coords) {
-                return { name, type: category, distance, desc, lat: coords.lat, lng: coords.lng };
+                return { name, type: category, distance, desc, lat: coords.lat, lng: coords.lng, phone, email, web, hours, address } as PlaceOfInterest;
               }
             } catch (err) {
               console.error(`Error geocoding address "${address}":`, err);
@@ -573,13 +718,31 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
 
       const marker = L.marker([place.lat, place.lng], { icon: customIcon });
 
-      marker.bindPopup(`
-        <div style="font-family: sans-serif; padding: 4px; max-width: 200px;">
+      // Structured Popup HTML
+      let popupHtml = `
+        <div style="font-family: sans-serif; padding: 4px; max-width: 220px; line-height: 1.4;">
           <h4 style="margin: 0 0 4px 0; font-weight: 700; color: #1C1B19; font-size: 13px;">${place.name}</h4>
-          <p style="margin: 0 0 4px 0; color: #5F6F52; font-size: 11px; font-weight: 600;">${place.distance}</p>
-          <p style="margin: 0; color: #666; font-size: 11px; line-height: 1.3;">${place.desc}</p>
-        </div>
-      `);
+          <p style="margin: 0 0 6px 0; color: #5F6F52; font-size: 11px; font-weight: 600;">${place.distance}</p>
+          <p style="margin: 0 0 6px 0; color: #555; font-size: 11px; line-height: 1.3;">${place.desc}</p>
+      `;
+
+      if (place.address) {
+        popupHtml += `<p style="margin: 0 0 4px 0; color: #777; font-size: 10px;"><b>Dir:</b> ${place.address}</p>`;
+      }
+      if (place.phone) {
+        popupHtml += `<p style="margin: 0 0 4px 0; color: #777; font-size: 10px;"><b>Tel:</b> <a href="tel:${place.phone}" style="color: #5F6F52; text-decoration: none; font-weight: 600;">${place.phone}</a></p>`;
+      }
+      if (place.hours) {
+        popupHtml += `<p style="margin: 0 0 4px 0; color: #777; font-size: 10px;"><b>Horario:</b> ${place.hours}</p>`;
+      }
+      if (place.web) {
+        const href = place.web.startsWith("http") ? place.web : `https://${place.web}`;
+        popupHtml += `<p style="margin: 0; color: #777; font-size: 10px;"><b>Web:</b> <a href="${href}" target="_blank" style="color: #5F6F52; font-weight: bold; text-decoration: underline;">Ver web ↗</a></p>`;
+      }
+
+      popupHtml += `</div>`;
+
+      marker.bindPopup(popupHtml);
 
       marker.on("click", () => {
         const originalIndex = placesList.findIndex(p => p.name === place.name);
@@ -606,49 +769,14 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
     }
   }, [mapReady, selectedCategory, placesList]);
 
-  // Manage USIG dynamic layers when state changes
+  // Manage USIG dynamic layers when state changes (Ecobici and SUBE)
   useEffect(() => {
     const map = mapInstanceRef.current;
     if (!map) return;
     const L = (window as any).L;
     if (!L) return;
 
-    // 1. Manage Bicisendas (Polylines)
-    if (bicisendasLayerRef.current) {
-      map.removeLayer(bicisendasLayerRef.current);
-      bicisendasLayerRef.current = null;
-    }
-    if (showBicisendas && shouldDrawLocalLayers) {
-      // Anchored relative to default stay point for reference in neighborhood
-      const stayLat = placesList[0]?.lat || -34.587546;
-      const stayLng = placesList[0]?.lng || -58.439668;
-      
-      const fitzRoyCoords = [
-        [stayLat, stayLng],
-        [stayLat + 0.0028, stayLng + 0.0046],
-        [stayLat + 0.0057, stayLng + 0.0096]
-      ];
-      const gorritiCoords = [
-        [stayLat + 0.0057, stayLng + 0.0026],
-        [stayLat + 0.0020, stayLng + 0.0066],
-        [stayLat - 0.0020, stayLng + 0.0106]
-      ];
-      const humboldtCoords = [
-        [stayLat - 0.0020, stayLng + 0.0026],
-        [stayLat + 0.0010, stayLng + 0.0076],
-        [stayLat + 0.0040, stayLng + 0.0126]
-      ];
-      
-      const fitzRoyPoly = L.polyline(fitzRoyCoords, { color: "#5F6F52", weight: 4.5, opacity: 0.8 });
-      const gorritiPoly = L.polyline(gorritiCoords, { color: "#5F6F52", weight: 4.5, opacity: 0.8 });
-      const humboldtPoly = L.polyline(humboldtCoords, { color: "#5F6F52", weight: 4.5, opacity: 0.8 });
-      
-      const group = L.layerGroup([fitzRoyPoly, gorritiPoly, humboldtPoly]);
-      group.addTo(map);
-      bicisendasLayerRef.current = group;
-    }
-
-    // 2. Manage Ecobici Markers
+    // 1. Manage Ecobici Markers
     if (ecobiciLayerRef.current) {
       map.removeLayer(ecobiciLayerRef.current);
       ecobiciLayerRef.current = null;
@@ -697,7 +825,7 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
       ecobiciLayerRef.current = group;
     }
 
-    // 3. Manage SUBE / Transporte Markers
+    // 2. Manage SUBE / Transporte Markers
     if (subeLayerRef.current) {
       map.removeLayer(subeLayerRef.current);
       subeLayerRef.current = null;
@@ -745,7 +873,7 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
       group.addTo(map);
       subeLayerRef.current = group;
     }
-  }, [showBicisendas, showEcobici, showSube, mapReady, placesList, shouldDrawLocalLayers]);
+  }, [showEcobici, showSube, mapReady, placesList, shouldDrawLocalLayers]);
 
   // Center map on selected place
   const handlePlaceSelect = (originalIndex: number) => {
@@ -775,12 +903,14 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
       case "subway": return <Train className="w-5 h-5 text-neutral-600" />;
       case "metrobus": return <Bus className="w-5 h-5 text-neutral-600" />;
       case "shopping": return <ShoppingBag className="w-5 h-5 text-neutral-600" />;
+      case "supermarket": return <ShoppingCart className="w-5 h-5 text-neutral-600" />;
       case "food": return <Utensils className="w-5 h-5 text-neutral-600" />;
       case "hospital": return <Activity className="w-5 h-5 text-neutral-600" />;
       case "security": return <Shield className="w-5 h-5 text-neutral-600" />;
       case "park": return <Trees className="w-5 h-5 text-neutral-600" />;
       case "museum": return <Landmark className="w-5 h-5 text-neutral-600" />;
       case "theater": return <Ticket className="w-5 h-5 text-neutral-600" />;
+      case "tourist": return <Compass className="w-5 h-5 text-neutral-600" />;
       default: return <Compass className="w-5 h-5 text-neutral-600" />;
     }
   };
@@ -797,7 +927,7 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
       <div>
         <h3 className="font-serif text-2xl text-neutral-900 font-semibold">Ubicaciones y Puntos de Interés</h3>
         <p className="text-neutral-500 text-sm mt-1">
-          Explora la conectividad, cultura, salud y recreación de la ciudad. Soporta coordenadas precisas de toda la Ciudad de Buenos Aires.
+          Explora la conectividad, cultura, salud, compras y recreación de la ciudad. Soporta coordenadas precisas de toda la Ciudad de Buenos Aires.
         </p>
       </div>
 
@@ -832,17 +962,6 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
         <div className="flex flex-wrap items-center gap-2.5">
           <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider mr-2">Capas de Interés CABA:</span>
           <button
-            onClick={() => setShowBicisendas(!showBicisendas)}
-            className={`text-xs px-3.5 py-2 rounded-full border transition-all flex items-center gap-1.5 ${
-              showBicisendas 
-                ? "bg-[#5F6F52] text-white border-[#5F6F52] font-semibold"
-                : "bg-white text-neutral-600 border-[#EFEBE4] hover:bg-neutral-50"
-            }`}
-          >
-            <span>🚲</span>
-            <span>Ver Bicisendas</span>
-          </button>
-          <button
             onClick={() => setShowEcobici(!showEcobici)}
             className={`text-xs px-3.5 py-2 rounded-full border transition-all flex items-center gap-1.5 ${
               showEcobici 
@@ -867,10 +986,10 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
         </div>
 
         {/* Warning notice if Palermo layers are toggled but Palermo is not visible */}
-        {!shouldDrawLocalLayers && (showBicisendas || showEcobici || showSube) && (
+        {!shouldDrawLocalLayers && (showEcobici || showSube) && (
           <div className="text-xs text-amber-600 bg-amber-50/50 border border-amber-200/50 rounded-xl p-3 flex items-center gap-2 animate-pulse">
             <span>⚠️</span>
-            <span>Las capas de ciclovías y Ecobici son locales de Palermo. Mueve o acerca el mapa al departamento para visualizarlas.</span>
+            <span>Las capas de Ecobici son locales de Palermo. Mueve o acerca el mapa al departamento para visualizarlas.</span>
           </div>
         )}
       </div>
@@ -901,20 +1020,67 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
                 <button
                   key={idx}
                   onClick={() => handlePlaceSelect(originalIndex)}
-                  className={`w-full text-left p-4 rounded-2xl border transition-all duration-200 flex gap-4 ${
+                  className={`w-full text-left p-4 rounded-2xl border transition-all duration-200 flex gap-4 items-start ${
                     isActive
                       ? "bg-[#FAF9F7] border-[#5F6F52] ring-1 ring-[#5F6F52] shadow-sm"
                       : "bg-white border-[#EFEBE4] hover:bg-neutral-50"
                   }`}
                 >
-                  <div className={`p-2.5 rounded-full ${isActive ? "bg-white text-[#5F6F52]" : "bg-neutral-100 text-neutral-600"} flex-shrink-0`}>
+                  <div className={`p-2.5 rounded-full ${isActive ? "bg-white text-[#5F6F52]" : "bg-neutral-100 text-neutral-600"} flex-shrink-0 mt-0.5`}>
                     {getPlaceIcon(place.type)}
                   </div>
-                  <div className="space-y-1">
-                    <p className="font-semibold text-sm text-neutral-900 leading-snug">{place.name}</p>
+                  <div className="space-y-1 w-full min-w-0">
+                    <p className="font-semibold text-sm text-neutral-900 leading-snug break-words">{place.name}</p>
                     <p className="text-[#5F6F52] font-semibold text-xs">{place.distance}</p>
+                    
+                    {/* Expanded details when active */}
                     {isActive && (
-                      <p className="text-neutral-500 text-xs leading-relaxed mt-1">{place.desc}</p>
+                      <div className="mt-3 space-y-2.5 pt-2.5 border-t border-[#F0EBE0] text-xs text-neutral-600 w-full animate-fadeIn">
+                        <p className="text-neutral-500 leading-relaxed break-words">{place.desc}</p>
+                        
+                        {place.address && (
+                          <div className="flex gap-1.5 items-start mt-1">
+                            <span className="font-bold text-neutral-500 flex-shrink-0">Dir:</span>
+                            <span className="text-neutral-600 break-words">{place.address}</span>
+                          </div>
+                        )}
+                        
+                        {place.phone && (
+                          <div className="flex items-center gap-1.5 mt-1">
+                            <Phone className="w-3.5 h-3.5 text-neutral-400" />
+                            <a href={`tel:${place.phone}`} className="text-[#5F6F52] hover:underline font-semibold">{place.phone}</a>
+                          </div>
+                        )}
+                        
+                        {place.email && (
+                          <div className="flex items-center gap-1.5 mt-1">
+                            <Mail className="w-3.5 h-3.5 text-neutral-400" />
+                            <a href={`mailto:${place.email}`} className="text-[#5F6F52] hover:underline break-all">{place.email}</a>
+                          </div>
+                        )}
+
+                        {place.hours && (
+                          <div className="flex gap-1.5 items-start mt-1">
+                            <Clock className="w-3.5 h-3.5 text-neutral-400 mt-0.5" />
+                            <span className="text-neutral-600 break-words">{place.hours}</span>
+                          </div>
+                        )}
+
+                        {place.web && (
+                          <div className="flex items-center gap-1.5 mt-1 pt-1">
+                            <Globe className="w-3.5 h-3.5 text-neutral-400" />
+                            <a 
+                              href={place.web.startsWith("http") ? place.web : `https://${place.web}`} 
+                              target="_blank" 
+                              rel="noopener noreferrer" 
+                              className="text-[#5F6F52] hover:underline font-semibold flex items-center gap-0.5"
+                            >
+                              <span>Visitar Sitio Web</span>
+                              <span>↗</span>
+                            </a>
+                          </div>
+                        )}
+                      </div>
                     )}
                   </div>
                 </button>
@@ -951,7 +1117,7 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
         >
           Portal de Datos Abiertos de la Ciudad de Buenos Aires (BA Data)
         </a>
-        <span>• Ciclovías, Ecobici y coordenadas oficiales de seguridad, cultura y transporte.</span>
+        <span>• Ecobici, carga SUBE y coordenadas oficiales de seguridad, cultura, compras y transporte.</span>
       </div>
     </div>
   );
