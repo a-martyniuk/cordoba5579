@@ -2,11 +2,23 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { MapPin, Navigation, Compass, Landmark, HeartPulse, Shield, ShoppingCart, Camera } from "lucide-react";
+import { 
+  MapPin, 
+  Train, 
+  Bus, 
+  ShoppingBag, 
+  Utensils, 
+  Activity, 
+  Shield, 
+  Trees, 
+  Landmark, 
+  Ticket, 
+  Compass 
+} from "lucide-react";
 
 interface PlaceOfInterest {
   name: string;
-  type: "stay" | "subway" | "arena" | "food" | "hospital" | "security" | "shopping" | "tourism";
+  type: "stay" | "subway" | "metrobus" | "shopping" | "food" | "hospital" | "security" | "park" | "museum" | "theater";
   distance: string;
   desc: string;
   lat: number;
@@ -23,100 +35,200 @@ const places: PlaceOfInterest[] = [
     lng: -58.439668
   },
   {
-    name: "Movistar Arena",
-    type: "arena",
-    distance: "5 min. en auto / 15 min. a pie",
-    desc: "El centro de espectáculos más importante de CABA, ideal si vienes a ver un show.",
-    lat: -34.5932,
-    lng: -58.4485
-  },
-  {
-    name: "Subte Línea D (Estación Ministro Carranza)",
+    name: "Estación Ministro Carranza (Línea D)",
     type: "subway",
     distance: "8 min. a pie",
-    desc: "Conexión directa con Plaza de Mayo, el Obelisco, Recoleta y la red general de CABA.",
-    lat: -34.5762,
-    lng: -58.4378
+    desc: "Línea directa al Obelisco, Plaza de Mayo y combinaciones con toda la red de subtes.",
+    lat: -34.5754,
+    lng: -58.4349
   },
   {
-    name: "Polo Gastronómico Palermo Hollywood",
-    type: "food",
-    distance: "3 min. a pie",
-    desc: "Los mejores bares, cafeterías de especialidad y restaurantes de autor a metros de distancia.",
-    lat: -34.5835,
-    lng: -58.4325
+    name: "Estación Palermo (Línea D)",
+    type: "subway",
+    distance: "10 min. a pie",
+    desc: "Ubicada en Av. Santa Fe y Av. Juan B. Justo, junto al centro comercial Distrito Arcos.",
+    lat: -34.5815,
+    lng: -58.4285
   },
   {
-    name: "Sanatorio de Los Arcos (Hospital)",
-    type: "hospital",
-    distance: "10 min. a pie / 4 min. en auto",
-    desc: "Prestigioso centro médico privado de alta complejidad y urgencias 24 hs, brindando tranquilidad.",
-    lat: -34.5807,
-    lng: -58.4298
+    name: "Metrobús Juan B. Justo - Estación Córdoba",
+    type: "metrobus",
+    distance: "2 min. a pie",
+    desc: "Carril exclusivo de colectivos (líneas 34, 166) cruzando de este a oeste de la ciudad.",
+    lat: -34.5872,
+    lng: -58.4411
   },
   {
-    name: "Comisaría Vecinal 14B (Seguridad)",
-    type: "security",
-    distance: "12 min. a pie / 5 min. en auto",
-    desc: "Dependencia de la Policía de la Ciudad, garantizando presencia de seguridad y asistencia en la zona.",
+    name: "Metrobús Santa Fe - Estación Carranza",
+    type: "metrobus",
+    distance: "8 min. a pie",
+    desc: "Conexión con múltiples líneas que te llevan directo a Plaza Italia, Recoleta y Microcentro.",
     lat: -34.5768,
     lng: -58.4357
   },
   {
-    name: "Plaza Serrano / Soho (Paseo)",
-    type: "tourism",
-    distance: "10 min. a pie",
-    desc: "Epicentro comercial y gastronómico del diseño en Palermo, con cafés al aire libre y ferias de arte.",
-    lat: -34.5885,
-    lng: -58.4302
-  },
-  {
-    name: "Jumbo Palermo (Hipermercado)",
+    name: "Distrito Arcos Outlet Premium",
     type: "shopping",
-    distance: "15 min. a pie / 5 min. en auto",
-    desc: "Gran hipermercado para abastecerse de alimentos y compras mayores durante estadías largas.",
-    lat: -34.5768,
-    lng: -58.4276
-  },
-  {
-    name: "Mercado de Pulgas (Paseo Cultural)",
-    type: "tourism",
-    distance: "4 blocks (5 min. a pie)",
-    desc: "Hito cultural emblemático de Palermo Hollywood donde se venden antigüedades, arte y muebles de diseño.",
-    lat: -34.5786,
-    lng: -58.4425
-  },
-  {
-    name: "Centro Cultural de la Ciencia - C3 (Museo)",
-    type: "tourism",
-    distance: "7 min. a pie",
-    desc: "Moderno espacio de divulgación científica con muestras interactivas gratuitas, ideal para visitar.",
-    lat: -34.5828,
+    distance: "10 min. a pie",
+    desc: "Centro comercial a cielo abierto de primeras marcas, cafeterías gourmet y locales de diseño.",
+    lat: -34.5815,
     lng: -58.4285
   },
   {
-    name: "Farmacia 24 hs - Farmacity (Salud)",
-    type: "hospital",
-    distance: "8 min. a pie / 3 min. en auto",
-    desc: "Farmacia y tienda de conveniencia abierta las 24 horas para medicamentos de urgencia.",
-    lat: -34.5795,
-    lng: -58.4355
+    name: "Don Julio Parrilla",
+    type: "food",
+    distance: "12 min. a pie",
+    desc: "Galardonada como una de las mejores parrillas del mundo. Carnes de pastura maduradas y excelente cava.",
+    lat: -34.5863,
+    lng: -58.4243
   },
   {
-    name: "Cajeros Automáticos Link / Banelco",
-    type: "shopping",
+    name: "La Mar Cebichería",
+    type: "food",
+    distance: "7 min. a pie",
+    desc: "Prestigioso restaurante de cocina peruana y pescados frescos, ideal para cenar en su hermoso patio.",
+    lat: -34.5786,
+    lng: -58.4385
+  },
+  {
+    name: "Sanatorio de Los Arcos",
+    type: "hospital",
+    distance: "6 min. en auto / 12 min. a pie",
+    desc: "Prestigioso sanatorio privado de alta complejidad con servicio de guardia de urgencias las 24 horas.",
+    lat: -34.58102,
+    lng: -58.42995
+  },
+  {
+    name: "Hospital de Agudos Dr. J. A. Fernández",
+    type: "hospital",
+    distance: "10 min. en auto",
+    desc: "Hospital público general de alta complejidad de la Ciudad de Buenos Aires con guardia de urgencias.",
+    lat: -34.5806,
+    lng: -58.4069
+  },
+  {
+    name: "Comisaría Vecinal 14B - Policía de la Ciudad",
+    type: "security",
+    distance: "10 min. a pie",
+    desc: "Seccional oficial de policía de la Ciudad, garantizando presencia de seguridad y asistencia en la zona.",
+    lat: -34.57329,
+    lng: -58.43905
+  },
+  {
+    name: "Plaza Mafalda (Colegiales)",
+    type: "park",
+    distance: "10 min. a pie",
+    desc: "Hermosa plaza arbolada con juegos infantiles y obras dedicadas a Mafalda, ideal para caminar o descansar.",
+    lat: -34.5775,
+    lng: -58.4465
+  },
+  {
+    name: "Plaza Cortázar (Plaza Serrano)",
+    type: "park",
+    distance: "12 min. a pie",
+    desc: "El corazón de Palermo Soho, famoso por su feria artesanal de diseño y una vibrante oferta de bares.",
+    lat: -34.5887,
+    lng: -58.4301
+  },
+  {
+    name: "Centro Cultural de la Ciencia (C3)",
+    type: "museum",
     distance: "8 min. a pie",
-    desc: "Cajeros automáticos y sucursales bancarias (Santander / Galicia) en la Av. Santa Fe para retirar efectivo.",
-    lat: -34.5785,
-    lng: -58.4345
+    desc: "Museo científico interactivo con talleres y exhibiciones modernas, ideal para visitar.",
+    lat: -34.582566,
+    lng: -58.429118
+  },
+  {
+    name: "MALBA (Museo de Arte Latinoamericano)",
+    type: "museum",
+    distance: "8 min. en auto",
+    desc: "Excepcional colección de arte latinoamericano moderno y contemporáneo en un edificio icónico.",
+    lat: -34.5772,
+    lng: -58.4042
+  },
+  {
+    name: "Teatro Regio",
+    type: "theater",
+    distance: "7 min. a pie",
+    desc: "Pertenece al Complejo Teatral de Buenos Aires, ofreciendo obras dramáticas con grandes elencos locales.",
+    lat: -34.584361,
+    lng: -58.445889
+  },
+  {
+    name: "Teatro Vorterix",
+    type: "theater",
+    distance: "15 min. a pie",
+    desc: "Gran espacio de espectáculos, recitales de rock nacional e internacional, y transmisiones de streaming.",
+    lat: -34.5719,
+    lng: -58.4449
   }
 ];
+
+const categories = [
+  { id: "all", name: "Todos", icon: "✨" },
+  { id: "subway", name: "Subtes", icon: "🚇" },
+  { id: "metrobus", name: "Metrobús", icon: "🚌" },
+  { id: "shopping", name: "Shoppings", icon: "🛍️" },
+  { id: "food", name: "Gastronomía", icon: "🍽️" },
+  { id: "hospital", name: "Hospitales", icon: "🏥" },
+  { id: "security", name: "Comisarías", icon: "👮" },
+  { id: "park", name: "Parques", icon: "🌳" },
+  { id: "museum", name: "Museos", icon: "🏛️" },
+  { id: "theater", name: "Teatros", icon: "🎭" }
+];
+
+const getCategoryColor = (type: string): string => {
+  switch (type) {
+    case "stay": return "#5F6F52"; // Olive Green
+    case "subway": return "#2D9CDB"; // Light Blue
+    case "metrobus": return "#F2C94C"; // Amber Yellow
+    case "shopping": return "#9B51E0"; // Purple
+    case "food": return "#EB5757"; // Coral Red
+    case "hospital": return "#27AE60"; // Soft Green
+    case "security": return "#2F80ED"; // Royal Blue
+    case "park": return "#219653"; // Dark Green
+    case "museum": return "#828282"; // Slate Gray
+    case "theater": return "#F2994A"; // Warm Orange
+    default: return "#1C1B19"; // Charcoal Dark
+  }
+};
+
+const getCategoryHtmlIcon = (type: string): string => {
+  switch (type) {
+    case "stay":
+      return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`;
+    case "subway":
+      return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="16" rx="2"/><path d="M4 11h16"/><path d="M12 3v8"/><path d="m8 19-2 3"/><path d="m16 19 2 3"/></svg>`;
+    case "metrobus":
+      return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="16" x="3" y="4" rx="2" ry="2"/><path d="M7 10h4v4H7zm6 0h4v4h-4zM6 20h12"/></svg>`;
+    case "shopping":
+      return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>`;
+    case "food":
+      return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg>`;
+    case "hospital":
+      return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>`;
+    case "security":
+      return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`;
+    case "park":
+      return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-8a5 5 0 0 0-5-5h-1a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h2"/><path d="M4 21v-6a5 5 0 0 1 5-5h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H8"/><path d="M12 21V9a4 4 0 0 1 4-4h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-2"/></svg>`;
+    case "museum":
+      return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="18" y1="21" y2="14"/><line x1="14" x2="14" y1="21" y2="14"/><line x1="10" x2="10" y1="21" y2="14"/><line x1="6" x2="6" y1="21" y2="14"/><path d="M3 21h18"/><path d="M3 10h18"/><path d="M3 7l9-4 9 4M4 10h16v4H4z"/></svg>`;
+    case "theater":
+      return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M9 5v14"/><path d="M15 5v14"/><path d="M9 10h6"/><path d="M9 14h6"/></svg>`;
+    default:
+      return `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>`;
+  }
+};
 
 export default function NeighbourhoodMap() {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
+  const markersLayerRef = useRef<any>(null);
+  
   const [activePlace, setActivePlace] = useState<number>(0);
   const [leafletLoaded, setLeafletLoaded] = useState<boolean>(false);
+  const [mapReady, setMapReady] = useState<boolean>(false);
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
   // USIG Interactive Layer States
   const [showBicisendas, setShowBicisendas] = useState<boolean>(false);
@@ -132,7 +244,6 @@ export default function NeighbourhoodMap() {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    // Check if Leaflet is already loaded
     if ((window as any).L) {
       setLeafletLoaded(true);
       return;
@@ -155,10 +266,6 @@ export default function NeighbourhoodMap() {
       setLeafletLoaded(true);
     };
     document.body.appendChild(script);
-
-    return () => {
-      // Clean up script/link could be done, but keeping it is fine for single-page performance
-    };
   }, []);
 
   // Initialize Map
@@ -168,12 +275,11 @@ export default function NeighbourhoodMap() {
     const L = (window as any).L;
     if (!L) return;
 
-    // Destroy existing map instance to prevent duplicate binding errors
     if (mapInstanceRef.current) {
       mapInstanceRef.current.remove();
+      mapInstanceRef.current = null;
     }
 
-    // Initialize map
     const defaultCenter = [places[0].lat, places[0].lng];
     const map = L.map(mapContainerRef.current, {
       center: defaultCenter,
@@ -181,22 +287,50 @@ export default function NeighbourhoodMap() {
       scrollWheelZoom: false
     });
 
-    mapInstanceRef.current = map;
-
-    // Custom Styled Tiles (Warm Minimalist Theme - CartoDB Positron)
     L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
       subdomains: "abcd",
       maxZoom: 20
     }).addTo(map);
 
-    // Define custom marker colors/styles using standard Leaflet icons or HTML divIcons
-    places.forEach((place, index) => {
-      const isStay = place.type === "stay";
-      
+    mapInstanceRef.current = map;
+    setMapReady(prev => !prev);
+
+    return () => {
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove();
+        mapInstanceRef.current = null;
+      }
+    };
+  }, [leafletLoaded]);
+
+  // Manage Markers reactively based on Category Filters
+  useEffect(() => {
+    const map = mapInstanceRef.current;
+    if (!map) return;
+
+    const L = (window as any).L;
+    if (!L) return;
+
+    if (markersLayerRef.current) {
+      map.removeLayer(markersLayerRef.current);
+      markersLayerRef.current = null;
+    }
+
+    const group = L.layerGroup();
+    
+    // Filter places: always show stay, otherwise match category
+    const filtered = places.filter(
+      place => place.type === "stay" || selectedCategory === "all" || place.type === selectedCategory
+    );
+
+    filtered.forEach((place) => {
+      const markerColor = getCategoryColor(place.type);
+      const markerHtmlIcon = getCategoryHtmlIcon(place.type);
+
       const customHtml = `
         <div style="
-          background-color: ${isStay ? '#5F6F52' : '#1C1B19'}; 
+          background-color: ${markerColor}; 
           color: white; 
           width: 32px; 
           height: 32px; 
@@ -209,10 +343,7 @@ export default function NeighbourhoodMap() {
           transform: translate(-6px, -6px);
           transition: all 0.2s;
         " class="map-marker-hover">
-          ${isStay 
-            ? '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>'
-            : '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>'
-          }
+          ${markerHtmlIcon}
         </div>
       `;
 
@@ -223,21 +354,40 @@ export default function NeighbourhoodMap() {
         iconAnchor: [16, 16]
       });
 
-      const marker = L.marker([place.lat, place.lng], { icon: customIcon }).addTo(map);
-      
+      const marker = L.marker([place.lat, place.lng], { icon: customIcon });
+
       marker.bindPopup(`
-        <div style="font-family: sans-serif; padding: 4px;">
+        <div style="font-family: sans-serif; padding: 4px; max-width: 200px;">
           <h4 style="margin: 0 0 4px 0; font-weight: 700; color: #1C1B19; font-size: 13px;">${place.name}</h4>
-          <p style="margin: 0; color: #5F6F52; font-size: 11px; font-weight: 600;">${place.distance}</p>
+          <p style="margin: 0 0 4px 0; color: #5F6F52; font-size: 11px; font-weight: 600;">${place.distance}</p>
+          <p style="margin: 0; color: #666; font-size: 11px; line-height: 1.3;">${place.desc}</p>
         </div>
       `);
 
       marker.on("click", () => {
-        setActivePlace(index);
+        const originalIndex = places.findIndex(p => p.name === place.name);
+        if (originalIndex !== -1) {
+          setActivePlace(originalIndex);
+        }
       });
+
+      group.addLayer(marker);
     });
 
-  }, [leafletLoaded]);
+    group.addTo(map);
+    markersLayerRef.current = group;
+
+    // View boundaries adjustment
+    if (selectedCategory !== "all" && filtered.length > 1) {
+      const bounds = L.latLngBounds(filtered.map(p => [p.lat, p.lng]));
+      map.fitBounds(bounds, { padding: [50, 50], maxZoom: 16 });
+    } else if (selectedCategory === "all") {
+      const bounds = L.latLngBounds(places.map(p => [p.lat, p.lng]));
+      map.fitBounds(bounds, { padding: [40, 40] });
+    } else {
+      map.setView([places[0].lat, places[0].lng], 15);
+    }
+  }, [mapReady, selectedCategory]);
 
   // Manage USIG dynamic layers when state changes
   useEffect(() => {
@@ -368,16 +518,26 @@ export default function NeighbourhoodMap() {
       group.addTo(map);
       subeLayerRef.current = group;
     }
-  }, [showBicisendas, showEcobici, showSube, leafletLoaded]);
+  }, [showBicisendas, showEcobici, showSube, mapReady]);
 
   // Center map on selected place
-  const handlePlaceSelect = (index: number) => {
-    setActivePlace(index);
+  const handlePlaceSelect = (originalIndex: number) => {
+    setActivePlace(originalIndex);
+    const place = places[originalIndex];
     if (mapInstanceRef.current) {
-      const place = places[index];
-      mapInstanceRef.current.setView([place.lat, place.lng], 15, {
+      mapInstanceRef.current.setView([place.lat, place.lng], 16, {
         animate: true,
-        duration: 1
+        duration: 0.8
+      });
+      
+      // Attempt to open popup of active marker
+      mapInstanceRef.current.eachLayer((layer: any) => {
+        if (layer.getLatLng && layer.getPopup) {
+          const latLng = layer.getLatLng();
+          if (Math.abs(latLng.lat - place.lat) < 0.0001 && Math.abs(latLng.lng - place.lng) < 0.0001) {
+            layer.openPopup();
+          }
+        }
       });
     }
   };
@@ -385,23 +545,59 @@ export default function NeighbourhoodMap() {
   const getPlaceIcon = (type: string) => {
     switch (type) {
       case "stay": return <MapPin className="w-5 h-5 text-[#5F6F52]" />;
-      case "subway": return <Navigation className="w-5 h-5 text-neutral-600" />;
-      case "arena": return <Landmark className="w-5 h-5 text-neutral-600" />;
-      case "hospital": return <HeartPulse className="w-5 h-5 text-rose-600" />;
-      case "security": return <Shield className="w-5 h-5 text-blue-600" />;
-      case "shopping": return <ShoppingCart className="w-5 h-5 text-amber-600" />;
-      case "tourism": return <Camera className="w-5 h-5 text-indigo-600" />;
+      case "subway": return <Train className="w-5 h-5 text-neutral-600" />;
+      case "metrobus": return <Bus className="w-5 h-5 text-neutral-600" />;
+      case "shopping": return <ShoppingBag className="w-5 h-5 text-neutral-600" />;
+      case "food": return <Utensils className="w-5 h-5 text-neutral-600" />;
+      case "hospital": return <Activity className="w-5 h-5 text-neutral-600" />;
+      case "security": return <Shield className="w-5 h-5 text-neutral-600" />;
+      case "park": return <Trees className="w-5 h-5 text-neutral-600" />;
+      case "museum": return <Landmark className="w-5 h-5 text-neutral-600" />;
+      case "theater": return <Ticket className="w-5 h-5 text-neutral-600" />;
       default: return <Compass className="w-5 h-5 text-neutral-600" />;
     }
   };
+
+  // Filtered places displayed in the left panel
+  const filteredPlacesForList = places.filter(place => {
+    if (place.type === "stay") return true;
+    if (selectedCategory === "all") return true;
+    return place.type === selectedCategory;
+  });
 
   return (
     <div className="bg-white border border-[#EFEBE4] rounded-3xl p-6 md:p-8 space-y-6">
       <div>
         <h3 className="font-serif text-2xl text-neutral-900 font-semibold">El Barrio: Palermo Hollywood</h3>
         <p className="text-neutral-500 text-sm mt-1">
-          Av. Córdoba 5579. Un punto estratégico conectado con la mejor oferta gastronómica y de entretenimiento de la ciudad.
+          Av. Córdoba 5579. Un punto estratégico conectado con la mejor oferta de transporte, cultura y gastronomía de la ciudad.
         </p>
+      </div>
+
+      {/* Categorías de Puntos de Interés */}
+      <div className="space-y-2">
+        <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Filtrar por Categoría:</span>
+        <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-none -mx-6 px-6 md:mx-0 md:px-0">
+          {categories.map((cat) => {
+            const isSelected = selectedCategory === cat.id;
+            const categoryColor = cat.id === "all" ? "#1C1B19" : getCategoryColor(cat.id);
+            return (
+              <button
+                key={cat.id}
+                onClick={() => setSelectedCategory(cat.id)}
+                className="flex items-center gap-1.5 px-4 py-2 rounded-full border text-xs font-semibold whitespace-nowrap transition-all duration-200"
+                style={{
+                  backgroundColor: isSelected ? categoryColor : "#FFFFFF",
+                  borderColor: isSelected ? categoryColor : "#EFEBE4",
+                  color: isSelected ? "#FFFFFF" : "#4A4A4A"
+                }}
+              >
+                <span>{cat.icon}</span>
+                <span>{cat.name}</span>
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {/* USIG-inspired interactive layers */}
@@ -446,28 +642,33 @@ export default function NeighbourhoodMap() {
         {/* Left Column: Place selector */}
         <div className="lg:col-span-5 flex flex-col justify-between space-y-4">
           <div className="space-y-2.5 max-h-[480px] overflow-y-auto pr-1">
-            {places.map((place, idx) => (
-              <button
-                key={idx}
-                onClick={() => handlePlaceSelect(idx)}
-                className={`w-full text-left p-4 rounded-2xl border transition-all duration-200 flex gap-4 ${
-                  activePlace === idx
-                    ? "bg-[#FAF9F7] border-[#5F6F52] ring-1 ring-[#5F6F52] shadow-sm"
-                    : "bg-white border-[#EFEBE4] hover:bg-neutral-50"
-                }`}
-              >
-                <div className={`p-2.5 rounded-full ${activePlace === idx ? "bg-white text-[#5F6F52]" : "bg-neutral-100 text-neutral-600"} flex-shrink-0`}>
-                  {getPlaceIcon(place.type)}
-                </div>
-                <div className="space-y-1">
-                  <p className="font-semibold text-sm text-neutral-900 leading-snug">{place.name}</p>
-                  <p className="text-[#5F6F52] font-semibold text-xs">{place.distance}</p>
-                  {activePlace === idx && (
-                    <p className="text-neutral-500 text-xs leading-relaxed mt-1">{place.desc}</p>
-                  )}
-                </div>
-              </button>
-            ))}
+            {filteredPlacesForList.map((place, idx) => {
+              const originalIndex = places.findIndex(p => p.name === place.name);
+              const isActive = activePlace === originalIndex;
+              
+              return (
+                <button
+                  key={idx}
+                  onClick={() => handlePlaceSelect(originalIndex)}
+                  className={`w-full text-left p-4 rounded-2xl border transition-all duration-200 flex gap-4 ${
+                    isActive
+                      ? "bg-[#FAF9F7] border-[#5F6F52] ring-1 ring-[#5F6F52] shadow-sm"
+                      : "bg-white border-[#EFEBE4] hover:bg-neutral-50"
+                  }`}
+                >
+                  <div className={`p-2.5 rounded-full ${isActive ? "bg-white text-[#5F6F52]" : "bg-neutral-100 text-neutral-600"} flex-shrink-0`}>
+                    {getPlaceIcon(place.type)}
+                  </div>
+                  <div className="space-y-1">
+                    <p className="font-semibold text-sm text-neutral-900 leading-snug">{place.name}</p>
+                    <p className="text-[#5F6F52] font-semibold text-xs">{place.distance}</p>
+                    {isActive && (
+                      <p className="text-neutral-500 text-xs leading-relaxed mt-1">{place.desc}</p>
+                    )}
+                  </div>
+                </button>
+              );
+            })}
           </div>
 
           <div className="bg-[#FAF9F7] border border-[#EFEBE4] rounded-2xl p-4 text-xs text-neutral-500 leading-relaxed">
