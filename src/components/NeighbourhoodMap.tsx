@@ -185,6 +185,17 @@ const categories = [
   { id: "theater", name: "Teatros", icon: "🎭" }
 ];
 
+const datasetUrls: Record<string, { name: string; url: string }> = {
+  subway: { name: "Red de Subtes", url: "https://data.buenosaires.gob.ar/dataset/subte" },
+  metrobus: { name: "Corredores de Metrobús", url: "https://data.buenosaires.gob.ar/dataset/metrobus" },
+  shopping: { name: "Centros Comerciales", url: "https://data.buenosaires.gob.ar/dataset/centro-comercial" },
+  hospital: { name: "Hospitales Públicos", url: "https://data.buenosaires.gob.ar/dataset/hospitales" },
+  security: { name: "Seguridad y Policía", url: "https://data.buenosaires.gob.ar/dataset/comisarias" },
+  park: { name: "Espacios Verdes y Plazas", url: "https://data.buenosaires.gob.ar/dataset/espacios-verdes" },
+  museum: { name: "Museos de la Ciudad", url: "https://data.buenosaires.gob.ar/dataset/museos" },
+  theater: { name: "Salas de Teatro", url: "https://data.buenosaires.gob.ar/dataset/teatros" }
+};
+
 const getCategoryColor = (type: string): string => {
   switch (type) {
     case "stay": return "#5F6F52"; // Olive Green
@@ -649,7 +660,21 @@ export default function NeighbourhoodMap() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
         {/* Left Column: Place selector */}
         <div className="lg:col-span-5 flex flex-col justify-between space-y-4">
-          <div className="space-y-2.5 max-h-[480px] overflow-y-auto pr-1">
+          {selectedCategory !== "all" && datasetUrls[selectedCategory] && (
+            <div className="bg-[#FAF9F7] border border-[#EFEBE4] rounded-2xl p-3.5 text-xs text-neutral-600 flex items-center justify-between shadow-sm">
+              <span className="font-semibold text-neutral-500">Fuente oficial BA Data:</span>
+              <a
+                href={datasetUrls[selectedCategory].url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#5F6F52] hover:underline font-bold flex items-center gap-1"
+              >
+                <span>{datasetUrls[selectedCategory].name}</span>
+                <span>↗</span>
+              </a>
+            </div>
+          )}
+          <div className="space-y-2.5 max-h-[440px] overflow-y-auto pr-1">
             {filteredPlacesForList.map((place, idx) => {
               const originalIndex = places.findIndex(p => p.name === place.name);
               const isActive = activePlace === originalIndex;
