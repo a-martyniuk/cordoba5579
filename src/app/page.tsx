@@ -497,6 +497,13 @@ export default function Home() {
         : "Reglas estrictas: Prohibido fumar en el departamento o pasillos. No se admiten mascotas. Prohibido realizar fiestas. No se permite el ingreso de visitas a los amenities. Prohibido circular con el torso desnudo en áreas comunes (excepto zona de piscina).";
     }
 
+    // 14. Gastronomía (Debe ir arriba para que 'Desayunar cerca' entre acá y no en ubicación)
+    if (q.includes("desayun") || q.includes("almuerz") || q.includes("cafe") || q.includes("café") || q.includes("comer") || q.includes("gastronom") || q.includes("breakfast") || q.includes("eat") || q.includes("food") || q.includes("restaurant") || q.includes("cena") || q.includes("brunch")) {
+      return isEn
+        ? "For specialty coffee and brunch, we love 'Cuervo Café', 'Vive Café', and 'Café Registrado'. For traditional steakhouses, check out 'Don Julio', 'La Cabrera', or 'Las Cabras' (just 2 blocks away). All these recommendations are visible on our map!"
+        : "Para café de especialidad y brunch, te recomendamos 'Cuervo Café', 'Vive Café' y 'Café Registrado'. Si buscás parrilla tradicional, tenés 'Don Julio', 'La Cabrera' o 'Las Cabras' (a solo 2 cuadras). ¡Todas están en el mapa interactivo!";
+    }
+
     // 12. Localización / Ubicación / Atracciones
     if (q.includes("ubicacion") || q.includes("ubicación") || q.includes("donde") || q.includes("dónde") || q.includes("palermo") || q.includes("arena") || q.includes("movistar") || q.includes("cerca") || q.includes("location") || q.includes("address") || q.includes("direccion") || q.includes("dirección")) {
       return isEn
@@ -512,13 +519,6 @@ export default function Home() {
       return isEn
         ? `The current local time in Buenos Aires (GMT-3) is ${localTime}. Please keep this in mind when checking local store hours!`
         : `La hora local actual en Buenos Aires (GMT-3) es ${localTime}. Tenela en cuenta para los horarios de los locales de la zona.`;
-    }
-
-    // 14. Gastronomía
-    if (q.includes("desayun") || q.includes("almuerz") || q.includes("cafe") || q.includes("café") || q.includes("comer") || q.includes("gastronom") || q.includes("breakfast") || q.includes("eat") || q.includes("food") || q.includes("restaurant") || q.includes("cena")) {
-      return isEn
-        ? "For specialty coffee and brunch, we love 'Cuervo Café', 'Vive Café', and 'Café Registrado'. For traditional steakhouses, check out 'Don Julio', 'La Cabrera', or 'Las Cabras' (just 2 blocks away). All these recommendations are visible on our map!"
-        : "Para café de especialidad y brunch, te recomendamos 'Cuervo Café', 'Vive Café' y 'Café Registrado'. Si buscás parrilla tradicional, tenés 'Don Julio', 'La Cabrera' o 'Las Cabras' (a solo 2 cuadras). ¡Todas están en el mapa interactivo!";
     }
 
     // 15. Emergencias
