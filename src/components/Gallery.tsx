@@ -64,6 +64,7 @@ export default function Gallery() {
           onClick={() => setLightboxIndex(0)}
           className="col-span-1 md:col-span-6 h-full relative cursor-pointer overflow-hidden group"
         >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={images[0].url}
             alt={images[0].title}
@@ -90,6 +91,7 @@ export default function Gallery() {
               onClick={() => setLightboxIndex(idx + 1)}
               className="h-full relative cursor-pointer overflow-hidden group"
             >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={img.url}
                 alt={img.title}
@@ -157,6 +159,7 @@ export default function Gallery() {
                 className="w-full max-h-[70vh] flex items-center justify-center relative rounded-2xl overflow-hidden"
                 onClick={(e) => e.stopPropagation()}
               >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={images[lightboxIndex].url}
                   alt={images[lightboxIndex].title}

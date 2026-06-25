@@ -300,14 +300,7 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
   const [activeRouteInfo, setActiveRouteInfo] = useState<{ distance: string; duration: string } | null>(null);
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
 
-  // USIG Interactive Layer States
-  const [showEcobici, setShowEcobici] = useState<boolean>(false);
-  const [showSube, setShowSube] = useState<boolean>(false);
-  const [shouldDrawLocalLayers, setShouldDrawLocalLayers] = useState<boolean>(true);
 
-  // Layer refs to add/remove Leaflet elements dynamically
-  const ecobiciLayerRef = useRef<any>(null);
-  const subeLayerRef = useRef<any>(null);
 
   // Load places dynamically if sheetUrl is provided
   useEffect(() => {
@@ -654,35 +647,7 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
     }
   }, [activeRoute, mapReady]);
 
-  // Listener to toggle the visibility of Palermo-specific layers
-  useEffect(() => {
-    const map = mapInstanceRef.current;
-    if (!map) return;
-    
-    const updateVisibility = () => {
-      const currentZoom = map.getZoom();
-      const currentBounds = map.getBounds();
-      const stayLat = placesList[0]?.lat || -34.587546;
-      const stayLng = placesList[0]?.lng || -58.439668;
-      const L = (window as any).L;
-      if (L) {
-        const stayLatLng = L.latLng(stayLat, stayLng);
-        const isPalermoVisible = currentBounds.contains(stayLatLng);
-        setShouldDrawLocalLayers(currentZoom >= 12 && isPalermoVisible);
-      }
-    };
 
-    map.on("moveend", updateVisibility);
-    map.on("zoomend", updateVisibility);
-    
-    // Initial check
-    updateVisibility();
-
-    return () => {
-      map.off("moveend", updateVisibility);
-      map.off("zoomend", updateVisibility);
-    };
-  }, [mapReady, placesList]);
 
   // Manage Markers reactively based on Category Filters
   useEffect(() => {
@@ -799,115 +764,7 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mapReady, selectedCategory, placesList]);
 
-  // Manage USIG dynamic layers when state changes (Ecobici and SUBE)
-  useEffect(() => {
-    const map = mapInstanceRef.current;
-    if (!map) return;
-    const L = (window as any).L;
-    if (!L) return;
 
-    // 1. Manage Ecobici Markers
-    if (ecobiciLayerRef.current) {
-      map.removeLayer(ecobiciLayerRef.current);
-      ecobiciLayerRef.current = null;
-    }
-    if (showEcobici && shouldDrawLocalLayers) {
-      const stayLat = placesList[0]?.lat || -34.587546;
-      const stayLng = placesList[0]?.lng || -58.439668;
-
-      const ecobiciPoints = [
-        { name: "Estación Ecobici 144 - Fitz Roy y Paraguay", lat: stayLat + 0.0057, lng: stayLng + 0.0081, dist: "5 min. a pie" },
-        { name: "Estación Ecobici 112 - Distrito Arcos", lat: stayLat + 0.0070, lng: stayLng + 0.0101, dist: "6 min. a pie" },
-        { name: "Estación Ecobici 219 - Honduras y Bonpland", lat: stayLat + 0.0020, lng: stayLng + 0.0051, dist: "4 min. a pie" }
-      ];
-      
-      const markers = ecobiciPoints.map(pt => {
-        const customHtml = `
-          <div style="
-            background-color: #E2725B; 
-            color: white; 
-            width: 26px; 
-            height: 26px; 
-            border-radius: 50%; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            border: 2px solid white; 
-            box-shadow: 0 3px 6px rgba(0,0,0,0.16);
-            transform: translate(-3px, -3px);
-          " class="map-marker-hover">
-            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="18.5" cy="17.5" r="3.5"/><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="15" cy="5" r="1"/><path d="M12 17.5V14H9.5L12 10.5h3.5L18 14H15"/></svg>
-          </div>
-        `;
-        const icon = L.divIcon({
-          html: customHtml,
-          iconSize: [26, 26],
-          iconAnchor: [13, 13],
-          className: "custom-ecobici-icon"
-        });
-        const m = L.marker([pt.lat, pt.lng], { icon });
-        m.bindPopup(`<b>${pt.name}</b><br/>${pt.dist}`);
-        m.on("mouseover", () => m.openPopup());
-        m.on("mouseout", () => m.closePopup());
-        return m;
-      });
-      
-      const group = L.layerGroup(markers);
-      group.addTo(map);
-      ecobiciLayerRef.current = group;
-    }
-
-    // 2. Manage SUBE / Transporte Markers
-    if (subeLayerRef.current) {
-      map.removeLayer(subeLayerRef.current);
-      subeLayerRef.current = null;
-    }
-    if (showSube && shouldDrawLocalLayers) {
-      const stayLat = placesList[0]?.lat || -34.587546;
-      const stayLng = placesList[0]?.lng || -58.439668;
-
-      const subePoints = [
-        { name: "Carga SUBE - Kiosco Córdoba y Fitz Roy", lat: stayLat + 0.0003, lng: stayLng + 0.0003, info: "Carga 24 hs · 1 min a pie" },
-        { name: "Carga SUBE - Locutorio Carranza", lat: stayLat + 0.0110, lng: stayLng + 0.0021, info: "Carga SUBE · 8 min a pie" },
-        { name: "Parada Metrobús J.B. Justo (Paraguay)", lat: stayLat + 0.0074, lng: stayLng + 0.0106, info: "Líneas 34, 166 · 6 min a pie" }
-      ];
-      
-      const markers = subePoints.map(pt => {
-        const customHtml = `
-          <div style="
-            background-color: #2F80ED; 
-            color: white; 
-            width: 26px; 
-            height: 26px; 
-            border-radius: 50%; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            border: 2px solid white; 
-            box-shadow: 0 3px 6px rgba(0,0,0,0.16);
-            transform: translate(-3px, -3px);
-          " class="map-marker-hover">
-            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
-          </div>
-        `;
-        const icon = L.divIcon({
-          html: customHtml,
-          iconSize: [26, 26],
-          iconAnchor: [13, 13],
-          className: "custom-sube-icon"
-        });
-        const m = L.marker([pt.lat, pt.lng], { icon });
-        m.bindPopup(`<b>${pt.name}</b><br/>${pt.info}`);
-        m.on("mouseover", () => m.openPopup());
-        m.on("mouseout", () => m.closePopup());
-        return m;
-      });
-      
-      const group = L.layerGroup(markers);
-      group.addTo(map);
-      subeLayerRef.current = group;
-    }
-  }, [showEcobici, showSube, mapReady, placesList, shouldDrawLocalLayers]);
 
   // Center map on selected place
   const handlePlaceSelect = (originalIndex: number) => {
@@ -1000,42 +857,7 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
         </div>
       </div>
 
-      {/* USIG-inspired interactive layers */}
-      <div className="flex flex-col gap-3 pb-2 border-b border-[#F5F2EB]">
-        <div className="flex flex-wrap items-center gap-2.5">
-          <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider mr-2">Capas de Interés CABA:</span>
-          <button
-            onClick={() => setShowEcobici(!showEcobici)}
-            className={`text-xs px-3.5 py-2 rounded-full border transition-all flex items-center gap-1.5 ${
-              showEcobici 
-                ? "bg-[#E2725B] text-white border-[#E2725B] font-semibold"
-                : "bg-white text-neutral-600 border-[#EFEBE4] hover:bg-neutral-50"
-            }`}
-          >
-            <span>🚴</span>
-            <span>Estaciones Ecobici</span>
-          </button>
-          <button
-            onClick={() => setShowSube(!showSube)}
-            className={`text-xs px-3.5 py-2 rounded-full border transition-all flex items-center gap-1.5 ${
-              showSube 
-                ? "bg-[#2F80ED] text-white border-[#2F80ED] font-semibold"
-                : "bg-white text-neutral-600 border-[#EFEBE4] hover:bg-neutral-50"
-            }`}
-          >
-            <span>💳</span>
-            <span>Carga SUBE y Metrobús</span>
-          </button>
-        </div>
 
-        {/* Warning notice if Palermo layers are toggled but Palermo is not visible */}
-        {!shouldDrawLocalLayers && (showEcobici || showSube) && (
-          <div className="text-xs text-amber-600 bg-amber-50/50 border border-amber-200/50 rounded-xl p-3 flex items-center gap-2 animate-pulse">
-            <span>⚠️</span>
-            <span>Las capas de Ecobici son locales de Palermo. Mueve o acerca el mapa al departamento para visualizarlas.</span>
-          </div>
-        )}
-      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
         {/* Left Column: Place selector (order-2 on mobile, order-1 on large screens) */}
@@ -1226,7 +1048,7 @@ export default function NeighbourhoodMap({ sheetUrl }: NeighbourhoodMapProps) {
         >
           Portal de Datos Abiertos de la Ciudad de Buenos Aires (BA Data)
         </a>
-        <span>• Ecobici, carga SUBE y coordenadas oficiales de seguridad, cultura, compras y transporte.</span>
+        <span>• Coordenadas oficiales de seguridad, cultura, compras y transporte.</span>
       </div>
     </div>
   );
