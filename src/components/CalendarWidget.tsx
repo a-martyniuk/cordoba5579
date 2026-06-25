@@ -8,19 +8,76 @@ interface CalendarWidgetProps {
   cleaningFee?: number;
   whatsAppPhone?: string;
   airbnbUrl?: string;
+  lang?: "es" | "en";
 }
 
 export default function CalendarWidget({
   pricePerNight = 45,
   cleaningFee = 15,
-  whatsAppPhone = "5491145379500", // Updated with user's phone number
-  airbnbUrl = "https://www.airbnb.com" // Placeholder URL
+  whatsAppPhone = "5491145379500",
+  airbnbUrl = "https://www.airbnb.com",
+  lang = "es"
 }: CalendarWidgetProps) {
   const [checkIn, setCheckIn] = useState<string>("");
   const [checkOut, setCheckOut] = useState<string>("");
   const [guests, setGuests] = useState<number>(2);
   const [totalNights, setTotalNights] = useState<number>(0);
   const [totalPrice, setTotalPrice] = useState<number>(0);
+
+  const t = {
+    es: {
+      perNight: " / noche",
+      direct: "Directo sin comisiones",
+      capacityBase: "👥 Capacidad Base:",
+      base2: "2 huéspedes",
+      extraGuest: "➕ Huésped adicional:",
+      extraCost: "USD 10 / noche",
+      cleaning: "🧹 Limpieza:",
+      once: `USD ${cleaningFee} (pago único)`,
+      checkin: "CHECK-IN",
+      checkout: "CHECK-OUT",
+      guestsLabel: "HUÉSPEDES",
+      guest: "Huésped",
+      guests: "Huéspedes",
+      bookBtn: "Reservar por WhatsApp",
+      airbnbBtn: "Ver publicación en Airbnb",
+      nights: "noches",
+      baseGuests: "base 2 huéspedes",
+      extraGuestsLabel: "Huéspedes extra",
+      cleaningLabel: "Limpieza",
+      commission: "Comisión de canal directo",
+      totalEst: "Total estimado",
+      barNote: "El precio no incluye extras del bar. La reserva se confirma directamente por WhatsApp.",
+      alertDates: "Por favor, selecciona las fechas de Check-In y Check-Out.",
+      waMsg: (inD: string, outD: string, g: number) => `Hola! Quería consultar disponibilidad para el departamento de Córdoba 5579 desde el ${inD} hasta el ${outD} para ${g} ${g === 1 ? "huésped" : "huéspedes"}.`
+    },
+    en: {
+      perNight: " / night",
+      direct: "Direct Booking - No Fees",
+      capacityBase: "👥 Base Capacity:",
+      base2: "2 guests",
+      extraGuest: "➕ Extra guest:",
+      extraCost: "USD 10 / night",
+      cleaning: "🧹 Cleaning:",
+      once: `USD ${cleaningFee} (one-time fee)`,
+      checkin: "CHECK-IN",
+      checkout: "CHECK-OUT",
+      guestsLabel: "GUESTS",
+      guest: "Guest",
+      guests: "Guests",
+      bookBtn: "Book via WhatsApp",
+      airbnbBtn: "View Airbnb Listing",
+      nights: "nights",
+      baseGuests: "base 2 guests",
+      extraGuestsLabel: "Extra guests",
+      cleaningLabel: "Cleaning",
+      commission: "Direct booking commission",
+      totalEst: "Estimated total",
+      barNote: "Price does not include bar extras. Booking is confirmed directly via WhatsApp.",
+      alertDates: "Please select your Check-In and Check-Out dates.",
+      waMsg: (inD: string, outD: string, g: number) => `Hi! I would like to inquire about availability for the apartment at Cordoba 5579 from ${inD} to ${outD} for ${g} ${g === 1 ? "guest" : "guests"}.`
+    }
+  }[lang];
 
   useEffect(() => {
     if (checkIn && checkOut) {
@@ -47,7 +104,7 @@ export default function CalendarWidget({
 
   const handleWhatsAppRedirect = () => {
     if (!checkIn || !checkOut) {
-      alert("Por favor, selecciona las fechas de Check-In y Check-Out.");
+      alert(t.alertDates);
       return;
     }
     
@@ -62,7 +119,7 @@ export default function CalendarWidget({
       year: "numeric"
     });
 
-    const message = `Hola! Quería consultar disponibilidad para el departamento de Córdoba 5579 desde el ${formattedCheckIn} hasta el ${formattedCheckOut} para ${guests} ${guests === 1 ? "huésped" : "huéspedes"}.`;
+    const message = t.waMsg(formattedCheckIn, formattedCheckOut, guests);
     const encodedMessage = encodeURIComponent(message);
     const waUrl = `https://wa.me/${whatsAppPhone}?text=${encodedMessage}`;
     window.open(waUrl, "_blank");
@@ -80,24 +137,24 @@ export default function CalendarWidget({
         <div className="flex items-baseline justify-between">
           <div>
             <span className="text-2xl font-semibold text-neutral-900">${pricePerNight}</span>
-            <span className="text-neutral-500 text-sm"> / noche</span>
+            <span className="text-neutral-500 text-sm">{t.perNight}</span>
           </div>
           <div className="text-xs text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full font-medium">
-            Directo sin comisiones
+            {t.direct}
           </div>
         </div>
         <div className="bg-neutral-50 rounded-xl p-2.5 border border-[#EFEBE4] text-[11px] text-neutral-500 space-y-1">
           <p className="flex justify-between">
-            <span>👥 Capacidad Base:</span>
-            <span className="font-semibold text-neutral-800">2 huéspedes</span>
+            <span>{t.capacityBase}</span>
+            <span className="font-semibold text-neutral-800">{t.base2}</span>
           </p>
           <p className="flex justify-between">
-            <span>➕ Huésped adicional:</span>
-            <span className="font-semibold text-neutral-800">USD 10 / noche</span>
+            <span>{t.extraGuest}</span>
+            <span className="font-semibold text-neutral-800">{t.extraCost}</span>
           </p>
           <p className="flex justify-between">
-            <span>🧹 Limpieza:</span>
-            <span className="font-semibold text-neutral-800">USD {cleaningFee} (pago único)</span>
+            <span>{t.cleaning}</span>
+            <span className="font-semibold text-neutral-800">{t.once}</span>
           </p>
         </div>
       </div>
@@ -108,7 +165,7 @@ export default function CalendarWidget({
           <div className="grid grid-cols-2 divide-x divide-[#EFEBE4]">
             <div className="p-3.5">
               <label className="block text-[10px] font-bold uppercase tracking-wider text-neutral-500 mb-1">
-                CHECK-IN
+                {t.checkin}
               </label>
               <div className="flex items-center text-neutral-800">
                 <input
@@ -122,7 +179,7 @@ export default function CalendarWidget({
             </div>
             <div className="p-3.5">
               <label className="block text-[10px] font-bold uppercase tracking-wider text-neutral-500 mb-1">
-                CHECK-OUT
+                {t.checkout}
               </label>
               <div className="flex items-center text-neutral-800">
                 <input
@@ -138,11 +195,11 @@ export default function CalendarWidget({
           
           <div className="p-3.5">
             <label className="block text-[10px] font-bold uppercase tracking-wider text-neutral-500 mb-1">
-              HUÉSPEDES
+              {t.guestsLabel}
             </label>
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium text-neutral-800">
-                {guests} {guests === 1 ? "Huésped" : "Huéspedes"}
+                {guests} {guests === 1 ? t.guest : t.guests}
               </span>
               <div className="flex items-center space-x-2">
                 <button
@@ -172,7 +229,7 @@ export default function CalendarWidget({
           className="w-full bg-[#5F6F52] hover:bg-[#4F5D43] text-white py-4 px-6 rounded-2xl font-medium shadow-md shadow-neutral-100 flex items-center justify-center space-x-2 transition-all active:scale-[0.98]"
         >
           <MessageCircle className="w-5 h-5 fill-current" />
-          <span>Reservar por WhatsApp</span>
+          <span>{t.bookBtn}</span>
         </button>
 
         <a
@@ -181,7 +238,7 @@ export default function CalendarWidget({
           rel="noopener noreferrer"
           className="w-full border border-neutral-200 hover:border-neutral-800 text-neutral-800 py-3.5 px-6 rounded-2xl font-medium flex items-center justify-center space-x-2 transition-all active:scale-[0.98]"
         >
-          <span>Ver publicación en Airbnb</span>
+          <span>{t.airbnbBtn}</span>
           <ArrowRight className="w-4 h-4 text-neutral-400 group-hover:text-neutral-800" />
         </a>
       </div>
@@ -191,34 +248,34 @@ export default function CalendarWidget({
         <div className="mt-6 pt-6 border-t border-[#EFEBE4] space-y-3 text-sm text-neutral-600">
           <div className="flex justify-between">
             <span className="underline decoration-dotted">
-              ${pricePerNight} x {totalNights} noches (base 2 huéspedes)
+              ${pricePerNight} x {totalNights} {t.nights} ({t.baseGuests})
             </span>
             <span className="font-medium text-neutral-800">${pricePerNight * totalNights}</span>
           </div>
           {guests > 2 && (
             <div className="flex justify-between">
               <span className="underline decoration-dotted">
-                Huéspedes extra (USD 10 x {guests - 2} x {totalNights} noches)
+                {t.extraGuestsLabel} (USD 10 x {guests - 2} x {totalNights} {t.nights})
               </span>
               <span className="font-medium text-neutral-800">${(guests - 2) * 10 * totalNights}</span>
             </div>
           )}
           <div className="flex justify-between">
-            <span className="underline decoration-dotted">Limpieza</span>
+            <span className="underline decoration-dotted">{t.cleaningLabel}</span>
             <span className="font-medium text-neutral-800">${cleaningFee}</span>
           </div>
           <div className="flex justify-between text-emerald-600 font-medium">
-            <span>Comisión de canal directo</span>
+            <span>{t.commission}</span>
             <span>$0</span>
           </div>
           
           <div className="border-t border-[#EFEBE4] pt-4 mt-2 flex justify-between text-base font-bold text-neutral-900">
-            <span>Total estimado</span>
+            <span>{t.totalEst}</span>
             <span>${totalPrice}</span>
           </div>
           
           <p className="text-[10px] text-center text-neutral-400 mt-2">
-            El precio no incluye extras del bar. La reserva se confirma directamente por WhatsApp.
+            {t.barNote}
           </p>
         </div>
       )}
