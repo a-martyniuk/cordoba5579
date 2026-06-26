@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   authors: [{ name: "Jorge Orlando" }],
   icons: {
     icon: [
-      { url: "/icon.svg", type: "image/svg+xml" }
+      { url: "/favicon.svg?v=3", type: "image/svg+xml" }
     ]
   },
   openGraph: {
@@ -47,8 +47,8 @@ export default function RootLayout({
   return (
     <html lang="es" className="scroll-smooth">
       <head>
-        <link rel="icon" href="/icon.svg?v=2" type="image/svg+xml" />
-        <link rel="apple-touch-icon" href="/icon.svg?v=2" />
+        <link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/favicon.svg?v=3" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#5F6F52" />
         <script
