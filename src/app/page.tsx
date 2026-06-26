@@ -29,6 +29,7 @@ import CalendarWidget from "../components/CalendarWidget";
 import NeighbourhoodMap from "../components/NeighbourhoodMap";
 import InstallPrompt from "../components/InstallPrompt";
 import { cordoba5579Knowledge } from "../data/conciergeKnowledge";
+import airbnbDetails from "../data/airbnb-details.json";
 
 // ─── Scroll Reveal Wrapper ──────────────────────────────────────────────────
 function ScrollReveal({
@@ -312,9 +313,9 @@ export default function Home() {
       tagNew: "A Estrenar",
       tagLocation: "Palermo Hollywood, CABA",
       tagArena: "A 5 min. del Movistar Arena",
-      heroTitle: "Estadía de Diseño con Rooftop y Piscina en Av. Córdoba",
-      heroDesc: "Un oasis urbano de diseño contemporáneo y confort absoluto en la zona más vibrante de Buenos Aires. Totalmente equipado y pensado para nómadas digitales y viajeros exigentes.",
-      badgeAirbnb: "Disponible en Airbnb",
+      heroTitle: airbnbDetails.title || "Estadía de Diseño con Rooftop y Piscina en Av. Córdoba",
+      heroDesc: airbnbDetails.description || "Un oasis urbano de diseño contemporáneo y confort absoluto en la zona más vibrante de Buenos Aires. Totalmente equipado y pensado para nómadas digitales y viajeros exigentes.",
+      badgeAirbnb: `★ ${airbnbDetails.rating.toFixed(2)} (${airbnbDetails.reviewsCount} evaluaciones)`,
       badgeGuests: "Capacidad: 2 a 4 huéspedes",
       badgeVerified: "Anfitrión verificado",
       hostHeader: "Departamento entero · Anfitrión: Jorge Orlando",
@@ -410,9 +411,9 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
       tagNew: "Brand New",
       tagLocation: "Palermo Hollywood, BA",
       tagArena: "5 min from Movistar Arena",
-      heroTitle: "Designer Apartment with Rooftop and Pool on Av. Córdoba",
-      heroDesc: "An urban oasis of contemporary design and absolute comfort in the most vibrant area of Buenos Aires. Fully equipped and tailored for digital nomads and demanding travelers.",
-      badgeAirbnb: "Available on Airbnb",
+      heroTitle: airbnbDetails.title || "Designer Apartment with Rooftop and Pool on Av. Córdoba",
+      heroDesc: airbnbDetails.description || "An urban oasis of contemporary design and absolute comfort in the most vibrant area of Buenos Aires. Fully equipped and tailored for digital nomads and demanding travelers.",
+      badgeAirbnb: `★ ${airbnbDetails.rating.toFixed(2)} (${airbnbDetails.reviewsCount} reviews)`,
       badgeGuests: "Capacity: 2 to 4 guests",
       badgeVerified: "Verified Host",
       hostHeader: "Entire Apartment · Host: Jorge Orlando",

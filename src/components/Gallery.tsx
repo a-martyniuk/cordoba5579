@@ -12,6 +12,8 @@ interface ImageItem {
 }
 
 // Fallback images shown immediately (real Airbnb listing photos)
+import airbnbDetails from "../data/airbnb-details.json";
+
 const LISTING_ID = "1716762976739155303";
 const BASE = `https://a0.muscache.com/im/pictures/hosting/Hosting-${LISTING_ID}/original`;
 
@@ -43,9 +45,18 @@ const FALLBACK_IMAGES: ImageItem[] = [
   },
 ];
 
+const SYNCED_IMAGES: ImageItem[] = airbnbDetails.photos.map((url, idx) => {
+  const fallback = FALLBACK_IMAGES[idx] || { title: `Foto ${idx + 1}`, desc: "Córdoba 5579 — Palermo Hollywood" };
+  return {
+    url,
+    title: fallback.title,
+    desc: fallback.desc
+  };
+});
+
 export default function Gallery() {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
-  const [images, setImages] = useState<ImageItem[]>(FALLBACK_IMAGES);
+  const [images, setImages] = useState<ImageItem[]>(SYNCED_IMAGES);
   const [loading, setLoading] = useState(true);
 
   // Fetch fresh images from Airbnb via API route on mount
