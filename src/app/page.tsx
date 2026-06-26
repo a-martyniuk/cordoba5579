@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import { 
   Wifi, 
   ShieldCheck, 
@@ -19,13 +20,40 @@ import {
   ClipboardList,
   Utensils,
   Bed,
-  AlertCircle
+  AlertCircle,
+  MessageCircle
 } from "lucide-react";
 import Link from "next/link";
 import Gallery from "../components/Gallery";
 import CalendarWidget from "../components/CalendarWidget";
 import NeighbourhoodMap from "../components/NeighbourhoodMap";
+import InstallPrompt from "../components/InstallPrompt";
 import { cordoba5579Knowledge } from "../data/conciergeKnowledge";
+
+// ─── Scroll Reveal Wrapper ──────────────────────────────────────────────────
+function ScrollReveal({
+  children,
+  delay = 0,
+  className = "",
+}: {
+  children: React.ReactNode;
+  delay?: number;
+  className?: string;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 32 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.55, ease: "easeOut", delay }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
 
 interface FoodPlace {
   name: string;
@@ -526,20 +554,35 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
       : "¡Buena pregunta! No tengo esa respuesta exacta registrada en mi guía del departamento, pero podés consultarle directamente a Jorge haciendo clic en 'Reservar por WhatsApp'. ¡Te responderá enseguida!";
   };
 
-  const handleSendMessage = (text: string) => {
+  const handleSendMessage = async (text: string) => {
     if (!text.trim()) return;
-    
-    // Add user message
     setMessages(prev => [...prev, { sender: "user", text }]);
     setInputValue("");
     setIsTyping(true);
 
-    // Simulate AI response typing delay
+    try {
+      // Try Gemini AI first
+      const res = await fetch("/cordoba5579/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: text, language }),
+      });
+      const data = await res.json();
+      if (data.reply && !data.fallback) {
+        setMessages(prev => [...prev, { sender: "ai", text: data.reply }]);
+        setIsTyping(false);
+        return;
+      }
+    } catch {
+      // Gemini unavailable — fall through to local knowledge base
+    }
+
+    // Local knowledge base fallback
     setTimeout(() => {
       const response = getConciergeResponse(text);
       setMessages(prev => [...prev, { sender: "ai", text: response }]);
       setIsTyping(false);
-    }, 1000);
+    }, 600);
   };
 
   const handleFaqToggle = (idx: number) => {
@@ -706,53 +749,70 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
         )}
       </nav>
 
+      {/* WhatsApp Floating CTA */}
+      <a
+        href="https://wa.me/5491145379500?text=Hola%20Jorge%2C%20me%20interesa%20el%20departamento%20C%C3%B3rdoba%205579."
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-6 left-6 z-[9980] flex items-center gap-2.5 bg-[#25D366] hover:bg-[#1ebe5a] text-white text-xs font-bold px-4 py-3 rounded-2xl shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 group"
+        aria-label="Contactar por WhatsApp"
+      >
+        <MessageCircle className="w-5 h-5 fill-white" />
+        <span className="hidden sm:block">WhatsApp</span>
+      </a>
+
       {/* Main Content Container */}
       <main className="max-w-6xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 flex-grow space-y-12">
         
         {/* Header Title Section */}
-        <div className="space-y-4">
-          <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-[#5F6F52]">
-            <span className="bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-md flex items-center gap-1">
-              <Star className="w-3.5 h-3.5 fill-current" />
-              <span>{t.tagNew}</span>
-            </span>
-            <span>·</span>
-            <span>{t.tagLocation}</span>
-            <span>·</span>
-            <span>{t.tagArena}</span>
-          </div>
-          
-          <h1 className="font-serif text-3xl md:text-4.5xl text-neutral-900 font-bold tracking-tight leading-tight">
-            {t.heroTitle}
-          </h1>
-          
-          <p className="text-neutral-500 text-sm md:text-base max-w-3xl">
-            {t.heroDesc}
-          </p>
+        <ScrollReveal>
+          <div className="space-y-4">
+            <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-[#5F6F52]">
+              <span className="bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-md flex items-center gap-1">
+                <Star className="w-3.5 h-3.5 fill-current" />
+                <span>{t.tagNew}</span>
+              </span>
+              <span>·</span>
+              <span>{t.tagLocation}</span>
+              <span>·</span>
+              <span>{t.tagArena}</span>
+            </div>
+            
+            <h1 className="font-serif text-3xl md:text-4.5xl text-neutral-900 font-bold tracking-tight leading-tight">
+              {t.heroTitle}
+            </h1>
+            
+            <p className="text-neutral-500 text-sm md:text-base max-w-3xl">
+              {t.heroDesc}
+            </p>
 
-          {/* Trust Badges Row */}
-          <div className="flex flex-wrap gap-3 pt-1 text-xs font-semibold text-neutral-700 dark:text-neutral-300">
-            <div className="flex items-center gap-2 bg-white dark:bg-[#252824] border border-[#EFEBE4] dark:border-[#353A33] px-4 py-2.5 rounded-2xl shadow-sm transition-colors duration-300">
-              <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
-              <span>{t.badgeAirbnb}</span>
-            </div>
-            <div className="flex items-center gap-2 bg-white dark:bg-[#252824] border border-[#EFEBE4] dark:border-[#353A33] px-4 py-2.5 rounded-2xl shadow-sm transition-colors duration-300">
-              <Users className="w-4 h-4 text-[#5F6F52] dark:text-[#889B73]" />
-              <span>{t.badgeGuests}</span>
-            </div>
-            <div className="flex items-center gap-2 bg-white dark:bg-[#252824] border border-[#EFEBE4] dark:border-[#353A33] px-4 py-2.5 rounded-2xl shadow-sm transition-colors duration-300">
-              <UserCheck className="w-4 h-4 text-emerald-700 dark:text-emerald-500" />
-              <span>{t.badgeVerified}</span>
+            {/* Trust Badges Row */}
+            <div className="flex flex-wrap gap-3 pt-1 text-xs font-semibold text-neutral-700 dark:text-neutral-300">
+              <div className="flex items-center gap-2 bg-white dark:bg-[#252824] border border-[#EFEBE4] dark:border-[#353A33] px-4 py-2.5 rounded-2xl shadow-sm transition-colors duration-300">
+                <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
+                <span>{t.badgeAirbnb}</span>
+              </div>
+              <div className="flex items-center gap-2 bg-white dark:bg-[#252824] border border-[#EFEBE4] dark:border-[#353A33] px-4 py-2.5 rounded-2xl shadow-sm transition-colors duration-300">
+                <Users className="w-4 h-4 text-[#5F6F52] dark:text-[#889B73]" />
+                <span>{t.badgeGuests}</span>
+              </div>
+              <div className="flex items-center gap-2 bg-white dark:bg-[#252824] border border-[#EFEBE4] dark:border-[#353A33] px-4 py-2.5 rounded-2xl shadow-sm transition-colors duration-300">
+                <UserCheck className="w-4 h-4 text-emerald-700 dark:text-emerald-500" />
+                <span>{t.badgeVerified}</span>
+              </div>
             </div>
           </div>
-        </div>
+        </ScrollReveal>
 
         {/* Gallery Grid */}
-        <section>
-          <Gallery />
-        </section>
+        <ScrollReveal delay={0.1}>
+          <section>
+            <Gallery />
+          </section>
+        </ScrollReveal>
 
         {/* 2-Column Details Layout */}
+        <ScrollReveal delay={0.05}>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start" id="detalles">
           
           {/* Left Column: Description & Info (8/12 width) */}
@@ -1205,8 +1265,10 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
           </div>
 
         </div>
+        </ScrollReveal>
 
         {/* Neighbourhood Map Section (Full Width 12/12) */}
+        <ScrollReveal delay={0.05}>
         <div id="barrio" className="space-y-6">
           <NeighbourhoodMap sheetUrl={googleSheetPlacesUrl} lang={language} />
           
@@ -1277,8 +1339,10 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
             </div>
           </div>
         </div>
+        </ScrollReveal>
 
         {/* House Rules / Norms (Full Width 12/12) */}
+        <ScrollReveal delay={0.05}>
         <div className="space-y-6 bg-amber-50/15 dark:bg-amber-950/5 border border-[#EFEBE4] dark:border-[#353A33] rounded-3xl p-6 md:p-8 transition-colors duration-300" id="reglas">
           <h3 className="font-serif text-xl md:text-2xl text-neutral-900 dark:text-neutral-100 font-semibold flex items-center gap-2">
             <AlertTriangle className="w-5 h-5 text-amber-600" />
@@ -1312,8 +1376,10 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
             </div>
           </div>
         </div>
+        </ScrollReveal>
 
         {/* Accordion FAQ Section (Full Width 12/12) */}
+        <ScrollReveal delay={0.05}>
         <div className="space-y-6 bg-white dark:bg-[#252824] border border-[#EFEBE4] dark:border-[#353A33] rounded-3xl p-6 md:p-8 transition-colors duration-300" id="faq">
           <h3 className="font-serif text-xl md:text-2xl text-neutral-900 dark:text-neutral-100 font-semibold">
             {t.faqHeader}
@@ -1362,6 +1428,7 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
             })}
           </div>
         </div>
+        </ScrollReveal>
       </main>
 
       {/* Footer */}
@@ -1529,6 +1596,9 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
           </div>
         )}
       </div>
+
+      {/* PWA Install Prompt */}
+      <InstallPrompt />
     </div>
   );
 }

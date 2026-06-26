@@ -23,6 +23,8 @@ export default function CalendarWidget({
   const [guests, setGuests] = useState<number>(2);
   const [totalNights, setTotalNights] = useState<number>(0);
   const [totalPrice, setTotalPrice] = useState<number>(0);
+  const [blockedDates, setBlockedDates] = useState<string[]>([]);
+  const [hasConflict, setHasConflict] = useState<boolean>(false);
 
   const t = {
     es: {
@@ -49,7 +51,8 @@ export default function CalendarWidget({
       totalEst: "Total estimado",
       barNote: "El precio no incluye extras del bar. La reserva se confirma directamente por WhatsApp.",
       alertDates: "Por favor, selecciona las fechas de Check-In y Check-Out.",
-      waMsg: (inD: string, outD: string, g: number) => `Hola! Quería consultar disponibilidad para el departamento de Córdoba 5579 desde el ${inD} hasta el ${outD} para ${g} ${g === 1 ? "huésped" : "huéspedes"}.`
+      waMsg: (inD: string, outD: string, g: number) => `Hola! Quería consultar disponibilidad para el departamento de Córdoba 5579 desde el ${inD} hasta el ${outD} para ${g} ${g === 1 ? "huésped" : "huéspedes"}.`,
+      conflictWarning: "⚠️ Las fechas seleccionadas ya están reservadas en Airbnb. Consultá de todas formas si querés verificar disponibilidad especial."
     },
     en: {
       perNight: " / night",
@@ -75,9 +78,27 @@ export default function CalendarWidget({
       totalEst: "Estimated total",
       barNote: "Price does not include bar extras. Booking is confirmed directly via WhatsApp.",
       alertDates: "Please select your Check-In and Check-Out dates.",
-      waMsg: (inD: string, outD: string, g: number) => `Hi! I would like to inquire about availability for the apartment at Cordoba 5579 from ${inD} to ${outD} for ${g} ${g === 1 ? "guest" : "guests"}.`
+      waMsg: (inD: string, outD: string, g: number) => `Hi! I would like to inquire about availability for the apartment at Cordoba 5579 from ${inD} to ${outD} for ${g} ${g === 1 ? "guest" : "guests"}.`,
+      conflictWarning: "⚠️ Selected dates are already booked on Airbnb. Feel free to inquire anyway for special availability."
     }
   }[lang];
+
+  useEffect(() => {
+    async function fetchAvailability() {
+      try {
+        const res = await fetch("/cordoba5579/api/availability");
+        if (res.ok) {
+          const data = await res.json();
+          if (data && Array.isArray(data.blockedDates)) {
+            setBlockedDates(data.blockedDates);
+          }
+        }
+      } catch (err) {
+        console.error("Error fetching availability:", err);
+      }
+    }
+    fetchAvailability();
+  }, []);
 
   useEffect(() => {
     if (checkIn && checkOut) {
@@ -92,15 +113,30 @@ export default function CalendarWidget({
         const extraGuestCostPerNight = 10;
         const total = (diffDays * pricePerNight) + (diffDays * extraGuests * extraGuestCostPerNight) + cleaningFee;
         setTotalPrice(total);
+
+        // Check for date conflict
+        let conflict = false;
+        const current = new Date(inDate);
+        while (current < outDate) {
+          const dateStr = current.toISOString().split("T")[0];
+          if (blockedDates.includes(dateStr)) {
+            conflict = true;
+            break;
+          }
+          current.setDate(current.getDate() + 1);
+        }
+        setHasConflict(conflict);
       } else {
         setTotalNights(0);
         setTotalPrice(0);
+        setHasConflict(false);
       }
     } else {
       setTotalNights(0);
       setTotalPrice(0);
+      setHasConflict(false);
     }
-  }, [checkIn, checkOut, pricePerNight, cleaningFee, guests]);
+  }, [checkIn, checkOut, pricePerNight, cleaningFee, guests, blockedDates]);
 
   const handleWhatsAppRedirect = () => {
     if (!checkIn || !checkOut) {
@@ -119,7 +155,8 @@ export default function CalendarWidget({
       year: "numeric"
     });
 
-    const message = t.waMsg(formattedCheckIn, formattedCheckOut, guests);
+    const conflictMsg = hasConflict ? " (Nota: Airbnb indica que estas fechas pueden estar ocupadas)" : "";
+    const message = t.waMsg(formattedCheckIn, formattedCheckOut, guests) + conflictMsg;
     const encodedMessage = encodeURIComponent(message);
     const waUrl = `https://wa.me/${whatsAppPhone}?text=${encodedMessage}`;
     window.open(waUrl, "_blank");
@@ -253,6 +290,12 @@ export default function CalendarWidget({
           </div>
         </div>
       </div>
+
+      {hasConflict && (
+        <div className="mb-4 text-xs text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/20 p-3 rounded-2xl border border-amber-200 dark:border-amber-900/30 font-medium leading-relaxed">
+          {t.conflictWarning}
+        </div>
+      )}
 
       {/* Action Buttons */}
       <div className="space-y-3">
