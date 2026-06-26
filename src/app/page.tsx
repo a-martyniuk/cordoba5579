@@ -235,6 +235,8 @@ export default function Home() {
   const [isTyping, setIsTyping] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
+  const [darkMode, setDarkMode] = useState(false);
+
   // Sync language selection with localStorage
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -242,6 +244,9 @@ export default function Home() {
       if (savedLang === "es" || savedLang === "en") {
         setLanguage(savedLang);
       }
+
+      const savedDark = document.documentElement.classList.contains("dark");
+      setDarkMode(savedDark);
     }
   }, []);
 
@@ -249,6 +254,18 @@ export default function Home() {
     setLanguage(newLang);
     if (typeof window !== "undefined") {
       localStorage.setItem("language", newLang);
+    }
+  };
+
+  const handleThemeChange = (isDark: boolean) => {
+    setDarkMode(isDark);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("darkMode", String(isDark));
+      if (isDark) {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
     }
   };
 
@@ -534,9 +551,9 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
   const googleSheetPlacesUrl = ""; 
 
   return (
-    <div className="min-h-screen flex flex-col font-sans antialiased text-neutral-800 bg-[#FAF9F7]">
+    <div className="min-h-screen flex flex-col font-sans antialiased text-neutral-800 dark:text-neutral-200 bg-[#FAF9F7] dark:bg-[#141613] transition-colors duration-300">
       {/* Translucent Navigation Bar */}
-      <nav className="sticky top-0 z-50 backdrop-blur-md bg-[#FAF9F7]/80 border-b border-[#EFEBE4] transition-all">
+      <nav className="sticky top-0 z-50 backdrop-blur-md bg-[#FAF9F7]/80 dark:bg-[#141613]/80 border-b border-[#EFEBE4] dark:border-[#2C302A] transition-all">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
@@ -559,6 +576,14 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
 
             {/* Language Switcher and CTA Button */}
             <div className="hidden md:flex items-center space-x-4">
+              <button
+                onClick={() => handleThemeChange(!darkMode)}
+                className="w-7 h-7 rounded-lg bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 border border-[#EFEBE4] dark:border-[#2C302A] text-neutral-600 dark:text-neutral-300 transition-all text-xs flex items-center justify-center shadow-sm"
+                title={language === "es" ? "Cambiar Tema" : "Toggle Theme"}
+              >
+                {darkMode ? "☀️" : "🌙"}
+              </button>
+
               <div className="flex items-center bg-neutral-200/50 rounded-lg p-0.5 border border-[#EFEBE4] text-[10px] font-bold">
                 <button
                   onClick={() => handleLanguageChange("es")}
@@ -584,6 +609,14 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
 
             {/* Mobile menu button */}
             <div className="md:hidden flex items-center space-x-3">
+              <button
+                onClick={() => handleThemeChange(!darkMode)}
+                className="w-7 h-7 rounded-lg bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 border border-[#EFEBE4] dark:border-[#2C302A] text-neutral-600 dark:text-neutral-300 transition-all text-xs flex items-center justify-center shadow-sm"
+                title={language === "es" ? "Cambiar Tema" : "Toggle Theme"}
+              >
+                {darkMode ? "☀️" : "🌙"}
+              </button>
+
               {/* Language switcher for mobile */}
               <div className="flex items-center bg-neutral-200/50 rounded-lg p-0.5 border border-[#EFEBE4] text-[10px] font-bold">
                 <button

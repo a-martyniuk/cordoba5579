@@ -1,0 +1,16 @@
+{
+  "name": "Córdoba 5579",
+  "short_name": "Cordoba5579",
+  "description": "Portal de Concierge y Manual de Huéspedes para Córdoba 5579",
+  "start_url": "/checkin",
+  "display": "standalone",
+  "background_color": "#FAF9F7",
+  "theme_color": "#5F6F52",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
