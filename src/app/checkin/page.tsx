@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Key, Wifi, Copy, Check, ShieldAlert, Clock, ArrowLeft, MessageCircle, Phone } from "lucide-react";
+import { Key, Wifi, Copy, Check, ShieldAlert, Clock, ArrowLeft, Phone } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function CheckInPortal() {
   const [lang, setLang] = useState<"es" | "en">("es");
@@ -233,14 +234,14 @@ export default function CheckInPortal() {
             {/* QR Auto-Connect Container */}
             <div className="bg-[#FAF9F7] border border-[#EFEBE4] rounded-2xl p-3 flex flex-col items-center justify-center gap-1.5">
               <span className="text-[9px] font-bold text-neutral-400 uppercase text-center">{lang === "es" ? "Escanear para conectar" : "Scan to connect"}</span>
-              {/* Clean SVG representation of the WiFi QR code */}
-              <svg className="w-24 h-24 bg-white p-1.5 rounded border border-[#EFEBE4]" viewBox="0 0 29 29" fill="none">
-                <path d="M0 0h7v7H0zM22 0h7v7h-7zM0 22h7v7H0z" fill="#000"/>
-                <path d="M2 2h3v3H2zM24 2h3v3h-3zM2 24h3v3H2z" fill="#fff"/>
-                <path d="M3 3h1v1H3zM25 3h1v1h-1zM3 25h1v1H3z" fill="#000"/>
-                {/* QR code internal noise patterns representing WiFi:T:WPA;S:Cordoba5579_Guest;P:Welcome101;; */}
-                <path d="M9 0h2v1H9zM12 0h1v2h-1zM15 0h3v1h-3zM19 0h2v2h-2zM9 2h1v2H9zM11 3h3v1h-3zM15 2h1v1h-1zM17 3h1v2h-1zM13 5h2v1h-2zM9 6h3v1H9zM14 6h4v1h-4zM20 5h1v2h-1zM0 9h1v3H0zM2 10h1v1H2zM4 9h2v1H4zM6 11h1v2H6zM9 9h1v1H9zM11 9h1v3h-1zM13 10h1v1h-1zM16 9h1v2h-1zM18 9h2v1h-2zM20 10h1v1h-1zM23 9h2v1h-2zM27 9h2v2h-2zM2 13h2v1H2zM5 14h2v1H5zM8 13h1v2H8zM10 14h3v1h-3zM14 13h1v1h-1zM16 14h2v1h-2zM20 13h1v2h-1zM22 14h1v1h-2zM25 13h2v1h-2zM28 13h1v2h-1zM1 16h2v1H1zM4 17h1v1H4zM6 16h1v1H6zM9 16h2v2H9zM12 17h2v1h-2zM15 16h2v1h-2zM18 16h1v2h-1zM21 16h3v1h-3zM25 17h1v1h-1zM27 16h1v2h-1zM0 20h2v1H0zM3 19h1v2H3zM5 20h2v1H5zM8 20h1v1H8zM10 19h1v1h-1zM12 20h2v1h-2zM15 20h1v1h-1zM17 19h1v2h-1zM19 20h2v1h-2zM22 20h1v1h-2zM25 19h3v1h-3z" fill="#000"/>
-              </svg>
+              {/* Actual high-quality QR code image */}
+              <Image 
+                src="/wifi-qr.png" 
+                alt="Wi-Fi QR Code" 
+                width={96}
+                height={96}
+                className="bg-white p-1 rounded border border-[#EFEBE4]" 
+              />
             </div>
           </div>
           <p className="text-[11px] text-neutral-400 text-center leading-relaxed">
@@ -547,17 +548,6 @@ export default function CheckInPortal() {
             </a>
           </div>
         </div>
-
-        {/* Contact Support */}
-        <a
-          href={`https://wa.me/5491145379500?text=${encodeURIComponent(t.supportMsg)}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="w-full bg-[#5F6F52] hover:bg-[#4F5D43] text-white py-4 px-6 rounded-2xl font-semibold shadow-md flex items-center justify-center gap-2 transition-all active:scale-[0.98]"
-        >
-          <MessageCircle className="w-5 h-5 fill-current" />
-          <span>{t.supportBtn}</span>
-        </a>
       </div>
     </div>
   );
