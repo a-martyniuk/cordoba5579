@@ -16,8 +16,8 @@ export const cordoba5579Knowledge: PropertyKnowledge = {
   },
   wifi: {
     keys: ["wifi", "wi-fi", "internet", "clave", "contraseña", "password", "network", "ssid"],
-    es: "El departamento cuenta con internet de alta velocidad. Las credenciales de la red y el código QR de conexión rápida se encuentran impresos en carteles enmarcados dentro del departamento. Contraseña: 'hola.cordoba'.",
-    en: "The apartment features high-speed internet. The network credentials and auto-connect QR code are printed on framed signs inside the property. Wifi password is 'hola.cordoba'."
+    es: "El departamento cuenta con internet de alta velocidad. Las credenciales de la red y el código QR de conexión rápida se encuentran impresos en carteles enmarcados dentro del departamento. Contraseña: 'Welcome101'.",
+    en: "The apartment features high-speed internet. The network credentials and auto-connect QR code are printed on framed signs inside the property. Wifi password is 'Welcome101'."
   },
   checkin: {
     keys: ["check-in", "checkin", "ingres", "llave", "entrar", "lockbox", "code", "codigo", "código", "caja fuerte", "candado"],

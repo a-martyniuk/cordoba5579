@@ -7,7 +7,7 @@ import Link from "next/link";
 export default function CheckInPortal() {
   const [lang, setLang] = useState<"es" | "en">("es");
   const [copied, setCopied] = useState(false);
-  const wifiPassword = "hola.cordoba";
+  const wifiPassword = "Welcome101";
 
   // Lockbox combination wheels states (4 digits)
   const [digit1, setDigit1] = useState(0);
@@ -199,12 +199,14 @@ export default function CheckInPortal() {
             <h3 className="font-serif text-base sm:text-lg font-bold text-neutral-900">{t.wifiTitle}</h3>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="bg-[#FAF9F7] border border-[#EFEBE4] rounded-2xl p-3.5 space-y-1">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* SSID */}
+            <div className="bg-[#FAF9F7] border border-[#EFEBE4] rounded-2xl p-3.5 space-y-1 flex flex-col justify-center">
               <span className="text-[10px] font-bold text-neutral-400 uppercase">{t.wifiRed}</span>
               <p className="font-mono text-xs sm:text-sm font-bold text-neutral-800">Cordoba 5579_Guest</p>
             </div>
             
+            {/* Password */}
             <div className="bg-[#FAF9F7] border border-[#EFEBE4] rounded-2xl p-3.5 flex items-center justify-between gap-4">
               <div className="space-y-1">
                 <span className="text-[10px] font-bold text-neutral-400 uppercase">{t.wifiPass}</span>
@@ -226,6 +228,19 @@ export default function CheckInPortal() {
                   </>
                 )}
               </button>
+            </div>
+
+            {/* QR Auto-Connect Container */}
+            <div className="bg-[#FAF9F7] border border-[#EFEBE4] rounded-2xl p-3 flex flex-col items-center justify-center gap-1">
+              <span className="text-[9px] font-bold text-neutral-400 uppercase text-center">{lang === "es" ? "Escanear para conectar" : "Scan to connect"}</span>
+              {/* Clean SVG representation of the WiFi QR code */}
+              <svg className="w-20 h-20 bg-white p-1 rounded border border-[#EFEBE4]" viewBox="0 0 29 29" fill="none" shapeRendering="crispEdges">
+                <path d="M0 0h7v7H0zM22 0h7v7h-7zM0 22h7v7H0z" fill="#000"/>
+                <path d="M2 2h3v3H2zM24 2h3v3h-3zM2 24h3v3H2z" fill="#fff"/>
+                <path d="M3 3h1v1H3zM25 3h1v1h-1zM3 25h1v1H3z" fill="#000"/>
+                {/* QR code internal noise patterns representing WiFi:T:WPA;S:Cordoba5579_Guest;P:Welcome101;; */}
+                <path d="M9 0h2v1H9zM12 0h1v2h-1zM15 0h3v1h-3zM19 0h2v2h-2zM9 2h1v2H9zM11 3h3v1h-3zM15 2h1v1h-1zM17 3h1v2h-1zM13 5h2v1h-2zM9 6h3v1H9zM14 6h4v1h-4zM20 5h1v2h-1zM0 9h1v3H0zM2 10h1v1H2zM4 9h2v1H4zM6 11h1v2H6zM9 9h1v1H9zM11 9h1v3h-1zM13 10h1v1h-1zM16 9h1v2h-1zM18 9h2v1h-2zM20 10h1v1h-1zM23 9h2v1h-2zM27 9h2v2h-2zM2 13h2v1H2zM5 14h2v1H5zM8 13h1v2H8zM10 14h3v1h-3zM14 13h1v1h-1zM16 14h2v1h-2zM20 13h1v2h-1zM22 14h1v1h-2zM25 13h2v1h-2zM28 13h1v2h-1zM1 16h2v1H1zM4 17h1v1H4zM6 16h1v1H6zM9 16h2v2H9zM12 17h2v1h-2zM15 16h2v1h-2zM18 16h1v2h-1zM21 16h3v1h-3zM25 17h1v1h-1zM27 16h1v2h-1zM0 20h2v1H0zM3 19h1v2H3zM5 20h2v1H5zM8 20h1v1H8zM10 19h1v1h-1zM12 20h2v1h-2zM15 20h1v1h-1zM17 19h1v2h-1zM19 20h2v1h-2zM22 20h1v1h-2zM25 19h3v1h-3z" fill="#000"/>
+              </svg>
             </div>
           </div>
           <p className="text-[11px] text-neutral-400 text-center leading-relaxed">
