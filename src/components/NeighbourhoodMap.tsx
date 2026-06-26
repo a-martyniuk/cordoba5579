@@ -973,20 +973,20 @@ export default function NeighbourhoodMap({ sheetUrl, lang = "es" }: Neighbourhoo
   });
 
   return (
-    <div className="bg-white border border-[#EFEBE4] rounded-3xl p-6 md:p-8 space-y-6">
+    <div className="bg-white dark:bg-[#252824] border border-[#EFEBE4] dark:border-[#353A33] rounded-3xl p-6 md:p-8 space-y-6 transition-colors duration-300">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h3 className="font-serif text-2xl text-neutral-900 font-semibold">{t.title}</h3>
-          <p className="text-neutral-500 text-sm mt-1">{t.subtitle}</p>
+          <h3 className="font-serif text-2xl text-neutral-900 dark:text-neutral-100 font-semibold">{t.title}</h3>
+          <p className="text-neutral-500 dark:text-neutral-400 text-sm mt-1">{t.subtitle}</p>
         </div>
         {localTime && (
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#FAF9F7] border border-[#EFEBE4] rounded-full text-xs font-semibold text-neutral-700 shadow-sm self-start sm:self-center flex-shrink-0 animate-fadeIn">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#FAF9F7] dark:bg-[#1E211D] border border-[#EFEBE4] dark:border-[#2C302A] rounded-full text-xs font-semibold text-neutral-700 dark:text-neutral-300 shadow-sm self-start sm:self-center flex-shrink-0 animate-fadeIn transition-colors duration-300">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
             </span>
             <span>
-              {t.timeLabel} <strong className="text-neutral-900">{localTime}</strong> <span className="text-neutral-400 text-[10px] font-black">GMT-3</span>
+              {t.timeLabel} <strong className="text-neutral-900 dark:text-neutral-100">{localTime}</strong> <span className="text-neutral-400 dark:text-neutral-500 text-[10px] font-black">GMT-3</span>
             </span>
           </div>
         )}
@@ -994,7 +994,7 @@ export default function NeighbourhoodMap({ sheetUrl, lang = "es" }: Neighbourhoo
 
       {/* Categorías de Puntos de Interés */}
       <div className="space-y-2">
-        <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">{t.filterLabel}</span>
+        <span className="text-[10px] font-bold text-neutral-400 dark:text-neutral-500 uppercase tracking-wider block">{t.filterLabel}</span>
         <div className="flex flex-wrap gap-1.5">
           {categories.map((cat) => {
             const isSelected = selectedCategory === cat.id;
@@ -1003,12 +1003,15 @@ export default function NeighbourhoodMap({ sheetUrl, lang = "es" }: Neighbourhoo
               <button
                 key={cat.id}
                 onClick={() => setSelectedCategory(cat.id)}
-                className="flex items-center gap-1 px-3 py-1.5 rounded-full border text-[11px] font-semibold whitespace-nowrap transition-all duration-200"
-                style={{
-                  backgroundColor: isSelected ? categoryColor : "#FFFFFF",
-                  borderColor: isSelected ? categoryColor : "#EFEBE4",
-                  color: isSelected ? "#FFFFFF" : "#4A4A4A"
-                }}
+                className={`flex items-center gap-1 px-3 py-1.5 rounded-full border text-[11px] font-semibold whitespace-nowrap transition-all duration-200 ${
+                  isSelected 
+                    ? "text-white" 
+                    : "bg-white dark:bg-[#141613] border-[#EFEBE4] dark:border-[#2C302A] text-[#4A4A4A] dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-[#1E211D]"
+                }`}
+                style={isSelected ? {
+                  backgroundColor: categoryColor,
+                  borderColor: categoryColor,
+                } : undefined}
               >
                 <span>{cat.icon}</span>
                 <span>{categoryNames[cat.id]?.[lang] || cat.name}</span>
@@ -1018,19 +1021,17 @@ export default function NeighbourhoodMap({ sheetUrl, lang = "es" }: Neighbourhoo
         </div>
       </div>
 
-
-
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
         {/* Left Column: Place selector (order-2 on mobile, order-1 on large screens) */}
         <div className="order-2 lg:order-1 lg:col-span-5 flex flex-col justify-between space-y-4">
           {selectedCategory !== "all" && datasetUrls[selectedCategory] && (
-            <div className="bg-[#FAF9F7] border border-[#EFEBE4] rounded-2xl p-3.5 text-xs text-neutral-600 flex items-center justify-between shadow-sm">
-              <span className="font-semibold text-neutral-500">{t.officialSource}</span>
+            <div className="bg-[#FAF9F7] dark:bg-[#1E211D] border border-[#EFEBE4] dark:border-[#2C302A] rounded-2xl p-3.5 text-xs text-neutral-600 dark:text-neutral-350 flex items-center justify-between shadow-sm transition-colors duration-300">
+              <span className="font-semibold text-neutral-500 dark:text-neutral-400">{t.officialSource}</span>
               <a
                 href={datasetUrls[selectedCategory].url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[#5F6F52] hover:underline font-bold flex items-center gap-1"
+                className="text-[#5F6F52] dark:text-[#889B73] hover:underline font-bold flex items-center gap-1"
               >
                 <span>{datasetUrls[selectedCategory].name}</span>
                 <span>↗</span>
@@ -1040,8 +1041,8 @@ export default function NeighbourhoodMap({ sheetUrl, lang = "es" }: Neighbourhoo
 
           {/* Subway Line Color Legend */}
           {selectedCategory === "subway" && (
-            <div className="bg-[#FAF9F7] border border-[#EFEBE4] rounded-2xl p-3 text-xs">
-              <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-2">{t.subwayNet}</p>
+            <div className="bg-[#FAF9F7] dark:bg-[#1E211D] border border-[#EFEBE4] dark:border-[#2C302A] rounded-2xl p-3 text-xs transition-colors duration-300">
+              <p className="text-[10px] font-bold text-neutral-400 dark:text-neutral-500 uppercase tracking-wider mb-2">{t.subwayNet}</p>
               <div className="flex flex-wrap gap-1.5">
                 {[
                   { line: "A", color: "#18A7E8", label: lang === "es" ? "Línea A" : "Line A" },
@@ -1064,8 +1065,8 @@ export default function NeighbourhoodMap({ sheetUrl, lang = "es" }: Neighbourhoo
 
           {/* Security Type Legend */}
           {selectedCategory === "security" && (
-            <div className="bg-[#FAF9F7] border border-[#EFEBE4] rounded-2xl p-3 text-xs">
-              <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-2">{t.secTitle}</p>
+            <div className="bg-[#FAF9F7] dark:bg-[#1E211D] border border-[#EFEBE4] dark:border-[#2C302A] rounded-2xl p-3 text-xs transition-colors duration-300">
+              <p className="text-[10px] font-bold text-neutral-400 dark:text-neutral-500 uppercase tracking-wider mb-2">{t.secTitle}</p>
               <div className="flex gap-2">
                 <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-[#2F80ED]/10 border border-[#2F80ED]/30">
                   <div className="w-3.5 h-3.5 rounded-full bg-[#2F80ED]"></div>
@@ -1087,18 +1088,18 @@ export default function NeighbourhoodMap({ sheetUrl, lang = "es" }: Neighbourhoo
                 <button
                   key={idx}
                   onClick={() => handlePlaceSelect(originalIndex)}
-                  className={`w-full text-left p-4 rounded-2xl border transition-all duration-200 flex gap-4 items-start ${
+                  className={`w-full text-left p-4 rounded-2xl border transition-all duration-300 flex gap-4 items-start ${
                     isActive
-                      ? "bg-[#FAF9F7] border-[#5F6F52] ring-1 ring-[#5F6F52] shadow-sm"
-                      : "bg-white border-[#EFEBE4] hover:bg-neutral-50"
+                      ? "bg-[#FAF9F7] dark:bg-[#1E211D] border-[#5F6F52] dark:border-[#889B73] ring-1 ring-[#5F6F52] dark:ring-[#889B73] shadow-sm"
+                      : "bg-white dark:bg-[#141613] border-[#EFEBE4] dark:border-[#2C302A] hover:bg-neutral-50 dark:hover:bg-[#1E211D]"
                   }`}
                 >
-                  <div className={`p-2.5 rounded-full ${isActive ? "bg-white text-[#5F6F52]" : "bg-neutral-100 text-neutral-600"} flex-shrink-0 mt-0.5`}>
+                  <div className={`p-2.5 rounded-full ${isActive ? "bg-white dark:bg-[#252824] text-[#5F6F52] dark:text-[#889B73]" : "bg-neutral-100 dark:bg-[#1E211D] text-neutral-600 dark:text-neutral-400"} flex-shrink-0 mt-0.5 transition-colors duration-300`}>
                     {getPlaceIcon(place.type, place.name)}
                   </div>
                   <div className="space-y-1 w-full min-w-0">
                     <div className="flex items-center gap-1.5 flex-wrap">
-                      <p className="font-semibold text-sm text-neutral-900 leading-snug break-words">{place.name}</p>
+                      <p className="font-semibold text-sm text-neutral-900 dark:text-neutral-100 leading-snug break-words">{place.name}</p>
                       {place.subLine && (
                         <span className="inline-flex items-center justify-center w-5 h-5 rounded-full text-white font-black text-[9px] flex-shrink-0"
                           style={{ backgroundColor: (() => { const c: Record<string,string> = {A:"#18A7E8",B:"#E4002B",C:"#0072BB",D:"#008000",E:"#7A0080",H:"#F5A800"}; return c[place.subLine!] || "#2D9CDB"; })() }}>
@@ -1112,49 +1113,49 @@ export default function NeighbourhoodMap({ sheetUrl, lang = "es" }: Neighbourhoo
                         </span>
                       )}
                     </div>
-                    <p className="text-[#5F6F52] font-semibold text-xs">{place.distance}</p>
+                    <p className="text-[#5F6F52] dark:text-[#889B73] font-semibold text-xs">{place.distance}</p>
                     
                     {/* Expanded details when active */}
                     {isActive && (
-                      <div className="mt-3 space-y-2.5 pt-2.5 border-t border-[#F0EBE0] text-xs text-neutral-600 w-full animate-fadeIn">
+                      <div className="mt-3 space-y-2.5 pt-2.5 border-t border-[#F0EBE0] dark:border-neutral-800 text-xs text-neutral-600 dark:text-neutral-355 w-full animate-fadeIn">
                         {/* Route duration detailed badge */}
                         {activeRouteInfo && place.type !== "stay" && (
-                          <div className="bg-[#FAF9F7] border border-[#5F6F52]/10 rounded-xl p-2.5 flex items-start gap-2 text-neutral-700 shadow-sm">
+                          <div className="bg-[#FAF9F7] dark:bg-[#252824] border border-[#5F6F52]/10 dark:border-[#889B73]/10 rounded-xl p-2.5 flex items-start gap-2 text-neutral-700 dark:text-neutral-300 shadow-sm transition-colors duration-300">
                             <span className="text-sm">📍</span>
                             <div>
-                              <p className="font-bold text-[9px] uppercase tracking-wider text-[#5F6F52]">{t.routeSuggested}</p>
-                              <p className="text-[11px] text-neutral-800 mt-0.5 leading-snug">{activeRouteInfo.duration}</p>
+                              <p className="font-bold text-[9px] uppercase tracking-wider text-[#5F6F52] dark:text-[#889B73]">{t.routeSuggested}</p>
+                              <p className="text-[11px] text-neutral-800 dark:text-neutral-200 mt-0.5 leading-snug">{activeRouteInfo.duration}</p>
                             </div>
                           </div>
                         )}
 
-                        <p className="text-neutral-500 leading-relaxed break-words">{place.desc}</p>
+                        <p className="text-neutral-500 dark:text-neutral-400 leading-relaxed break-words">{place.desc}</p>
                         
                         {place.address && (
                           <div className="flex gap-1.5 items-start mt-1">
-                            <span className="font-bold text-neutral-500 flex-shrink-0">{t.dirLabel}</span>
-                            <span className="text-neutral-600 break-words">{place.address}</span>
+                            <span className="font-bold text-neutral-500 dark:text-neutral-400 flex-shrink-0">{t.dirLabel}</span>
+                            <span className="text-neutral-600 dark:text-neutral-300 break-words">{place.address}</span>
                           </div>
                         )}
                         
                         {place.phone && (
                           <div className="flex items-center gap-1.5 mt-1">
                             <Phone className="w-3.5 h-3.5 text-neutral-400" />
-                            <a href={`tel:${place.phone}`} className="text-[#5F6F52] hover:underline font-semibold">{place.phone}</a>
+                            <a href={`tel:${place.phone}`} className="text-[#5F6F52] dark:text-[#889B73] hover:underline font-semibold">{place.phone}</a>
                           </div>
                         )}
                         
                         {place.email && (
                           <div className="flex items-center gap-1.5 mt-1">
                             <Mail className="w-3.5 h-3.5 text-neutral-400" />
-                            <a href={`mailto:${place.email}`} className="text-[#5F6F52] hover:underline break-all">{place.email}</a>
+                            <a href={`mailto:${place.email}`} className="text-[#5F6F52] dark:text-[#889B73] hover:underline break-all">{place.email}</a>
                           </div>
                         )}
 
                         {place.hours && (
                           <div className="flex gap-1.5 items-start mt-1">
                             <Clock className="w-3.5 h-3.5 text-neutral-400 mt-0.5" />
-                            <span className="text-neutral-600 break-words">{place.hours}</span>
+                            <span className="text-neutral-600 dark:text-neutral-300 break-words">{place.hours}</span>
                           </div>
                         )}
 
@@ -1165,7 +1166,7 @@ export default function NeighbourhoodMap({ sheetUrl, lang = "es" }: Neighbourhoo
                               href={place.web.startsWith("http") ? place.web : `https://${place.web}`} 
                               target="_blank" 
                               rel="noopener noreferrer" 
-                              className="text-[#5F6F52] hover:underline font-semibold flex items-center gap-0.5"
+                              className="text-[#5F6F52] dark:text-[#889B73] hover:underline font-semibold flex items-center gap-0.5"
                             >
                               <span>{t.visitWeb}</span>
                               <span>↗</span>
@@ -1180,17 +1181,17 @@ export default function NeighbourhoodMap({ sheetUrl, lang = "es" }: Neighbourhoo
             })}
           </div>
 
-          <div className="bg-[#FAF9F7] border border-[#EFEBE4] rounded-2xl p-4 text-xs text-neutral-500 leading-relaxed">
+          <div className="bg-[#FAF9F7] dark:bg-[#1E211D] border border-[#EFEBE4] dark:border-[#2C302A] rounded-2xl p-4 text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed transition-colors duration-300">
             <strong>{lang === "es" ? "¿Cómo llegar?" : "How to get there?"}</strong> {t.howToGet}
           </div>
         </div>
 
         {/* Right Column: Leaflet Map Container (order-1 on mobile, order-2 on large screens) */}
-        <div className="order-1 lg:order-2 lg:col-span-7 h-[300px] lg:h-auto min-h-[420px] rounded-2xl border border-[#EFEBE4] overflow-hidden relative shadow-inner">
+        <div className="order-1 lg:order-2 lg:col-span-7 h-[300px] lg:h-auto min-h-[420px] rounded-2xl border border-[#EFEBE4] dark:border-[#2C302A] overflow-hidden relative shadow-inner transition-colors duration-300">
           {!leafletLoaded && (
-            <div className="absolute inset-0 bg-neutral-100 flex items-center justify-center text-sm text-neutral-500">
+            <div className="absolute inset-0 bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center text-sm text-neutral-500 dark:text-neutral-400">
               <div className="text-center space-y-2">
-                <div className="w-6 h-6 border-2 border-neutral-400 border-t-transparent rounded-full animate-spin mx-auto"></div>
+                <div className="w-6 h-6 border-2 border-neutral-400 dark:border-neutral-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
                 <p>{t.loading}</p>
               </div>
             </div>
@@ -1199,13 +1200,13 @@ export default function NeighbourhoodMap({ sheetUrl, lang = "es" }: Neighbourhoo
         </div>
       </div>
 
-      <div className="text-[10px] text-neutral-400 flex flex-wrap items-center gap-1 mt-4 border-t border-[#F5F2EB] pt-4">
+      <div className="text-[10px] text-neutral-400 dark:text-neutral-500 flex flex-wrap items-center gap-1 mt-4 border-t border-[#F5F2EB] dark:border-neutral-800 pt-4 transition-colors duration-300">
         <span>🌐 {t.dataSource}</span>
         <a 
           href="https://data.buenosaires.gob.ar/" 
           target="_blank" 
           rel="noopener noreferrer"
-          className="underline hover:text-neutral-600 font-semibold"
+          className="underline hover:text-neutral-600 dark:hover:text-neutral-400 font-semibold"
         >
           {t.portalName}
         </a>
