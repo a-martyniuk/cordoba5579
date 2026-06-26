@@ -172,7 +172,21 @@ export default function CalendarWidget({
                   type="date"
                   min={getTodayString()}
                   value={checkIn}
-                  onChange={(e) => setCheckIn(e.target.value)}
+                  onChange={(e) => {
+                    const newIn = e.target.value;
+                    setCheckIn(newIn);
+                    
+                    // If Check-Out is before or equal to the new Check-In, set it to Check-In + 1 day
+                    if (checkOut && newIn) {
+                      const inD = new Date(newIn);
+                      const outD = new Date(checkOut);
+                      if (outD <= inD) {
+                        const nextDay = new Date(inD);
+                        nextDay.setDate(nextDay.getDate() + 1);
+                        setCheckOut(nextDay.toISOString().split("T")[0]);
+                      }
+                    }
+                  }}
                   className="w-full text-sm font-medium bg-transparent focus:outline-none border-none cursor-pointer"
                 />
               </div>
@@ -184,9 +198,27 @@ export default function CalendarWidget({
               <div className="flex items-center text-neutral-800">
                 <input
                   type="date"
-                  min={checkIn || getTodayString()}
+                  min={checkIn ? (() => {
+                    const inD = new Date(checkIn);
+                    inD.setDate(inD.getDate() + 1);
+                    return inD.toISOString().split("T")[0];
+                  })() : getTodayString()}
                   value={checkOut}
-                  onChange={(e) => setCheckOut(e.target.value)}
+                  onChange={(e) => {
+                    const newOut = e.target.value;
+                    setCheckOut(newOut);
+                    
+                    // Double check validation
+                    if (checkIn && newOut) {
+                      const inD = new Date(checkIn);
+                      const outD = new Date(newOut);
+                      if (outD <= inD) {
+                        const nextDay = new Date(inD);
+                        nextDay.setDate(nextDay.getDate() + 1);
+                        setCheckOut(nextDay.toISOString().split("T")[0]);
+                      }
+                    }
+                  }}
                   className="w-full text-sm font-medium bg-transparent focus:outline-none border-none cursor-pointer"
                 />
               </div>

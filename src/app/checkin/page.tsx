@@ -72,6 +72,7 @@ export default function CheckInPortal() {
       checkout3: "Avisar por WhatsApp: Enviale un mensaje rápido a Jorge confirmando tu salida. ¡Buen viaje de regreso!",
       supportBtn: "Contactar Soporte (Jorge - WhatsApp)",
       supportMsg: "Hola Jorge! Estoy ingresando al departamento...",
+      mapOpenBtn: "Abrir Ubicación en Mapas ↗",
       emergencyTitle: "Teléfonos de Emergencia",
       emergency911Desc: "Policía y Emergencias Generales",
       emergency107Desc: "SAME (Urgencias Médicas)",
@@ -118,6 +119,7 @@ export default function CheckInPortal() {
       checkout3: "Notify via WhatsApp: Send a quick message to Jorge confirming your departure. Have a safe trip back!",
       supportBtn: "Contact Support (Jorge - WhatsApp)",
       supportMsg: "Hi Jorge! I am checking into the apartment...",
+      mapOpenBtn: "Open Location in Maps ↗",
       emergencyTitle: "Emergency Contacts",
       emergency911Desc: "Police & General Emergencies",
       emergency107Desc: "SAME (Medical Emergencies)",
@@ -239,11 +241,19 @@ export default function CheckInPortal() {
               <div className="w-8 h-8 rounded-full bg-[#5F6F52] text-white flex items-center justify-center font-bold text-sm flex-shrink-0 mt-0.5">
                 1
               </div>
-              <div className="space-y-1">
+              <div className="space-y-2 flex-grow">
                 <h4 className="font-bold text-xs sm:text-sm text-neutral-900">{t.step1Title}</h4>
                 <p className="text-xs text-neutral-500 leading-relaxed">
                   {t.step1Desc}
                 </p>
+                <a 
+                  href="https://www.google.com/maps/search/?api=1&query=-34.581562,-58.435882"
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-[10px] font-bold text-[#5F6F52] hover:text-[#4F5D43] bg-[#FAF9F7] border border-[#EFEBE4] px-3 py-1.5 rounded-xl transition-all shadow-sm active:scale-95"
+                >
+                  📍 {t.mapOpenBtn}
+                </a>
               </div>
             </div>
 
