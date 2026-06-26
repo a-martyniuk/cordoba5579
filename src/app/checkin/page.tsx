@@ -9,6 +9,17 @@ export default function CheckInPortal() {
   const [copied, setCopied] = useState(false);
   const wifiPassword = "hola.cordoba";
 
+  // Lockbox combination wheels states (4 digits)
+  const [digit1, setDigit1] = useState(0);
+  const [digit2, setDigit2] = useState(0);
+  const [digit3, setDigit3] = useState(0);
+  const [digit4, setDigit4] = useState(0);
+  const [isLatchDown, setIsLatchDown] = useState(false);
+  const [isLockboxOpen, setIsLockboxOpen] = useState(false);
+
+  // Correct combination code (e.g. 1978 or whatever we choose)
+  const correctCode = "1579"; // Av. Cordoba 5579 / Depto 101 lockbox combination config fallback placeholder digits (last digits of cordoba)
+
   // Sync language with localStorage so it carries over from the landing page
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -73,6 +84,10 @@ export default function CheckInPortal() {
       supportBtn: "Contactar Soporte (Jorge - WhatsApp)",
       supportMsg: "Hola Jorge! Estoy ingresando al departamento...",
       mapOpenBtn: "Abrir Ubicación en Mapas ↗",
+      lockboxSimulatorTitle: "Simulador de Lockbox Interactivo (Prueba la combinación)",
+      lockboxInstruction: "Desliza para elegir los números de la combinación. Luego desliza la traba negra hacia abajo.",
+      lockboxLocked: "🔒 Cerrado - Ingresa combinación correcta",
+      lockboxUnlocked: "🔓 ¡Abierto! Retira tus llaves.",
       emergencyTitle: "Teléfonos de Emergencia",
       emergency911Desc: "Policía y Emergencias Generales",
       emergency107Desc: "SAME (Urgencias Médicas)",
@@ -120,6 +135,10 @@ export default function CheckInPortal() {
       supportBtn: "Contact Support (Jorge - WhatsApp)",
       supportMsg: "Hi Jorge! I am checking into the apartment...",
       mapOpenBtn: "Open Location in Maps ↗",
+      lockboxSimulatorTitle: "Interactive Lockbox Simulator (Try the combination)",
+      lockboxInstruction: "Scroll to choose combination numbers. Then slide the black latch downwards.",
+      lockboxLocked: "🔒 Locked - Enter correct combination",
+      lockboxUnlocked: "🔓 Opened! Retrieve your keys.",
       emergencyTitle: "Emergency Contacts",
       emergency911Desc: "Police & General Emergencies",
       emergency107Desc: "SAME (Medical Emergencies)",
@@ -262,11 +281,121 @@ export default function CheckInPortal() {
               <div className="w-8 h-8 rounded-full bg-[#5F6F52] text-white flex items-center justify-center font-bold text-sm flex-shrink-0 mt-0.5">
                 2
               </div>
-              <div className="space-y-1">
-                <h4 className="font-bold text-xs sm:text-sm text-neutral-900">{t.step2Title}</h4>
-                <p className="text-xs text-neutral-500 leading-relaxed">
-                  {t.step2Desc}
-                </p>
+              <div className="space-y-4 flex-grow">
+                <div>
+                  <h4 className="font-bold text-xs sm:text-sm text-neutral-900">{t.step2Title}</h4>
+                  <p className="text-xs text-neutral-500 leading-relaxed">
+                    {t.step2Desc}
+                  </p>
+                </div>
+
+                {/* Lockbox Interactive Widget Container */}
+                <div className="bg-[#FAF9F7] border border-[#EFEBE4] rounded-2xl p-4 space-y-4 max-w-[280px]">
+                  <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider text-center">
+                    {t.lockboxSimulatorTitle}
+                  </p>
+
+                  {/* The Physical Lockbox Graphic */}
+                  <div className="w-[180px] bg-[#C8C5BE] border-4 border-[#3D3A35] rounded-3xl p-4 mx-auto shadow-md flex flex-col items-center relative">
+                    {/* Inner window */}
+                    <div className="bg-[#2D2A26] w-full rounded-xl p-3 flex flex-col items-center space-y-3 shadow-inner">
+                      
+                      {/* Combination dials and latch panel */}
+                      <div className="flex items-center justify-between w-full bg-[#4A4742] p-2.5 rounded-lg border border-[#3A3732] gap-1.5">
+                        
+                        {/* Latch trigger button */}
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const enteredCode = `${digit1}${digit2}${digit3}${digit4}`;
+                            const isCorrect = enteredCode === correctCode;
+                            setIsLatchDown(!isLatchDown);
+                            if (isCorrect) {
+                              setIsLockboxOpen(!isLatchDown);
+                            } else {
+                              setIsLockboxOpen(false);
+                            }
+                          }}
+                          className={`w-6 h-9 rounded bg-[#1C1A18] border border-neutral-700 flex flex-col justify-start p-0.5 active:bg-neutral-900 transition-all ${
+                            isLatchDown ? "justify-end" : "justify-start"
+                          }`}
+                        >
+                          <div className="w-full h-3.5 bg-neutral-600 rounded-sm shadow-md border-t border-neutral-500" />
+                        </button>
+
+                        {/* Digits wheels */}
+                        <div className="flex gap-1">
+                          {[
+                            { value: digit1, set: setDigit1 },
+                            { value: digit2, set: setDigit2 },
+                            { value: digit3, set: setDigit3 },
+                            { value: digit4, set: setDigit4 }
+                          ].map((wheel, wIdx) => (
+                            <div key={wIdx} className="flex flex-col items-center w-5 bg-neutral-950 rounded border border-neutral-700 select-none">
+                              {/* Arrow Up button */}
+                              <button 
+                                type="button"
+                                onClick={() => {
+                                  wheel.set((wheel.value + 1) % 10);
+                                  setIsLatchDown(false);
+                                  setIsLockboxOpen(false);
+                                }}
+                                className="text-[8px] text-neutral-400 hover:text-white leading-none p-0.5 w-full flex justify-center active:scale-110 font-bold"
+                              >
+                                ▲
+                              </button>
+                              
+                              <span className="text-[11px] font-mono font-bold text-white text-center py-0.5 bg-neutral-900 w-full border-t border-b border-neutral-850">
+                                {wheel.value}
+                              </span>
+                              
+                              {/* Arrow Down button */}
+                              <button 
+                                type="button"
+                                onClick={() => {
+                                  wheel.set((wheel.value + 9) % 10);
+                                  setIsLatchDown(false);
+                                  setIsLockboxOpen(false);
+                                }}
+                                className="text-[8px] text-neutral-400 hover:text-white leading-none p-0.5 w-full flex justify-center active:scale-110 font-bold"
+                              >
+                                ▼
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                    </div>
+
+                    {/* Front key compartment lid */}
+                    <div 
+                      className={`w-[90%] bg-neutral-300 border-2 border-neutral-400 rounded-b-xl rounded-t-sm h-14 mt-2 flex items-center justify-center transition-all duration-500 origin-bottom shadow-inner ${
+                        isLockboxOpen ? "transform rotateX-185 bg-neutral-200 border-neutral-300 opacity-60 pointer-events-none translate-y-2" : ""
+                      }`}
+                      style={{ transformStyle: "preserve-3d" }}
+                    >
+                      {isLockboxOpen ? (
+                        <span className="text-xl font-bold animate-bounce">🔑</span>
+                      ) : (
+                        <div className="w-8 h-2 bg-neutral-400 rounded-full border border-neutral-500/50" />
+                      )}
+                    </div>
+                  </div>
+
+                  <p className="text-[10px] text-neutral-500 leading-normal text-center bg-white border border-[#EFEBE4] p-2 rounded-xl">
+                    {t.lockboxInstruction}
+                  </p>
+
+                  <div className={`text-[10px] font-bold text-center py-1.5 rounded-xl border transition-all ${
+                    isLockboxOpen 
+                      ? "bg-emerald-50 text-emerald-800 border-emerald-200" 
+                      : "bg-[#FAF9F7] text-neutral-500 border-[#EFEBE4]"
+                  }`}>
+                    {isLockboxOpen ? t.lockboxUnlocked : t.lockboxLocked}
+                  </div>
+                </div>
+
               </div>
             </div>
 
