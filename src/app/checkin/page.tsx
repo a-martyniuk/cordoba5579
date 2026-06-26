@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Key, Wifi, Copy, Check, ShieldAlert, Clock, ArrowLeft, Phone } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import wifiQr from "../../../public/wifi-qr.png";
 
 export default function CheckInPortal() {
   const [lang, setLang] = useState<"es" | "en">("es");
@@ -236,7 +237,7 @@ export default function CheckInPortal() {
               <span className="text-[9px] font-bold text-neutral-400 uppercase text-center">{lang === "es" ? "Escanear para conectar" : "Scan to connect"}</span>
               {/* Actual high-quality QR code image */}
               <Image 
-                src="/wifi-qr.png" 
+                src={wifiQr} 
                 alt="Wi-Fi QR Code" 
                 width={96}
                 height={96}
