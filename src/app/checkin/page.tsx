@@ -345,11 +345,13 @@ export default function CheckInPortal() {
                               setIsLockboxOpen(false);
                             }
                           }}
-                          className={`w-6 h-9 rounded bg-[#1C1A18] border border-neutral-700 flex flex-col justify-start p-0.5 active:bg-neutral-900 transition-all ${
+                          className={`w-9 h-12 rounded bg-[#1C1A18] border border-neutral-700 flex flex-col justify-start p-0.5 active:bg-neutral-900 transition-all ${
                             isLatchDown ? "justify-end" : "justify-start"
                           }`}
                         >
-                          <div className="w-full h-3.5 bg-neutral-600 rounded-sm shadow-md border-t border-neutral-500" />
+                          <div className="w-full h-5 bg-neutral-600 rounded-sm shadow-md border-t border-neutral-500 flex items-center justify-center text-[9px] text-neutral-200 font-bold select-none">
+                            ▼
+                          </div>
                         </button>
 
                         {/* Digits wheels */}
