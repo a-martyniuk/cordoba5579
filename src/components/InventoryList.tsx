@@ -93,8 +93,9 @@ export default function InventoryList({ sheetUrl, lang = "es" }: InventoryListPr
     setTimeout(() => setIsSyncing(false), 800);
   };
 
-  // Get unique categories from items
-  const rawCategories = Array.from(new Set(items.map((item) => item.category)));
+  // Get unique categories from items (excluding Cava y Bar)
+  const rawCategories = Array.from(new Set(items.map((item) => item.category)))
+    .filter(cat => !(cat.toLowerCase().includes("vino") || cat.toLowerCase().includes("cava") || cat.toLowerCase().includes("wine") || cat.toLowerCase().includes("bar")));
   const categories = ["Todos", ...rawCategories];
 
   // Helper to translate category names dynamically in UI
@@ -123,8 +124,11 @@ export default function InventoryList({ sheetUrl, lang = "es" }: InventoryListPr
       .trim();
   };
 
-  // Filter items using smart normalized matching
+  // Filter items using smart normalized matching and excluding Minibar/Wine Cellar items to prevent duplicate visualization
   const filteredItems = items.filter((item) => {
+    const isWine = item.category.toLowerCase().includes("vino") || item.category.toLowerCase().includes("cava") || item.category.toLowerCase().includes("wine") || item.category.toLowerCase().includes("bar");
+    if (isWine) return false;
+
     if (!searchTerm.trim()) {
       const matchesCategory = activeCategory === "Todos" || item.category === activeCategory;
       return matchesCategory;
