@@ -203,7 +203,7 @@ export default function CheckInPortal() {
             {/* SSID */}
             <div className="bg-[#FAF9F7] border border-[#EFEBE4] rounded-2xl p-3.5 space-y-1 flex flex-col justify-center">
               <span className="text-[10px] font-bold text-neutral-400 uppercase">{t.wifiRed}</span>
-              <p className="font-mono text-xs sm:text-sm font-bold text-neutral-800">Cordoba 5579_Guest</p>
+              <p className="font-mono text-xs sm:text-sm font-bold text-neutral-800">Cordoba5579_Guest</p>
             </div>
             
             {/* Password */}
