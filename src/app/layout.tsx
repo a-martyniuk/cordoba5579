@@ -19,6 +19,11 @@ export const metadata: Metadata = {
   description: "Disfruta de una estadía exclusiva en este departamento de diseño a estrenar. Con piscina en terraza, solárium, cava de vinos y a pasos de los mejores restaurantes y el Movistar Arena.",
   keywords: ["alquiler temporal", "buenos aires", "palermo hollywood", "movistar arena", "airbnb buenos aires", "departamento premium"],
   authors: [{ name: "Jorge Orlando" }],
+  icons: {
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" }
+    ]
+  },
   openGraph: {
     title: "Córdoba 5579 | Alquiler Temporal Premium en Palermo Hollywood",
     description: "Departamento a estrenar con amenities de lujo, piscina, solárium y ubicación estratégica.",
