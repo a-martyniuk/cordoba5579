@@ -84,10 +84,10 @@ export default function CheckInPortal() {
       supportBtn: "Contactar Soporte (Jorge - WhatsApp)",
       supportMsg: "Hola Jorge! Estoy ingresando al departamento...",
       mapOpenBtn: "Abrir Ubicación en Mapas ↗",
-      lockboxSimulatorTitle: "Simulador de Lockbox Interactivo (Prueba la combinación)",
-      lockboxInstruction: "Desliza para elegir los números de la combinación. Luego desliza la traba negra hacia abajo.",
-      lockboxLocked: "🔒 Cerrado - Ingresa combinación correcta",
-      lockboxUnlocked: "🔓 ¡Abierto! Retira tus llaves.",
+      lockboxSimulatorTitle: "Simulador de Lockbox Interactivo",
+      lockboxInstruction: "Desliza para elegir los números. Prueba la combinación demo '1579' y desliza la traba negra lateral hacia abajo. El código real del departamento te llegará por mensaje privado.",
+      lockboxLocked: "🔒 Cerrado - Prueba la clave demo '1579'",
+      lockboxUnlocked: "🔓 ¡Abierto! Retira tus llaves de prueba.",
       emergencyTitle: "Teléfonos de Emergencia",
       emergency911Desc: "Policía y Emergencias Generales",
       emergency107Desc: "SAME (Urgencias Médicas)",
@@ -135,10 +135,10 @@ export default function CheckInPortal() {
       supportBtn: "Contact Support (Jorge - WhatsApp)",
       supportMsg: "Hi Jorge! I am checking into the apartment...",
       mapOpenBtn: "Open Location in Maps ↗",
-      lockboxSimulatorTitle: "Interactive Lockbox Simulator (Try the combination)",
-      lockboxInstruction: "Scroll to choose combination numbers. Then slide the black latch downwards.",
-      lockboxLocked: "🔒 Locked - Enter correct combination",
-      lockboxUnlocked: "🔓 Opened! Retrieve your keys.",
+      lockboxSimulatorTitle: "Interactive Lockbox Simulator",
+      lockboxInstruction: "Scroll to choose numbers. Try the demo combination '1579' and slide the black latch downwards. The real code will be sent privately.",
+      lockboxLocked: "🔒 Locked - Try demo code '1579'",
+      lockboxUnlocked: "🔓 Opened! Retrieve your test keys.",
       emergencyTitle: "Emergency Contacts",
       emergency911Desc: "Police & General Emergencies",
       emergency107Desc: "SAME (Medical Emergencies)",
@@ -207,14 +207,14 @@ export default function CheckInPortal() {
             </div>
             
             {/* Password */}
-            <div className="bg-[#FAF9F7] border border-[#EFEBE4] rounded-2xl p-3.5 flex items-center justify-between gap-4">
+            <div className="bg-[#FAF9F7] border border-[#EFEBE4] rounded-2xl p-3.5 flex flex-col justify-between gap-3">
               <div className="space-y-1">
                 <span className="text-[10px] font-bold text-neutral-400 uppercase">{t.wifiPass}</span>
                 <p className="font-mono text-xs sm:text-sm font-bold text-neutral-800">{wifiPassword}</p>
               </div>
               <button
                 onClick={handleCopyPassword}
-                className="bg-white hover:bg-neutral-50 text-[#5F6F52] border border-[#EFEBE4] p-2.5 rounded-xl shadow-sm transition-all flex items-center gap-1.5 active:scale-95 text-xs font-semibold"
+                className="bg-white hover:bg-neutral-50 text-[#5F6F52] border border-[#EFEBE4] py-1.5 px-3 rounded-xl shadow-sm transition-all flex items-center justify-center gap-1.5 active:scale-95 text-xs font-semibold w-full"
               >
                 {copied ? (
                   <>
@@ -231,10 +231,10 @@ export default function CheckInPortal() {
             </div>
 
             {/* QR Auto-Connect Container */}
-            <div className="bg-[#FAF9F7] border border-[#EFEBE4] rounded-2xl p-3 flex flex-col items-center justify-center gap-1">
+            <div className="bg-[#FAF9F7] border border-[#EFEBE4] rounded-2xl p-3 flex flex-col items-center justify-center gap-1.5">
               <span className="text-[9px] font-bold text-neutral-400 uppercase text-center">{lang === "es" ? "Escanear para conectar" : "Scan to connect"}</span>
               {/* Clean SVG representation of the WiFi QR code */}
-              <svg className="w-20 h-20 bg-white p-1 rounded border border-[#EFEBE4]" viewBox="0 0 29 29" fill="none" shapeRendering="crispEdges">
+              <svg className="w-24 h-24 bg-white p-1.5 rounded border border-[#EFEBE4]" viewBox="0 0 29 29" fill="none">
                 <path d="M0 0h7v7H0zM22 0h7v7h-7zM0 22h7v7H0z" fill="#000"/>
                 <path d="M2 2h3v3H2zM24 2h3v3h-3zM2 24h3v3H2z" fill="#fff"/>
                 <path d="M3 3h1v1H3zM25 3h1v1h-1zM3 25h1v1H3z" fill="#000"/>
@@ -305,10 +305,22 @@ export default function CheckInPortal() {
                 </div>
 
                 {/* Lockbox Interactive Widget Container */}
-                <div className="bg-[#FAF9F7] border border-[#EFEBE4] rounded-2xl p-4 space-y-4 max-w-[280px]">
+                <div className="bg-[#FAF9F7] border border-[#EFEBE4] rounded-2xl p-4 space-y-4 max-w-[280px] mx-auto">
                   <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider text-center">
                     {t.lockboxSimulatorTitle}
                   </p>
+
+                  {/* Test Code Box */}
+                  <div className="bg-amber-50 border border-amber-200 rounded-xl p-2.5 text-center space-y-1">
+                    <span className="text-[10px] font-bold text-amber-800 uppercase tracking-wider block">
+                      {lang === "es" ? "🔑 CÓDIGO DE PRUEBA: 1579" : "🔑 TEST CODE: 1579"}
+                    </span>
+                    <span className="text-[9px] text-amber-700 leading-tight block">
+                      {lang === "es" 
+                        ? "(El código real de ingreso se transmitirá por mensaje personal)" 
+                        : "(The real access code will be sent via personal message)"}
+                    </span>
+                  </div>
 
                   {/* The Physical Lockbox Graphic */}
                   <div className="w-[180px] bg-[#C8C5BE] border-4 border-[#3D3A35] rounded-3xl p-4 mx-auto shadow-md flex flex-col items-center relative">
