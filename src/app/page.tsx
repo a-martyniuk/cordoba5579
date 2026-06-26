@@ -18,7 +18,8 @@ import {
   ExternalLink,
   ClipboardList,
   Utensils,
-  Bed
+  Bed,
+  AlertCircle
 } from "lucide-react";
 import Link from "next/link";
 import Gallery from "../components/Gallery";
@@ -322,7 +323,7 @@ export default function Home() {
       faq6Q: "¿Qué costo y qué vinos tiene el rincón bar del departamento?",
       faq6A: "El rincón bar cuenta con un stock de coste extra que incluye vinos tintos (Malbec, Syrah, Cabernet Sauvignon), blancos (Torrontés, dulce natural) y botellas de espumante y Fernet Branca. Los precios detallados están indicados en el bar y simplemente reportas tu consumo a Jorge al salir.",
       faq7Q: "¿El edificio cuenta con ascensor y accesibilidad para silla de ruedas?",
-      faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de escalones. Además, el edificio cuenta con un ascensor amplio y moderno (132 cm de profundidad y puerta de 81 cm de ancho mínimo) que llega directo al piso 1 de la unidad 101.",
+faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de escalones. Además, el edificio cuenta con un ascensor amplio y moderno (132 cm de profundidad y puerta de 81 cm de ancho mínimo) que llega directo al piso 1 de la unidad 101.",
       faq8Q: "¿Hay servicio de lavadero o laundry disponible?",
       faq8A: "Sí, todos los huéspedes tienen acceso sin costo adicional al laundry de uso común en el edificio, equipado con lavarropas y secadoras. Además, el departamento cuenta con ténder para colgar la ropa.",
       bookingDirectTitle: "¿Por qué reservar directo?",
@@ -330,6 +331,20 @@ export default function Home() {
       footerTitle: "Alquiler Temporal de Diseño · Palermo Hollywood, Buenos Aires",
       footerRights: "Todos los derechos reservados.",
       footerProject: "Un proyecto alojado dentro de",
+      minibarTitle: "Cava de Vinos y Minibar (Costo Extra)",
+      minibarSubtitle: "Disfruta de etiquetas seleccionadas directamente en la comodidad del departamento. Reportas el consumo al finalizar.",
+      minibarFootnote: "El cobro se coordinará al finalizar la estadía junto con el check-out.",
+      minibarItemRed: "Vino Tinto Malbec / Syrah",
+      minibarDescRed: "Selección de bodegas mendocinas premium.",
+      minibarItemWhite: "Vino Blanco Torrontés",
+      minibarDescWhite: "Fresco y aromático de altura, ideal para maridar.",
+      minibarItemChampagne: "Champagne / Espumante",
+      minibarDescChampagne: "Extra Brut para ocasiones especiales.",
+      minibarItemFernet: "Fernet Branca + Coca-Cola",
+      minibarDescFernet: "La bebida clásica local para armar.",
+      chatGreetingMorning: "¡Buen día! ☀️ Soy tu Concierge Virtual de Córdoba 5579. ¿Querés saber dónde desayunar cerca ahora mismo?",
+      chatGreetingAfternoon: "¡Buenas tardes! ☕ Soy tu Concierge Virtual de Córdoba 5579. ¿Querés saber sobre el check-in, la pileta o dónde almorzar/merendar?",
+      chatGreetingNight: "¡Buenas noches! 🌙 Soy tu Concierge Virtual de Córdoba 5579. ¿Buscás recomendaciones para cenar cerca o pedir delivery?",
       chatConcierge: "Preguntale al Concierge",
       chatSubtitle: "En línea · Respuesta instantánea",
       chatPlaceholder: "Escribe tu consulta...",
@@ -414,6 +429,20 @@ export default function Home() {
       footerTitle: "Designer Vacation Rental · Palermo Hollywood, Buenos Aires",
       footerRights: "All rights reserved.",
       footerProject: "A project hosted inside",
+      minibarTitle: "Wine Cellar & Minibar (Extra Cost)",
+      minibarSubtitle: "Enjoy premium selected labels in the comfort of the apartment. Simply report consumption at checkout.",
+      minibarFootnote: "Charges will be coordinated during check-out.",
+      minibarItemRed: "Malbec / Syrah Red Wine",
+      minibarDescRed: "Premium selection from Mendoza wineries.",
+      minibarItemWhite: "Torrontés White Wine",
+      minibarDescWhite: "Fresh and aromatic high-altitude wine.",
+      minibarItemChampagne: "Champagne / Sparkling Wine",
+      minibarDescChampagne: "Extra Brut for special celebrations.",
+      minibarItemFernet: "Fernet Branca + Coca-Cola",
+      minibarDescFernet: "The classic Argentinian mix to prepare yourself.",
+      chatGreetingMorning: "Good morning! ☀️ I am your Cordoba 5579 Virtual Concierge. Would you like to know where to eat breakfast nearby right now?",
+      chatGreetingAfternoon: "Good afternoon! ☕ I am your Cordoba 5579 Virtual Concierge. Can I help you with check-in, pool rules, or lunch spots?",
+      chatGreetingNight: "Good evening! 🌙 I am your Cordoba 5579 Virtual Concierge. Looking for dinner recommendations or food delivery?",
       chatConcierge: "Ask the Concierge",
       chatSubtitle: "Online · Instant reply",
       chatPlaceholder: "Type your question...",
@@ -422,12 +451,34 @@ export default function Home() {
     }
   }[language];
 
-  // Initialize greeting message based on language preference
+  // Initialize greeting message based on language preference & time of day in Buenos Aires (GMT-3)
   useEffect(() => {
+    const getGreeting = () => {
+      try {
+        const now = new Date();
+        const formatter = new Intl.DateTimeFormat("en-US", {
+          hour: "numeric",
+          hour12: false,
+          timeZone: "America/Argentina/Buenos_Aires",
+        });
+        const hour = parseInt(formatter.format(now), 10);
+        
+        if (hour >= 6 && hour < 12) {
+          return t.chatGreetingMorning;
+        } else if (hour >= 12 && hour < 19) {
+          return t.chatGreetingAfternoon;
+        } else {
+          return t.chatGreetingNight;
+        }
+      } catch {
+        return t.chatGreeting;
+      }
+    };
+
     setMessages([
-      { sender: "ai", text: language === "es" ? "¡Hola! Soy tu Concierge Virtual de Córdoba 5579. ¿En qué te puedo ayudar hoy?" : "Hi! I am your Cordoba 5579 Virtual Concierge. How can I help you today?" }
+      { sender: "ai", text: getGreeting() }
     ]);
-  }, [language]);
+  }, [language, t.chatGreetingMorning, t.chatGreetingAfternoon, t.chatGreetingNight, t.chatGreeting]);
 
   const getConciergeResponse = (query: string): string => {
     const q = query.toLowerCase();
@@ -1030,6 +1081,78 @@ export default function Home() {
                 </Link>
               </div>
             </div>
+
+            {/* Minibar & Wine Cellar Premium visual catalog */}
+            <div className="bg-[#FAF9F7] border border-[#EFEBE4] rounded-3xl p-6 md:p-8 space-y-6 shadow-sm">
+              <div className="flex items-center gap-3 border-b border-[#EFEBE4] pb-4">
+                <div className="p-2.5 bg-[#5F6F52] text-white rounded-xl">
+                  <Wine className="w-5 h-5" />
+                </div>
+                <div>
+                  <h4 className="font-serif text-base sm:text-lg font-bold text-neutral-900 leading-tight">
+                    {t.minibarTitle}
+                  </h4>
+                  <p className="text-neutral-500 text-xs">
+                    {t.minibarSubtitle}
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {/* Red Wine */}
+                <div className="bg-white border border-[#EFEBE4] p-4 rounded-2xl flex justify-between gap-3 shadow-sm hover:shadow-md transition-all">
+                  <div className="space-y-1">
+                    <span className="text-[10px] bg-red-50 text-red-700 font-bold px-2 py-0.5 rounded">Tinto / Red</span>
+                    <h5 className="font-bold text-xs sm:text-sm text-neutral-900 pt-1">{t.minibarItemRed}</h5>
+                    <p className="text-[11px] text-neutral-500">{t.minibarDescRed}</p>
+                  </div>
+                  <div className="text-right flex flex-col justify-between items-end flex-shrink-0">
+                    <span className="text-sm font-bold text-neutral-900">USD 15</span>
+                  </div>
+                </div>
+
+                {/* White Wine */}
+                <div className="bg-white border border-[#EFEBE4] p-4 rounded-2xl flex justify-between gap-3 shadow-sm hover:shadow-md transition-all">
+                  <div className="space-y-1">
+                    <span className="text-[10px] bg-amber-50 text-amber-700 font-bold px-2 py-0.5 rounded">Blanco / White</span>
+                    <h5 className="font-bold text-xs sm:text-sm text-neutral-900 pt-1">{t.minibarItemWhite}</h5>
+                    <p className="text-[11px] text-neutral-500">{t.minibarDescWhite}</p>
+                  </div>
+                  <div className="text-right flex flex-col justify-between items-end flex-shrink-0">
+                    <span className="text-sm font-bold text-neutral-900">USD 12</span>
+                  </div>
+                </div>
+
+                {/* Sparkling */}
+                <div className="bg-white border border-[#EFEBE4] p-4 rounded-2xl flex justify-between gap-3 shadow-sm hover:shadow-md transition-all">
+                  <div className="space-y-1">
+                    <span className="text-[10px] bg-yellow-50 text-yellow-700 font-bold px-2 py-0.5 rounded">Burbujas / Sparkling</span>
+                    <h5 className="font-bold text-xs sm:text-sm text-neutral-900 pt-1">{t.minibarItemChampagne}</h5>
+                    <p className="text-[11px] text-neutral-500">{t.minibarDescChampagne}</p>
+                  </div>
+                  <div className="text-right flex flex-col justify-between items-end flex-shrink-0">
+                    <span className="text-sm font-bold text-neutral-900">USD 20</span>
+                  </div>
+                </div>
+
+                {/* Local Classic */}
+                <div className="bg-white border border-[#EFEBE4] p-4 rounded-2xl flex justify-between gap-3 shadow-sm hover:shadow-md transition-all">
+                  <div className="space-y-1">
+                    <span className="text-[10px] bg-emerald-50 text-emerald-700 font-bold px-2 py-0.5 rounded">Combo Local</span>
+                    <h5 className="font-bold text-xs sm:text-sm text-neutral-900 pt-1">{t.minibarItemFernet}</h5>
+                    <p className="text-[11px] text-neutral-500">{t.minibarDescFernet}</p>
+                  </div>
+                  <div className="text-right flex flex-col justify-between items-end flex-shrink-0">
+                    <span className="text-sm font-bold text-neutral-900">USD 18</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="text-[10px] text-neutral-400 flex items-center gap-1.5 justify-center bg-white border border-[#EFEBE4] py-2.5 rounded-xl font-medium">
+                <AlertCircle className="w-3.5 h-3.5 text-neutral-400" />
+                <span>{t.minibarFootnote}</span>
+              </div>
+            </div>
           </div>
 
           {/* Right Column: Sticky Booking Widget (4/12 width) */}
@@ -1189,11 +1312,18 @@ export default function Home() {
                     }`} />
                   </button>
                   
-                  {isOpen && (
-                    <p className="text-xs text-neutral-500 mt-2.5 leading-relaxed pl-1 animate-fadeIn">
-                      {item.a}
-                    </p>
-                  )}
+                  {/* Fluid transition container for answer */}
+                  <div 
+                    className={`grid transition-all duration-300 ease-in-out ${
+                      isOpen ? "grid-rows-[1fr] opacity-100 mt-2.5" : "grid-rows-[0fr] opacity-0"
+                    }`}
+                  >
+                    <div className="overflow-hidden">
+                      <p className="text-xs text-neutral-500 leading-relaxed pl-1">
+                        {item.a}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               );
             })}
@@ -1281,38 +1411,64 @@ export default function Home() {
               )}
             </div>
 
-            {/* Predefined FAQs */}
+            {/* Predefined FAQs with dynamic sorting/filtering based on Buenos Aires time of day */}
             <div className="p-3 bg-white border-t border-b border-[#EFEBE4] flex flex-wrap gap-1.5 max-h-[100px] overflow-y-auto">
-              <button 
-                onClick={() => handleSendMessage(language === "es" ? "¿Dónde desayunar cerca?" : "Where to eat breakfast nearby?")}
-                className="text-[10px] bg-[#FAF9F7] hover:bg-[#EFEBE4] text-neutral-600 border border-[#EFEBE4] px-2 py-1 rounded-full transition-all"
-              >
-                ☕ {language === "es" ? "Desayunar cerca" : "Breakfast nearby"}
-              </button>
-              <button 
-                onClick={() => handleSendMessage(language === "es" ? "¿Cómo llegar a Ezeiza?" : "How to get to Ezeiza airport?")}
-                className="text-[10px] bg-[#FAF9F7] hover:bg-[#EFEBE4] text-neutral-600 border border-[#EFEBE4] px-2 py-1 rounded-full transition-all"
-              >
-                ✈️ {language === "es" ? "Llegar a Ezeiza" : "Get to Ezeiza"}
-              </button>
-              <button 
-                onClick={() => handleSendMessage(language === "es" ? "¿Dónde comprar una SUBE?" : "Where to buy a SUBE card?")}
-                className="text-[10px] bg-[#FAF9F7] hover:bg-[#EFEBE4] text-neutral-600 border border-[#EFEBE4] px-2 py-1 rounded-full transition-all"
-              >
-                💳 {language === "es" ? "Comprar SUBE" : "Buy SUBE"}
-              </button>
-              <button 
-                onClick={() => handleSendMessage(language === "es" ? "¿Cómo usar la parrilla?" : "How to use the grill?")}
-                className="text-[10px] bg-[#FAF9F7] hover:bg-[#EFEBE4] text-neutral-600 border border-[#EFEBE4] px-2 py-1 rounded-full transition-all"
-              >
-                🥩 {language === "es" ? "Usar parrilla" : "Use grill"}
-              </button>
-              <button 
-                onClick={() => handleSendMessage(language === "es" ? "¿Cuál es la contraseña del WiFi?" : "What is the WiFi password?")}
-                className="text-[10px] bg-[#FAF9F7] hover:bg-[#EFEBE4] text-neutral-600 border border-[#EFEBE4] px-2 py-1 rounded-full transition-all"
-              >
-                📶 {language === "es" ? "Clave WiFi" : "WiFi Password"}
-              </button>
+              {(() => {
+                const getDynamicButtons = () => {
+                  try {
+                    const now = new Date();
+                    const formatter = new Intl.DateTimeFormat("en-US", {
+                      hour: "numeric",
+                      hour12: false,
+                      timeZone: "America/Argentina/Buenos_Aires",
+                    });
+                    const hour = parseInt(formatter.format(now), 10);
+                    
+                    const isMorning = hour >= 6 && hour < 12;
+                    const isAfternoon = hour >= 12 && hour < 19;
+
+                    if (isMorning) {
+                      return [
+                        { icon: "☕", es: "¿Dónde desayunar cerca?", en: "Where to eat breakfast nearby?", labelEs: "Desayunar cerca", labelEn: "Breakfast nearby" },
+                        { icon: "📶", es: "¿Cuál es la contraseña del WiFi?", en: "What is the WiFi password?", labelEs: "Clave WiFi", labelEn: "WiFi Password" },
+                        { icon: "💳", es: "¿Dónde comprar una SUBE?", en: "Where to buy a SUBE card?", labelEs: "Comprar SUBE", labelEn: "Buy SUBE" },
+                        { icon: "✈️", es: "¿Cómo llegar a Ezeiza?", en: "How to get to Ezeiza airport?", labelEs: "Llegar a Ezeiza", labelEn: "Get to Ezeiza" }
+                      ];
+                    } else if (isAfternoon) {
+                      return [
+                        { icon: "🔑", es: "¿Cómo es el check-in?", en: "How to do check-in?", labelEs: "Cómo hacer Check-in", labelEn: "Check-in guide" },
+                        { icon: "🏊", es: "¿Se puede usar la pileta?", en: "Can we use the pool?", labelEs: "Usar pileta", labelEn: "Pool access" },
+                        { icon: "🥩", es: "¿Cómo usar la parrilla?", en: "How to use the grill?", labelEs: "Usar parrilla", labelEn: "Use grill" },
+                        { icon: "📶", es: "¿Cuál es la contraseña del WiFi?", en: "What is the WiFi password?", labelEs: "Clave WiFi", labelEn: "WiFi Password" }
+                      ];
+                    } else {
+                      return [
+                        { icon: "🍷", es: "¿Qué vinos tiene el bar y qué costo?", en: "What wines does the bar have and what cost?", labelEs: "Carta del Minibar", labelEn: "Minibar menu" },
+                        { icon: "🍽️", es: "¿Dónde cenar cerca?", en: "Where to have dinner nearby?", labelEs: "Cenar cerca", labelEn: "Dinner nearby" },
+                        { icon: "📶", es: "¿Cuál es la contraseña del WiFi?", en: "What is the WiFi password?", labelEs: "Clave WiFi", labelEn: "WiFi Password" },
+                        { icon: "🥩", es: "¿Cómo usar la parrilla?", en: "How to use the grill?", labelEs: "Usar parrilla", labelEn: "Use grill" }
+                      ];
+                    }
+                  } catch {
+                    return [
+                      { icon: "☕", es: "¿Dónde desayunar cerca?", en: "Where to eat breakfast nearby?", labelEs: "Desayunar cerca", labelEn: "Breakfast nearby" },
+                      { icon: "✈️", es: "¿Cómo llegar a Ezeiza?", en: "How to get to Ezeiza airport?", labelEs: "Llegar a Ezeiza", labelEn: "Get to Ezeiza" },
+                      { icon: "📶", es: "¿Cuál es la contraseña del WiFi?", en: "What is the WiFi password?", labelEs: "Clave WiFi", labelEn: "WiFi Password" }
+                    ];
+                  }
+                };
+
+                return getDynamicButtons().map((btn, idx) => (
+                  <button 
+                    key={idx}
+                    onClick={() => handleSendMessage(language === "es" ? btn.es : btn.en)}
+                    className="text-[10px] bg-[#FAF9F7] hover:bg-[#EFEBE4] text-neutral-600 border border-[#EFEBE4] px-2 py-1 rounded-full transition-all flex items-center gap-1"
+                  >
+                    <span>{btn.icon}</span>
+                    <span>{language === "es" ? btn.labelEs : btn.labelEn}</span>
+                  </button>
+                ));
+              })()}
             </div>
 
             {/* Custom Input */}

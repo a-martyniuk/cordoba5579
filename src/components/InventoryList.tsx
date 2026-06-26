@@ -112,11 +112,34 @@ export default function InventoryList({ sheetUrl, lang = "es" }: InventoryListPr
     return <Sparkles className="w-4 h-4" />;
   };
 
-  // Filter items
+  // Normalization helper for smart text filtering (removes accents, converts to lowercase, handles basic plurals)
+  const normalizeText = (text: string) => {
+    return text
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "") // Remove accents/diacritics
+      .replace(/s\b/g, "")             // Strip final 's' to approximate singular (platos -> plato, sheets -> sheet)
+      .replace(/es\b/g, "")            // Strip final 'es' (copas/copaes/tazas -> tazas -> taza)
+      .trim();
+  };
+
+  // Filter items using smart normalized matching
   const filteredItems = items.filter((item) => {
-    const matchesSearch =
-      item.item.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.detail.toLowerCase().includes(searchTerm.toLowerCase());
+    if (!searchTerm.trim()) {
+      const matchesCategory = activeCategory === "Todos" || item.category === activeCategory;
+      return matchesCategory;
+    }
+
+    const normalizedQuery = normalizeText(searchTerm);
+    const normalizedItemName = normalizeText(item.item);
+    const normalizedItemDetail = normalizeText(item.detail);
+
+    // Split search terms to allow matching parts in different orders
+    const queryWords = normalizedQuery.split(/\s+/).filter(Boolean);
+    const matchesSearch = queryWords.every(
+      (word) => normalizedItemName.includes(word) || normalizedItemDetail.includes(word)
+    );
+
     const matchesCategory = activeCategory === "Todos" || item.category === activeCategory;
     return matchesSearch && matchesCategory;
   });
