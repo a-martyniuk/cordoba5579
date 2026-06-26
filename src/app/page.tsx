@@ -1119,6 +1119,24 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
                   </div>
                 </div>
 
+                {/* Synced Amenities / Servicios Sincronizados */}
+                {airbnbDetails.amenities && airbnbDetails.amenities.length > 0 && (
+                  <div className="md:col-span-2 space-y-4 pt-6 border-t border-[#EFEBE4] dark:border-[#2C302A]">
+                    <h4 className="font-serif text-sm font-bold tracking-wider text-neutral-500 uppercase flex items-center gap-2">
+                      <Sparkles className="w-4 h-4 text-[#5F6F52]" />
+                      {language === "es" ? "Otros Servicios Sincronizados (Airbnb)" : "Other Synced Amenities (Airbnb)"}
+                    </h4>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 text-xs text-neutral-700 dark:text-neutral-300">
+                      {airbnbDetails.amenities.map((amenity, i) => (
+                        <div key={i} className="flex items-center gap-2 bg-[#FAF9F7] dark:bg-[#1E211D] px-3.5 py-2.5 rounded-xl border border-[#EFEBE4] dark:border-[#2C302A] transition-colors duration-300">
+                          <span className="text-[#5F6F52] font-bold">✓</span>
+                          <span>{amenity}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
               </div>
             </div>
 
@@ -1275,7 +1293,7 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
 
           {/* Right Column: Sticky Booking Widget (4/12 width) */}
           <div className="lg:col-span-4 lg:sticky lg:top-28 space-y-6" id="reserva">
-            <CalendarWidget lang={language} />
+            <CalendarWidget lang={language} airbnbUrl="https://www.airbnb.com.ar/rooms/1716762976739155303" />
             
             {/* Direct Booking Saving Card */}
             <div className="bg-emerald-50/50 border border-emerald-100 rounded-3xl p-5 text-xs text-emerald-800 space-y-2 font-sans">

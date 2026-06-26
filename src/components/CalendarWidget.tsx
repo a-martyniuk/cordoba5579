@@ -15,7 +15,7 @@ export default function CalendarWidget({
   pricePerNight = 45,
   cleaningFee = 15,
   whatsAppPhone = "5491145379500",
-  airbnbUrl = "https://www.airbnb.com",
+  airbnbUrl = "https://www.airbnb.com.ar/rooms/1716762976739155303",
   lang = "es"
 }: CalendarWidgetProps) {
   const [checkIn, setCheckIn] = useState<string>("");
