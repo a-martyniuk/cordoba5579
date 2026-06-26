@@ -731,17 +731,17 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
           </p>
 
           {/* Trust Badges Row */}
-          <div className="flex flex-wrap gap-3 pt-1 text-xs font-semibold text-neutral-700">
-            <div className="flex items-center gap-2 bg-white border border-[#EFEBE4] px-4 py-2.5 rounded-2xl shadow-sm">
+          <div className="flex flex-wrap gap-3 pt-1 text-xs font-semibold text-neutral-700 dark:text-neutral-300">
+            <div className="flex items-center gap-2 bg-white dark:bg-[#252824] border border-[#EFEBE4] dark:border-[#353A33] px-4 py-2.5 rounded-2xl shadow-sm transition-colors duration-300">
               <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
               <span>{t.badgeAirbnb}</span>
             </div>
-            <div className="flex items-center gap-2 bg-white border border-[#EFEBE4] px-4 py-2.5 rounded-2xl shadow-sm">
-              <Users className="w-4 h-4 text-[#5F6F52]" />
+            <div className="flex items-center gap-2 bg-white dark:bg-[#252824] border border-[#EFEBE4] dark:border-[#353A33] px-4 py-2.5 rounded-2xl shadow-sm transition-colors duration-300">
+              <Users className="w-4 h-4 text-[#5F6F52] dark:text-[#889B73]" />
               <span>{t.badgeGuests}</span>
             </div>
-            <div className="flex items-center gap-2 bg-white border border-[#EFEBE4] px-4 py-2.5 rounded-2xl shadow-sm">
-              <UserCheck className="w-4 h-4 text-emerald-700" />
+            <div className="flex items-center gap-2 bg-white dark:bg-[#252824] border border-[#EFEBE4] dark:border-[#353A33] px-4 py-2.5 rounded-2xl shadow-sm transition-colors duration-300">
+              <UserCheck className="w-4 h-4 text-emerald-700 dark:text-emerald-500" />
               <span>{t.badgeVerified}</span>
             </div>
           </div>
@@ -1063,29 +1063,29 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
                 </span>
               </div>
 
-              <div className="bg-white border border-[#EFEBE4] rounded-3xl p-6 md:p-8 shadow-sm space-y-6 flex flex-col md:flex-row md:items-center justify-between gap-6">
+              <div className="bg-white dark:bg-[#252824] border border-[#EFEBE4] dark:border-[#353A33] rounded-3xl p-6 md:p-8 shadow-sm space-y-6 flex flex-col md:flex-row md:items-center justify-between gap-6 transition-colors duration-300">
                 <div className="space-y-3 max-w-xl">
                   <div className="flex items-center gap-1.5">
-                    <span className="bg-emerald-50 text-emerald-700 text-xs font-bold px-2.5 py-1 rounded-md">
+                    <span className="bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 text-xs font-bold px-2.5 py-1 rounded-md">
                       {language === "es" ? "✨ ¡Lanzamiento a Estrenar!" : "✨ Brand New Launch!"}
                     </span>
                   </div>
-                  <h4 className="font-serif text-base sm:text-lg font-bold text-neutral-900 leading-tight">
+                  <h4 className="font-serif text-base sm:text-lg font-bold text-neutral-900 dark:text-neutral-100 leading-tight">
                     {t.reviewsNewTitle}
                   </h4>
-                  <p className="text-neutral-600 text-xs sm:text-sm leading-relaxed">
+                  <p className="text-neutral-600 dark:text-neutral-400 text-xs sm:text-sm leading-relaxed">
                     {t.reviewsNewDesc}
                   </p>
-                  <p className="text-[#5F6F52] text-xs font-semibold">
+                  <p className="text-[#5F6F52] dark:text-[#889B73] text-xs font-semibold">
                     ⭐ {t.reviewsFirstGuest}
                   </p>
                 </div>
 
-                <div className="bg-[#FAF9F7] border border-[#EFEBE4] p-5 rounded-2xl md:max-w-xs space-y-2 flex-shrink-0">
-                  <h5 className="font-bold text-xs sm:text-sm text-neutral-900 flex items-center gap-1.5">
+                <div className="bg-[#FAF9F7] dark:bg-[#1E211D] border border-[#EFEBE4] dark:border-[#2C302A] p-5 rounded-2xl md:max-w-xs space-y-2 flex-shrink-0 transition-colors duration-300">
+                  <h5 className="font-bold text-xs sm:text-sm text-neutral-900 dark:text-neutral-200 flex items-center gap-1.5">
                     🛡️ {t.reviewsConfidenceTitle}
                   </h5>
-                  <p className="text-neutral-500 text-xs leading-relaxed">
+                  <p className="text-neutral-500 dark:text-neutral-400 text-xs leading-relaxed">
                     {t.reviewsConfidenceText}
                   </p>
                 </div>
@@ -1093,15 +1093,15 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
             </div>
 
             {/* Dynamic Inventory Section Link Card */}
-            <div id="inventario" className="bg-[#FAF9F7] border border-[#EFEBE4] rounded-3xl p-6 md:p-8 flex flex-col sm:flex-row items-center gap-6 shadow-sm">
-              <div className="p-4 bg-white border border-[#EFEBE4] text-[#5F6F52] rounded-2xl shadow-sm flex-shrink-0">
+            <div id="inventario" className="bg-[#FAF9F7] dark:bg-[#1E211D] border border-[#EFEBE4] dark:border-[#2C302A] rounded-3xl p-6 md:p-8 flex flex-col sm:flex-row items-center gap-6 shadow-sm transition-colors duration-300">
+              <div className="p-4 bg-white dark:bg-[#141613] border border-[#EFEBE4] dark:border-[#2C302A] text-[#5F6F52] dark:text-[#889B73] rounded-2xl shadow-sm flex-shrink-0 transition-colors duration-300">
                 <ClipboardList className="w-8 h-8" />
               </div>
               <div className="space-y-2 text-center sm:text-left flex-grow">
-                <h4 className="font-serif text-lg font-bold text-neutral-900 leading-tight">
+                <h4 className="font-serif text-lg font-bold text-neutral-900 dark:text-neutral-100 leading-tight">
                   {t.inventoryCtaTitle}
                 </h4>
-                <p className="text-neutral-500 text-xs sm:text-sm leading-relaxed">
+                <p className="text-neutral-500 dark:text-neutral-400 text-xs sm:text-sm leading-relaxed">
                   {t.inventoryCtaDesc}
                 </p>
               </div>
@@ -1116,16 +1116,16 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
             </div>
 
             {/* Minibar & Wine Cellar Premium visual catalog */}
-            <div className="bg-[#FAF9F7] border border-[#EFEBE4] rounded-3xl p-6 md:p-8 space-y-6 shadow-sm">
-              <div className="flex items-center gap-3 border-b border-[#EFEBE4] pb-4">
+            <div className="bg-[#FAF9F7] dark:bg-[#1E211D] border border-[#EFEBE4] dark:border-[#2C302A] rounded-3xl p-6 md:p-8 space-y-6 shadow-sm transition-colors duration-300">
+              <div className="flex items-center gap-3 border-b border-[#EFEBE4] dark:border-[#2C302A] pb-4">
                 <div className="p-2.5 bg-[#5F6F52] text-white rounded-xl">
                   <Wine className="w-5 h-5" />
                 </div>
                 <div>
-                  <h4 className="font-serif text-base sm:text-lg font-bold text-neutral-900 leading-tight">
+                  <h4 className="font-serif text-base sm:text-lg font-bold text-neutral-900 dark:text-neutral-100 leading-tight">
                     {t.minibarTitle}
                   </h4>
-                  <p className="text-neutral-500 text-xs">
+                  <p className="text-neutral-500 dark:text-neutral-450 text-xs">
                     {t.minibarSubtitle}
                   </p>
                 </div>
@@ -1133,56 +1133,56 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {/* Red Wine */}
-                <div className="bg-white border border-[#EFEBE4] p-4 rounded-2xl flex justify-between gap-3 shadow-sm hover:shadow-md transition-all">
+                <div className="bg-white dark:bg-[#141613] border border-[#EFEBE4] dark:border-[#2C302A] p-4 rounded-2xl flex justify-between gap-3 shadow-sm hover:shadow-md transition-all duration-300">
                   <div className="space-y-1">
-                    <span className="text-[10px] bg-red-50 text-red-700 font-bold px-2 py-0.5 rounded">Tinto / Red</span>
-                    <h5 className="font-bold text-xs sm:text-sm text-neutral-900 pt-1">{t.minibarItemRed}</h5>
-                    <p className="text-[11px] text-neutral-500">{t.minibarDescRed}</p>
+                    <span className="text-[10px] bg-red-50 dark:bg-red-950/20 text-red-700 dark:text-red-400 font-bold px-2 py-0.5 rounded">Tinto / Red</span>
+                    <h5 className="font-bold text-xs sm:text-sm text-neutral-900 dark:text-neutral-200 pt-1">{t.minibarItemRed}</h5>
+                    <p className="text-[11px] text-neutral-500 dark:text-neutral-405">{t.minibarDescRed}</p>
                   </div>
                   <div className="text-right flex flex-col justify-between items-end flex-shrink-0">
-                    <span className="text-sm font-bold text-neutral-900">USD 15</span>
+                    <span className="text-sm font-bold text-neutral-900 dark:text-neutral-200">USD 15</span>
                   </div>
                 </div>
 
                 {/* White Wine */}
-                <div className="bg-white border border-[#EFEBE4] p-4 rounded-2xl flex justify-between gap-3 shadow-sm hover:shadow-md transition-all">
+                <div className="bg-white dark:bg-[#141613] border border-[#EFEBE4] dark:border-[#2C302A] p-4 rounded-2xl flex justify-between gap-3 shadow-sm hover:shadow-md transition-all duration-300">
                   <div className="space-y-1">
-                    <span className="text-[10px] bg-amber-50 text-amber-700 font-bold px-2 py-0.5 rounded">Blanco / White</span>
-                    <h5 className="font-bold text-xs sm:text-sm text-neutral-900 pt-1">{t.minibarItemWhite}</h5>
-                    <p className="text-[11px] text-neutral-500">{t.minibarDescWhite}</p>
+                    <span className="text-[10px] bg-amber-50 dark:bg-amber-950/20 text-amber-700 dark:text-amber-400 font-bold px-2 py-0.5 rounded">Blanco / White</span>
+                    <h5 className="font-bold text-xs sm:text-sm text-neutral-900 dark:text-neutral-200 pt-1">{t.minibarItemWhite}</h5>
+                    <p className="text-[11px] text-neutral-500 dark:text-neutral-405">{t.minibarDescWhite}</p>
                   </div>
                   <div className="text-right flex flex-col justify-between items-end flex-shrink-0">
-                    <span className="text-sm font-bold text-neutral-900">USD 12</span>
+                    <span className="text-sm font-bold text-neutral-900 dark:text-neutral-200">USD 12</span>
                   </div>
                 </div>
 
                 {/* Sparkling */}
-                <div className="bg-white border border-[#EFEBE4] p-4 rounded-2xl flex justify-between gap-3 shadow-sm hover:shadow-md transition-all">
+                <div className="bg-white dark:bg-[#141613] border border-[#EFEBE4] dark:border-[#2C302A] p-4 rounded-2xl flex justify-between gap-3 shadow-sm hover:shadow-md transition-all duration-300">
                   <div className="space-y-1">
-                    <span className="text-[10px] bg-yellow-50 text-yellow-700 font-bold px-2 py-0.5 rounded">Burbujas / Sparkling</span>
-                    <h5 className="font-bold text-xs sm:text-sm text-neutral-900 pt-1">{t.minibarItemChampagne}</h5>
-                    <p className="text-[11px] text-neutral-500">{t.minibarDescChampagne}</p>
+                    <span className="text-[10px] bg-yellow-50 dark:bg-yellow-950/20 text-yellow-700 dark:text-yellow-400 font-bold px-2 py-0.5 rounded">Burbujas / Sparkling</span>
+                    <h5 className="font-bold text-xs sm:text-sm text-neutral-900 dark:text-neutral-200 pt-1">{t.minibarItemChampagne}</h5>
+                    <p className="text-[11px] text-neutral-500 dark:text-neutral-405">{t.minibarDescChampagne}</p>
                   </div>
                   <div className="text-right flex flex-col justify-between items-end flex-shrink-0">
-                    <span className="text-sm font-bold text-neutral-900">USD 20</span>
+                    <span className="text-sm font-bold text-neutral-900 dark:text-neutral-200">USD 20</span>
                   </div>
                 </div>
 
                 {/* Local Classic */}
-                <div className="bg-white border border-[#EFEBE4] p-4 rounded-2xl flex justify-between gap-3 shadow-sm hover:shadow-md transition-all">
+                <div className="bg-white dark:bg-[#141613] border border-[#EFEBE4] dark:border-[#2C302A] p-4 rounded-2xl flex justify-between gap-3 shadow-sm hover:shadow-md transition-all duration-300">
                   <div className="space-y-1">
-                    <span className="text-[10px] bg-emerald-50 text-emerald-700 font-bold px-2 py-0.5 rounded">Combo Local</span>
-                    <h5 className="font-bold text-xs sm:text-sm text-neutral-900 pt-1">{t.minibarItemFernet}</h5>
-                    <p className="text-[11px] text-neutral-500">{t.minibarDescFernet}</p>
+                    <span className="text-[10px] bg-emerald-50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-450 font-bold px-2 py-0.5 rounded">Combo Local</span>
+                    <h5 className="font-bold text-xs sm:text-sm text-neutral-900 dark:text-neutral-200 pt-1">{t.minibarItemFernet}</h5>
+                    <p className="text-[11px] text-neutral-500 dark:text-neutral-405">{t.minibarDescFernet}</p>
                   </div>
                   <div className="text-right flex flex-col justify-between items-end flex-shrink-0">
-                    <span className="text-sm font-bold text-neutral-900">USD 18</span>
+                    <span className="text-sm font-bold text-neutral-900 dark:text-neutral-200">USD 18</span>
                   </div>
                 </div>
               </div>
 
-              <div className="text-[10px] text-neutral-400 flex items-center gap-1.5 justify-center bg-white border border-[#EFEBE4] py-2.5 rounded-xl font-medium">
-                <AlertCircle className="w-3.5 h-3.5 text-neutral-400" />
+              <div className="text-[10px] text-neutral-400 dark:text-neutral-500 flex items-center gap-1.5 justify-center bg-white dark:bg-[#141613] border border-[#EFEBE4] dark:border-[#2C302A] py-2.5 rounded-xl font-medium transition-colors duration-300">
+                <AlertCircle className="w-3.5 h-3.5 text-neutral-400 dark:text-neutral-500" />
                 <span>{t.minibarFootnote}</span>
               </div>
             </div>
@@ -1211,61 +1211,61 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
           <NeighbourhoodMap sheetUrl={googleSheetPlacesUrl} lang={language} />
           
           {/* Guía Gastronómica Curada */}
-          <div className="bg-white border border-[#EFEBE4] rounded-3xl p-6 md:p-8 space-y-6">
+          <div className="bg-white dark:bg-[#252824] border border-[#EFEBE4] dark:border-[#353A33] rounded-3xl p-6 md:p-8 space-y-6 transition-colors duration-300">
             <div>
-              <h3 className="font-serif text-xl md:text-2xl text-neutral-900 font-semibold flex items-center gap-2">
+              <h3 className="font-serif text-xl md:text-2xl text-neutral-900 dark:text-neutral-100 font-semibold flex items-center gap-2">
                 <span>🍳 {t.guideTitle}</span>
               </h3>
-              <p className="text-neutral-500 text-sm mt-1">
+              <p className="text-neutral-500 dark:text-neutral-400 text-sm mt-1">
                 {t.guideSubtitle}
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {foodGuideData.map((cat, catIdx) => (
-                <div key={catIdx} className="bg-[#FAF9F7] border border-[#EFEBE4] rounded-2xl p-4 space-y-4 flex flex-col justify-between">
+                <div key={catIdx} className="bg-[#FAF9F7] dark:bg-[#1E211D] border border-[#EFEBE4] dark:border-[#2C302A] rounded-2xl p-4 space-y-4 flex flex-col justify-between transition-colors duration-300">
                   <div className="space-y-1">
-                    <div className="flex items-center gap-2 text-[#5F6F52] pb-2 border-b border-[#EFEBE4]/60">
+                    <div className="flex items-center gap-2 text-[#5F6F52] dark:text-[#889B73] pb-2 border-b border-[#EFEBE4]/60 dark:border-[#2C302A]/60">
                       <span className="text-lg">{cat.icon}</span>
-                      <h4 className="font-bold text-sm text-neutral-900">
+                      <h4 className="font-bold text-sm text-neutral-900 dark:text-neutral-100">
                         {language === "es" ? cat.titleEs : cat.titleEn}
                       </h4>
                     </div>
-                    <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider pt-1">
+                    <p className="text-[10px] font-bold text-neutral-400 dark:text-neutral-500 uppercase tracking-wider pt-1">
                       {language === "es" ? cat.subtitleEs : cat.subtitleEn}
                     </p>
                   </div>
 
                   <div className="space-y-3 flex-grow mt-2">
                     {cat.items.map((item, itemIdx) => (
-                      <div key={itemIdx} className="bg-white border border-[#EFEBE4] p-3 rounded-xl shadow-sm hover:shadow-md transition-all space-y-1.5 flex flex-col justify-between">
+                      <div key={itemIdx} className="bg-white dark:bg-[#141613] border border-[#EFEBE4] dark:border-[#2C302A] p-3 rounded-xl shadow-sm hover:shadow-md transition-all space-y-1.5 flex flex-col justify-between duration-300">
                         <div>
                           <div className="flex items-start justify-between gap-1.5">
-                            <span className="font-bold text-[12px] text-neutral-900 leading-tight">
+                            <span className="font-bold text-[12px] text-neutral-900 dark:text-neutral-100 leading-tight">
                               {item.name}
                             </span>
                             <a 
                               href={item.mapsUrl}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-[#5F6F52] hover:text-[#4F5D43] flex-shrink-0"
+                              className="text-[#5F6F52] dark:text-[#889B73] hover:text-[#4F5D43] dark:hover:text-[#6E7F5E] flex-shrink-0"
                             >
                               <ExternalLink className="w-3.5 h-3.5" />
                             </a>
                           </div>
                           <div className="flex flex-wrap items-center gap-1.5 mt-0.5">
-                            <span className="text-[9px] bg-amber-50 text-amber-700 font-bold px-1.5 py-0.5 rounded">
+                            <span className="text-[9px] bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400 font-bold px-1.5 py-0.5 rounded">
                               ⭐ {item.rating} ({item.reviews} en Google)
                             </span>
-                            <span className="text-[9px] text-neutral-400 font-semibold">
+                            <span className="text-[9px] text-neutral-400 dark:text-neutral-500 font-semibold">
                               📍 {item.address}
                             </span>
                           </div>
-                          <p className="text-[10px] text-neutral-500 font-medium mt-1 leading-normal">
+                          <p className="text-[10px] text-neutral-500 dark:text-neutral-400 font-medium mt-1 leading-normal">
                             {language === "es" ? item.tipEs : item.tipEn}
                           </p>
                         </div>
-                        <div className="pt-1.5 border-t border-neutral-100 flex items-center gap-1 text-[9px] text-neutral-400 font-medium">
+                        <div className="pt-1.5 border-t border-neutral-100 dark:border-neutral-800 flex items-center gap-1 text-[9px] text-neutral-400 dark:text-neutral-500 font-medium">
                           <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block" />
                           <span>{item.hours}</span>
                         </div>
@@ -1279,13 +1279,13 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
         </div>
 
         {/* House Rules / Norms (Full Width 12/12) */}
-        <div className="space-y-6 bg-amber-50/15 border border-[#EFEBE4] rounded-3xl p-6 md:p-8" id="reglas">
-          <h3 className="font-serif text-xl md:text-2xl text-neutral-900 font-semibold flex items-center gap-2">
+        <div className="space-y-6 bg-amber-50/15 dark:bg-amber-950/5 border border-[#EFEBE4] dark:border-[#353A33] rounded-3xl p-6 md:p-8 transition-colors duration-300" id="reglas">
+          <h3 className="font-serif text-xl md:text-2xl text-neutral-900 dark:text-neutral-100 font-semibold flex items-center gap-2">
             <AlertTriangle className="w-5 h-5 text-amber-600" />
             <span>{t.rulesHeader}</span>
           </h3>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 text-xs md:text-sm text-neutral-600 font-sans">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 text-xs md:text-sm text-neutral-600 dark:text-neutral-350 font-sans">
             <div className="flex items-start gap-2.5">
               <span className="w-1.5 h-1.5 bg-[#5F6F52] rounded-full mt-2 flex-shrink-0" />
               <p>{t.rulesCheck}</p>
@@ -1314,12 +1314,12 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
         </div>
 
         {/* Accordion FAQ Section (Full Width 12/12) */}
-        <div className="space-y-6 bg-white border border-[#EFEBE4] rounded-3xl p-6 md:p-8" id="faq">
-          <h3 className="font-serif text-xl md:text-2xl text-neutral-900 font-semibold">
+        <div className="space-y-6 bg-white dark:bg-[#252824] border border-[#EFEBE4] dark:border-[#353A33] rounded-3xl p-6 md:p-8 transition-colors duration-300" id="faq">
+          <h3 className="font-serif text-xl md:text-2xl text-neutral-900 dark:text-neutral-100 font-semibold">
             {t.faqHeader}
           </h3>
           
-          <div className="divide-y divide-[#EFEBE4] border-t border-b border-[#EFEBE4] font-sans">
+          <div className="divide-y divide-[#EFEBE4] dark:divide-[#353A33] border-t border-b border-[#EFEBE4] dark:border-[#353A33] font-sans">
             {[
               { q: t.faq1Q, a: t.faq1A },
               { q: t.faq2Q, a: t.faq2A },
@@ -1337,10 +1337,10 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
                     onClick={() => handleFaqToggle(idx)}
                     className="w-full flex items-center justify-between text-left gap-4 group"
                   >
-                    <span className="font-semibold text-xs sm:text-sm text-neutral-800 group-hover:text-neutral-950 transition-colors">
+                    <span className="font-semibold text-xs sm:text-sm text-neutral-800 dark:text-neutral-200 group-hover:text-neutral-950 dark:group-hover:text-white transition-colors">
                       {item.q}
                     </span>
-                    <ChevronDown className={`w-4 h-4 text-neutral-400 group-hover:text-neutral-600 transition-all duration-300 flex-shrink-0 ${
+                    <ChevronDown className={`w-4 h-4 text-neutral-400 group-hover:text-neutral-600 dark:group-hover:text-neutral-300 transition-all duration-300 flex-shrink-0 ${
                       isOpen ? "transform rotate-180 text-[#5F6F52]" : ""
                     }`} />
                   </button>
@@ -1352,7 +1352,7 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
                     }`}
                   >
                     <div className="overflow-hidden">
-                      <p className="text-xs text-neutral-500 leading-relaxed pl-1">
+                      <p className="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed pl-1">
                         {item.a}
                       </p>
                     </div>
@@ -1399,7 +1399,7 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
 
         {/* Chat Window Panel */}
         {conciergeOpen && (
-          <div className="absolute bottom-16 right-0 w-[330px] sm:w-[380px] h-[450px] bg-white border border-[#EFEBE4] rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-fadeIn">
+          <div className="absolute bottom-16 right-0 w-[330px] sm:w-[380px] h-[450px] bg-white dark:bg-[#252824] border border-[#EFEBE4] dark:border-[#353A33] rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-fadeIn transition-colors duration-300">
             {/* Header */}
             <div className="bg-[#5F6F52] p-4 text-white flex items-center justify-between">
               <div className="flex items-center gap-2.5">
@@ -1421,13 +1421,13 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
             </div>
 
             {/* Chat Messages */}
-            <div className="flex-grow overflow-y-auto p-4 space-y-3 bg-[#FAF9F7]">
+            <div className="flex-grow overflow-y-auto p-4 space-y-3 bg-[#FAF9F7] dark:bg-[#1E211D] transition-colors duration-300">
               {messages.map((msg, i) => (
                 <div key={i} className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}>
                   <div className={`max-w-[80%] rounded-2xl p-3 text-xs leading-relaxed shadow-sm ${
                     msg.sender === "user" 
                       ? "bg-[#5F6F52] text-white rounded-tr-none" 
-                      : "bg-white text-neutral-800 border border-[#EFEBE4] rounded-tl-none"
+                      : "bg-white dark:bg-[#141613] text-neutral-800 dark:text-neutral-200 border border-[#EFEBE4] dark:border-[#2C302A] rounded-tl-none transition-colors duration-300"
                   }`}>
                     {msg.text}
                   </div>
@@ -1435,7 +1435,7 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
               ))}
               {isTyping && (
                 <div className="flex justify-start">
-                  <div className="bg-white border border-[#EFEBE4] rounded-2xl rounded-tl-none p-3 text-xs text-neutral-400 flex items-center gap-1 shadow-sm">
+                  <div className="bg-white dark:bg-[#141613] border border-[#EFEBE4] dark:border-[#2C302A] rounded-2xl rounded-tl-none p-3 text-xs text-neutral-400 dark:text-neutral-500 flex items-center gap-1 shadow-sm transition-colors duration-300">
                     <span className="w-1.5 h-1.5 bg-neutral-400 rounded-full animate-bounce" style={{ animationDelay: "0ms" }}></span>
                     <span className="w-1.5 h-1.5 bg-neutral-400 rounded-full animate-bounce" style={{ animationDelay: "150ms" }}></span>
                     <span className="w-1.5 h-1.5 bg-neutral-400 rounded-full animate-bounce" style={{ animationDelay: "300ms" }}></span>
@@ -1445,7 +1445,7 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
             </div>
 
             {/* Predefined FAQs with dynamic sorting/filtering based on Buenos Aires time of day */}
-            <div className="p-3 bg-white border-t border-b border-[#EFEBE4] flex flex-wrap gap-1.5 max-h-[100px] overflow-y-auto">
+            <div className="p-3 bg-white dark:bg-[#252824] border-t border-b border-[#EFEBE4] dark:border-[#353A33] flex flex-wrap gap-1.5 max-h-[100px] overflow-y-auto transition-colors duration-300">
               {(() => {
                 const getDynamicButtons = () => {
                   try {
@@ -1495,7 +1495,7 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
                   <button 
                     key={idx}
                     onClick={() => handleSendMessage(language === "es" ? btn.es : btn.en)}
-                    className="text-[10px] bg-[#FAF9F7] hover:bg-[#EFEBE4] text-neutral-600 border border-[#EFEBE4] px-2 py-1 rounded-full transition-all flex items-center gap-1"
+                    className="text-[10px] bg-[#FAF9F7] dark:bg-[#1E211D] hover:bg-[#EFEBE4] dark:hover:bg-[#2C302A] text-neutral-600 dark:text-neutral-300 border border-[#EFEBE4] dark:border-[#2C302A] px-2 py-1 rounded-full transition-all flex items-center gap-1"
                   >
                     <span>{btn.icon}</span>
                     <span>{language === "es" ? btn.labelEs : btn.labelEn}</span>
@@ -1510,14 +1510,14 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
                 e.preventDefault();
                 handleSendMessage(inputValue);
               }}
-              className="p-3 bg-white flex gap-2"
+              className="p-3 bg-white dark:bg-[#252824] flex gap-2 transition-colors duration-300"
             >
               <input
                 type="text"
                 placeholder={t.chatPlaceholder}
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
-                className="flex-grow bg-[#FAF9F7] border border-[#EFEBE4] rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-neutral-500 focus:ring-1 focus:ring-neutral-500"
+                className="flex-grow bg-[#FAF9F7] dark:bg-[#1E211D] border border-[#EFEBE4] dark:border-[#353A33] text-neutral-900 dark:text-neutral-100 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-neutral-500 focus:ring-1 focus:ring-neutral-500 transition-colors duration-300"
               />
               <button
                 type="submit"

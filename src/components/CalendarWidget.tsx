@@ -131,43 +131,43 @@ export default function CalendarWidget({
   };
 
   return (
-    <div className="bg-white border border-[#EFEBE4] rounded-3xl p-6 shadow-lg shadow-neutral-100 sticky top-28">
+    <div className="bg-white dark:bg-[#1E211D] border border-[#EFEBE4] dark:border-[#2C302A] rounded-3xl p-6 shadow-lg dark:shadow-none shadow-neutral-100 sticky top-28 transition-colors duration-300">
       {/* Price Header */}
       <div className="flex flex-col gap-2 mb-6">
         <div className="flex items-baseline justify-between">
           <div>
-            <span className="text-2xl font-semibold text-neutral-900">${pricePerNight}</span>
-            <span className="text-neutral-500 text-sm">{t.perNight}</span>
+            <span className="text-2xl font-semibold text-neutral-900 dark:text-neutral-100">${pricePerNight}</span>
+            <span className="text-neutral-500 dark:text-neutral-450 text-sm">{t.perNight}</span>
           </div>
-          <div className="text-xs text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full font-medium">
+          <div className="text-xs text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/20 px-2.5 py-1 rounded-full font-medium">
             {t.direct}
           </div>
         </div>
-        <div className="bg-neutral-50 rounded-xl p-2.5 border border-[#EFEBE4] text-[11px] text-neutral-500 space-y-1">
+        <div className="bg-neutral-50 dark:bg-[#141613] rounded-xl p-2.5 border border-[#EFEBE4] dark:border-[#2C302A] text-[11px] text-neutral-500 dark:text-neutral-400 space-y-1">
           <p className="flex justify-between">
             <span>{t.capacityBase}</span>
-            <span className="font-semibold text-neutral-800">{t.base2}</span>
+            <span className="font-semibold text-neutral-800 dark:text-neutral-200">{t.base2}</span>
           </p>
           <p className="flex justify-between">
             <span>{t.extraGuest}</span>
-            <span className="font-semibold text-neutral-800">{t.extraCost}</span>
+            <span className="font-semibold text-neutral-800 dark:text-neutral-200">{t.extraCost}</span>
           </p>
           <p className="flex justify-between">
             <span>{t.cleaning}</span>
-            <span className="font-semibold text-neutral-800">{t.once}</span>
+            <span className="font-semibold text-neutral-800 dark:text-neutral-200">{t.once}</span>
           </p>
         </div>
       </div>
 
       {/* Date & Guest Inputs */}
       <div className="space-y-4 mb-6">
-        <div className="border border-[#EFEBE4] rounded-2xl overflow-hidden divide-y divide-[#EFEBE4]">
-          <div className="grid grid-cols-2 divide-x divide-[#EFEBE4]">
+        <div className="border border-[#EFEBE4] dark:border-[#2C302A] rounded-2xl overflow-hidden divide-y divide-[#EFEBE4] dark:divide-[#2C302A]">
+          <div className="grid grid-cols-2 divide-x divide-[#EFEBE4] dark:divide-[#2C302A]">
             <div className="p-3.5">
-              <label className="block text-[10px] font-bold uppercase tracking-wider text-neutral-500 mb-1">
+              <label className="block text-[10px] font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-1">
                 {t.checkin}
               </label>
-              <div className="flex items-center text-neutral-800">
+              <div className="flex items-center text-neutral-800 dark:text-neutral-200">
                 <input
                   type="date"
                   min={getTodayString()}
@@ -187,15 +187,15 @@ export default function CalendarWidget({
                       }
                     }
                   }}
-                  className="w-full text-sm font-medium bg-transparent focus:outline-none border-none cursor-pointer"
+                  className="w-full text-sm font-medium bg-transparent focus:outline-none border-none cursor-pointer dark:[color-scheme:dark]"
                 />
               </div>
             </div>
             <div className="p-3.5">
-              <label className="block text-[10px] font-bold uppercase tracking-wider text-neutral-500 mb-1">
+              <label className="block text-[10px] font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-1">
                 {t.checkout}
               </label>
-              <div className="flex items-center text-neutral-800">
+              <div className="flex items-center text-neutral-800 dark:text-neutral-200">
                 <input
                   type="date"
                   min={checkIn ? (() => {
@@ -219,32 +219,32 @@ export default function CalendarWidget({
                       }
                     }
                   }}
-                  className="w-full text-sm font-medium bg-transparent focus:outline-none border-none cursor-pointer"
+                  className="w-full text-sm font-medium bg-transparent focus:outline-none border-none cursor-pointer dark:[color-scheme:dark]"
                 />
               </div>
             </div>
           </div>
           
           <div className="p-3.5">
-            <label className="block text-[10px] font-bold uppercase tracking-wider text-neutral-500 mb-1">
+            <label className="block text-[10px] font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-1">
               {t.guestsLabel}
             </label>
             <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-neutral-800">
+              <span className="text-sm font-medium text-neutral-800 dark:text-neutral-200">
                 {guests} {guests === 1 ? t.guest : t.guests}
               </span>
               <div className="flex items-center space-x-2">
                 <button
                   type="button"
                   onClick={() => setGuests(Math.max(1, guests - 1))}
-                  className="w-8 h-8 rounded-full border border-neutral-200 flex items-center justify-center text-neutral-600 hover:border-neutral-800 active:scale-95 transition-all text-lg font-medium"
+                  className="w-8 h-8 rounded-full border border-neutral-200 dark:border-neutral-700 flex items-center justify-center text-neutral-600 dark:text-neutral-300 hover:border-neutral-800 dark:hover:border-neutral-400 hover:bg-neutral-50 dark:hover:bg-neutral-800 active:scale-95 transition-all text-lg font-medium"
                 >
                   -
                 </button>
                 <button
                   type="button"
                   onClick={() => setGuests(Math.min(4, guests + 1))}
-                  className="w-8 h-8 rounded-full border border-neutral-200 flex items-center justify-center text-neutral-600 hover:border-neutral-800 active:scale-95 transition-all text-lg font-medium"
+                  className="w-8 h-8 rounded-full border border-neutral-200 dark:border-neutral-700 flex items-center justify-center text-neutral-600 dark:text-neutral-300 hover:border-neutral-800 dark:hover:border-neutral-400 hover:bg-neutral-50 dark:hover:bg-neutral-800 active:scale-95 transition-all text-lg font-medium"
                 >
                   +
                 </button>
@@ -258,7 +258,7 @@ export default function CalendarWidget({
       <div className="space-y-3">
         <button
           onClick={handleWhatsAppRedirect}
-          className="w-full bg-[#5F6F52] hover:bg-[#4F5D43] text-white py-4 px-6 rounded-2xl font-medium shadow-md shadow-neutral-100 flex items-center justify-center space-x-2 transition-all active:scale-[0.98]"
+          className="w-full bg-[#5F6F52] hover:bg-[#4F5D43] text-white py-4 px-6 rounded-2xl font-medium shadow-md dark:shadow-none flex items-center justify-center space-x-2 transition-all active:scale-[0.98]"
         >
           <MessageCircle className="w-5 h-5 fill-current" />
           <span>{t.bookBtn}</span>
@@ -268,45 +268,45 @@ export default function CalendarWidget({
           href={airbnbUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="w-full border border-neutral-200 hover:border-neutral-800 text-neutral-800 py-3.5 px-6 rounded-2xl font-medium flex items-center justify-center space-x-2 transition-all active:scale-[0.98]"
+          className="w-full border border-neutral-200 dark:border-neutral-700 hover:border-neutral-800 dark:hover:border-neutral-450 text-neutral-800 dark:text-neutral-200 hover:bg-neutral-50 dark:hover:bg-neutral-800/50 py-3.5 px-6 rounded-2xl font-medium flex items-center justify-center space-x-2 transition-all active:scale-[0.98]"
         >
           <span>{t.airbnbBtn}</span>
-          <ArrowRight className="w-4 h-4 text-neutral-400 group-hover:text-neutral-800" />
+          <ArrowRight className="w-4 h-4 text-neutral-400 dark:text-neutral-500 group-hover:text-neutral-800 dark:group-hover:text-neutral-350" />
         </a>
       </div>
 
       {/* Price Breakdown */}
       {totalNights > 0 && (
-        <div className="mt-6 pt-6 border-t border-[#EFEBE4] space-y-3 text-sm text-neutral-600">
+        <div className="mt-6 pt-6 border-t border-[#EFEBE4] dark:border-[#2C302A] space-y-3 text-sm text-neutral-600 dark:text-neutral-400">
           <div className="flex justify-between">
             <span className="underline decoration-dotted">
               ${pricePerNight} x {totalNights} {t.nights} ({t.baseGuests})
             </span>
-            <span className="font-medium text-neutral-800">${pricePerNight * totalNights}</span>
+            <span className="font-medium text-neutral-800 dark:text-neutral-200">${pricePerNight * totalNights}</span>
           </div>
           {guests > 2 && (
             <div className="flex justify-between">
               <span className="underline decoration-dotted">
                 {t.extraGuestsLabel} (USD 10 x {guests - 2} x {totalNights} {t.nights})
               </span>
-              <span className="font-medium text-neutral-800">${(guests - 2) * 10 * totalNights}</span>
+              <span className="font-medium text-neutral-800 dark:text-neutral-200">${(guests - 2) * 10 * totalNights}</span>
             </div>
           )}
           <div className="flex justify-between">
             <span className="underline decoration-dotted">{t.cleaningLabel}</span>
-            <span className="font-medium text-neutral-800">${cleaningFee}</span>
+            <span className="font-medium text-neutral-800 dark:text-neutral-200">${cleaningFee}</span>
           </div>
-          <div className="flex justify-between text-emerald-600 font-medium">
+          <div className="flex justify-between text-emerald-600 dark:text-emerald-450 font-medium">
             <span>{t.commission}</span>
             <span>$0</span>
           </div>
           
-          <div className="border-t border-[#EFEBE4] pt-4 mt-2 flex justify-between text-base font-bold text-neutral-900">
+          <div className="border-t border-[#EFEBE4] dark:border-[#2C302A] pt-4 mt-2 flex justify-between text-base font-bold text-neutral-900 dark:text-neutral-100">
             <span>{t.totalEst}</span>
             <span>${totalPrice}</span>
           </div>
           
-          <p className="text-[10px] text-center text-neutral-400 mt-2">
+          <p className="text-[10px] text-center text-neutral-400 dark:text-neutral-500 mt-2">
             {t.barNote}
           </p>
         </div>
