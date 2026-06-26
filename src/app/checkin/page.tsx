@@ -283,7 +283,7 @@ export default function CheckInPortal() {
                   {t.step1Desc}
                 </p>
                 <a 
-                  href="https://www.google.com/maps/search/?api=1&query=-34.581562,-58.435882"
+                  href="https://www.google.com/maps/search/?api=1&query=-34.587644,-58.439803"
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-[10px] font-bold text-[#5F6F52] hover:text-[#4F5D43] bg-[#FAF9F7] border border-[#EFEBE4] px-3 py-1.5 rounded-xl transition-all shadow-sm active:scale-95"
