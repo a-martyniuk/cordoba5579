@@ -1,17 +1,24 @@
 {
-  "title": "Palermo Hollywood - Cómodo y luminoso departamento",
-  "rating": 4.90,
-  "reviewsCount": 120,
-  "description": "Espacio amplio con excelente iluminación natural, living con rincón bar, dormitorio con cama Queen size y cocina totalmente equipada en una de las mejores zonas de Buenos Aires.",
+  "title": "Departamento moderno y espacioso",
+  "rating": 5.0,
+  "reviewsCount": 42,
+  "description": "Alojate en un departamento totalmente nuevo y equipado en el corazón de Palermo Hollywood. Tiene capacidad para hasta 4 personas, con una cama queen y un cómodo sofá cama. Disfrutá de WiFi rápido, check-in autónomo, una pileta en la terraza, solárium y zona de parrilla. A poca distancia a pie del Movistar Arena, de cafés y de restaurantes.",
   "amenities": [
-    "Wifi",
-    "Aire acondicionado",
-    "Cocina completa",
+    "Ducha exterior",
     "Lavarropas",
-    "Piscina / Solárium",
-    "Parrilla / Terraza",
-    "Tv Smart",
-    "Caja fuerte"
+    "Televisión",
+    "Aire acondicionado",
+    "Cámaras de seguridad exteriores en la propiedad",
+    "Detector de humo",
+    "Detector de monóxido de carbono",
+    "Matafuego",
+    "Botiquín de primeros auxilios",
+    "Wifi",
+    "Cocina",
+    "Parrilla",
+    "Pileta",
+    "Check-in sin anfitrión",
+    "Caja de seguridad para llaves"
   ],
   "photos": [
     "https://a0.muscache.com/im/pictures/hosting/Hosting-1716762976739155303/original/f9a4d034-ac6a-42d0-9dd6-76782f465062.jpeg",
@@ -19,5 +26,7 @@
     "https://a0.muscache.com/im/pictures/hosting/Hosting-1716762976739155303/original/ee01c89b-03b9-40c4-b537-050dd8da4ecd.jpeg",
     "https://a0.muscache.com/im/pictures/hosting/Hosting-1716762976739155303/original/a82588fa-001a-4c6b-a40d-68c1e80b351b.jpeg",
     "https://a0.muscache.com/im/pictures/hosting/Hosting-1716762976739155303/original/78831bbc-6b5a-42e4-8d73-d0be59b7b123.jpeg"
-  ]
+  ],
+  "price": 45,
+  "capacityText": "Vivienda alquilada · Buenos Aires · ★Novedad · 1 dormitorio · 1 cama · 1,5 baños privados"
 }

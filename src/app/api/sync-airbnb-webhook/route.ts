@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
+import { revalidatePath } from "next/cache";
 
 // Allow CORS preflight requests
 export async function OPTIONS() {
@@ -28,6 +29,9 @@ export async function POST(req: NextRequest) {
     
     // Save details to JSON
     fs.writeFileSync(targetFile, JSON.stringify(data, null, 2), "utf8");
+    
+    // Revalidate the main landing page
+    revalidatePath("/");
     
     return NextResponse.json(
       { success: true, message: "Airbnb data synchronized successfully" },

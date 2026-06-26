@@ -893,9 +893,17 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
             <div className="space-y-4 border-b border-[#EFEBE4] pb-8">
               <h3 className="font-serif text-xl md:text-2xl text-neutral-900 font-semibold">{t.aboutTitle}</h3>
               <div className="text-neutral-600 text-sm leading-relaxed space-y-4 font-sans">
-                <p>{t.aboutP1}</p>
-                <p>{t.aboutP2}</p>
-                <p>{t.aboutP3}</p>
+                {airbnbDetails.description ? (
+                  airbnbDetails.description.split("\n").filter(p => p.trim()).map((p, i) => (
+                    <p key={i}>{p}</p>
+                  ))
+                ) : (
+                  <>
+                    <p>{t.aboutP1}</p>
+                    <p>{t.aboutP2}</p>
+                    <p>{t.aboutP3}</p>
+                  </>
+                )}
               </div>
             </div>
 
@@ -1120,7 +1128,13 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
                 <h3 className="font-serif text-xl md:text-2xl text-neutral-900 font-semibold">{t.reviewsTitle}</h3>
                 <span className="text-xs text-neutral-500 font-semibold flex items-center gap-1.5">
                   <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-                  <span>{language === "es" ? "Opiniones reales próximamente" : "Real reviews coming soon"}</span>
+                  <span>
+                    {airbnbDetails.rating && airbnbDetails.reviewsCount > 0 ? (
+                      language === "es" ? "Sincronizado con Airbnb" : "Synced with Airbnb"
+                    ) : (
+                      language === "es" ? "Opiniones reales próximamente" : "Real reviews coming soon"
+                    )}
+                  </span>
                 </span>
               </div>
 
@@ -1128,17 +1142,27 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
                 <div className="space-y-3 max-w-xl">
                   <div className="flex items-center gap-1.5">
                     <span className="bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 text-xs font-bold px-2.5 py-1 rounded-md">
-                      {language === "es" ? "✨ ¡Lanzamiento a Estrenar!" : "✨ Brand New Launch!"}
+                      {airbnbDetails.rating && airbnbDetails.reviewsCount > 0 
+                        ? (language === "es" ? `★ ${airbnbDetails.rating.toFixed(1)} Excelente` : `★ ${airbnbDetails.rating.toFixed(1)} Excellent`)
+                        : (language === "es" ? "✨ ¡Lanzamiento a Estrenar!" : "✨ Brand New Launch!")}
                     </span>
                   </div>
                   <h4 className="font-serif text-base sm:text-lg font-bold text-neutral-900 dark:text-neutral-100 leading-tight">
-                    {t.reviewsNewTitle}
+                    {airbnbDetails.rating && airbnbDetails.reviewsCount > 0 
+                      ? (language === "es" ? `Calificaciones de Huéspedes en Airbnb` : `Guest Ratings on Airbnb`)
+                      : t.reviewsNewTitle}
                   </h4>
                   <p className="text-neutral-600 dark:text-neutral-400 text-xs sm:text-sm leading-relaxed">
-                    {t.reviewsNewDesc}
+                    {airbnbDetails.rating && airbnbDetails.reviewsCount > 0 
+                      ? (language === "es" 
+                          ? `Este alojamiento cuenta con una puntuación perfecta de ${airbnbDetails.rating.toFixed(1)} estrellas en base a ${airbnbDetails.reviewsCount} evaluaciones reales de la comunidad de Airbnb.`
+                          : `This accommodation has a perfect score of ${airbnbDetails.rating.toFixed(1)} stars based on ${airbnbDetails.reviewsCount} real reviews from the Airbnb community.`)
+                      : t.reviewsNewDesc}
                   </p>
                   <p className="text-[#5F6F52] dark:text-[#889B73] text-xs font-semibold">
-                    ⭐ {t.reviewsFirstGuest}
+                    ⭐ {airbnbDetails.rating && airbnbDetails.reviewsCount > 0 
+                      ? (language === "es" ? `Sincronizado automáticamente desde Airbnb.` : `Synced automatically from Airbnb.`)
+                      : t.reviewsFirstGuest}
                   </p>
                 </div>
 
