@@ -4,14 +4,12 @@ import React, { useState, useEffect } from "react";
 import { MessageCircle, ArrowRight, ChevronLeft, ChevronRight, Calendar } from "lucide-react";
 
 interface CalendarWidgetProps {
-  pricePerNight?: number;
   whatsAppPhone?: string;
   airbnbUrl?: string;
   lang?: "es" | "en";
 }
 
 export default function CalendarWidget({
-  pricePerNight = 500,
   whatsAppPhone = "5491145379500",
   airbnbUrl = "https://www.airbnb.com.ar/rooms/1716762976739155303",
   lang = "es"
@@ -130,12 +128,11 @@ export default function CalendarWidget({
 
   return (
     <div className="bg-white dark:bg-[#1E211D] border border-[#EFEBE4] dark:border-[#2C302A] rounded-3xl p-6 shadow-lg dark:shadow-none shadow-neutral-100 sticky top-28 transition-colors duration-300 space-y-6">
-      {/* Price Header */}
-      <div className="flex items-baseline justify-between">
-        <div>
-          <span className="text-3xl font-serif font-bold text-neutral-900 dark:text-neutral-100">${pricePerNight}</span>
-          <span className="text-neutral-500 dark:text-neutral-450 text-sm">{t.perNight}</span>
-        </div>
+      {/* Header */}
+      <div className="flex items-center justify-between pb-2 border-b border-[#EFEBE4]/60 dark:border-[#2C302A]/60">
+        <h3 className="font-serif text-lg font-bold text-neutral-900 dark:text-neutral-100">
+          {lang === "es" ? "Reserva tu Estadía" : "Book your Stay"}
+        </h3>
         <div className="flex items-center gap-1 text-[10px] font-bold text-[#5F6F52] dark:text-[#889B73] bg-[#5F6F52]/5 dark:bg-[#889B73]/5 px-2.5 py-1 rounded-full uppercase tracking-wider">
           <Calendar className="w-3.5 h-3.5" />
           <span>Airbnb Sync</span>

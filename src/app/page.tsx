@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { 
-  Sparkles, 
   Compass, 
   Clock, 
   AlertTriangle,
@@ -1252,18 +1251,7 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
 
           {/* Right Column: Sticky Booking Widget (4/12 width) */}
           <div className="lg:col-span-4 lg:sticky lg:top-28 space-y-6" id="reserva">
-            <CalendarWidget lang={language} pricePerNight={airbnbDetails.price} airbnbUrl="https://www.airbnb.com.ar/rooms/1716762976739155303" />
-            
-            {/* Direct Booking Saving Card */}
-            <div className="bg-emerald-50/50 border border-emerald-100 rounded-3xl p-5 text-xs text-emerald-800 space-y-2 font-sans">
-              <p className="font-bold flex items-center gap-1.5">
-                <Sparkles className="w-4 h-4 text-emerald-700" />
-                <span>{t.bookingDirectTitle}</span>
-              </p>
-              <p className="leading-relaxed">
-                {t.bookingDirectText}
-              </p>
-            </div>
+            <CalendarWidget lang={language} airbnbUrl="https://www.airbnb.com.ar/rooms/1716762976739155303" />
           </div>
 
         </div>
