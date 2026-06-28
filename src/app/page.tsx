@@ -3,8 +3,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { 
-  Wifi, 
-  ShieldCheck, 
   Sparkles, 
   Compass, 
   Clock, 
@@ -18,8 +16,6 @@ import {
   ChevronDown,
   ExternalLink,
   ClipboardList,
-  Utensils,
-  Bed,
   AlertCircle,
   MessageCircle
 } from "lucide-react";
@@ -277,6 +273,37 @@ export default function Home() {
       const savedDark = document.documentElement.classList.contains("dark");
       setDarkMode(savedDark);
     }
+  }, []);
+
+  const groupedAmenities = React.useMemo(() => {
+    const amenities = airbnbDetails.amenities || [];
+    const categories = {
+      kitchen: { titleEs: "Cocina y Vajilla", titleEn: "Kitchen & Dining", icon: "🍳", items: [] as string[] },
+      bedroom: { titleEs: "Dormitorio y Blancos", titleEn: "Bedroom & Linens", icon: "🛏️", items: [] as string[] },
+      bathroom: { titleEs: "Baño y Cuidado Personal", titleEn: "Bathroom & Toiletries", icon: "🚿", items: [] as string[] },
+      connectivity: { titleEs: "Conectividad y Climatización", titleEn: "Connectivity & Climate", icon: "🔌", items: [] as string[] },
+      safety: { titleEs: "Seguridad y Prevención", titleEn: "Safety & Security", icon: "🛡️", items: [] as string[] },
+      rooftop: { titleEs: "Terraza, Accesibilidad y Servicios", titleEn: "Rooftop & Accessibility", icon: "🌇", items: [] as string[] },
+    };
+
+    amenities.forEach((item) => {
+      const lower = item.toLowerCase();
+      if (lower.includes("cocina") || lower.includes("heladera") || lower.includes("microondas") || lower.includes("vajilla") || lower.includes("horno") || lower.includes("cafetera") || lower.includes("licuadora") || lower.includes("arrocera") || lower.includes("comedor") || lower.includes("pava") || lower.includes("copas") || lower.includes("congelador") || lower.includes("utensilios")) {
+        categories.kitchen.items.push(item);
+      } else if (lower.includes("cama") || lower.includes("almohada") || lower.includes("manta") || lower.includes("cortina") || lower.includes("persiana") || lower.includes("ropa") || lower.includes("perchas") || lower.includes("lavarropas") || lower.includes("secarropas") || lower.includes("plancha") || lower.includes("ténder") || lower.includes("placard") || lower.includes("armario") || lower.includes("guardar")) {
+        categories.bedroom.items.push(item);
+      } else if (lower.includes("pelo") || lower.includes("shampoo") || lower.includes("acondicionador") || lower.includes("jabón") || lower.includes("bidé") || lower.includes("bidet") || lower.includes("ducha") || lower.includes("agua caliente") || lower.includes("gel")) {
+        categories.bathroom.items.push(item);
+      } else if (lower.includes("wifi") || lower.includes("ethernet") || lower.includes("televisor") || lower.includes("tv") || lower.includes("ac:") || lower.includes("calefacción") || lower.includes("split")) {
+        categories.connectivity.items.push(item);
+      } else if (lower.includes("cámara") || lower.includes("humo") || lower.includes("monóxido") || lower.includes("matafuego") || lower.includes("auxilios") || lower.includes("seguridad") || lower.includes("caja fuerte")) {
+        categories.safety.items.push(item);
+      } else {
+        categories.rooftop.items.push(item);
+      }
+    });
+
+    return Object.values(categories).filter(c => c.items.length > 0);
   }, []);
 
   const handleLanguageChange = (newLang: "es" | "en") => {
@@ -912,231 +939,22 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
               <h3 className="font-serif text-2xl text-neutral-900 font-semibold">{t.amenitiesTitle}</h3>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 font-sans">
-                
-                {/* Kitchen / Cocina */}
-                <div className="space-y-4">
-                  <h4 className="font-serif text-sm font-bold tracking-wider text-neutral-500 uppercase flex items-center gap-2">
-                    <Utensils className="w-4 h-4 text-[#5F6F52]" />
-                    {language === "es" ? "Cocina y Vajilla" : "Kitchen & Dining"}
-                  </h4>
-                  <ul className="space-y-3 text-sm text-neutral-700">
-                    <li className="flex items-start gap-2.5">
-                      <span className="text-[#5F6F52] font-bold">✓</span>
-                      <div>
-                        <span className="font-semibold">{language === "es" ? "Cocina equipada:" : "Fully equipped kitchen:"}</span>{" "}
-                        {language === "es" ? "Heladera con freezer, microondas Samsung, horno eléctrico y vajilla completa." : "Samsung refrigerator & freezer, microwave, electric oven, and complete dinnerware."}
-                      </div>
-                    </li>
-                    <li className="flex items-start gap-2.5">
-                      <span className="text-[#5F6F52] font-bold">✓</span>
-                      <div>
-                        <span className="font-semibold">{language === "es" ? "Anafe eléctrico:" : "Electric cooktop:"}</span>{" "}
-                        {language === "es" ? "Acero inoxidable, 4 hornallas de alta eficiencia." : "Stainless steel, 4-burner high-efficiency cooktop."}
-                      </div>
-                    </li>
-                    <li className="flex items-start gap-2.5">
-                      <span className="text-[#5F6F52] font-bold">✓</span>
-                      <div>
-                        <span className="font-semibold">{language === "es" ? "Electrodomésticos premium:" : "Premium appliances:"}</span>{" "}
-                        {language === "es" ? "Freidora sin aceite, arrocera, licuadora, tostadora y pava eléctrica." : "Air fryer, rice cooker, blender, toaster, and electric kettle."}
-                      </div>
-                    </li>
-                    <li className="flex items-start gap-2.5">
-                      <span className="text-[#5F6F52] font-bold">✓</span>
-                      <div>
-                        <span className="font-semibold">{language === "es" ? "Cafetera con espumadera y Copas de vino" : "Coffee maker with frother & Wine glasses"}</span>
-                      </div>
-                    </li>
-                    <li className="flex items-start gap-2.5">
-                      <span className="text-[#5F6F52] font-bold">✓</span>
-                      <div>
-                        <span className="font-semibold">{language === "es" ? "Mesa de comedor:" : "Dining table:"}</span>{" "}
-                        {language === "es" ? "Espacio confortable para 4 comensales." : "Comfortable dining space for 4 people."}
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-
-                {/* Dormitorio y Lavandería */}
-                <div className="space-y-4">
-                  <h4 className="font-serif text-sm font-bold tracking-wider text-neutral-500 uppercase flex items-center gap-2">
-                    <Bed className="w-4 h-4 text-[#5F6F52]" />
-                    {language === "es" ? "Dormitorio y Blancos" : "Bedroom & Linens"}
-                  </h4>
-                  <ul className="space-y-3 text-sm text-neutral-700">
-                    <li className="flex items-start gap-2.5">
-                      <span className="text-[#5F6F52] font-bold">✓</span>
-                      <div>
-                        <span className="font-semibold">{language === "es" ? "Ropa de cama premium:" : "Premium bedding:"}</span>{" "}
-                        {language === "es" ? "Algodón egipcio importado de 600 hilos." : "Imported 600-thread-count Egyptian cotton."}
-                      </div>
-                    </li>
-                    <li className="flex items-start gap-2.5">
-                      <span className="text-[#5F6F52] font-bold">✓</span>
-                      <div>
-                        <span className="font-semibold">{language === "es" ? "Almohadas y mantas adicionales" : "Extra pillows and blankets"}</span>
-                      </div>
-                    </li>
-                    <li className="flex items-start gap-2.5">
-                      <span className="text-[#5F6F52] font-bold">✓</span>
-                      <div>
-                        <span className="font-semibold">{language === "es" ? "Espacio para guardar ropa:" : "Clothing storage:"}</span>{" "}
-                        {language === "es" ? "Amplio armario con perchas y cómoda." : "Spacious wardrobe with hangers and chest of drawers."}
-                      </div>
-                    </li>
-                    <li className="flex items-start gap-2.5">
-                      <span className="text-[#5F6F52] font-bold">✓</span>
-                      <div>
-                        <span className="font-semibold">{language === "es" ? "Lavarropas gratis:" : "Free washing machine:"}</span>{" "}
-                        {language === "es" ? "Disponible en el laundry del edificio sin costo adicional + ténder." : "Available in the building laundry room for free + drying rack."}
-                      </div>
-                    </li>
-                    <li className="flex items-start gap-2.5">
-                      <span className="text-[#5F6F52] font-bold">✓</span>
-                      <div>
-                        <span className="font-semibold">{language === "es" ? "Persianas y cortinas oscuras (Blackout)" : "Blackout curtains and shutters"}</span>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-
-                {/* Baño y Aseo */}
-                <div className="space-y-4">
-                  <h4 className="font-serif text-sm font-bold tracking-wider text-neutral-500 uppercase flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 text-[#5F6F52]" />
-                    {language === "es" ? "Baño y Cuidado Personal" : "Bathroom & Toiletries"}
-                  </h4>
-                  <ul className="space-y-3 text-sm text-neutral-700">
-                    <li className="flex items-start gap-2.5">
-                      <span className="text-[#5F6F52] font-bold">✓</span>
-                      <div>
-                        <span className="font-semibold">{language === "es" ? "Línea Dove de cortesía:" : "Complimentary Dove products:"}</span>{" "}
-                        {language === "es" ? "Shampoo, acondicionador y jabón líquido/solido Dove." : "Dove shampoo, conditioner, and body wash."}
-                      </div>
-                    </li>
-                    <li className="flex items-start gap-2.5">
-                      <span className="text-[#5F6F52] font-bold">✓</span>
-                      <div>
-                        <span className="font-semibold">{language === "es" ? "Agua caliente continua y Bidé" : "Continuous hot water & Bidet"}</span>
-                      </div>
-                    </li>
-                    <li className="flex items-start gap-2.5">
-                      <span className="text-[#5F6F52] font-bold">✓</span>
-                      <div>
-                        <span className="font-semibold">{language === "es" ? "Secador de pelo y Balanza digital" : "Hair dryer & Digital scale"}</span>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-
-                {/* Climatización, Red y Conectividad */}
-                <div className="space-y-4">
-                  <h4 className="font-serif text-sm font-bold tracking-wider text-neutral-500 uppercase flex items-center gap-2">
-                    <Wifi className="w-4 h-4 text-[#5F6F52]" />
-                    {language === "es" ? "Conectividad y Climatización" : "Connectivity & Climate"}
-                  </h4>
-                  <ul className="space-y-3 text-sm text-neutral-700">
-                    <li className="flex items-start gap-2.5">
-                      <span className="text-[#5F6F52] font-bold">✓</span>
-                      <div>
-                        <span className="font-semibold">{language === "es" ? "Wi-Fi e Internet de alta velocidad (100 Mbps)" : "High-speed Wi-Fi and Internet (100 Mbps)"}</span>
-                      </div>
-                    </li>
-                    <li className="flex items-start gap-2.5">
-                      <span className="text-[#5F6F52] font-bold">✓</span>
-                      <div>
-                        <span className="font-semibold">{language === "es" ? "Conexión Ethernet física" : "Physical Ethernet connection available"}</span>
-                      </div>
-                    </li>
-                    <li className="flex items-start gap-2.5">
-                      <span className="text-[#5F6F52] font-bold">✓</span>
-                      <div>
-                        <span className="font-semibold">{language === "es" ? "Aire Acondicionado y Calefacción Split" : "Split Air Conditioning & Heating"}</span>
-                      </div>
-                    </li>
-                    <li className="flex items-start gap-2.5">
-                      <span className="text-[#5F6F52] font-bold">✓</span>
-                      <div>
-                        <span className="font-semibold">{language === "es" ? "Smart TV OLED:" : "Smart OLED TV:"}</span>{" "}
-                        {language === "es" ? "Pantalla de 55 pulgadas en living y 42 pulgadas en dormitorio." : "55-inch display in living room and 42-inch in bedroom."}
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-
-                {/* Terraza, Accesibilidad y Seguridad */}
-                <div className="md:col-span-2 space-y-4">
-                  <h4 className="font-serif text-sm font-bold tracking-wider text-neutral-500 uppercase flex items-center gap-2">
-                    <ShieldCheck className="w-4 h-4 text-[#5F6F52]" />
-                    {language === "es" ? "Terraza, Accesibilidad y Seguridad" : "Rooftop, Accessibility & Safety"}
-                  </h4>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-neutral-700">
-                    <ul className="space-y-3">
-                      <li className="flex items-start gap-2.5">
-                        <span className="text-[#5F6F52] font-bold">✓</span>
-                        <div>
-                          <span className="font-semibold">{language === "es" ? "Piscina compartida en terraza:" : "Shared rooftop pool:"}</span>{" "}
-                          {language === "es" ? "Climatizada, al aire libre (disponible de Octubre a Abril, de 9:00 a 23:00 hs)." : "Heated, outdoor (available from October to April, 9:00 AM to 11:00 PM)."}
-                        </div>
-                      </li>
-                      <li className="flex items-start gap-2.5">
-                        <span className="text-[#5F6F52] font-bold">✓</span>
-                        <div>
-                          <span className="font-semibold">{language === "es" ? "Muebles de exterior y ducha exterior" : "Outdoor furniture & outdoor shower"}</span>
-                        </div>
-                      </li>
-                      <li className="flex items-start gap-2.5">
-                        <span className="text-[#5F6F52] font-bold">✓</span>
-                        <div>
-                          <span className="font-semibold">{language === "es" ? "Accesibilidad plena:" : "Full accessibility:"}</span>{" "}
-                          {language === "es" ? "Ascensor amplio (132 cm de profundidad, puerta de 81 cm) e ingreso a nivel de calle." : "Spacious elevator (132 cm deep, 81 cm door width) and step-free entrance."}
-                        </div>
-                      </li>
-                    </ul>
-                    <ul className="space-y-3">
-                      <li className="flex items-start gap-2.5">
-                        <span className="text-[#5F6F52] font-bold">✓</span>
-                        <div>
-                          <span className="font-semibold">{language === "es" ? "Seguridad y Prevención:" : "Home Safety & Security:"}</span>{" "}
-                          {language === "es" ? "Detectores de humo, detector de monóxido de carbono, matafuegos (extintor), botiquín de primeros auxilios y seguros en ventanas." : "Smoke alarms, carbon monoxide detector, fire extinguisher, first aid kit, and window locks."}
-                        </div>
-                      </li>
-                      <li className="flex items-start gap-2.5">
-                        <span className="text-[#5F6F52] font-bold">✓</span>
-                        <div>
-                          <span className="font-semibold">{language === "es" ? "Estadías largas permitidas:" : "Long-term stays allowed:"}</span>{" "}
-                          {language === "es" ? "Apto para estadías de 28 días o más. Se permite dejar equipaje." : "Suitable for stays of 28 days or more. Luggage drop-off allowed."}
-                        </div>
-                      </li>
-                      <li className="flex items-start gap-2.5">
-                        <span className="text-[#5F6F52] font-bold">✓</span>
-                        <div>
-                          <span className="font-semibold">{language === "es" ? "Entretenimiento:" : "Entertainment:"}</span>{" "}
-                          {language === "es" ? "Libros, material de lectura y variados juegos de mesa." : "Books, reading materials, and board games."}
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-
-                {/* Synced Amenities / Servicios Sincronizados */}
-                {airbnbDetails.amenities && airbnbDetails.amenities.length > 0 && (
-                  <div className="md:col-span-2 space-y-4 pt-6 border-t border-[#EFEBE4] dark:border-[#2C302A]">
+                {groupedAmenities.map((cat, idx) => (
+                  <div key={idx} className="space-y-4">
                     <h4 className="font-serif text-sm font-bold tracking-wider text-neutral-500 uppercase flex items-center gap-2">
-                      <Sparkles className="w-4 h-4 text-[#5F6F52]" />
-                      {language === "es" ? "Otros Servicios Sincronizados (Airbnb)" : "Other Synced Amenities (Airbnb)"}
+                      <span className="text-base">{cat.icon}</span>
+                      {language === "es" ? cat.titleEs : cat.titleEn}
                     </h4>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 text-xs text-neutral-700 dark:text-neutral-300">
-                      {airbnbDetails.amenities.map((amenity, i) => (
-                        <div key={i} className="flex items-center gap-2 bg-[#FAF9F7] dark:bg-[#1E211D] px-3.5 py-2.5 rounded-xl border border-[#EFEBE4] dark:border-[#2C302A] transition-colors duration-300">
+                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-sm text-neutral-700 dark:text-neutral-300">
+                      {cat.items.map((item, i) => (
+                        <li key={i} className="flex items-start gap-2 bg-[#FAF9F7] dark:bg-[#1E211D] px-3.5 py-2 rounded-xl border border-[#EFEBE4] dark:border-[#2C302A]">
                           <span className="text-[#5F6F52] font-bold">✓</span>
-                          <span>{amenity}</span>
-                        </div>
+                          <span>{item}</span>
+                        </li>
                       ))}
-                    </div>
+                    </ul>
                   </div>
-                )}
-
+                ))}
               </div>
             </div>
 
