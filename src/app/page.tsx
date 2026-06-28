@@ -931,6 +931,30 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
                     <p>{t.aboutP3}</p>
                   </>
                 )}
+                
+                {/* Space / El alojamiento details */}
+                {airbnbDetails.space && (
+                  <div className="pt-5 mt-5 border-t border-[#EFEBE4] dark:border-[#2C302A] space-y-3">
+                    <h4 className="font-serif text-base text-neutral-800 dark:text-neutral-200 font-semibold">
+                      {language === "es" ? "El alojamiento" : "The space"}
+                    </h4>
+                    {airbnbDetails.space.split("\n").filter(p => p.trim()).map((p, i) => (
+                      <p key={i} className="text-neutral-500 dark:text-neutral-400 font-light leading-relaxed">{p}</p>
+                    ))}
+                  </div>
+                )}
+
+                {/* Guest Access / Acceso de los huéspedes */}
+                {airbnbDetails.access && (
+                  <div className="pt-5 mt-5 border-t border-[#EFEBE4] dark:border-[#2C302A] space-y-3">
+                    <h4 className="font-serif text-base text-neutral-800 dark:text-neutral-200 font-semibold">
+                      {language === "es" ? "Acceso de los huéspedes" : "Guest access"}
+                    </h4>
+                    {airbnbDetails.access.split("\n").filter(p => p.trim()).map((p, i) => (
+                      <p key={i} className="text-neutral-500 dark:text-neutral-400 font-light leading-relaxed">{p}</p>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
 
@@ -1211,30 +1235,41 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
           </h3>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 text-xs md:text-sm text-neutral-600 dark:text-neutral-350 font-sans">
-            <div className="flex items-start gap-2.5">
-              <span className="w-1.5 h-1.5 bg-[#5F6F52] rounded-full mt-2 flex-shrink-0" />
-              <p>{t.rulesCheck}</p>
-            </div>
-            <div className="flex items-start gap-2.5">
-              <span className="w-1.5 h-1.5 bg-[#5F6F52] rounded-full mt-2 flex-shrink-0" />
-              <p>{t.rulesSmoke}</p>
-            </div>
-            <div className="flex items-start gap-2.5">
-              <span className="w-1.5 h-1.5 bg-[#5F6F52] rounded-full mt-2 flex-shrink-0" />
-              <p>{t.rulesPets}</p>
-            </div>
-            <div className="flex items-start gap-2.5">
-              <span className="w-1.5 h-1.5 bg-[#5F6F52] rounded-full mt-2 flex-shrink-0" />
-              <p>{t.rulesParties}</p>
-            </div>
-            <div className="flex items-start gap-2.5">
-              <span className="w-1.5 h-1.5 bg-[#5F6F52] rounded-full mt-2 flex-shrink-0" />
-              <p>{t.rulesGuests}</p>
-            </div>
-            <div className="flex items-start gap-2.5">
-              <span className="w-1.5 h-1.5 bg-[#5F6F52] rounded-full mt-2 flex-shrink-0" />
-              <p>{t.rulesShower}</p>
-            </div>
+            {airbnbDetails.notes ? (
+              airbnbDetails.notes.split("\n").filter(p => p.trim()).map((p, i) => (
+                <div key={i} className="flex items-start gap-2.5">
+                  <span className="w-1.5 h-1.5 bg-[#5F6F52] rounded-full mt-2 flex-shrink-0" />
+                  <p>{p}</p>
+                </div>
+              ))
+            ) : (
+              <>
+                <div className="flex items-start gap-2.5">
+                  <span className="w-1.5 h-1.5 bg-[#5F6F52] rounded-full mt-2 flex-shrink-0" />
+                  <p>{t.rulesCheck}</p>
+                </div>
+                <div className="flex items-start gap-2.5">
+                  <span className="w-1.5 h-1.5 bg-[#5F6F52] rounded-full mt-2 flex-shrink-0" />
+                  <p>{t.rulesSmoke}</p>
+                </div>
+                <div className="flex items-start gap-2.5">
+                  <span className="w-1.5 h-1.5 bg-[#5F6F52] rounded-full mt-2 flex-shrink-0" />
+                  <p>{t.rulesPets}</p>
+                </div>
+                <div className="flex items-start gap-2.5">
+                  <span className="w-1.5 h-1.5 bg-[#5F6F52] rounded-full mt-2 flex-shrink-0" />
+                  <p>{t.rulesParties}</p>
+                </div>
+                <div className="flex items-start gap-2.5">
+                  <span className="w-1.5 h-1.5 bg-[#5F6F52] rounded-full mt-2 flex-shrink-0" />
+                  <p>{t.rulesGuests}</p>
+                </div>
+                <div className="flex items-start gap-2.5">
+                  <span className="w-1.5 h-1.5 bg-[#5F6F52] rounded-full mt-2 flex-shrink-0" />
+                  <p>{t.rulesShower}</p>
+                </div>
+              </>
+            )}
           </div>
         </div>
         </ScrollReveal>

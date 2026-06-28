@@ -2,6 +2,7 @@ import os
 import json
 import re
 import sys
+import html
 from curl_cffi import requests
 
 # Force stdout/stderr to use UTF-8 encoding on Windows to avoid console crashes
@@ -55,6 +56,9 @@ def main():
         amenities = []
         capacity_text = "4 huéspedes · 1 dormitorio · 1 cama · 1.5 baños"
         price = 45 # Default fallback price
+        space = ""
+        access = ""
+        notes = ""
         
         deferred_states = re.findall(r'<script[^>]*id="data-deferred-state-0"[^>]*>([\s\S]*?)</script>', content)
         if deferred_states:
@@ -96,6 +100,27 @@ def main():
                     sharing_title = pdp_data.get("node", {}).get("pdpPresentation", {}).get("sharingConfig", {}).get("ugcTitle", {}).get("content", {}).get("localizedString")
                     if sharing_title:
                         capacity_text = sharing_title
+
+                    # Parse detailed descriptions from DESCRIPTION_MODAL
+                    for s in sections:
+                        if not s: continue
+                        if s.get("sectionId") == "DESCRIPTION_MODAL":
+                            items = s.get("section", {}).get("items", [])
+                            for item in items:
+                                item_title = item.get("title")
+                                html_text = item.get("html", {}).get("htmlText", "") if "html" in item else ""
+                                if not html_text: continue
+                                # Clean HTML formatting
+                                clean_text = re.sub(r'<br\s*/?>', '\n', html_text).strip()
+                                clean_text = re.sub(r'<[^>]+>', '', clean_text).strip()
+                                clean_text = html.unescape(clean_text)
+                                
+                                if item_title in ["El alojamiento", "The space"]:
+                                    space = clean_text
+                                elif item_title in ["Acceso de los huéspedes", "Guest access"]:
+                                    access = clean_text
+                                elif item_title in ["Otros aspectos para tener en cuenta", "Other things to note"]:
+                                    notes = clean_text
                         
             except Exception as e:
                 print("⚠️ Error parsing deferred state details:", e)
@@ -106,6 +131,9 @@ def main():
             "rating": rating,
             "reviewsCount": reviews_count,
             "description": description,
+            "space": space,
+            "access": access,
+            "notes": notes,
             "amenities": amenities,
             "photos": photos,
             "price": price,
