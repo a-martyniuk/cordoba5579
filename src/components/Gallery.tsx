@@ -93,7 +93,7 @@ export default function Gallery() {
   return (
     <div className="space-y-4">
       {/* Grid Layout (Airbnb Style) */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-3 h-[300px] sm:h-[400px] md:h-[480px] rounded-3xl overflow-hidden relative">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-3 h-[300px] sm:h-[400px] md:h-[480px] rounded-3xl overflow-hidden relative shadow-lg hover:shadow-xl dark:shadow-black/40 transition-shadow duration-500">
         {/* Main large image (Left) */}
         <div
           onClick={() => setLightboxIndex(0)}

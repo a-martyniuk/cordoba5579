@@ -634,9 +634,9 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
   const googleSheetPlacesUrl = ""; 
 
   return (
-    <div className="min-h-screen flex flex-col font-sans antialiased text-neutral-800 dark:text-neutral-200 bg-[#FAF9F7] dark:bg-[#141613] transition-colors duration-300">
+    <div className="min-h-screen flex flex-col font-sans antialiased text-neutral-800 dark:text-neutral-200 bg-gradient-to-b from-[#F0EBE1] to-[#FAF9F7] dark:from-[#1A1D19] dark:to-[#141613] transition-colors duration-300">
       {/* Translucent Navigation Bar */}
-      <nav className="sticky top-0 z-50 backdrop-blur-md bg-[#FAF9F7]/80 dark:bg-[#141613]/80 border-b border-[#EFEBE4] dark:border-[#2C302A] transition-all">
+      <nav className="sticky top-0 z-50 backdrop-blur-xl bg-[#FAF9F7]/65 dark:bg-[#141613]/65 border-b border-[#EFEBE4]/50 dark:border-[#2C302A]/50 transition-all">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
@@ -814,37 +814,37 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
         
         {/* Header Title Section */}
         <ScrollReveal>
-          <div className="space-y-4">
-            <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-[#5F6F52]">
-              <span className="bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-md flex items-center gap-1">
+          <div className="space-y-6">
+            <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-[#5F6F52] tracking-wide">
+              <span className="bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-md flex items-center gap-1 shadow-sm">
                 <Star className="w-3.5 h-3.5 fill-current" />
                 <span>{t.tagNew}</span>
               </span>
               <span>·</span>
-              <span>{t.tagLocation}</span>
+              <span className="dark:text-neutral-400">{t.tagLocation}</span>
               <span>·</span>
-              <span>{t.tagArena}</span>
+              <span className="dark:text-neutral-400">{t.tagArena}</span>
             </div>
             
-            <h1 className="font-serif text-3xl md:text-4.5xl text-neutral-900 font-bold tracking-tight leading-tight">
+            <h1 className="font-serif text-3xl md:text-5xl text-neutral-900 dark:text-white font-bold tracking-normal leading-[1.15]">
               {t.heroTitle}
             </h1>
             
-            <p className="text-neutral-500 text-sm md:text-base max-w-3xl">
+            <p className="text-neutral-500 dark:text-neutral-400 text-sm md:text-base max-w-3xl leading-relaxed">
               {t.heroDesc}
             </p>
 
             {/* Trust Badges Row */}
-            <div className="flex flex-wrap gap-3 pt-1 text-xs font-semibold text-neutral-700 dark:text-neutral-300">
-              <div className="flex items-center gap-2 bg-white dark:bg-[#252824] border border-[#EFEBE4] dark:border-[#353A33] px-4 py-2.5 rounded-2xl shadow-sm transition-colors duration-300">
+            <div className="flex flex-wrap gap-3 pt-2 text-xs font-semibold text-neutral-700 dark:text-neutral-300">
+              <div className="flex items-center gap-2 bg-white/80 dark:bg-[#252824]/80 backdrop-blur-sm border border-[#EFEBE4] dark:border-[#353A33] px-4 py-2.5 rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300">
                 <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
                 <span>{t.badgeAirbnb}</span>
               </div>
-              <div className="flex items-center gap-2 bg-white dark:bg-[#252824] border border-[#EFEBE4] dark:border-[#353A33] px-4 py-2.5 rounded-2xl shadow-sm transition-colors duration-300">
+              <div className="flex items-center gap-2 bg-white/80 dark:bg-[#252824]/80 backdrop-blur-sm border border-[#EFEBE4] dark:border-[#353A33] px-4 py-2.5 rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300">
                 <Users className="w-4 h-4 text-[#5F6F52] dark:text-[#889B73]" />
                 <span>{t.badgeGuests}</span>
               </div>
-              <div className="flex items-center gap-2 bg-white dark:bg-[#252824] border border-[#EFEBE4] dark:border-[#353A33] px-4 py-2.5 rounded-2xl shadow-sm transition-colors duration-300">
+              <div className="flex items-center gap-2 bg-white/80 dark:bg-[#252824]/80 backdrop-blur-sm border border-[#EFEBE4] dark:border-[#353A33] px-4 py-2.5 rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300">
                 <UserCheck className="w-4 h-4 text-emerald-700 dark:text-emerald-500" />
                 <span>{t.badgeVerified}</span>
               </div>
@@ -911,49 +911,49 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
               <h3 className="font-serif text-xl md:text-2xl text-neutral-900 font-semibold">{t.whyTitle}</h3>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div className="flex gap-4">
-                  <div className="p-3 bg-neutral-100 rounded-2xl flex-shrink-0 h-fit">
-                    <Compass className="w-5 h-5 text-neutral-700" />
+                <div className="flex gap-4 p-4 -m-4 rounded-3xl hover:bg-white dark:hover:bg-[#252824] hover:shadow-lg hover:shadow-neutral-200/50 dark:hover:shadow-black/20 transition-all duration-300 group">
+                  <div className="p-3 bg-neutral-100 dark:bg-neutral-800 rounded-2xl flex-shrink-0 h-fit group-hover:scale-110 transition-transform duration-300">
+                    <Compass className="w-5 h-5 text-neutral-700 dark:text-neutral-300" />
                   </div>
                   <div className="space-y-1">
-                    <h4 className="font-semibold text-sm text-neutral-900">{t.whyLocTitle}</h4>
-                    <p className="text-neutral-500 text-xs leading-relaxed">
+                    <h4 className="font-semibold text-sm text-neutral-900 dark:text-white">{t.whyLocTitle}</h4>
+                    <p className="text-neutral-500 dark:text-neutral-400 text-xs leading-relaxed">
                       {t.whyLocText}
                     </p>
                   </div>
                 </div>
 
-                <div className="flex gap-4">
-                  <div className="p-3 bg-neutral-100 rounded-2xl flex-shrink-0 h-fit">
-                    <Clock className="w-5 h-5 text-neutral-700" />
+                <div className="flex gap-4 p-4 -m-4 rounded-3xl hover:bg-white dark:hover:bg-[#252824] hover:shadow-lg hover:shadow-neutral-200/50 dark:hover:shadow-black/20 transition-all duration-300 group">
+                  <div className="p-3 bg-neutral-100 dark:bg-neutral-800 rounded-2xl flex-shrink-0 h-fit group-hover:scale-110 transition-transform duration-300">
+                    <Clock className="w-5 h-5 text-neutral-700 dark:text-neutral-300" />
                   </div>
                   <div className="space-y-1">
-                    <h4 className="font-semibold text-sm text-neutral-900">{t.whyCheckTitle}</h4>
-                    <p className="text-neutral-500 text-xs leading-relaxed">
+                    <h4 className="font-semibold text-sm text-neutral-900 dark:text-white">{t.whyCheckTitle}</h4>
+                    <p className="text-neutral-500 dark:text-neutral-400 text-xs leading-relaxed">
                       {t.whyCheckText}
                     </p>
                   </div>
                 </div>
 
-                <div className="flex gap-4">
-                  <div className="p-3 bg-neutral-100 rounded-2xl flex-shrink-0 h-fit">
-                    <Wine className="w-5 h-5 text-[#5F6F52]" />
+                <div className="flex gap-4 p-4 -m-4 rounded-3xl hover:bg-white dark:hover:bg-[#252824] hover:shadow-lg hover:shadow-neutral-200/50 dark:hover:shadow-black/20 transition-all duration-300 group">
+                  <div className="p-3 bg-neutral-100 dark:bg-neutral-800 rounded-2xl flex-shrink-0 h-fit group-hover:scale-110 transition-transform duration-300">
+                    <Wine className="w-5 h-5 text-[#5F6F52] dark:text-[#889B73]" />
                   </div>
                   <div className="space-y-1">
-                    <h4 className="font-semibold text-sm text-neutral-900">{t.whyWineTitle}</h4>
-                    <p className="text-neutral-500 text-xs leading-relaxed">
+                    <h4 className="font-semibold text-sm text-neutral-900 dark:text-white">{t.whyWineTitle}</h4>
+                    <p className="text-neutral-500 dark:text-neutral-400 text-xs leading-relaxed">
                       {t.whyWineText}
                     </p>
                   </div>
                 </div>
 
-                <div className="flex gap-4">
-                  <div className="p-3 bg-emerald-50 rounded-2xl flex-shrink-0 h-fit">
-                    <UserCheck className="w-5 h-5 text-emerald-700" />
+                <div className="flex gap-4 p-4 -m-4 rounded-3xl hover:bg-white dark:hover:bg-[#252824] hover:shadow-lg hover:shadow-neutral-200/50 dark:hover:shadow-black/20 transition-all duration-300 group">
+                  <div className="p-3 bg-emerald-50 dark:bg-emerald-900/30 rounded-2xl flex-shrink-0 h-fit group-hover:scale-110 transition-transform duration-300">
+                    <UserCheck className="w-5 h-5 text-emerald-700 dark:text-emerald-400" />
                   </div>
                   <div className="space-y-1">
-                    <h4 className="font-semibold text-sm text-neutral-900">{t.whyHostTitle}</h4>
-                    <p className="text-neutral-500 text-xs leading-relaxed">
+                    <h4 className="font-semibold text-sm text-neutral-900 dark:text-white">{t.whyHostTitle}</h4>
+                    <p className="text-neutral-500 dark:text-neutral-400 text-xs leading-relaxed">
                       {t.whyHostText}
                     </p>
                   </div>
