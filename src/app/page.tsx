@@ -660,7 +660,7 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
             </div>
 
             {/* Desktop Navigation Links */}
-            <div className="hidden md:flex items-center space-x-6 lg:space-x-8 text-xs font-semibold tracking-wider text-neutral-600">
+            <div className="hidden lg:flex items-center space-x-5 xl:space-x-8 text-[11px] xl:text-xs font-semibold tracking-wider text-neutral-600">
               <a href="#detalles" className="hover:text-neutral-900 transition-colors">{t.navDept}</a>
               <a href="#amenidades" className="hover:text-neutral-900 transition-colors">{t.navAmen}</a>
               <Link href="/cava" className="hover:text-neutral-900 transition-colors">{t.navCava}</Link>
@@ -672,7 +672,7 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
             </div>
 
             {/* Language Switcher and CTA Button */}
-            <div className="hidden md:flex items-center space-x-4">
+            <div className="hidden lg:flex items-center space-x-4">
               <button
                 onClick={() => handleThemeChange(!darkMode)}
                 className="w-7 h-7 rounded-lg bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 border border-[#EFEBE4] dark:border-[#2C302A] text-neutral-600 dark:text-neutral-300 transition-all text-xs flex items-center justify-center shadow-sm"
@@ -705,7 +705,7 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
             </div>
 
             {/* Mobile menu button */}
-            <div className="md:hidden flex items-center space-x-3">
+            <div className="lg:hidden flex items-center space-x-3">
               <button
                 onClick={() => handleThemeChange(!darkMode)}
                 className="w-7 h-7 rounded-lg bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 border border-[#EFEBE4] dark:border-[#2C302A] text-neutral-600 dark:text-neutral-300 transition-all text-xs flex items-center justify-center shadow-sm"
