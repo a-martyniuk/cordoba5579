@@ -275,8 +275,11 @@ export default function Home() {
     }
   }, []);
 
+  const currentDetails = airbnbDetails[language] || airbnbDetails.es || {};
+
   const groupedAmenities = React.useMemo(() => {
-    const amenities = airbnbDetails.amenities || [];
+    const details = airbnbDetails[language] || airbnbDetails.es || {};
+    const amenities = details.amenities || [];
     const categories = {
       kitchen: { titleEs: "Cocina y Vajilla", titleEn: "Kitchen & Dining", icon: "🍳", items: [] as string[] },
       bedroom: { titleEs: "Dormitorio y Blancos", titleEn: "Bedroom & Linens", icon: "🛏️", items: [] as string[] },
@@ -304,7 +307,7 @@ export default function Home() {
     });
 
     return Object.values(categories).filter(c => c.items.length > 0);
-  }, []);
+  }, [language]);
 
   const handleLanguageChange = (newLang: "es" | "en") => {
     setLanguage(newLang);
@@ -340,8 +343,8 @@ export default function Home() {
       tagNew: "A Estrenar",
       tagLocation: "Palermo Hollywood, CABA",
       tagArena: "A 5 min. del Movistar Arena",
-      heroTitle: airbnbDetails.title || "Estadía de Diseño con Rooftop y Piscina en Av. Córdoba",
-      heroDesc: airbnbDetails.description || "Un oasis urbano de diseño contemporáneo y confort absoluto en la zona más vibrante de Buenos Aires. Totalmente equipado y pensado para nómadas digitales y viajeros exigentes.",
+      heroTitle: airbnbDetails.es?.title || "Estadía de Diseño con Rooftop y Piscina en Av. Córdoba",
+      heroDesc: airbnbDetails.es?.description || "Un oasis urbano de diseño contemporáneo y confort absoluto en la zona más vibrante de Buenos Aires. Totalmente equipado y pensado para nómadas digitales y viajeros exigentes.",
       badgeAirbnb: `★ ${airbnbDetails.rating.toFixed(2)} (${airbnbDetails.reviewsCount} evaluaciones)`,
       badgeGuests: "Capacidad: 2 a 4 huéspedes",
       badgeVerified: "Anfitrión verificado",
@@ -438,8 +441,8 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
       tagNew: "Brand New",
       tagLocation: "Palermo Hollywood, BA",
       tagArena: "5 min from Movistar Arena",
-      heroTitle: airbnbDetails.title || "Designer Apartment with Rooftop and Pool on Av. Córdoba",
-      heroDesc: airbnbDetails.description || "An urban oasis of contemporary design and absolute comfort in the most vibrant area of Buenos Aires. Fully equipped and tailored for digital nomads and demanding travelers.",
+      heroTitle: airbnbDetails.en?.title || "Designer Apartment with Rooftop and Pool on Av. Córdoba",
+      heroDesc: airbnbDetails.en?.description || "An urban oasis of contemporary design and absolute comfort in the most vibrant area of Buenos Aires. Fully equipped and tailored for digital nomads and demanding travelers.",
       badgeAirbnb: `★ ${airbnbDetails.rating.toFixed(2)} (${airbnbDetails.reviewsCount} reviews)`,
       badgeGuests: "Capacity: 2 to 4 guests",
       badgeVerified: "Verified Host",
@@ -920,8 +923,8 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
             <div className="space-y-4 border-b border-[#EFEBE4] pb-8">
               <h3 className="font-serif text-xl md:text-2xl text-neutral-900 font-semibold">{t.aboutTitle}</h3>
               <div className="text-neutral-600 text-sm leading-relaxed space-y-4 font-sans">
-                {airbnbDetails.description ? (
-                  airbnbDetails.description.split("\n").filter(p => p.trim()).map((p, i) => (
+                {currentDetails.description ? (
+                  currentDetails.description.split("\n").filter(p => p.trim()).map((p, i) => (
                     <p key={i}>{p}</p>
                   ))
                 ) : (
@@ -933,24 +936,24 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
                 )}
                 
                 {/* Space / El alojamiento details */}
-                {airbnbDetails.space && (
+                {currentDetails.space && (
                   <div className="pt-5 mt-5 border-t border-[#EFEBE4] dark:border-[#2C302A] space-y-3">
                     <h4 className="font-serif text-base text-neutral-800 dark:text-neutral-200 font-semibold">
                       {language === "es" ? "El alojamiento" : "The space"}
                     </h4>
-                    {airbnbDetails.space.split("\n").filter(p => p.trim()).map((p, i) => (
+                    {currentDetails.space.split("\n").filter(p => p.trim()).map((p, i) => (
                       <p key={i} className="text-neutral-500 dark:text-neutral-400 font-light leading-relaxed">{p}</p>
                     ))}
                   </div>
                 )}
 
                 {/* Guest Access / Acceso de los huéspedes */}
-                {airbnbDetails.access && (
+                {currentDetails.access && (
                   <div className="pt-5 mt-5 border-t border-[#EFEBE4] dark:border-[#2C302A] space-y-3">
                     <h4 className="font-serif text-base text-neutral-800 dark:text-neutral-200 font-semibold">
                       {language === "es" ? "Acceso de los huéspedes" : "Guest access"}
                     </h4>
-                    {airbnbDetails.access.split("\n").filter(p => p.trim()).map((p, i) => (
+                    {currentDetails.access.split("\n").filter(p => p.trim()).map((p, i) => (
                       <p key={i} className="text-neutral-500 dark:text-neutral-400 font-light leading-relaxed">{p}</p>
                     ))}
                   </div>
@@ -1235,8 +1238,8 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
           </h3>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 text-xs md:text-sm text-neutral-600 dark:text-neutral-350 font-sans">
-            {airbnbDetails.notes ? (
-              airbnbDetails.notes.split("\n").filter(p => p.trim()).map((p, i) => (
+            {currentDetails.notes ? (
+              currentDetails.notes.split("\n").filter(p => p.trim()).map((p, i) => (
                 <div key={i} className="flex items-start gap-2.5">
                   <span className="w-1.5 h-1.5 bg-[#5F6F52] rounded-full mt-2 flex-shrink-0" />
                   <p>{p}</p>
