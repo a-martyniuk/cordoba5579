@@ -57,57 +57,210 @@
     "access": "Tendrás acceso exclusivo a todo el departamento de forma privada, incluyendo la habitación, el baño completo, el toilette, la cocina totalmente equipada y el living.\nAdemás, tendrás acceso a los siguientes espacios comunes del edificio:\nRooftop y Piscina (Piso 11): Una espectacular terraza con piscina exterior climatizada (disponible en temporada de Octubre a Abril) con reposeras, ducha exterior y excelentes vistas panorámicas de la ciudad.\nZona de Parrilla (Piso 11): Espacio con parrilla en terraza disponible para almuerzos o cenas (sujeto a reserva previa y disponibilidad con el anfitrión).\nLavadero / Laundry (Piso 10): Acceso al lavadero del edificio equipado con lavarropas disponible para uso de los huéspedes de forma gratuita (se provee ténder para colgar la ropa).\nNota importante por reglamento del consorcio: Las áreas comunes (terraza, pileta y parrilla) son de uso exclusivo para los huéspedes registrados en la reserva. No está permitido el ingreso de visitas externas a estas áreas del edificio.",
     "notes": "De acuerdo con el Reglamento de Copropiedad de la propiedad horizontal de Av. Córdoba 5579, te pedimos respetar las siguientes normas esenciales para garantizar una excelente convivencia en el edificio:\n\nCapacidad Máxima: El departamento admite hasta 4 huéspedes como máximo.\nUso de la Terraza y Piscina: El acceso al rooftop, solárium y piscina está permitido únicamente para los huéspedes registrados en la reserva. Queda estrictamente prohibido el acceso a invitados externos a estas áreas del edificio. Es obligatorio ducharse antes de ingresar al agua.\nProhibido Fumar: No se permite fumar dentro del departamento, ni en las áreas comunes del edificio (pasillos, ascensores, lobby, terraza).\nDescanso y Ruido: Por normas del consorcio, se deben respetar las horas de silencio y está totalmente prohibido realizar fiestas, eventos o emitir ruidos molestos.\nCuidado de Mascotas: Por reglamento, no se admiten mascotas en la unidad.",
     "amenities": [
-      "Secador de pelo",
-      "Productos de limpieza",
-      "Shampoo Dove",
-      "Acondicionador Dove",
-      "Jabón corporal Dove",
-      "Bidé",
-      "Ducha exterior",
-      "Agua caliente",
-      "Gel de ducha",
-      "Lavarropas: gratis en el edificio",
-      "Secarropas por gratis en el edificio",
-      "Perchas",
-      "Ropa de cama",
-      "Almohadas y mantas adicionales",
-      "Persianas o cortinas oscuras",
-      "Plancha",
-      "Ténder para ropa",
-      "Caja fuerte",
-      "Espacio para guardar ropa: placard y armario",
-      "Conexión Ethernet",
-      "Televisor HD de 55 pulgadas",
-      "Libros y material de lectura",
-      "AC: Sistema sin conductos tipo split",
-      "Calefacción: sistema sin conductos tipo split",
-      "Cámaras de seguridad exteriores en la propiedad",
-      "Detector de humo",
-      "Detector de monóxido de carbono",
-      "Matafuego",
-      "Botiquín de primeros auxilios",
-      "Wifi",
-      "Heladera Samsung",
-      "Microondas",
-      "Utensilios básicos de cocina",
-      "Vajilla y cubiertos",
-      "Congelador",
-      "Horno eléctrico de acero inoxidable de Other",
-      "Pava eléctrica",
-      "Cafetera: máquina de café espresso",
-      "Copas de vino",
-      "Licuadora",
-      "Arrocera",
-      "Mesa de comedor",
-      "Parrilla compartida: a carbón, a leña",
-      "Estacionamiento gratis en la calle",
-      "Pileta al aire libre compartida: disponible según la temporada, disponible a un horario específico, en la terraza",
-      "Ascensor",
-      "Alojamiento de un solo piso",
-      "Se permite dejar el equipaje",
-      "Disponible para estadías largas",
-      "Check-in sin anfitrión",
-      "Caja de seguridad para llaves"
+      {
+        "title": "Secador de pelo",
+        "subtitle": ""
+      },
+      {
+        "title": "Productos de limpieza",
+        "subtitle": ""
+      },
+      {
+        "title": "Shampoo Dove",
+        "subtitle": ""
+      },
+      {
+        "title": "Acondicionador Dove",
+        "subtitle": ""
+      },
+      {
+        "title": "Jabón corporal Dove",
+        "subtitle": ""
+      },
+      {
+        "title": "Bidé",
+        "subtitle": ""
+      },
+      {
+        "title": "Ducha exterior",
+        "subtitle": ""
+      },
+      {
+        "title": "Agua caliente",
+        "subtitle": ""
+      },
+      {
+        "title": "Gel de ducha",
+        "subtitle": ""
+      },
+      {
+        "title": "Lavarropas: gratis en el edificio",
+        "subtitle": ""
+      },
+      {
+        "title": "Secarropas por gratis en el edificio",
+        "subtitle": ""
+      },
+      {
+        "title": "Perchas",
+        "subtitle": ""
+      },
+      {
+        "title": "Ropa de cama",
+        "subtitle": "Ropa de cama 600 hilos de algodón egipcio"
+      },
+      {
+        "title": "Almohadas y mantas adicionales",
+        "subtitle": ""
+      },
+      {
+        "title": "Persianas o cortinas oscuras",
+        "subtitle": ""
+      },
+      {
+        "title": "Plancha",
+        "subtitle": ""
+      },
+      {
+        "title": "Ténder para ropa",
+        "subtitle": ""
+      },
+      {
+        "title": "Caja fuerte",
+        "subtitle": ""
+      },
+      {
+        "title": "Espacio para guardar ropa: placard y armario",
+        "subtitle": ""
+      },
+      {
+        "title": "Conexión Ethernet",
+        "subtitle": ""
+      },
+      {
+        "title": "Televisor HD de 55 pulgadas",
+        "subtitle": ""
+      },
+      {
+        "title": "Libros y material de lectura",
+        "subtitle": ""
+      },
+      {
+        "title": "AC: Sistema sin conductos tipo split",
+        "subtitle": ""
+      },
+      {
+        "title": "Calefacción: sistema sin conductos tipo split",
+        "subtitle": ""
+      },
+      {
+        "title": "Cámaras de seguridad exteriores en la propiedad",
+        "subtitle": "Las cámaras de seguridad están instaladas solo en las zonas comunes del edificio, como la entrada principal, el lobby, los pasillos, los ascensores y las instalaciones de la terraza (pileta, solárium y zona de parrilla). No hay cámaras dentro del departamento ni en ninguna zona privada para huéspedes."
+      },
+      {
+        "title": "Detector de humo",
+        "subtitle": ""
+      },
+      {
+        "title": "Detector de monóxido de carbono",
+        "subtitle": ""
+      },
+      {
+        "title": "Matafuego",
+        "subtitle": ""
+      },
+      {
+        "title": "Botiquín de primeros auxilios",
+        "subtitle": ""
+      },
+      {
+        "title": "Wifi",
+        "subtitle": ""
+      },
+      {
+        "title": "Heladera Samsung",
+        "subtitle": ""
+      },
+      {
+        "title": "Microondas",
+        "subtitle": ""
+      },
+      {
+        "title": "Utensilios básicos de cocina",
+        "subtitle": "Ollas y sartenes, aceite, sal y pimienta"
+      },
+      {
+        "title": "Vajilla y cubiertos",
+        "subtitle": "Bols, palitos chinos, platos, tazas, etc."
+      },
+      {
+        "title": "Congelador",
+        "subtitle": ""
+      },
+      {
+        "title": "Horno eléctrico de acero inoxidable de Other",
+        "subtitle": ""
+      },
+      {
+        "title": "Pava eléctrica",
+        "subtitle": ""
+      },
+      {
+        "title": "Cafetera: máquina de café espresso",
+        "subtitle": ""
+      },
+      {
+        "title": "Copas de vino",
+        "subtitle": ""
+      },
+      {
+        "title": "Licuadora",
+        "subtitle": ""
+      },
+      {
+        "title": "Arrocera",
+        "subtitle": ""
+      },
+      {
+        "title": "Mesa de comedor",
+        "subtitle": ""
+      },
+      {
+        "title": "Parrilla compartida: a carbón, a leña",
+        "subtitle": ""
+      },
+      {
+        "title": "Estacionamiento gratis en la calle",
+        "subtitle": ""
+      },
+      {
+        "title": "Pileta al aire libre compartida: disponible según la temporada, disponible a un horario específico, en la terraza",
+        "subtitle": "Disponible de oct a abr, de 8:00 a. m. a 8:00 p. m."
+      },
+      {
+        "title": "Ascensor",
+        "subtitle": "El alojamiento o edificio dispone de un ascensor de al menos 132 centímetros de profundidad cuya puerta mide como mínimo 81 centímetros de ancho"
+      },
+      {
+        "title": "Alojamiento de un solo piso",
+        "subtitle": "Alojamiento sin escaleras"
+      },
+      {
+        "title": "Se permite dejar el equipaje",
+        "subtitle": "Opción de llegar temprano o salir tarde para la comodidad de los huéspedes"
+      },
+      {
+        "title": "Disponible para estadías largas",
+        "subtitle": "Permite estadías de 28 días o más"
+      },
+      {
+        "title": "Check-in sin anfitrión",
+        "subtitle": ""
+      },
+      {
+        "title": "Caja de seguridad para llaves",
+        "subtitle": ""
+      }
     ],
     "photos": [
       "https://a0.muscache.com/im/pictures/hosting/Hosting-1716762976739155303/original/f9a4d034-ac6a-42d0-9dd6-76782f465062.jpeg",
@@ -128,57 +281,210 @@
     "access": "You will have exclusive, private access to the entire apartment, including the bedroom, full bathroom, half bathroom, fully equipped kitchen, and living room.\nIn addition, you will have access to the following common areas of the building:\nRooftop and Pool (11th Floor): A spectacular terrace with a heated outdoor pool (available in season from October to April) with lounge chairs, an outdoor shower, and excellent panoramic views of the city.\nGrill area (11th floor): Space with a grill on the terrace available for lunches or dinners (prior reservation required and subject to availability with the host).\nLaundry (10th Floor): Access to the building's laundry room equipped with a washing machine available for guest use free of charge (a clothesline is provided for hanging clothes).\nImportant note per condominium regulations: The common areas (terrace, pool and grill) are exclusively for the guests listed in the booking. External visitors are not allowed to enter these areas of the building.",
     "notes": "In accordance with the Co-ownership Regulations of the horizontal property at Av. Córdoba 5579, we ask you to respect the following essential rules to ensure excellent coexistence in the building:\n\nMaximum capacity: The apartment accommodates up to 4 guests maximum.\nUse of the Terrace and Pool: Access to the rooftop, solarium and pool is allowed only for guests registered in the reservation. Access to these areas of the building by outside guests is strictly forbidden. It is mandatory to shower before entering the water.\nNo Smoking: Smoking is not allowed inside the apartment or in the common areas of the building (corridors, elevators, lobby, terrace).\nQuiet Hours and Noise: According to the condominium association's rules, quiet hours must be respected, and parties, events, or making bothersome noise are strictly prohibited.\nPet Care: By regulation, pets are not allowed in the unit.",
     "amenities": [
-      "Hair dryer",
-      "Cleaning products",
-      "Dove shampoo",
-      "Dove conditioner",
-      "Dove body soap",
-      "Bidet",
-      "Outdoor shower",
-      "Hot water",
-      "Shower gel",
-      "Free washer – In building",
-      "Free dryer – In building",
-      "Hangers",
-      "Bed linens",
-      "Extra pillows and blankets",
-      "Room-darkening shades",
-      "Iron",
-      "Drying rack for clothing",
-      "Safe",
-      "Clothing storage: closet and wardrobe",
-      "Ethernet connection",
-      "55 inch HDTV",
-      "Books and reading material",
-      "AC - split type ductless system",
-      "Heating - split type ductless system",
-      "Exterior security cameras on property",
-      "Smoke alarm",
-      "Carbon monoxide alarm",
-      "Fire extinguisher",
-      "First aid kit",
-      "Wifi",
-      "Samsung refrigerator",
-      "Microwave",
-      "Cooking basics",
-      "Dishes and silverware",
-      "Freezer",
-      "Other stainless steel electric stove",
-      "Hot water kettle",
-      "Coffee maker: espresso machine",
-      "Wine glasses",
-      "Blender",
-      "Rice maker",
-      "Dining table",
-      "Shared BBQ grill: charcoal, wood-burning",
-      "Free street parking",
-      "Shared outdoor pool - available seasonally, open specific hours, rooftop",
-      "Elevator",
-      "Single level home",
-      "Luggage dropoff allowed",
-      "Long term stays allowed",
-      "Self check-in",
-      "Lockbox"
+      {
+        "title": "Hair dryer",
+        "subtitle": ""
+      },
+      {
+        "title": "Cleaning products",
+        "subtitle": ""
+      },
+      {
+        "title": "Dove shampoo",
+        "subtitle": ""
+      },
+      {
+        "title": "Dove conditioner",
+        "subtitle": ""
+      },
+      {
+        "title": "Dove body soap",
+        "subtitle": ""
+      },
+      {
+        "title": "Bidet",
+        "subtitle": ""
+      },
+      {
+        "title": "Outdoor shower",
+        "subtitle": ""
+      },
+      {
+        "title": "Hot water",
+        "subtitle": ""
+      },
+      {
+        "title": "Shower gel",
+        "subtitle": ""
+      },
+      {
+        "title": "Free washer – In building",
+        "subtitle": ""
+      },
+      {
+        "title": "Free dryer – In building",
+        "subtitle": ""
+      },
+      {
+        "title": "Hangers",
+        "subtitle": ""
+      },
+      {
+        "title": "Bed linens",
+        "subtitle": "Egyptian cotton 600 hilos linens"
+      },
+      {
+        "title": "Extra pillows and blankets",
+        "subtitle": ""
+      },
+      {
+        "title": "Room-darkening shades",
+        "subtitle": ""
+      },
+      {
+        "title": "Iron",
+        "subtitle": ""
+      },
+      {
+        "title": "Drying rack for clothing",
+        "subtitle": ""
+      },
+      {
+        "title": "Safe",
+        "subtitle": ""
+      },
+      {
+        "title": "Clothing storage: closet and wardrobe",
+        "subtitle": ""
+      },
+      {
+        "title": "Ethernet connection",
+        "subtitle": ""
+      },
+      {
+        "title": "55 inch HDTV",
+        "subtitle": ""
+      },
+      {
+        "title": "Books and reading material",
+        "subtitle": ""
+      },
+      {
+        "title": "AC - split type ductless system",
+        "subtitle": ""
+      },
+      {
+        "title": "Heating - split type ductless system",
+        "subtitle": ""
+      },
+      {
+        "title": "Exterior security cameras on property",
+        "subtitle": "Security cameras are installed only in the building's common areas, including the main entrance, lobby, hallways, elevators and rooftop amenities (pool, solarium and BBQ area). There are no cameras inside the apartment or in any private guest areas."
+      },
+      {
+        "title": "Smoke alarm",
+        "subtitle": ""
+      },
+      {
+        "title": "Carbon monoxide alarm",
+        "subtitle": ""
+      },
+      {
+        "title": "Fire extinguisher",
+        "subtitle": ""
+      },
+      {
+        "title": "First aid kit",
+        "subtitle": ""
+      },
+      {
+        "title": "Wifi",
+        "subtitle": ""
+      },
+      {
+        "title": "Samsung refrigerator",
+        "subtitle": ""
+      },
+      {
+        "title": "Microwave",
+        "subtitle": ""
+      },
+      {
+        "title": "Cooking basics",
+        "subtitle": "Pots and pans, oil, salt and pepper"
+      },
+      {
+        "title": "Dishes and silverware",
+        "subtitle": "Bowls, chopsticks, plates, cups, etc."
+      },
+      {
+        "title": "Freezer",
+        "subtitle": ""
+      },
+      {
+        "title": "Other stainless steel electric stove",
+        "subtitle": ""
+      },
+      {
+        "title": "Hot water kettle",
+        "subtitle": ""
+      },
+      {
+        "title": "Coffee maker: espresso machine",
+        "subtitle": ""
+      },
+      {
+        "title": "Wine glasses",
+        "subtitle": ""
+      },
+      {
+        "title": "Blender",
+        "subtitle": ""
+      },
+      {
+        "title": "Rice maker",
+        "subtitle": ""
+      },
+      {
+        "title": "Dining table",
+        "subtitle": ""
+      },
+      {
+        "title": "Shared BBQ grill: charcoal, wood-burning",
+        "subtitle": ""
+      },
+      {
+        "title": "Free street parking",
+        "subtitle": ""
+      },
+      {
+        "title": "Shared outdoor pool - available seasonally, open specific hours, rooftop",
+        "subtitle": "Available from Oct to Apr, open from 8:00 AM to 8:00 PM"
+      },
+      {
+        "title": "Elevator",
+        "subtitle": "The home or building has an elevator that’s at least 52 inches deep and a doorway at least 32 inches wide"
+      },
+      {
+        "title": "Single level home",
+        "subtitle": "No stairs in home"
+      },
+      {
+        "title": "Luggage dropoff allowed",
+        "subtitle": "For guests' convenience when they have early arrival or late departure"
+      },
+      {
+        "title": "Long term stays allowed",
+        "subtitle": "Allow stay for 28 days or more"
+      },
+      {
+        "title": "Self check-in",
+        "subtitle": ""
+      },
+      {
+        "title": "Lockbox",
+        "subtitle": ""
+      }
     ],
     "photos": [
       "https://a0.muscache.com/im/pictures/hosting/Hosting-1716762976739155303/original/f9a4d034-ac6a-42d0-9dd6-76782f465062.jpeg",

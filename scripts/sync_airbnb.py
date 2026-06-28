@@ -94,8 +94,25 @@ def fetch_listing_for_locale(url_base, locale):
                             for item in g.get("amenities", []):
                                 if item.get("available") and item.get("title"):
                                     title_item = item.get("title")
-                                    if title_item not in amenities:
-                                        amenities.append(title_item)
+                                    # Safely extract subtitle
+                                    sub_val = ""
+                                    sub_obj = item.get("subtitle")
+                                    if sub_obj:
+                                        if isinstance(sub_obj, dict):
+                                            if sub_obj.get("text"):
+                                                sub_val = sub_obj.get("text")
+                                            elif sub_obj.get("content", {}).get("localizedString"):
+                                                sub_val = sub_obj.get("content", {}).get("localizedString")
+                                    
+                                    title_item = html.unescape(title_item).strip()
+                                    sub_val = html.unescape(sub_val).strip()
+                                    
+                                    # Add to list as dictionary avoiding duplicates by title
+                                    if not any(a.get("title") == title_item for a in amenities):
+                                        amenities.append({
+                                            "title": title_item,
+                                            "subtitle": sub_val
+                                        })
                                         
                     # Parse Capacity text
                     sharing_title = pdp_data.get("node", {}).get("pdpPresentation", {}).get("sharingConfig", {}).get("ugcTitle", {}).get("content", {}).get("localizedString")
