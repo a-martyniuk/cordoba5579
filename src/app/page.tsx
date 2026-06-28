@@ -332,6 +332,7 @@ export default function Home() {
     es: {
       navDept: "EL DEPARTAMENTO",
       navAmen: "AMENIDADES",
+      navCava: "CAVA & MINIBAR",
       navInve: "INVENTARIO",
       inventoryCtaTitle: "Equipamiento e Inventario Completo",
       inventoryCtaDesc: "Consulta el listado detallado de vajilla, electrodomésticos, blanquería, elementos de seguridad y comodidades que encontrarás en el departamento para planificar tu estadía sin sorpresas.",
@@ -430,6 +431,7 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
     en: {
       navDept: "THE APARTMENT",
       navAmen: "AMENITIES",
+      navCava: "WINE & MINIBAR",
       navInve: "INVENTORY",
       inventoryCtaTitle: "Complete Equipment & Inventory",
       inventoryCtaDesc: "Browse the detailed list of dinnerware, appliances, linens, safety features, and amenities available in the apartment to plan your stay with peace of mind.",
@@ -641,8 +643,9 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
             <div className="hidden md:flex items-center space-x-6 lg:space-x-8 text-xs font-semibold tracking-wider text-neutral-600">
               <a href="#detalles" className="hover:text-neutral-900 transition-colors">{t.navDept}</a>
               <a href="#amenidades" className="hover:text-neutral-900 transition-colors">{t.navAmen}</a>
-              <a href="#resenas" className="hover:text-neutral-900 transition-colors">{t.reviewsTitle.toUpperCase()}</a>
+              <Link href="/cava" className="hover:text-neutral-900 transition-colors">{t.navCava}</Link>
               <Link href="/inventario" className="hover:text-neutral-900 transition-colors">{t.navInve}</Link>
+              <a href="#resenas" className="hover:text-neutral-900 transition-colors">{t.reviewsTitle.toUpperCase()}</a>
               <a href="#barrio" className="hover:text-neutral-900 transition-colors">{t.navBarr}</a>
               <a href="#reglas" className="hover:text-neutral-900 transition-colors">{t.navNorm}</a>
               <a href="#faq" className="hover:text-neutral-900 transition-colors">{t.navFaq}</a>
@@ -734,13 +737,13 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
             >
               {t.navAmen}
             </a>
-            <a 
-              href="#resenas" 
+            <Link 
+              href="/cava" 
               onClick={() => setMobileMenuOpen(false)}
               className="block py-2 text-neutral-600 hover:text-neutral-900"
             >
-              {t.reviewsTitle}
-            </a>
+              {t.navCava}
+            </Link>
             <Link 
               href="/inventario" 
               onClick={() => setMobileMenuOpen(false)}
@@ -748,6 +751,13 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
             >
               {t.navInve}
             </Link>
+            <a 
+              href="#resenas" 
+              onClick={() => setMobileMenuOpen(false)}
+              className="block py-2 text-neutral-600 hover:text-neutral-900"
+            >
+              {t.reviewsTitle}
+            </a>
             <a 
               href="#barrio" 
               onClick={() => setMobileMenuOpen(false)}
