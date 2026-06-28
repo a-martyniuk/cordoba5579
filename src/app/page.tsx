@@ -1080,53 +1080,107 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {/* Red Wine */}
-                <div className="bg-white dark:bg-[#141613] border border-[#EFEBE4] dark:border-[#2C302A] p-4 rounded-2xl flex justify-between gap-3 shadow-sm hover:shadow-md transition-all duration-300">
-                  <div className="space-y-1">
-                    <span className="text-[10px] bg-red-50 dark:bg-red-950/20 text-red-700 dark:text-red-400 font-bold px-2 py-0.5 rounded">Tinto / Red</span>
-                    <h5 className="font-bold text-xs sm:text-sm text-neutral-900 dark:text-neutral-200 pt-1">{t.minibarItemRed}</h5>
-                    <p className="text-[11px] text-neutral-500 dark:text-neutral-405">{t.minibarDescRed}</p>
-                  </div>
-                  <div className="text-right flex flex-col justify-between items-end flex-shrink-0">
-                    <span className="text-sm font-bold text-neutral-900 dark:text-neutral-200">USD 15</span>
-                  </div>
-                </div>
+                {airbnbDetails.cava && airbnbDetails.cava.length > 0 ? (
+                  airbnbDetails.cava.map((item: { categoria?: string; nombre?: string; descripcion?: string; cantidad?: number | string; precio_usd?: number | string }, idx: number) => {
+                    const name = item.categoria || item.nombre || "";
+                    const desc = item.descripcion || "";
+                    const price = item.precio_usd || 0;
+                    
+                    let categoryTagEs = "Minibar";
+                    let categoryTagEn = "Minibar";
+                    let tagColor = "bg-neutral-50 dark:bg-neutral-950/20 text-neutral-700 dark:text-neutral-400";
+                    
+                    const lower = name.toLowerCase();
+                    if (lower.includes("tinto") || lower.includes("red")) {
+                      categoryTagEs = "Tinto";
+                      categoryTagEn = "Red";
+                      tagColor = "bg-red-50 dark:bg-red-950/20 text-red-700 dark:text-red-400";
+                    } else if (lower.includes("blanco") || lower.includes("white") || lower.includes("torrontes") || lower.includes("torrontés")) {
+                      categoryTagEs = "Blanco";
+                      categoryTagEn = "White";
+                      tagColor = "bg-amber-50 dark:bg-amber-950/20 text-amber-700 dark:text-amber-400";
+                    } else if (lower.includes("champagne") || lower.includes("espumante") || lower.includes("sparkling") || lower.includes("demi sec") || lower.includes("burbuja")) {
+                      categoryTagEs = "Burbujas";
+                      categoryTagEn = "Sparkling";
+                      tagColor = "bg-yellow-50 dark:bg-yellow-950/20 text-yellow-700 dark:text-yellow-400";
+                    } else if (lower.includes("fernet") || lower.includes("coca") || lower.includes("classic")) {
+                      categoryTagEs = "Clásico";
+                      categoryTagEn = "Classic";
+                      tagColor = "bg-emerald-50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-400";
+                    }
+                    
+                    return (
+                      <div key={idx} className="bg-white dark:bg-[#141613] border border-[#EFEBE4] dark:border-[#2C302A] p-4 rounded-2xl flex justify-between gap-3 shadow-sm hover:shadow-md transition-all duration-300">
+                        <div className="space-y-1">
+                          <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${tagColor}`}>
+                            {language === "es" ? categoryTagEs : categoryTagEn}
+                          </span>
+                          <h5 className="font-bold text-xs sm:text-sm text-neutral-900 dark:text-neutral-200 pt-1">
+                            {name}
+                          </h5>
+                          {desc && (
+                            <p className="text-[11px] text-neutral-500 dark:text-neutral-400 leading-normal">{desc}</p>
+                          )}
+                        </div>
+                        <div className="text-right flex flex-col justify-between items-end flex-shrink-0">
+                          <span className="text-sm font-bold text-neutral-900 dark:text-neutral-200">
+                            USD {price}
+                          </span>
+                        </div>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <>
+                    {/* Red Wine */}
+                    <div className="bg-white dark:bg-[#141613] border border-[#EFEBE4] dark:border-[#2C302A] p-4 rounded-2xl flex justify-between gap-3 shadow-sm hover:shadow-md transition-all duration-300">
+                      <div className="space-y-1">
+                        <span className="text-[10px] bg-red-50 dark:bg-red-950/20 text-red-700 dark:text-red-400 font-bold px-2 py-0.5 rounded">Tinto / Red</span>
+                        <h5 className="font-bold text-xs sm:text-sm text-neutral-900 dark:text-neutral-200 pt-1">{t.minibarItemRed}</h5>
+                        <p className="text-[11px] text-neutral-500 dark:text-neutral-405">{t.minibarDescRed}</p>
+                      </div>
+                      <div className="text-right flex flex-col justify-between items-end flex-shrink-0">
+                        <span className="text-sm font-bold text-neutral-900 dark:text-neutral-200">USD 15</span>
+                      </div>
+                    </div>
 
-                {/* White Wine */}
-                <div className="bg-white dark:bg-[#141613] border border-[#EFEBE4] dark:border-[#2C302A] p-4 rounded-2xl flex justify-between gap-3 shadow-sm hover:shadow-md transition-all duration-300">
-                  <div className="space-y-1">
-                    <span className="text-[10px] bg-amber-50 dark:bg-amber-950/20 text-amber-700 dark:text-amber-400 font-bold px-2 py-0.5 rounded">Blanco / White</span>
-                    <h5 className="font-bold text-xs sm:text-sm text-neutral-900 dark:text-neutral-200 pt-1">{t.minibarItemWhite}</h5>
-                    <p className="text-[11px] text-neutral-500 dark:text-neutral-405">{t.minibarDescWhite}</p>
-                  </div>
-                  <div className="text-right flex flex-col justify-between items-end flex-shrink-0">
-                    <span className="text-sm font-bold text-neutral-900 dark:text-neutral-200">USD 12</span>
-                  </div>
-                </div>
+                    {/* White Wine */}
+                    <div className="bg-white dark:bg-[#141613] border border-[#EFEBE4] dark:border-[#2C302A] p-4 rounded-2xl flex justify-between gap-3 shadow-sm hover:shadow-md transition-all duration-300">
+                      <div className="space-y-1">
+                        <span className="text-[10px] bg-amber-50 dark:bg-amber-950/20 text-amber-700 dark:text-amber-400 font-bold px-2 py-0.5 rounded">Blanco / White</span>
+                        <h5 className="font-bold text-xs sm:text-sm text-neutral-900 dark:text-neutral-200 pt-1">{t.minibarItemWhite}</h5>
+                        <p className="text-[11px] text-neutral-500 dark:text-neutral-405">{t.minibarDescWhite}</p>
+                      </div>
+                      <div className="text-right flex flex-col justify-between items-end flex-shrink-0">
+                        <span className="text-sm font-bold text-neutral-900 dark:text-neutral-200">USD 12</span>
+                      </div>
+                    </div>
 
-                {/* Sparkling */}
-                <div className="bg-white dark:bg-[#141613] border border-[#EFEBE4] dark:border-[#2C302A] p-4 rounded-2xl flex justify-between gap-3 shadow-sm hover:shadow-md transition-all duration-300">
-                  <div className="space-y-1">
-                    <span className="text-[10px] bg-yellow-50 dark:bg-yellow-950/20 text-yellow-700 dark:text-yellow-400 font-bold px-2 py-0.5 rounded">Burbujas / Sparkling</span>
-                    <h5 className="font-bold text-xs sm:text-sm text-neutral-900 dark:text-neutral-200 pt-1">{t.minibarItemChampagne}</h5>
-                    <p className="text-[11px] text-neutral-500 dark:text-neutral-405">{t.minibarDescChampagne}</p>
-                  </div>
-                  <div className="text-right flex flex-col justify-between items-end flex-shrink-0">
-                    <span className="text-sm font-bold text-neutral-900 dark:text-neutral-200">USD 20</span>
-                  </div>
-                </div>
+                    {/* Sparkling */}
+                    <div className="bg-white dark:bg-[#141613] border border-[#EFEBE4] dark:border-[#2C302A] p-4 rounded-2xl flex justify-between gap-3 shadow-sm hover:shadow-md transition-all duration-300">
+                      <div className="space-y-1">
+                        <span className="text-[10px] bg-yellow-50 dark:bg-yellow-950/20 text-yellow-700 dark:text-yellow-400 font-bold px-2 py-0.5 rounded">Burbujas / Sparkling</span>
+                        <h5 className="font-bold text-xs sm:text-sm text-neutral-900 dark:text-neutral-200 pt-1">{t.minibarItemChampagne}</h5>
+                        <p className="text-[11px] text-neutral-500 dark:text-neutral-405">{t.minibarDescChampagne}</p>
+                      </div>
+                      <div className="text-right flex flex-col justify-between items-end flex-shrink-0">
+                        <span className="text-sm font-bold text-neutral-900 dark:text-neutral-200">USD 20</span>
+                      </div>
+                    </div>
 
-                {/* Local Classic */}
-                <div className="bg-white dark:bg-[#141613] border border-[#EFEBE4] dark:border-[#2C302A] p-4 rounded-2xl flex justify-between gap-3 shadow-sm hover:shadow-md transition-all duration-300">
-                  <div className="space-y-1">
-                    <span className="text-[10px] bg-emerald-50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-450 font-bold px-2 py-0.5 rounded">Combo Local</span>
-                    <h5 className="font-bold text-xs sm:text-sm text-neutral-900 dark:text-neutral-200 pt-1">{t.minibarItemFernet}</h5>
-                    <p className="text-[11px] text-neutral-500 dark:text-neutral-405">{t.minibarDescFernet}</p>
-                  </div>
-                  <div className="text-right flex flex-col justify-between items-end flex-shrink-0">
-                    <span className="text-sm font-bold text-neutral-900 dark:text-neutral-200">USD 18</span>
-                  </div>
-                </div>
+                    {/* Local Classic */}
+                    <div className="bg-white dark:bg-[#141613] border border-[#EFEBE4] dark:border-[#2C302A] p-4 rounded-2xl flex justify-between gap-3 shadow-sm hover:shadow-md transition-all duration-300">
+                      <div className="space-y-1">
+                        <span className="text-[10px] bg-emerald-50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-450 font-bold px-2 py-0.5 rounded">Combo Local</span>
+                        <h5 className="font-bold text-xs sm:text-sm text-neutral-900 dark:text-neutral-200 pt-1">{t.minibarItemFernet}</h5>
+                        <p className="text-[11px] text-neutral-500 dark:text-neutral-405">{t.minibarDescFernet}</p>
+                      </div>
+                      <div className="text-right flex flex-col justify-between items-end flex-shrink-0">
+                        <span className="text-sm font-bold text-neutral-900 dark:text-neutral-200">USD 18</span>
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
 
               <div className="text-[10px] text-neutral-400 dark:text-neutral-500 flex items-center gap-1.5 justify-center bg-white dark:bg-[#141613] border border-[#EFEBE4] dark:border-[#2C302A] py-2.5 rounded-xl font-medium transition-colors duration-300">
@@ -1138,7 +1192,7 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
 
           {/* Right Column: Sticky Booking Widget (4/12 width) */}
           <div className="lg:col-span-4 lg:sticky lg:top-28 space-y-6" id="reserva">
-            <CalendarWidget lang={language} airbnbUrl="https://www.airbnb.com.ar/rooms/1716762976739155303" />
+            <CalendarWidget lang={language} pricePerNight={airbnbDetails.price} airbnbUrl="https://www.airbnb.com.ar/rooms/1716762976739155303" />
             
             {/* Direct Booking Saving Card */}
             <div className="bg-emerald-50/50 border border-emerald-100 rounded-3xl p-5 text-xs text-emerald-800 space-y-2 font-sans">

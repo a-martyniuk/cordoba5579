@@ -3,6 +3,7 @@ import json
 import re
 import sys
 import html
+import csv
 from curl_cffi import requests
 
 # Force stdout/stderr to use UTF-8 encoding on Windows to avoid console crashes
@@ -140,6 +141,17 @@ def fetch_listing_for_locale(url_base, locale):
         print(f"❌ Error fetching listing for locale {locale}: {e}")
         return None
 
+def fetch_csv(url):
+    try:
+        r = requests.get(url, timeout=10)
+        if r.status_code == 200:
+            lines = r.text.strip().split("\n")
+            reader = csv.reader(lines)
+            return list(reader)
+    except Exception as e:
+        print(f"⚠️ Error fetching CSV from {url}:", e)
+    return None
+
 def main():
     url_base = "https://www.airbnb.com.ar/rooms/1716762976739155303"
     print("Starting Bilingual Airbnb Sync...")
@@ -149,10 +161,59 @@ def main():
     # Fetch English
     en_data = fetch_listing_for_locale(url_base, "en")
     
-    if not es_data and not en_data:
-        print("❌ Sync failed: Could not fetch data in any language.")
-        return
-        
+    # Fetch Google Sheet configs
+    cava_url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlUx7LNTseRM1DhoYGmw-9ZfuWpobnDFF5pLt4AuIdMiLLVEqVN_54OTZm0YbMUTp3-iHsk6Dbx4YP/pub?gid=286973474&output=csv"
+    config_url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlUx7LNTseRM1DhoYGmw-9ZfuWpobnDFF5pLt4AuIdMiLLVEqVN_54OTZm0YbMUTp3-iHsk6Dbx4YP/pub?gid=1945005556&output=csv"
+    
+    print("Fetching configs from Google Sheets...")
+    cava_raw = fetch_csv(cava_url)
+    config_raw = fetch_csv(config_url)
+    
+    # Parse Config Sheet
+    price = 500
+    weekend_price = 600
+    if config_raw:
+        try:
+            # Map key-values
+            for row in config_raw[1:]: # Skip header
+                if len(row) >= 2:
+                    key = row[0].strip()
+                    val = row[1].strip()
+                    if key == "precio_referencia_noche":
+                        price = int(val)
+                    elif key == "precio_referencia_fin_de_semana":
+                        weekend_price = int(val)
+            print(f"Parsed Configs: price={price}, weekend_price={weekend_price}")
+        except Exception as e:
+            print("⚠️ Error parsing Config sheet:", e)
+            
+    # Parse Cava Sheet
+    cava_list = []
+    if cava_raw:
+        try:
+            headers = [h.strip().lower() for h in cava_raw[0]]
+            for row in cava_raw[1:]:
+                if not row or not any(row): continue
+                # Match values safely
+                item = {}
+                for idx, val in enumerate(row):
+                    if idx < len(headers):
+                        h = headers[idx]
+                        if h.startswith("categoria"):
+                            item["categoria"] = val.strip()
+                        elif h == "nombre":
+                            item["nombre"] = val.strip()
+                        elif h == "descripcion":
+                            item["descripcion"] = val.strip()
+                        elif h == "cantidad":
+                            item["cantidad"] = int(val.strip()) if val.strip().isdigit() else val.strip()
+                        elif h == "precio_usd":
+                            item["precio_usd"] = float(val.strip()) if val.strip().replace(".", "", 1).isdigit() else val.strip()
+                cava_list.append(item)
+            print(f"Parsed {len(cava_list)} Cava items.")
+        except Exception as e:
+            print("⚠️ Error parsing Cava sheet:", e)
+
     # Read existing details to preserve photos and ratings in case of fallback
     base_dir = os.path.dirname(os.path.abspath(__file__))
     target_file = os.path.abspath(os.path.join(base_dir, "..", "src", "data", "airbnb-details.json"))
@@ -170,7 +231,9 @@ def main():
         "rating": (es_data or en_data or existing_data).get("rating", 5.0),
         "reviewsCount": (es_data or en_data or existing_data).get("reviewsCount", 42),
         "photos": (es_data or en_data or existing_data).get("photos", []),
-        "price": existing_data.get("price", 45),
+        "price": price,
+        "weekendPrice": weekend_price,
+        "cava": cava_list,
         "es": es_data or existing_data.get("es", {}),
         "en": en_data or existing_data.get("en", {})
     }
@@ -180,7 +243,7 @@ def main():
     
     with open(target_file, "w", encoding="utf-8") as f:
         json.dump(final_payload, f, indent=2, ensure_ascii=False)
-    print(f"✅ Successfully wrote bilingual details to {target_file}")
+    print(f"✅ Successfully wrote bilingual details & sheets data to {target_file}")
     
     # Trigger Next.js API Webhook if server is running locally
     try:

@@ -8,7 +8,45 @@
     "https://a0.muscache.com/im/pictures/hosting/Hosting-1716762976739155303/original/a82588fa-001a-4c6b-a40d-68c1e80b351b.jpeg",
     "https://a0.muscache.com/im/pictures/hosting/Hosting-1716762976739155303/original/78831bbc-6b5a-42e4-8d73-d0be59b7b123.jpeg"
   ],
-  "price": 45,
+  "price": 500,
+  "weekendPrice": 600,
+  "cava": [
+    {
+      "categoria": "Vino Tinto Malbec",
+      "nombre": "",
+      "descripcion": "",
+      "cantidad": 3,
+      "precio_usd": 15.0
+    },
+    {
+      "categoria": "Vino Tinto Syrah",
+      "nombre": "",
+      "descripcion": "Cabernet Sauvignon",
+      "cantidad": 6,
+      "precio_usd": 20.0
+    },
+    {
+      "categoria": "Vino Blanco Torrontés",
+      "nombre": "",
+      "descripcion": "Dulce Natural",
+      "cantidad": 6,
+      "precio_usd": 25.0
+    },
+    {
+      "categoria": "Champagne Demi Sec",
+      "nombre": "",
+      "descripcion": "Dulce",
+      "cantidad": 4,
+      "precio_usd": 22.0
+    },
+    {
+      "categoria": "Fernet Branca + CocaCola",
+      "nombre": "",
+      "descripcion": "",
+      "cantidad": 1,
+      "precio_usd": 21.0
+    }
+  ],
   "es": {
     "title": "Dpto. Moderno, Espacioso & Pileta",
     "rating": 5.0,
