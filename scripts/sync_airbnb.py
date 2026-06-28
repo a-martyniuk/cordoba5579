@@ -54,10 +54,12 @@ def fetch_listing_for_locale(url_base, locale):
         rating = 4.90
         reviews_count = 120
         amenities = []
-        capacity_text = ""
+        capacity_text = "4 huéspedes · 1 dormitorio · 1 cama · 1.5 baños"
+        price = 45 # Default fallback price
         space = ""
         access = ""
         notes = ""
+        guests = 4
         
         deferred_states = re.findall(r'<script[^>]*id="data-deferred-state-0"[^>]*>([\s\S]*?)</script>', content)
         if deferred_states:
@@ -100,6 +102,16 @@ def fetch_listing_for_locale(url_base, locale):
                     if sharing_title:
                         capacity_text = sharing_title
 
+                    # Parse guests count from overview
+                    overview = pdp_data.get("node", {}).get("pdpPresentation", {}).get("overview", {})
+                    overview_items = overview.get("items", [])
+                    for item in overview_items:
+                        lower_item = item.lower()
+                        if "huésped" in lower_item or "guest" in lower_item:
+                            match = re.search(r'\d+', item)
+                            if match:
+                                guests = int(match.group())
+
                     # Parse detailed descriptions from DESCRIPTION_MODAL
                     for s in sections:
                         if not s: continue
@@ -135,7 +147,8 @@ def fetch_listing_for_locale(url_base, locale):
             "notes": notes,
             "amenities": amenities,
             "photos": photos,
-            "capacityText": capacity_text
+            "capacityText": capacity_text,
+            "guests": guests
         }
     except Exception as e:
         print(f"❌ Error fetching listing for locale {locale}: {e}")
@@ -234,6 +247,7 @@ def main():
         "price": price,
         "weekendPrice": weekend_price,
         "cava": cava_list,
+        "guests": (es_data or en_data or existing_data).get("guests", 4),
         "es": es_data or existing_data.get("es", {}),
         "en": en_data or existing_data.get("en", {})
     }

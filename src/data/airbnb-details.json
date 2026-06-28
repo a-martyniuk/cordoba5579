@@ -47,6 +47,7 @@
       "precio_usd": 21.0
     }
   ],
+  "guests": 4,
   "es": {
     "title": "Dpto. Moderno, Espacioso & Pileta",
     "rating": 5.0,
@@ -115,7 +116,8 @@
       "https://a0.muscache.com/im/pictures/hosting/Hosting-1716762976739155303/original/a82588fa-001a-4c6b-a40d-68c1e80b351b.jpeg",
       "https://a0.muscache.com/im/pictures/hosting/Hosting-1716762976739155303/original/78831bbc-6b5a-42e4-8d73-d0be59b7b123.jpeg"
     ],
-    "capacityText": "Departamento en complejo residencial · Buenos Aires · ★Novedad · 1 dormitorio · 2 camas · 1 ,5 baños"
+    "capacityText": "Departamento en complejo residencial · Buenos Aires · ★Novedad · 1 dormitorio · 2 camas · 1 ,5 baños",
+    "guests": 4
   },
   "en": {
     "title": "Modern, Spacious Apartment & Pool",
@@ -185,6 +187,7 @@
       "https://a0.muscache.com/im/pictures/hosting/Hosting-1716762976739155303/original/a82588fa-001a-4c6b-a40d-68c1e80b351b.jpeg",
       "https://a0.muscache.com/im/pictures/hosting/Hosting-1716762976739155303/original/78831bbc-6b5a-42e4-8d73-d0be59b7b123.jpeg"
     ],
-    "capacityText": "Condo in Buenos Aires · ★New · 1 bedroom · 2 beds · 1.5 baths"
+    "capacityText": "Condo in Buenos Aires · ★New · 1 bedroom · 2 beds · 1.5 baths",
+    "guests": 4
   }
 }
