@@ -25,11 +25,19 @@ jobs:
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install requests
+          pip install curl_cffi requests
 
       - name: Run Airbnb & Sheets Sync
+        env:
+          PYTHONIOENCODING: utf-8
+          PYTHONUNBUFFERED: "1"
         run: |
           python scripts/sync_airbnb.py
+
+      - name: Configure Git Identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Commit and Push Changes
         uses: stefanzweifel/git-auto-commit-action@v5

@@ -1,16 +1,16 @@
+import sys
 import os
 import json
 import re
-import sys
 import html
 import csv
 from curl_cffi import requests
 
-# Force stdout/stderr to use UTF-8 encoding on Windows to avoid console crashes
-if sys.platform.startswith('win'):
-    import codecs
-    sys.stdout = codecs.getwriter('utf-8')(sys.stdout.detach())
-    sys.stderr = codecs.getwriter('utf-8')(sys.stderr.detach())
+# Ensure stdout uses UTF-8 on all platforms (Windows console + GitHub Actions)
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+if hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
 def fetch_listing_for_locale(url_base, locale):
     url = f"{url_base}?locale={locale}"
