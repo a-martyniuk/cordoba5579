@@ -923,21 +923,24 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
             <div className="space-y-4 border-b border-[#EFEBE4] pb-8">
               <h3 className="font-serif text-xl md:text-2xl text-neutral-900 font-semibold">{t.aboutTitle}</h3>
               <div className="text-neutral-600 text-sm leading-relaxed space-y-4 font-sans">
-                {currentDetails.description ? (
-                  currentDetails.description.split("\n").filter(p => p.trim()).map((p, i) => (
-                    <p key={i}>{p}</p>
-                  ))
-                ) : (
-                  <>
-                    <p>{t.aboutP1}</p>
-                    <p>{t.aboutP2}</p>
-                    <p>{t.aboutP3}</p>
-                  </>
+                {/* Only render summary description if detailed space information is not available */}
+                {!currentDetails.space && (
+                  currentDetails.description ? (
+                    currentDetails.description.split("\n").filter(p => p.trim()).map((p, i) => (
+                      <p key={i}>{p}</p>
+                    ))
+                  ) : (
+                    <>
+                      <p>{t.aboutP1}</p>
+                      <p>{t.aboutP2}</p>
+                      <p>{t.aboutP3}</p>
+                    </>
+                  )
                 )}
                 
                 {/* Space / El alojamiento details */}
                 {currentDetails.space && (
-                  <div className="pt-5 mt-5 border-t border-[#EFEBE4] dark:border-[#2C302A] space-y-3">
+                  <div className="space-y-3">
                     <h4 className="font-serif text-base text-neutral-800 dark:text-neutral-200 font-semibold">
                       {language === "es" ? "El alojamiento" : "The space"}
                     </h4>
