@@ -45,9 +45,9 @@ export const cordoba5579Knowledge: PropertyKnowledge = {
     en: "There is a shared laundry room in the building with washing machines and dryers available for guests at no additional cost."
   },
   wine: {
-    keys: ["vino", "cava", "botella", "alcohol", "wine", "bar", "champagne", "fernet", "bebida"],
-    es: "El depto cuenta con un rincón bar y una dotación de vinos de coste extra (Malbec, Syrah, Cabernet Sauvignon, Torrontés, Blanco Dulce, Champagne y Fernet Branca). Por favor, avisar el consumo a Jorge para su reposición.",
-    en: "The apartment features a minibar and wine selection for an extra cost (Malbec, Syrah, Cabernet Sauvignon, Torrontés, Dulce, Champagne, and Fernet Branca). Please report any consumption to Jorge for replenishment."
+    keys: ["vino", "cava", "botella", "alcohol", "wine", "bar", "champagne", "fernet", "bebida", "minibar", "precios", "precio", "costo", "costos", "price", "prices"],
+    es: "El departamento cuenta con una cava de vinos y minibar con costo adicional (Malbec, Syrah, Torrontés, Champagne, Fernet, etc.). Podés consultar la lista de productos disponibles, cantidades y precios actualizados en: https://www.alexismartyniuk.com.ar/cava (o escaneando el código QR en el minibar).",
+    en: "The apartment features a wine cellar and minibar for an extra cost (Malbec, Syrah, Torrontés, Champagne, Fernet, etc.). You can view the list of available products, quantities, and updated prices at: https://www.alexismartyniuk.com.ar/cava (or by scanning the QR code in the minibar)."
   },
   parking: {
     keys: ["estacionamiento", "cochera", "auto", "garage", "parking", "vehiculo", "vehículo"],

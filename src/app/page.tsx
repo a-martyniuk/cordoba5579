@@ -1191,9 +1191,18 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
                 )}
               </div>
 
-              <div className="text-[10px] text-neutral-400 dark:text-neutral-500 flex items-center gap-1.5 justify-center bg-white dark:bg-[#141613] border border-[#EFEBE4] dark:border-[#2C302A] py-2.5 rounded-xl font-medium transition-colors duration-300">
-                <AlertCircle className="w-3.5 h-3.5 text-neutral-400 dark:text-neutral-500" />
-                <span>{t.minibarFootnote}</span>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <div className="flex-[2] text-[10px] text-neutral-400 dark:text-neutral-500 flex items-center gap-1.5 justify-center bg-white dark:bg-[#141613] border border-[#EFEBE4] dark:border-[#2C302A] py-2.5 rounded-xl font-medium transition-colors duration-300">
+                  <AlertCircle className="w-3.5 h-3.5 text-neutral-400 dark:text-neutral-500" />
+                  <span>{t.minibarFootnote}</span>
+                </div>
+                <Link
+                  href="/cava"
+                  className="flex-1 text-[11px] text-white bg-[#5F6F52] hover:bg-[#4F5D43] dark:bg-[#889B73] dark:hover:bg-[#6E7F5E] flex items-center gap-1.5 justify-center py-2.5 rounded-xl font-bold shadow-sm hover:shadow-md transition-all duration-300"
+                >
+                  <Wine className="w-3.5 h-3.5" />
+                  <span>{language === "es" ? "Carta Digital & Precios" : "Digital Cellar Menu"}</span>
+                </Link>
               </div>
             </div>
           </div>
