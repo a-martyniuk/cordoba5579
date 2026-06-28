@@ -16,7 +16,8 @@ import {
   ExternalLink,
   ClipboardList,
   AlertCircle,
-  MessageCircle
+  MessageCircle,
+  Phone
 } from "lucide-react";
 import Link from "next/link";
 import Gallery from "../components/Gallery";
@@ -407,6 +408,12 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
       bookingDirectTitle: "¿Por qué reservar directo?",
       bookingDirectText: "Reservando a través de nuestro sitio oficial vía WhatsApp ahorras hasta un 15% en tarifas de servicio e impuestos que cobran plataformas externas como Airbnb o Booking.com.",
       footerTitle: "Alquiler Temporal de Diseño · Palermo Hollywood, Buenos Aires",
+      emergencyTitle: "Teléfonos de Emergencia",
+      emergency911Desc: "Policía y Emergencias Generales",
+      emergency107Desc: "SAME (Urgencias Médicas)",
+      emergency100Desc: "Bomberos",
+      emergency103Desc: "Defensa Civil",
+      emergencyHostDesc: "Jorge (Anfitrión - Urgencias Depto)",
       footerRights: "Todos los derechos reservados.",
       footerProject: "Un proyecto alojado dentro de",
       minibarTitle: "Cava de Vinos y Minibar (Costo Extra)",
@@ -506,6 +513,12 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
       bookingDirectTitle: "Why book direct?",
       bookingDirectText: "Booking directly through our official WhatsApp saves you up to 15% in platform service fees and taxes charged by sites like Airbnb or Booking.com.",
       footerTitle: "Designer Vacation Rental · Palermo Hollywood, Buenos Aires",
+      emergencyTitle: "Emergency Contacts",
+      emergency911Desc: "Police & General Emergencies",
+      emergency107Desc: "SAME (Medical Emergencies)",
+      emergency100Desc: "Fire Department",
+      emergency103Desc: "Civil Defense",
+      emergencyHostDesc: "Jorge (Host - Apartment Emergencies)",
       footerRights: "All rights reserved.",
       footerProject: "A project hosted inside",
       minibarTitle: "Wine Cellar & Minibar (Extra Cost)",
@@ -1429,6 +1442,60 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
             })}
           </div>
         </div>
+        </ScrollReveal>
+
+        {/* Emergency Contacts Section */}
+        <ScrollReveal delay={0.05}>
+          <div className="bg-white dark:bg-[#252824] border border-[#EFEBE4] dark:border-[#353A33] rounded-3xl p-6 md:p-8 transition-colors duration-300 shadow-sm" id="emergencias">
+            <div className="flex items-center gap-2.5 text-red-600 dark:text-red-400 pb-4 border-b border-[#F5F2EB] dark:border-[#2C302A] mb-4">
+              <Phone className="w-5 h-5 md:w-6 md:h-6" />
+              <h3 className="font-serif text-xl md:text-2xl font-bold text-neutral-900 dark:text-neutral-100">{t.emergencyTitle}</h3>
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-sm font-sans">
+              <a href="tel:911" className="flex items-center justify-between p-4 bg-red-50/50 hover:bg-red-50 dark:bg-red-950/10 dark:hover:bg-red-950/20 border border-red-100 dark:border-red-900/30 rounded-2xl transition-all group">
+                <div className="space-y-0.5">
+                  <p className="font-bold text-red-700 dark:text-red-400 text-lg">911</p>
+                  <p className="text-neutral-500 dark:text-neutral-450 text-xs">{t.emergency911Desc}</p>
+                </div>
+                <Phone className="w-4 h-4 text-red-600 dark:text-red-400 group-hover:scale-110 transition-transform flex-shrink-0" />
+              </a>
+
+              <a href="tel:107" className="flex items-center justify-between p-4 bg-red-50/50 hover:bg-red-50 dark:bg-red-950/10 dark:hover:bg-red-950/20 border border-red-100 dark:border-red-900/30 rounded-2xl transition-all group">
+                <div className="space-y-0.5">
+                  <p className="font-bold text-red-700 dark:text-red-400 text-lg">107</p>
+                  <p className="text-neutral-500 dark:text-neutral-450 text-xs">{t.emergency107Desc}</p>
+                </div>
+                <Phone className="w-4 h-4 text-red-600 dark:text-red-400 group-hover:scale-110 transition-transform flex-shrink-0" />
+              </a>
+
+              <a href="tel:100" className="flex items-center justify-between p-4 bg-red-50/50 hover:bg-red-50 dark:bg-red-950/10 dark:hover:bg-red-950/20 border border-red-100 dark:border-red-900/30 rounded-2xl transition-all group">
+                <div className="space-y-0.5">
+                  <p className="font-bold text-red-700 dark:text-red-400 text-lg">100</p>
+                  <p className="text-neutral-500 dark:text-neutral-450 text-xs">{t.emergency100Desc}</p>
+                </div>
+                <Phone className="w-4 h-4 text-red-600 dark:text-red-400 group-hover:scale-110 transition-transform flex-shrink-0" />
+              </a>
+
+              <a href="tel:103" className="flex items-center justify-between p-4 bg-neutral-50 hover:bg-neutral-100/70 dark:bg-neutral-800 dark:hover:bg-neutral-700 border border-[#EFEBE4] dark:border-[#2C302A] rounded-2xl transition-all group">
+                <div className="space-y-0.5">
+                  <p className="font-bold text-neutral-700 dark:text-neutral-300 text-lg">103</p>
+                  <p className="text-neutral-500 dark:text-neutral-450 text-xs">{t.emergency103Desc}</p>
+                </div>
+                <Phone className="w-4 h-4 text-neutral-500 dark:text-neutral-400 group-hover:scale-110 transition-transform flex-shrink-0" />
+              </a>
+            </div>
+            
+            <div className="mt-4">
+              <a href="tel:+5491145379500" className="flex items-center justify-between p-4 bg-[#FAF9F7] hover:bg-[#F5F2EB] dark:bg-neutral-850 dark:hover:bg-neutral-800 border border-[#EFEBE4] dark:border-[#2C302A] rounded-2xl transition-all group">
+                <div className="space-y-0.5">
+                  <p className="font-bold text-neutral-800 dark:text-neutral-200">Jorge (Anfitrión / Host)</p>
+                  <p className="text-[#5F6F52] dark:text-[#889B73] font-semibold text-xs">{t.emergencyHostDesc}</p>
+                </div>
+                <Phone className="w-5 h-5 text-[#5F6F52] dark:text-[#889B73] group-hover:scale-110 transition-transform flex-shrink-0" />
+              </a>
+            </div>
+          </div>
         </ScrollReveal>
       </main>
 
