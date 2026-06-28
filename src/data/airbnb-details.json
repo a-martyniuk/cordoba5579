@@ -270,7 +270,21 @@
       "https://a0.muscache.com/im/pictures/hosting/Hosting-1716762976739155303/original/78831bbc-6b5a-42e4-8d73-d0be59b7b123.jpeg"
     ],
     "capacityText": "Departamento en complejo residencial · Buenos Aires · ★Novedad · 1 dormitorio · 2 camas · 1 ,5 baños",
-    "guests": 4
+    "guests": 4,
+    "hosts": [
+      {
+        "name": "Alexis",
+        "role": "Superanfitrión",
+        "profilePictureUrl": "https://a0.muscache.com/im/pictures/user/User-558992318/original/7a47e3bc-f188-4882-8c69-ba96eeb49844.jpeg",
+        "isSuperhost": true
+      },
+      {
+        "name": "Jorge Orlando",
+        "role": "Coanfitrión",
+        "profilePictureUrl": "https://a0.muscache.com/im/pictures/user/User/original/bee9ddf4-3f9e-4c8c-bf3d-7a927ab61fc7.jpeg?aki_policy=profile_x_medium",
+        "isSuperhost": false
+      }
+    ]
   },
   "en": {
     "title": "Modern, Spacious Apartment & Pool",
@@ -494,6 +508,20 @@
       "https://a0.muscache.com/im/pictures/hosting/Hosting-1716762976739155303/original/78831bbc-6b5a-42e4-8d73-d0be59b7b123.jpeg"
     ],
     "capacityText": "Condo in Buenos Aires · ★New · 1 bedroom · 2 beds · 1.5 baths",
-    "guests": 4
+    "guests": 4,
+    "hosts": [
+      {
+        "name": "Alexis",
+        "role": "Superhost",
+        "profilePictureUrl": "https://a0.muscache.com/im/pictures/user/User-558992318/original/7a47e3bc-f188-4882-8c69-ba96eeb49844.jpeg",
+        "isSuperhost": true
+      },
+      {
+        "name": "Jorge Orlando",
+        "role": "Co-host",
+        "profilePictureUrl": "https://a0.muscache.com/im/pictures/user/User/original/bee9ddf4-3f9e-4c8c-bf3d-7a927ab61fc7.jpeg?aki_policy=profile_x_medium",
+        "isSuperhost": false
+      }
+    ]
   }
 }

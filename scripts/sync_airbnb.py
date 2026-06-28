@@ -60,6 +60,7 @@ def fetch_listing_for_locale(url_base, locale):
         access = ""
         notes = ""
         guests = 4
+        hosts = []
         
         deferred_states = re.findall(r'<script[^>]*id="data-deferred-state-0"[^>]*>([\s\S]*?)</script>', content)
         if deferred_states:
@@ -129,6 +130,28 @@ def fetch_listing_for_locale(url_base, locale):
                             if match:
                                 guests = int(match.group())
 
+                    # Parse Hosts
+                    for s in sections:
+                        if not s: continue
+                        if s.get("sectionId") == "MEET_YOUR_HOST":
+                            sec_data = s.get("section", {})
+                            card_data = sec_data.get("cardData", {})
+                            if card_data:
+                                hosts.append({
+                                    "name": card_data.get("name", ""),
+                                    "role": card_data.get("titleText") or ("Anfitrión" if locale == "es" else "Host"),
+                                    "profilePictureUrl": card_data.get("profilePictureUrl", ""),
+                                    "isSuperhost": card_data.get("isSuperhost", False)
+                                })
+                            cohosts = sec_data.get("cohosts", [])
+                            for co in cohosts:
+                                hosts.append({
+                                    "name": co.get("name", ""),
+                                    "role": "Coanfitrión" if locale == "es" else "Co-host",
+                                    "profilePictureUrl": co.get("profilePictureUrl", ""),
+                                    "isSuperhost": False
+                                })
+
                     # Parse detailed descriptions from DESCRIPTION_MODAL
                     for s in sections:
                         if not s: continue
@@ -165,7 +188,8 @@ def fetch_listing_for_locale(url_base, locale):
             "amenities": amenities,
             "photos": photos,
             "capacityText": capacity_text,
-            "guests": guests
+            "guests": guests,
+            "hosts": hosts
         }
     except Exception as e:
         print(f"❌ Error fetching listing for locale {locale}: {e}")

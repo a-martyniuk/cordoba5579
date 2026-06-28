@@ -276,6 +276,8 @@ export default function Home() {
   }, []);
 
   const currentDetails = airbnbDetails[language] || airbnbDetails.es || {};
+  const hostsList = (currentDetails.hosts || []) as { name: string; role: string; profilePictureUrl?: string; isSuperhost?: boolean }[];
+  const hostNames = hostsList.map((h) => h.name).join(" & ");
 
   const groupedAmenities = React.useMemo(() => {
     const details = airbnbDetails[language] || airbnbDetails.es || {};
@@ -528,6 +530,12 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
       chatGreeting: "Hi! I am your Cordoba 5579 Virtual Concierge. How can I help you today?"
     }
   }[language];
+
+  const dynamicHostHeader = hostNames 
+    ? (language === "es" 
+        ? `Departamento entero · Anfitrión${hostsList.length > 1 ? "es" : ""}: ${hostNames}` 
+        : `Entire Apartment · Host${hostsList.length > 1 ? "s" : ""}: ${hostNames}`)
+    : t.hostHeader;
 
   // Initialize greeting message based on language preference & time of day in Buenos Aires (GMT-3)
   useEffect(() => {
@@ -859,20 +867,45 @@ faq7A: "Sí, el ingreso desde la vereda hasta el lobby es completamente libre de
           {/* Left Column: Description & Info (8/12 width) */}
           <div className="lg:col-span-8 space-y-12">
             
-            {/* Overview / Host Details */}
-            <div className="border-b border-[#EFEBE4] pb-6 flex items-center justify-between">
-              <div className="space-y-1">
-                <h2 className="font-serif text-xl md:text-2xl text-neutral-900 font-semibold">
-                  {t.hostHeader}
-                </h2>
-                <p className="text-neutral-500 text-sm">
-                  {t.hostDetails}
-                </p>
-              </div>
-              <div className="w-12 h-12 bg-[#5F6F52] text-white flex items-center justify-center rounded-full text-base font-bold font-serif shadow-sm flex-shrink-0">
-                JO
-              </div>
-            </div>
+             {/* Overview / Host Details */}
+             <div className="border-b border-[#EFEBE4] pb-6 flex items-center justify-between">
+               <div className="space-y-1">
+                 <h2 className="font-serif text-xl md:text-2xl text-neutral-900 font-semibold">
+                   {dynamicHostHeader}
+                 </h2>
+                 <p className="text-neutral-500 text-sm">
+                   {t.hostDetails}
+                 </p>
+               </div>
+               <div className="flex items-center -space-x-3 flex-shrink-0">
+                 {hostsList.length > 0 ? (
+                   hostsList.map((host, idx) => (
+                     host.profilePictureUrl ? (
+                       // eslint-disable-next-line @next/next/no-img-element
+                       <img 
+                         key={idx}
+                         src={host.profilePictureUrl} 
+                         alt={host.name}
+                         className="w-12 h-12 rounded-full border-2 border-white dark:border-[#141613] object-cover shadow-sm"
+                         title={`${host.name} (${host.role})`}
+                       />
+                     ) : (
+                       <div 
+                         key={idx}
+                         className="w-12 h-12 bg-[#5F6F52] text-white flex items-center justify-center rounded-full text-sm font-bold font-serif border-2 border-white dark:border-[#141613] shadow-sm"
+                         title={`${host.name} (${host.role})`}
+                       >
+                         {host.name.substring(0, 2).toUpperCase()}
+                       </div>
+                     )
+                   ))
+                 ) : (
+                   <div className="w-12 h-12 bg-[#5F6F52] text-white flex items-center justify-center rounded-full text-base font-bold font-serif shadow-sm">
+                     JO
+                   </div>
+                 )}
+               </div>
+             </div>
 
             {/* Highlights Section ("Por qué elegirnos") */}
             <div className="space-y-6 border-b border-[#EFEBE4] pb-8">
