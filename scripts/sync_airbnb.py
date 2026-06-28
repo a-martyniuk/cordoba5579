@@ -226,6 +226,7 @@ def main():
     # Parse Config Sheet
     price = 500
     weekend_price = 600
+    lockbox_code = "1579"
     if config_raw:
         try:
             # Map key-values
@@ -237,7 +238,9 @@ def main():
                         price = int(val)
                     elif key == "precio_referencia_fin_de_semana":
                         weekend_price = int(val)
-            print(f"Parsed Configs: price={price}, weekend_price={weekend_price}")
+                    elif key == "codigo_lockbox" or key == "lockbox":
+                        lockbox_code = val
+            print(f"Parsed Configs: price={price}, weekend_price={weekend_price}, lockbox_code={lockbox_code}")
         except Exception as e:
             print("⚠️ Error parsing Config sheet:", e)
             
@@ -289,6 +292,7 @@ def main():
         "weekendPrice": weekend_price,
         "cava": cava_list,
         "guests": (es_data or en_data or existing_data).get("guests", 4),
+        "lockboxCode": lockbox_code,
         "es": es_data or existing_data.get("es", {}),
         "en": en_data or existing_data.get("en", {})
     }

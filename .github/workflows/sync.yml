@@ -1,0 +1,38 @@
+name: Dynamic Airbnb & Sheets Sync
+
+on:
+  schedule:
+    - cron: '0 */6 * * *' # Runs every 6 hours
+  push:
+    branches:
+      - main
+  workflow_dispatch: # Allows manual trigger from GitHub UI
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Required for git-auto-commit-action to push changes
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+
+      - name: Run Airbnb & Sheets Sync
+        run: |
+          python scripts/sync_airbnb.py
+
+      - name: Commit and Push Changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: auto-sync airbnb calendar and sheet details [skip ci]"
+          file_pattern: 'src/data/airbnb-details.json'

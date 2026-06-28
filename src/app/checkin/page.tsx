@@ -7,6 +7,7 @@ import Image from "next/image";
 import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import wifiQr from "../../../public/wifi-qr.png";
+import airbnbDetails from "../../data/airbnb-details.json";
 
 // Dynamically import InteractiveMap to avoid SSR errors
 const InteractiveMap = dynamic(() => import("../../components/InteractiveMap"), {
@@ -33,7 +34,7 @@ export default function CheckInPortal() {
   const [isLatchDown, setIsLatchDown] = useState(false);
   const [isLockboxOpen, setIsLockboxOpen] = useState(false);
 
-  const correctCode = "1579";
+  const correctCode = airbnbDetails.lockboxCode || "1579";
 
   // Sync state with localStorage
   useEffect(() => {
@@ -110,8 +111,8 @@ export default function CheckInPortal() {
       checkout2: "Guardar llaves: Cerrá la puerta del departamento tirando firmemente y colocá las llaves de regreso en la misma caja de seguridad (lockbox) del ingreso exterior, desordenando la combinación al cerrarla.",
       checkout3: "Avisar por WhatsApp: Enviale un mensaje rápido a Jorge confirmando tu salida. ¡Buen viaje de regreso!",
       lockboxSimulatorTitle: "Simulador de Lockbox Interactivo",
-      lockboxInstruction: "Desliza para elegir los números. Prueba la combinación demo '1579' y desliza la traba negra lateral hacia abajo. El código real del departamento te llegará por mensaje privado.",
-      lockboxLocked: "🔒 Cerrado - Prueba la clave demo '1579'",
+      lockboxInstruction: `Desliza para elegir los números. Prueba la combinación demo '${correctCode}' y desliza la traba negra lateral hacia abajo. El código real del departamento te llegará por mensaje privado.`,
+      lockboxLocked: `🔒 Cerrado - Prueba la clave demo '${correctCode}'`,
       lockboxUnlocked: "🔓 ¡Abierto! Retira tus llaves de prueba.",
       emergencyTitle: "Teléfonos de Emergencia",
       emergency911Desc: "Policía y Emergencias Generales",
@@ -159,8 +160,8 @@ export default function CheckInPortal() {
       checkout2: "Return keys: Close the apartment door firmly behind you and return the keys to the same security lockbox at the outer entrance, scrambling the code wheels after closing it.",
       checkout3: "Notify via WhatsApp: Send a quick message to Jorge confirming your departure. Have a safe trip back!",
       lockboxSimulatorTitle: "Interactive Lockbox Simulator",
-      lockboxInstruction: "Scroll to choose numbers. Try the demo combination '1579' and slide the black latch downwards. The real code will be sent privately.",
-      lockboxLocked: "🔒 Locked - Try demo code '1579'",
+      lockboxInstruction: `Scroll to choose numbers. Try the demo combination '${correctCode}' and slide the black latch downwards. The real code will be sent privately.`,
+      lockboxLocked: `🔒 Locked - Try demo code '${correctCode}'`,
       lockboxUnlocked: "🔓 Opened! Retrieve your test keys.",
       emergencyTitle: "Emergency Contacts",
       emergency911Desc: "Police & General Emergencies",
@@ -404,7 +405,7 @@ export default function CheckInPortal() {
                   {/* Test Code Box */}
                   <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/50 rounded-xl p-2.5 text-center space-y-1">
                     <span className="text-[10px] font-bold text-amber-800 dark:text-amber-400 uppercase tracking-wider block">
-                      {lang === "es" ? "🔑 CÓDIGO DE PRUEBA: 1579" : "🔑 TEST CODE: 1579"}
+                      {lang === "es" ? `🔑 CÓDIGO DE PRUEBA: ${correctCode}` : `🔑 TEST CODE: ${correctCode}`}
                     </span>
                     <span className="text-[9px] text-amber-700 dark:text-amber-500 leading-tight block">
                       {lang === "es" 
