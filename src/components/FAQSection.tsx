@@ -64,41 +64,6 @@ export default function FAQSection() {
           })}
         </div>
       </div>
-
-      {/* Emergency Contacts Section */}
-      <div className="bg-white dark:bg-[#252824] border border-[#EFEBE4] dark:border-[#353A33] rounded-3xl p-6 md:p-8 transition-colors duration-300 shadow-sm" id="emergencias">
-        <div className="flex items-center gap-2.5 text-red-600 dark:text-red-400 pb-4 border-b border-[#F5F2EB] dark:border-[#2C302A] mb-4">
-          <Phone className="w-5 h-5 md:w-6 md:h-6" />
-          <h3 className="font-serif text-xl md:text-2xl font-bold text-neutral-900 dark:text-neutral-100">{t.emergencyTitle}</h3>
-        </div>
-        
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-sm font-sans">
-          <a href="tel:911" className="flex items-center justify-between p-4 bg-red-50/50 hover:bg-red-50 dark:bg-red-950/10 dark:hover:bg-red-950/20 border border-red-100 dark:border-red-900/30 rounded-2xl transition-all group">
-            <div className="space-y-0.5">
-              <p className="font-bold text-red-700 dark:text-red-400 text-lg">911</p>
-              <p className="text-neutral-500 dark:text-neutral-450 text-xs">{t.emergency911Desc}</p>
-            </div>
-          </a>
-          <a href="tel:107" className="flex items-center justify-between p-4 bg-red-50/50 hover:bg-red-50 dark:bg-red-950/10 dark:hover:bg-red-950/20 border border-red-100 dark:border-red-900/30 rounded-2xl transition-all group">
-            <div className="space-y-0.5">
-              <p className="font-bold text-red-700 dark:text-red-400 text-lg">107</p>
-              <p className="text-neutral-500 dark:text-neutral-450 text-xs">{t.emergency107Desc}</p>
-            </div>
-          </a>
-          <a href="tel:100" className="flex items-center justify-between p-4 bg-red-50/50 hover:bg-red-50 dark:bg-red-950/10 dark:hover:bg-red-950/20 border border-red-100 dark:border-red-900/30 rounded-2xl transition-all group">
-            <div className="space-y-0.5">
-              <p className="font-bold text-red-700 dark:text-red-400 text-lg">100</p>
-              <p className="text-neutral-500 dark:text-neutral-450 text-xs">{t.emergency100Desc}</p>
-            </div>
-          </a>
-          <a href="tel:103" className="flex items-center justify-between p-4 bg-red-50/50 hover:bg-red-50 dark:bg-red-950/10 dark:hover:bg-red-950/20 border border-red-100 dark:border-red-900/30 rounded-2xl transition-all group">
-            <div className="space-y-0.5">
-              <p className="font-bold text-red-700 dark:text-red-400 text-lg">103</p>
-              <p className="text-neutral-500 dark:text-neutral-450 text-xs">{t.emergency103Desc}</p>
-            </div>
-          </a>
-        </div>
-      </div>
     </div>
   );
 }
