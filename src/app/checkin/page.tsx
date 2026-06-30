@@ -93,7 +93,7 @@ export default function CheckInPortal() {
         <p className="text-xs sm:text-sm text-emerald-100 mt-1 font-medium">{t.chk_subtitle}</p>
       </div>
 
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 mt-8 space-y-6">
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 mt-10 space-y-8">
         {/* Welcome Card */}
         <motion.div 
           initial={{ opacity: 0, y: 15 }}

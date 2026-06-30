@@ -62,7 +62,7 @@ export default function InventarioPage() {
       </header>
 
       {/* Main content header */}
-      <div className="text-center space-y-2 mt-10 mb-8 px-4">
+      <div className="text-center space-y-4 mt-10 mb-10 px-4">
         <h1 className="font-serif text-3xl sm:text-4xl font-bold text-neutral-900 dark:text-white leading-tight">
           {t.inv_title}
         </h1>
@@ -71,7 +71,7 @@ export default function InventarioPage() {
         </p>
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 mt-8">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 mt-10 space-y-8">
         <InventoryList sheetUrl={googleSheetInventoryUrl} lang={lang} />
       </div>
     </div>

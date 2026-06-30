@@ -407,12 +407,12 @@ export default function Home() {
           <div className="lg:col-span-8 space-y-12">
             
              {/* Overview / Host Details */}
-             <div className="border-b border-[#EFEBE4] pb-6 flex items-center justify-between">
-               <div className="space-y-1">
-                 <h2 className="font-serif text-xl md:text-2xl text-neutral-900 font-semibold">
+             <div className="border-b border-[#EFEBE4] dark:border-[#2C302A] pb-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
+               <div className="space-y-2">
+                 <h2 className="font-serif text-2xl md:text-3xl text-neutral-900 dark:text-white font-bold">
                    {dynamicHostHeader}
                  </h2>
-                 <p className="text-neutral-500 text-sm">
+                 <p className="text-neutral-500 dark:text-neutral-400 text-sm md:text-base leading-relaxed">
                    {t.hostDetails}
                  </p>
                </div>
@@ -446,9 +446,9 @@ export default function Home() {
                </div>
              </div>
 
-            {/* Highlights Section ("Por qué elegirnos") */}
-            <div className="space-y-6 border-b border-[#EFEBE4] pb-8">
-              <h3 className="font-serif text-xl md:text-2xl text-neutral-900 font-semibold">{t.whyTitle}</h3>
+             {/* Highlights Section ("Por qué elegirnos") */}
+             <div className="space-y-8 border-b border-[#EFEBE4] dark:border-[#2C302A] pb-10">
+               <h3 className="font-serif text-2xl md:text-3xl text-neutral-900 dark:text-white font-bold">{t.whyTitle}</h3>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div className="flex gap-4 p-4 -m-4 rounded-3xl hover:bg-white dark:hover:bg-[#252824] hover:shadow-lg hover:shadow-neutral-200/50 dark:hover:shadow-black/20 transition-all duration-300 group">
@@ -502,9 +502,9 @@ export default function Home() {
             </div>
 
             {/* Description Copy */}
-            <div className="space-y-4 border-b border-[#EFEBE4] pb-8">
-              <h3 className="font-serif text-xl md:text-2xl text-neutral-900 font-semibold">{t.aboutTitle}</h3>
-              <div className="text-neutral-600 text-sm leading-relaxed space-y-4 font-sans">
+            <div className="space-y-6 border-b border-[#EFEBE4] dark:border-[#2C302A] pb-10">
+              <h3 className="font-serif text-2xl md:text-3xl text-neutral-900 dark:text-white font-bold">{t.aboutTitle}</h3>
+              <div className="text-neutral-600 dark:text-neutral-400 text-sm leading-relaxed space-y-4 font-sans">
                 {/* Only render summary description if detailed space information is not available */}
                 {!currentDetails.space && (
                   currentDetails.description ? (
@@ -547,8 +547,8 @@ export default function Home() {
             </div>
 
             {/* Amenities Grid */}
-            <div className="space-y-8 border-b border-[#EFEBE4] pb-10" id="amenidades">
-              <h3 className="font-serif text-2xl text-neutral-900 font-semibold">{t.amenitiesTitle}</h3>
+            <div className="space-y-8 border-b border-[#EFEBE4] dark:border-[#2C302A] pb-10" id="amenidades">
+              <h3 className="font-serif text-2xl md:text-3xl text-neutral-900 dark:text-white font-bold">{t.amenitiesTitle}</h3>
               
               <AmenitiesGrid />
             </div>
@@ -925,7 +925,7 @@ export default function Home() {
 
         {/* Chat Window Panel */}
         {conciergeOpen && (
-          <div className="absolute bottom-16 right-0 w-[330px] sm:w-[380px] h-[450px] bg-white dark:bg-[#252824] border border-[#EFEBE4] dark:border-[#353A33] rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-fadeIn transition-colors duration-300">
+          <div className="absolute bottom-16 right-0 w-[330px] sm:w-[380px] h-[450px] bg-white/95 dark:bg-[#1E211D]/95 backdrop-blur-xl border border-[#EFEBE4] dark:border-[#353A33] rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-fadeIn transition-colors duration-300">
             {/* Header */}
             <div className="bg-[#5F6F52] p-4 text-white flex items-center justify-between">
               <div className="flex items-center gap-2.5">
@@ -952,8 +952,8 @@ export default function Home() {
                 <div key={i} className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}>
                   <div className={`max-w-[80%] rounded-2xl p-3 text-xs leading-relaxed shadow-sm ${
                     msg.sender === "user" 
-                      ? "bg-[#5F6F52] text-white rounded-tr-none" 
-                      : "bg-white dark:bg-[#141613] text-neutral-800 dark:text-neutral-200 border border-[#EFEBE4] dark:border-[#2C302A] rounded-tl-none transition-colors duration-300"
+                      ? "bg-[#5F6F52] text-white rounded-tr-none shadow-md" 
+                      : "bg-white/90 dark:bg-[#141613]/80 backdrop-blur-md text-neutral-800 dark:text-neutral-200 border border-[#EFEBE4] dark:border-[#2C302A] rounded-tl-none transition-colors duration-300"
                   }`}>
                     {msg.text}
                   </div>
@@ -961,7 +961,7 @@ export default function Home() {
               ))}
               {isTyping && (
                 <div className="flex justify-start">
-                  <div className="bg-white dark:bg-[#141613] border border-[#EFEBE4] dark:border-[#2C302A] rounded-2xl rounded-tl-none p-3 text-xs text-neutral-400 dark:text-neutral-500 flex items-center gap-1 shadow-sm transition-colors duration-300">
+                  <div className="bg-white/90 dark:bg-[#141613]/80 backdrop-blur-md border border-[#EFEBE4] dark:border-[#2C302A] rounded-2xl rounded-tl-none p-3 text-xs text-neutral-400 dark:text-neutral-500 flex items-center gap-1 shadow-sm transition-colors duration-300">
                     <span className="w-1.5 h-1.5 bg-neutral-400 rounded-full animate-bounce" style={{ animationDelay: "0ms" }}></span>
                     <span className="w-1.5 h-1.5 bg-neutral-400 rounded-full animate-bounce" style={{ animationDelay: "150ms" }}></span>
                     <span className="w-1.5 h-1.5 bg-neutral-400 rounded-full animate-bounce" style={{ animationDelay: "300ms" }}></span>
@@ -971,7 +971,7 @@ export default function Home() {
             </div>
 
             {/* Predefined FAQs with dynamic sorting/filtering based on Buenos Aires time of day */}
-            <div className="p-3 bg-white dark:bg-[#252824] border-t border-b border-[#EFEBE4] dark:border-[#353A33] flex flex-wrap gap-1.5 max-h-[100px] overflow-y-auto transition-colors duration-300">
+            <div className="p-3 bg-white/50 dark:bg-[#252824]/50 border-t border-b border-[#EFEBE4] dark:border-[#353A33] flex flex-wrap gap-1.5 max-h-[100px] overflow-y-auto transition-colors duration-300 backdrop-blur-md">
               {(() => {
                 const getDynamicButtons = () => {
                   try {
@@ -1036,7 +1036,7 @@ export default function Home() {
                 e.preventDefault();
                 handleSendMessage(inputValue);
               }}
-              className="p-3 bg-white dark:bg-[#252824] flex gap-2 transition-colors duration-300"
+              className="p-3 bg-white/80 dark:bg-[#1E211D]/80 flex gap-2 transition-colors duration-300 backdrop-blur-md"
             >
               <input
                 type="text"

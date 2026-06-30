@@ -58,12 +58,12 @@ export default function AmenitiesGrid() {
             </h4>
             <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-sm text-neutral-700 dark:text-neutral-350">
               {cat.items.map((item, i) => (
-                <li key={i} className="flex items-start gap-2.5 bg-[#FAF9F7] dark:bg-[#1E211D] px-3.5 py-2.5 rounded-xl border border-[#EFEBE4] dark:border-[#2C302A]">
-                  <span className="text-[#5F6F52] font-bold mt-0.5">✓</span>
+                <li key={i} className="flex items-start gap-3 bg-white/50 dark:bg-[#1E211D]/50 hover:bg-white dark:hover:bg-[#252824] px-4 py-3 rounded-2xl border border-[#EFEBE4] dark:border-[#2C302A] shadow-sm hover:shadow-md transition-all duration-300 backdrop-blur-sm">
+                  <span className="text-[#5F6F52] dark:text-[#889B73] font-bold mt-0.5">✓</span>
                   <div className="flex flex-col">
                     <span className="font-semibold text-neutral-800 dark:text-neutral-200">{item.title}</span>
                     {item.subtitle && (
-                      <span className="text-[11px] text-neutral-500 dark:text-neutral-400 mt-0.5 font-light leading-normal">{item.subtitle}</span>
+                      <span className="text-xs text-neutral-500 dark:text-neutral-400 mt-1 font-light leading-normal">{item.subtitle}</span>
                     )}
                   </div>
                 </li>

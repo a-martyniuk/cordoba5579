@@ -100,7 +100,7 @@ export default function CavaPage() {
       </header>
 
       {/* Main Menu content */}
-      <main className="max-w-3xl mx-auto px-4 py-8 space-y-8">
+      <main className="max-w-3xl mx-auto px-4 py-10 space-y-10">
         
         {/* Header Hero */}
         <div className="text-center space-y-3">
