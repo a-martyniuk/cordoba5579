@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Plus_Jakarta_Sans } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
+import { LanguageProvider } from "../context/LanguageContext";
+import { ThemeProvider } from "../context/ThemeContext";
 import "./globals.css";
-
 const playfair = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-serif",
@@ -139,8 +140,12 @@ export default function RootLayout({
       <body
         className={`${playfair.variable} ${plusJakarta.variable} font-sans antialiased bg-[#FAF9F7] text-neutral-900`}
       >
-        {children}
-        <Analytics />
+        <ThemeProvider>
+          <LanguageProvider>
+            {children}
+            <Analytics />
+          </LanguageProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -1,0 +1,18 @@
+{
+  "pageTitle": "Cava de Vinos & Minibar",
+  "pageSubtitle": "Selección premium para disfrutar durante tu estadía en Córdoba 5579.",
+  "backBtn": "Volver al Inicio",
+  "headerTag": "Cava & Minibar (Costo Adicional)",
+  "howItWorksTitle": "¿Cómo funciona?",
+  "howItWorksText": "Disfrutá libremente de los vinos y bebidas disponibles. Al momento de tu check-out, simplemente informale a Jorge qué consumiste para coordinar el cobro.",
+  "disclaimer": "Los precios están expresados en dólares estadounidenses (USD). Se abonan al finalizar la estadía.",
+  "quantityLabel": "Disponibles en unidad: ",
+  "priceLabel": "Precio",
+  "noItems": "No hay productos configurados en la cava actualmente.",
+  "rules": [
+    "Cristalería fina disponible en el rincón bar del living.",
+    "Por favor, mantén refrigerados los blancos y burbujas antes de consumir.",
+    "Consumo exclusivo para mayores de 18 años."
+  ],
+  "cavaRulesTitle": "Normas de la Cava"
+}

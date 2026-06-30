@@ -1,74 +1,74 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { ArrowLeft } from "lucide-react";
+import React from "react";
+import { ArrowLeft, Moon, Sun } from "lucide-react";
 import Link from "next/link";
 import InventoryList from "../../components/InventoryList";
+import { useLanguage } from "../../context/LanguageContext";
+import { useTheme } from "../../context/ThemeContext";
 
 export default function InventarioPage() {
-  const [lang, setLang] = useState<"es" | "en">("es");
+  const { t, language: lang, setLanguage: handleLanguageChange } = useLanguage();
+  const { darkMode, toggleTheme } = useTheme();
   const googleSheetInventoryUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlUx7LNTseRM1DhoYGmw-9ZfuWpobnDFF5pLt4AuIdMiLLVEqVN_54OTZm0YbMUTp3-iHsk6Dbx4YP/pub?output=csv";
 
-  // Sync language with localStorage
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const savedLang = localStorage.getItem("language") as "es" | "en";
-      if (savedLang === "es" || savedLang === "en") {
-        setLang(savedLang);
-      }
-    }
-  }, []);
-
-  const handleLanguageChange = (newLang: "es" | "en") => {
-    setLang(newLang);
-    if (typeof window !== "undefined") {
-      localStorage.setItem("language", newLang);
-    }
-  };
-
-  const t = {
-    es: {
-      back: "Volver al Inicio",
-      title: "Córdoba 5579",
-      subtitle: "Equipamiento e Inventario Detallado"
-    },
-    en: {
-      back: "Back to Home",
-      title: "Cordoba 5579",
-      subtitle: "Detailed Equipment & Inventory"
-    }
-  }[lang];
-
   return (
-    <div className="min-h-screen bg-[#FAF9F7] text-neutral-800 font-sans antialiased pb-12">
-      {/* Top Banner */}
-      <div className="bg-[#5F6F52] text-white py-8 px-4 text-center relative shadow-md">
-        <Link 
-          href="/" 
-          className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center gap-1 text-xs text-white/90 hover:text-white font-semibold transition-all"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          <span className="hidden sm:inline">{t.back}</span>
-        </Link>
-        
-        {/* Language selector toggle */}
-        <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center bg-white/10 rounded-lg p-0.5 border border-white/20 text-[10px] font-bold">
-          <button
-            onClick={() => handleLanguageChange("es")}
-            className={`px-2.5 py-1 rounded transition-all ${lang === "es" ? "bg-white text-[#5F6F52]" : "text-white/80 hover:text-white"}`}
+    <div className="min-h-screen bg-[#FAF9F7] dark:bg-[#141613] text-neutral-800 dark:text-neutral-200 font-sans antialiased pb-12 transition-colors duration-300">
+      {/* Top Navigation */}
+      <header className="sticky top-0 z-50 backdrop-blur-md bg-[#FAF9F7]/80 dark:bg-[#141613]/80 border-b border-[#EFEBE4] dark:border-[#2C302A] transition-all">
+        <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+          <Link 
+            href="/"
+            className="inline-flex items-center gap-2 text-xs font-semibold text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors"
           >
-            ES
-          </button>
-          <button
-            onClick={() => handleLanguageChange("en")}
-            className={`px-2.5 py-1 rounded transition-all ${lang === "en" ? "bg-white text-[#5F6F52]" : "text-white/80 hover:text-white"}`}
-          >
-            EN
-          </button>
-        </div>
+            <ArrowLeft className="w-4 h-4" />
+            <span className="hidden sm:inline">{t.inv_back}</span>
+          </Link>
 
-        <h1 className="font-serif text-2xl sm:text-3xl font-bold tracking-tight">{t.title}</h1>
-        <p className="text-xs sm:text-sm text-emerald-100 mt-1 font-medium">{t.subtitle}</p>
+          {/* Language and Theme Switcher */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={toggleTheme}
+              title={t.themeToggle}
+              className="p-1.5 rounded-xl bg-[#FAF9F7] dark:bg-[#1E211D] border border-[#EFEBE4] dark:border-[#2C302A] text-neutral-500 hover:text-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-200 transition-colors"
+            >
+              {darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            </button>
+
+            <div className="flex items-center gap-1.5 bg-[#FAF9F7] dark:bg-[#1E211D] border border-[#EFEBE4] dark:border-[#2C302A] p-1 rounded-xl">
+              <button
+                onClick={() => handleLanguageChange("es")}
+                className={`text-[10px] font-bold px-2.5 py-1.5 rounded-lg transition-all ${
+                  lang === "es"
+                    ? "bg-[#5F6F52] text-white shadow-sm"
+                    : "text-neutral-500 hover:text-neutral-800 dark:hover:text-neutral-300"
+                }`}
+              >
+                ES
+              </button>
+              <button
+                onClick={() => handleLanguageChange("en")}
+                className={`text-[10px] font-bold px-2.5 py-1.5 rounded-lg transition-all ${
+                  lang === "en"
+                    ? "bg-[#5F6F52] text-white shadow-sm"
+                    : "text-neutral-500 hover:text-neutral-800 dark:hover:text-neutral-300"
+                }`}
+              >
+                EN
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* Main content header */}
+      <div className="text-center space-y-2 mt-10 mb-8 px-4">
+        <h1 className="font-serif text-3xl sm:text-4xl font-bold text-neutral-900 dark:text-white leading-tight">
+          {t.inv_title}
+        </h1>
+        <p className="text-sm text-neutral-500 dark:text-neutral-400 font-light leading-relaxed max-w-lg mx-auto">
+          {t.inv_subtitle}
+        </p>
       </div>
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 mt-8">

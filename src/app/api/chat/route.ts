@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { streamText } from "ai";
+import { google } from "@ai-sdk/google";
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY ?? "";
 
@@ -39,15 +40,15 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "No message provided" }, { status: 400 });
     }
 
-    const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const fullPrompt = `Idioma preferido del usuario: ${language === "en" ? "inglés" : "español"}\n\nPregunta del huésped: ${message}`;
 
-    const fullPrompt = `${SYSTEM_PROMPT}\n\nIdioma preferido del usuario: ${language === "en" ? "inglés" : "español"}\n\nPregunta del huésped: ${message}`;
+    const result = streamText({
+      model: google("gemini-1.5-flash"),
+      system: SYSTEM_PROMPT,
+      prompt: fullPrompt,
+    });
 
-    const result = await model.generateContent(fullPrompt);
-    const text = result.response.text();
-
-    return NextResponse.json({ reply: text });
+    return result.toTextStreamResponse();
   } catch (err) {
     console.error("Gemini API error:", err);
     return NextResponse.json(

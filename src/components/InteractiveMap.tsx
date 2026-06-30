@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useEffect } from "react";
-import L from "leaflet";
+import React, { useEffect, useState } from "react";
 import "leaflet/dist/leaflet.css";
+import L from "leaflet";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 
 // Fix Leaflet marker icon asset issue in Next.js/Webpack
 const fixLeafletIcon = () => {
@@ -78,93 +79,95 @@ interface InteractiveMapProps {
   darkMode: boolean;
 }
 
+// Custom icons generator
+const createCustomIcon = (color: string, isBig: boolean = false) => {
+  const size = isBig ? 32 : 24;
+  return L.divIcon({
+    className: "custom-leaflet-icon",
+    html: `<div style="
+      background-color: ${color}; 
+      width: ${size}px; 
+      height: ${size}px; 
+      border-radius: 50%; 
+      border: 2px solid white; 
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3); 
+      display: flex; 
+      align-items: center; 
+      justify-content: center;
+      color: white; 
+      font-size: ${isBig ? '14px' : '10px'};
+      font-weight: bold;
+    ">${isBig ? '📍' : '⭐'}</div>`,
+    iconSize: [size, size],
+    iconAnchor: [size / 2, size / 2]
+  });
+};
+
 export default function InteractiveMap({ lang, darkMode }: InteractiveMapProps) {
+  const [mounted, setMounted] = useState(false);
+
   useEffect(() => {
     fixLeafletIcon();
+    setMounted(true);
+  }, []);
 
-    const mapContainer = document.getElementById("leaflet-map");
-    if (!mapContainer) return;
+  if (!mounted) return (
+    <div className="relative w-full rounded-2xl overflow-hidden border border-[#EFEBE4] dark:border-[#353A33] shadow-sm bg-neutral-100 dark:bg-neutral-800 h-[280px] animate-pulse" />
+  );
 
-    // Center map on Córdoba 5579
-    const center: [number, number] = [-34.586, -58.441];
-    const map = L.map("leaflet-map", {
-      center,
-      zoom: 15,
-      scrollWheelZoom: false
-    });
+  const center: [number, number] = [-34.586, -58.441];
 
-    // Elegant grayscale map tiles for a premium look
-    const tileLayerUrl = darkMode
-      ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-      : "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png";
-
-    L.tileLayer(tileLayerUrl, {
-      attribution: '&copy; <a href="https://carto.com/">CARTO</a>'
-    }).addTo(map);
-
-    // Custom icons
-    const createCustomIcon = (color: string, isBig: boolean = false) => {
-      const size = isBig ? 32 : 24;
-      return L.divIcon({
-        className: "custom-leaflet-icon",
-        html: `<div style="
-          background-color: ${color}; 
-          width: ${size}px; 
-          height: ${size}px; 
-          border-radius: 50%; 
-          border: 2px solid #white; 
-          box-shadow: 0 2px 5px rgba(0,0,0,0.3); 
-          display: flex; 
-          align-items: center; 
-          justify-content: center;
-          color: white; 
-          font-size: ${isBig ? '14px' : '10px'};
-          font-weight: bold;
-        ">${isBig ? '📍' : '⭐'}</div>`,
-        iconSize: [size, size],
-        iconAnchor: [size / 2, size / 2]
-      });
-    };
-
-    // Draw markers
-    points.forEach((point) => {
-      let color = "#5F6F52"; // default brand olive
-      let isBig = false;
-
-      if (point.category === "apartment") {
-        color = "#ff5e7e"; // Pinkish highlight for the apartment
-        isBig = true;
-      } else if (point.category === "food") {
-        color = "#B06161";
-      } else if (point.category === "subway") {
-        color = "#387ADF";
-      } else if (point.category === "cafe") {
-        color = "#A9B388";
-      }
-
-      const marker = L.marker([point.lat, point.lng], {
-        icon: createCustomIcon(color, isBig)
-      }).addTo(map);
-
-      const title = lang === "es" ? point.name : point.nameEn;
-      const desc = lang === "es" ? point.descEs : point.descEn;
-
-      marker.bindPopup(`
-        <div style="font-family: sans-serif; font-size: 11px; padding: 2px; color: #1C1E1B;">
-          <h4 style="margin: 0 0 4px 0; font-weight: bold; font-size: 12px; color: ${color};">${title}</h4>
-          <p style="margin: 0; line-height: 1.3;">${desc}</p>
-        </div>
-      `);
-    });
-
-    return () => {
-      map.remove();
-    };
-  }, [lang, darkMode]);
+  // Elegant grayscale map tiles for a premium look
+  const tileLayerUrl = darkMode
+    ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+    : "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png";
 
   return (
-    <div className="relative w-full rounded-2xl overflow-hidden border border-[#EFEBE4] dark:border-[#353A33] shadow-sm">
-      <div id="leaflet-map" className="w-full h-[280px]" />
+    <div className="relative w-full rounded-2xl overflow-hidden border border-[#EFEBE4] dark:border-[#353A33] shadow-sm h-[280px]">
+      <MapContainer 
+        center={center} 
+        zoom={15} 
+        scrollWheelZoom={false}
+        style={{ height: '100%', width: '100%' }}
+      >
+        <TileLayer
+          attribution='&copy; <a href="https://carto.com/">CARTO</a>'
+          url={tileLayerUrl}
+        />
+        {points.map((point, index) => {
+          let color = "#5F6F52"; // default brand olive
+          let isBig = false;
+
+          if (point.category === "apartment") {
+            color = "#ff5e7e"; // Pinkish highlight for the apartment
+            isBig = true;
+          } else if (point.category === "food") {
+            color = "#B06161";
+          } else if (point.category === "subway") {
+            color = "#387ADF";
+          } else if (point.category === "cafe") {
+            color = "#A9B388";
+          }
+
+          const title = lang === "es" ? point.name : point.nameEn;
+          const desc = lang === "es" ? point.descEs : point.descEn;
+
+          return (
+            <Marker 
+              key={index}
+              position={[point.lat, point.lng]}
+              icon={createCustomIcon(color, isBig)}
+            >
+              <Popup>
+                <div style={{ fontFamily: 'sans-serif', fontSize: '11px', padding: '2px', color: '#1C1E1B' }}>
+                  <h4 style={{ margin: '0 0 4px 0', fontWeight: 'bold', fontSize: '12px', color }}>{title}</h4>
+                  <p style={{ margin: 0, lineHeight: '1.3' }}>{desc}</p>
+                </div>
+              </Popup>
+            </Marker>
+          );
+        })}
+      </MapContainer>
     </div>
   );
 }

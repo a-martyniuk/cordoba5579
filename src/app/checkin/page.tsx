@@ -1,7 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Key, Wifi, Copy, Check, ShieldAlert, Clock, ArrowLeft, Phone } from "lucide-react";
+import { useLanguage } from "../../context/LanguageContext";
+import { useTheme } from "../../context/ThemeContext";
 import Link from "next/link";
 import Image from "next/image";
 import dynamic from "next/dynamic";
@@ -20,9 +22,9 @@ const InteractiveMap = dynamic(() => import("../../components/InteractiveMap"), 
 });
 
 export default function CheckInPortal() {
-  const [lang, setLang] = useState<"es" | "en">("es");
+  const { t, language: lang, setLanguage } = useLanguage();
+  const { darkMode, toggleTheme } = useTheme();
   const [copied, setCopied] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
   const [videoPlaying, setVideoPlaying] = useState(false);
   const wifiPassword = "Welcome101";
 
@@ -36,35 +38,7 @@ export default function CheckInPortal() {
 
   const correctCode = airbnbDetails.lockboxCode || "1579";
 
-  // Sync state with localStorage
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const savedLang = localStorage.getItem("language") as "es" | "en";
-      if (savedLang) setLang(savedLang);
 
-      const savedDark = document.documentElement.classList.contains("dark");
-      setDarkMode(savedDark);
-    }
-  }, []);
-
-  const handleLanguageChange = (newLang: "es" | "en") => {
-    setLang(newLang);
-    if (typeof window !== "undefined") {
-      localStorage.setItem("language", newLang);
-    }
-  };
-
-  const handleThemeChange = (isDark: boolean) => {
-    setDarkMode(isDark);
-    if (typeof window !== "undefined") {
-      localStorage.setItem("darkMode", String(isDark));
-      if (isDark) {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-      }
-    }
-  };
 
   const handleCopyPassword = () => {
     navigator.clipboard.writeText(wifiPassword);
@@ -72,106 +46,6 @@ export default function CheckInPortal() {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const t = {
-    es: {
-      back: "Volver",
-      title: "Córdoba 5579",
-      subtitle: "Portal de Check-In Digital y Manual del Huésped",
-      welcomeTitle: "¡Te damos la bienvenida!",
-      welcomeText: "Hemos preparado esta guía personalizada para que tu ingreso sea autónomo, rápido y sin fricciones. Si tenés cualquier consulta, podés contactar a Jorge directamente por WhatsApp.",
-      wifiTitle: "Conexión a Wi-Fi",
-      wifiRed: "Red (SSID)",
-      wifiPass: "Contraseña",
-      wifiCopy: "Copiar",
-      wifiCopied: "Copiado",
-      wifiNote: "Las credenciales detalladas de conexión y el código QR de configuración rápida también se encuentran impresos en carteles enmarcados dentro del departamento.",
-      manualTitle: "Manual de Ingreso Autónomo",
-      videoLabel: "Video Guía",
-      videoTitle: "Cómo ingresar al edificio y retirar las llaves",
-      step1Title: "1. Llegada al Edificio",
-      step1Desc: "Dirigite a la entrada principal en Av. Córdoba 5579. El ingreso cuenta con excelente iluminación y cámaras de seguridad las 24 hs.",
-      step2Title: "2. Retiro de Llaves (Lockbox)",
-      step2Desc: "A la derecha de la puerta de entrada exterior verás las cajas metálicas de seguridad. Ubicá la rotulada como \"Depto 101\". Ingresá el código de combinación que te indicamos previamente por mensaje de confirmación, deslizá la traba hacia abajo y retirá el juego de llaves.",
-      step3Title: "3. Llavero Magnético en Entrada Exterior",
-      step3Desc: "Aproximá el llavero magnético circular (azul o negro) al lector electromagnético del ingreso exterior para abrir la puerta de vidrio del hall. Dirigite a los ascensores o escaleras y subí al piso 1.",
-      step4Title: "4. Acceso al Departamento 101",
-      step4Desc: "El departamento es el 101 (piso 1). Introduce la llave física en la cerradura, girala dos vueltas a la izquierda ¡y bienvenido a tu departamento de diseño!",
-      rulesTitle: "Normas Clave de Convivencia",
-      ruleSmoke: "Prohibido fumar:",
-      ruleSmokeText: "Multa estricta por fumar dentro del departamento o pasillos del edificio.",
-      rulePets: "Sin mascotas:",
-      rulePetsText: "No se admite el ingreso de mascotas en la propiedad en ningún caso.",
-      ruleSilence: "Horas de silencio:",
-      ruleSilenceText: "De 22:00 a 08:00 hs. Respetar el descanso de los vecinos del edificio.",
-      rulePool: "Piscina en terraza:",
-      rulePoolText: "Piso 9. Exclusivo huéspedes, ducha obligatoria previa. Cierre 20 hs.",
-      checkoutTitle: "Instrucciones de Check-Out",
-      checkoutIntro: "El horario límite de check-out es a las 11:00 hs. Te solicitamos:",
-      checkout1: "Apagar luces y aires: Asegurate de apagar todos los aires acondicionados y luces.",
-      checkout2: "Guardar llaves: Cerrá la puerta del departamento tirando firmemente y colocá las llaves de regreso en la misma caja de seguridad (lockbox) del ingreso exterior, desordenando la combinación al cerrarla.",
-      checkout3: "Avisar por WhatsApp: Enviale un mensaje rápido a Jorge confirmando tu salida. ¡Buen viaje de regreso!",
-      lockboxSimulatorTitle: "Simulador de Lockbox Interactivo",
-      lockboxInstruction: `Desliza para elegir los números. Prueba la combinación demo '${correctCode}' y desliza la traba negra lateral hacia abajo. El código real del departamento te llegará por mensaje privado.`,
-      lockboxLocked: `🔒 Cerrado - Prueba la clave demo '${correctCode}'`,
-      lockboxUnlocked: "🔓 ¡Abierto! Retira tus llaves de prueba.",
-      emergencyTitle: "Teléfonos de Emergencia",
-      emergency911Desc: "Policía y Emergencias Generales",
-      emergency107Desc: "SAME (Urgencias Médicas)",
-      emergency100Desc: "Bomberos",
-      emergency103Desc: "Defensa Civil",
-      emergencyHostDesc: "Jorge (Anfitrión - Urgencias Depto)",
-      mapOpenBtn: "Abrir Ubicación en Mapas ↗"
-    },
-    en: {
-      back: "Back",
-      title: "Cordoba 5579",
-      subtitle: "Digital Check-In Portal & Guest Manual",
-      welcomeTitle: "Welcome!",
-      welcomeText: "We have prepared this personalized guide for a self-guided, quick, and smooth check-in. If you have any questions, you can contact Jorge directly via WhatsApp.",
-      wifiTitle: "Wi-Fi Connection",
-      wifiRed: "Network (SSID)",
-      wifiPass: "Password",
-      wifiCopy: "Copy",
-      wifiCopied: "Copied",
-      wifiNote: "Detailed connection credentials and a quick setup QR code are also printed on framed signs inside the apartment.",
-      manualTitle: "Self-Check-In Manual",
-      videoLabel: "Video Guide",
-      videoTitle: "How to enter the building and retrieve the keys",
-      step1Title: "1. Arrival at the Building",
-      step1Desc: "Go to the main entrance at Av. Cordoba 5579. The entrance is well-lit and secured with security cameras 24/7.",
-      step2Title: "2. Retrieve Keys (Lockbox)",
-      step2Desc: "To the right of the outer entrance door, you will see the metal security lockboxes. Find the one labeled \"Depto 101\". Enter the combination code sent to you previously via confirmation message, slide the latch down, and retrieve the set of keys.",
-      step3Title: "3. Magnetic Tag at Outer Entrance",
-      step3Desc: "Hold the circular magnetic key tag (blue or black) close to the electromagnetic reader at the outer entrance to unlock the glass lobby door. Go to the elevators or stairs and go up to the 1st floor.",
-      step4Title: "4. Access Apartment 101",
-      step4Desc: "The apartment is 101 (1st floor). Insert the physical key into the lock, turn it twice to the left, and welcome to your design apartment!",
-      rulesTitle: "Key House Rules",
-      ruleSmoke: "No smoking:",
-      ruleSmokeText: "Strict fee for smoking inside the apartment or building hallways.",
-      rulePets: "No pets:",
-      rulePetsText: "Pets are not allowed on the property under any circumstances.",
-      ruleSilence: "Quiet hours:",
-      ruleSilenceText: "From 10:00 PM to 8:00 AM. Please respect the rest of the neighbors.",
-      rulePool: "Rooftop Pool:",
-      rulePoolText: "9th floor. Guests only, shower required before entering. Closes at 8 PM.",
-      checkoutTitle: "Check-Out Instructions",
-      checkoutIntro: "Check-out time is strictly by 11:00 AM. We kindly request that you:",
-      checkout1: "Turn off lights and AC: Make sure all air conditioning units and lights are turned off.",
-      checkout2: "Return keys: Close the apartment door firmly behind you and return the keys to the same security lockbox at the outer entrance, scrambling the code wheels after closing it.",
-      checkout3: "Notify via WhatsApp: Send a quick message to Jorge confirming your departure. Have a safe trip back!",
-      lockboxSimulatorTitle: "Interactive Lockbox Simulator",
-      lockboxInstruction: `Scroll to choose numbers. Try the demo combination '${correctCode}' and slide the black latch downwards. The real code will be sent privately.`,
-      lockboxLocked: `🔒 Locked - Try demo code '${correctCode}'`,
-      lockboxUnlocked: "🔓 Opened! Retrieve your test keys.",
-      emergencyTitle: "Emergency Contacts",
-      emergency911Desc: "Police & General Emergencies",
-      emergency107Desc: "SAME (Medical Emergencies)",
-      emergency100Desc: "Fire Department",
-      emergency103Desc: "Civil Defense",
-      emergencyHostDesc: "Jorge (Host - Apartment Urgencies)",
-      mapOpenBtn: "Open Location in Maps ↗"
-    }
-  }[lang];
 
   return (
     <div className={`min-h-screen font-sans antialiased pb-12 transition-colors duration-300 ${
@@ -184,16 +58,16 @@ export default function CheckInPortal() {
           className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center gap-1 text-xs text-white/90 hover:text-white font-semibold transition-all"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span className="hidden sm:inline">{t.back}</span>
+          <span className="hidden sm:inline">{t.chk_back}</span>
         </Link>
         
         {/* Language & Theme selector toggle */}
         <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2.5">
           {/* Theme Toggle */}
           <button
-            onClick={() => handleThemeChange(!darkMode)}
+            onClick={toggleTheme}
             className="w-7 h-7 rounded-lg bg-white/10 hover:bg-white/20 border border-white/20 text-white/90 hover:text-white transition-all text-xs flex items-center justify-center shadow-sm"
-            title={lang === "es" ? "Cambiar Tema" : "Toggle Theme"}
+            title={t.themeToggle}
           >
             {darkMode ? "☀️" : "🌙"}
           </button>
@@ -201,13 +75,13 @@ export default function CheckInPortal() {
           {/* Language Toggle */}
           <div className="flex items-center bg-white/10 rounded-lg p-0.5 border border-white/20 text-[10px] font-bold">
             <button
-              onClick={() => handleLanguageChange("es")}
+              onClick={() => setLanguage("es")}
               className={`px-2.5 py-1 rounded transition-all ${lang === "es" ? "bg-white text-[#5F6F52]" : "text-white/80 hover:text-white"}`}
             >
               ES
             </button>
             <button
-              onClick={() => handleLanguageChange("en")}
+              onClick={() => setLanguage("en")}
               className={`px-2.5 py-1 rounded transition-all ${lang === "en" ? "bg-white text-[#5F6F52]" : "text-white/80 hover:text-white"}`}
             >
               EN
@@ -215,8 +89,8 @@ export default function CheckInPortal() {
           </div>
         </div>
 
-        <h1 className="font-serif text-2xl sm:text-3xl font-bold tracking-tight">{t.title}</h1>
-        <p className="text-xs sm:text-sm text-emerald-100 mt-1 font-medium">{t.subtitle}</p>
+        <h1 className="font-serif text-2xl sm:text-3xl font-bold tracking-tight">{t.chk_title}</h1>
+        <p className="text-xs sm:text-sm text-emerald-100 mt-1 font-medium">{t.chk_subtitle}</p>
       </div>
 
       <div className="max-w-2xl mx-auto px-4 sm:px-6 mt-8 space-y-6">
@@ -231,10 +105,10 @@ export default function CheckInPortal() {
         >
           <div className="flex items-center gap-2 text-[#5F6F52] dark:text-[#889B73]">
             <span className="text-xl">👋</span>
-            <h2 className="font-serif text-lg sm:text-xl font-bold text-neutral-900 dark:text-neutral-100">{t.welcomeTitle}</h2>
+            <h2 className="font-serif text-lg sm:text-xl font-bold text-neutral-900 dark:text-neutral-100">{t.chk_welcomeTitle}</h2>
           </div>
           <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
-            {t.welcomeText}
+            {t.chk_welcomeText}
           </p>
         </motion.div>
 
@@ -249,7 +123,7 @@ export default function CheckInPortal() {
         >
           <div className="flex items-center gap-2.5 text-[#5F6F52] dark:text-[#889B73] pb-3 border-b border-[#F5F2EB] dark:border-[#2C302A]">
             <Wifi className="w-5 h-5" />
-            <h3 className="font-serif text-base sm:text-lg font-bold text-neutral-900 dark:text-neutral-100">{t.wifiTitle}</h3>
+            <h3 className="font-serif text-base sm:text-lg font-bold text-neutral-900 dark:text-neutral-100">{t.chk_wifiTitle}</h3>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -257,7 +131,7 @@ export default function CheckInPortal() {
             <div className={`border rounded-2xl p-3.5 space-y-1 flex flex-col justify-center transition-colors duration-300 ${
               darkMode ? "bg-[#141613] border-[#2C302A]" : "bg-[#FAF9F7] border-[#EFEBE4]"
             }`}>
-              <span className="text-[10px] font-bold text-neutral-400 dark:text-neutral-500 uppercase">{t.wifiRed}</span>
+              <span className="text-[10px] font-bold text-neutral-400 dark:text-neutral-500 uppercase">{t.chk_wifiRed}</span>
               <p className="font-mono text-xs sm:text-sm font-bold text-neutral-800 dark:text-neutral-200">Cordoba5579_Guest</p>
             </div>
             
@@ -266,7 +140,7 @@ export default function CheckInPortal() {
               darkMode ? "bg-[#141613] border-[#2C302A]" : "bg-[#FAF9F7] border-[#EFEBE4]"
             }`}>
               <div className="space-y-1">
-                <span className="text-[10px] font-bold text-neutral-400 dark:text-neutral-500 uppercase">{t.wifiPass}</span>
+                <span className="text-[10px] font-bold text-neutral-400 dark:text-neutral-500 uppercase">{t.chk_wifiPass}</span>
                 <p className="font-mono text-xs sm:text-sm font-bold text-neutral-800 dark:text-neutral-200">{wifiPassword}</p>
               </div>
               <button
@@ -276,12 +150,12 @@ export default function CheckInPortal() {
                 {copied ? (
                   <>
                     <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                    <span className="text-emerald-600 dark:text-emerald-400 text-[10px]">{t.wifiCopied}</span>
+                    <span className="text-emerald-600 dark:text-emerald-400 text-[10px]">{t.chk_wifiCopied}</span>
                   </>
                 ) : (
                   <>
                     <Copy className="w-4 h-4" />
-                    <span className="text-[10px]">{t.wifiCopy}</span>
+                    <span className="text-[10px]">{t.chk_wifiCopy}</span>
                   </>
                 )}
               </button>
@@ -291,7 +165,7 @@ export default function CheckInPortal() {
             <div className={`border rounded-2xl p-3 flex flex-col items-center justify-center gap-1.5 transition-colors duration-300 ${
               darkMode ? "bg-[#141613] border-[#2C302A]" : "bg-[#FAF9F7] border-[#EFEBE4]"
             }`}>
-              <span className="text-[9px] font-bold text-neutral-400 dark:text-neutral-500 uppercase text-center">{lang === "es" ? "Escanear para conectar" : "Scan to connect"}</span>
+              <span className="text-[9px] font-bold text-neutral-400 dark:text-neutral-500 uppercase text-center">{t.qrEscanear}</span>
               {/* Actual high-quality QR code image */}
               <Image 
                 src={wifiQr} 
@@ -303,7 +177,7 @@ export default function CheckInPortal() {
             </div>
           </div>
           <p className="text-[11px] text-neutral-400 dark:text-neutral-500 text-center leading-relaxed">
-            {t.wifiNote}
+            {t.chk_wifiNote}
           </p>
         </motion.div>
 
@@ -318,7 +192,7 @@ export default function CheckInPortal() {
         >
           <div className="flex items-center gap-2.5 text-[#5F6F52] dark:text-[#889B73] pb-3 border-b border-[#F5F2EB] dark:border-[#2C302A]">
             <Key className="w-5 h-5" />
-            <h3 className="font-serif text-base sm:text-lg font-bold text-neutral-900 dark:text-neutral-100">{t.manualTitle}</h3>
+            <h3 className="font-serif text-base sm:text-lg font-bold text-neutral-900 dark:text-neutral-100">{t.chk_manualTitle}</h3>
           </div>
 
           {/* Video Placeholder Card (Lazy Loading) */}
@@ -344,8 +218,8 @@ export default function CheckInPortal() {
                   </div>
                 </div>
                 <div className="z-10 text-white space-y-0.5 pointer-events-none">
-                  <span className="text-[9px] font-bold uppercase tracking-wider text-emerald-400">{t.videoLabel}</span>
-                  <h5 className="font-bold text-xs sm:text-sm">{t.videoTitle}</h5>
+                  <span className="text-[9px] font-bold uppercase tracking-wider text-emerald-400">{t.chk_videoLabel}</span>
+                  <h5 className="font-bold text-xs sm:text-sm">{t.chk_videoTitle}</h5>
                 </div>
               </div>
             )}
@@ -360,9 +234,9 @@ export default function CheckInPortal() {
               </div>
               <div className="space-y-3 flex-grow">
                 <div>
-                  <h4 className="font-bold text-xs sm:text-sm text-neutral-900 dark:text-neutral-100">{t.step1Title}</h4>
+                  <h4 className="font-bold text-xs sm:text-sm text-neutral-900 dark:text-neutral-100">{t.chk_step1Title}</h4>
                   <p className="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">
-                    {t.step1Desc}
+                    {t.chk_step1Desc}
                   </p>
                 </div>
                 <a 
@@ -371,7 +245,7 @@ export default function CheckInPortal() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-[10px] font-bold text-[#5F6F52] dark:text-emerald-400 hover:text-[#4F5D43] bg-[#FAF9F7] dark:bg-neutral-800 border border-[#EFEBE4] dark:border-[#2C302A] px-3 py-1.5 rounded-xl transition-all shadow-sm active:scale-95"
                 >
-                  📍 {t.mapOpenBtn}
+                  📍 {t.chk_mapOpenBtn}
                 </a>
 
                 {/* Embedded Interactive Map */}
@@ -388,9 +262,9 @@ export default function CheckInPortal() {
               </div>
               <div className="space-y-4 flex-grow">
                 <div>
-                  <h4 className="font-bold text-xs sm:text-sm text-neutral-900 dark:text-neutral-100">{t.step2Title}</h4>
+                  <h4 className="font-bold text-xs sm:text-sm text-neutral-900 dark:text-neutral-100">{t.chk_step2Title}</h4>
                   <p className="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">
-                    {t.step2Desc}
+                    {t.chk_step2Desc}
                   </p>
                 </div>
 
@@ -399,18 +273,16 @@ export default function CheckInPortal() {
                   darkMode ? "bg-[#141613] border-[#2C302A]" : "bg-[#FAF9F7] border-[#EFEBE4]"
                 }`}>
                   <p className="text-[10px] font-bold text-neutral-400 dark:text-neutral-500 uppercase tracking-wider text-center">
-                    {t.lockboxSimulatorTitle}
+                    {t.chk_lockboxSimulatorTitle}
                   </p>
 
                   {/* Test Code Box */}
                   <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/50 rounded-xl p-2.5 text-center space-y-1">
                     <span className="text-[10px] font-bold text-amber-800 dark:text-amber-400 uppercase tracking-wider block">
-                      {lang === "es" ? `🔑 CÓDIGO DE PRUEBA: ${correctCode}` : `🔑 TEST CODE: ${correctCode}`}
+                      {t.lockboxTestCode}
                     </span>
                     <span className="text-[9px] text-amber-700 dark:text-amber-500 leading-tight block">
-                      {lang === "es" 
-                        ? "(El código real de ingreso se transmitirá por mensaje personal)" 
-                        : "(The real access code will be sent via personal message)"}
+                      {t.lockboxTestDesc}
                     </span>
                   </div>
 
@@ -511,7 +383,7 @@ export default function CheckInPortal() {
                   <p className={`text-[10px] leading-normal text-center border p-2 rounded-xl transition-colors duration-300 ${
                     darkMode ? "bg-[#1E211D] border-[#2C302A] text-neutral-400" : "bg-white border-[#EFEBE4] text-neutral-500"
                   }`}>
-                    {t.lockboxInstruction}
+                    {t.chk_lockboxInstruction}
                   </p>
 
                   <div className={`text-[10px] font-bold text-center py-1.5 rounded-xl border transition-all ${
@@ -519,7 +391,7 @@ export default function CheckInPortal() {
                       ? "bg-emerald-50 dark:bg-emerald-950/20 text-emerald-800 dark:text-emerald-400 border-emerald-200 dark:border-emerald-900/50" 
                       : "bg-[#FAF9F7] dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400 border-[#EFEBE4] dark:border-[#2C302A]"
                   }`}>
-                    {isLockboxOpen ? t.lockboxUnlocked : t.lockboxLocked}
+                    {isLockboxOpen ? t.chk_lockboxUnlocked : t.chk_lockboxLocked}
                   </div>
                 </div>
               </div>
@@ -531,9 +403,9 @@ export default function CheckInPortal() {
                 3
               </div>
               <div className="space-y-1">
-                <h4 className="font-bold text-xs sm:text-sm text-neutral-900 dark:text-neutral-100">{t.step3Title}</h4>
+                <h4 className="font-bold text-xs sm:text-sm text-neutral-900 dark:text-neutral-100">{t.chk_step3Title}</h4>
                 <p className="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">
-                  {t.step3Desc}
+                  {t.chk_step3Desc}
                 </p>
               </div>
             </div>
@@ -544,9 +416,9 @@ export default function CheckInPortal() {
                 4
               </div>
               <div className="space-y-1">
-                <h4 className="font-bold text-xs sm:text-sm text-neutral-900 dark:text-neutral-100">{t.step4Title}</h4>
+                <h4 className="font-bold text-xs sm:text-sm text-neutral-900 dark:text-neutral-100">{t.chk_step4Title}</h4>
                 <p className="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">
-                  {t.step4Desc}
+                  {t.chk_step4Desc}
                 </p>
               </div>
             </div>
@@ -564,7 +436,7 @@ export default function CheckInPortal() {
         >
           <div className="flex items-center gap-2.5 text-[#5F6F52] dark:text-[#889B73] pb-3 border-b border-[#F5F2EB] dark:border-[#2C302A]">
             <ShieldAlert className="w-5 h-5" />
-            <h3 className="font-serif text-base sm:text-lg font-bold text-neutral-900 dark:text-neutral-100">{t.rulesTitle}</h3>
+            <h3 className="font-serif text-base sm:text-lg font-bold text-neutral-900 dark:text-neutral-100">{t.chk_rulesTitle}</h3>
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-neutral-600 dark:text-neutral-400">
@@ -572,25 +444,25 @@ export default function CheckInPortal() {
               darkMode ? "bg-[#141613] border-[#2C302A]/50" : "bg-[#FAF9F7] border-[#EFEBE4]/50"
             }`}>
               <span className="text-lg">🚭</span>
-              <p><strong>{t.ruleSmoke}</strong> {t.ruleSmokeText}</p>
+              <p><strong>{t.chk_ruleSmoke}</strong> {t.chk_ruleSmokeText}</p>
             </div>
             <div className={`flex items-start gap-2 p-3 rounded-xl border transition-colors duration-300 ${
               darkMode ? "bg-[#141613] border-[#2C302A]/50" : "bg-[#FAF9F7] border-[#EFEBE4]/50"
             }`}>
               <span className="text-lg">🚫🐾</span>
-              <p><strong>{t.rulePets}</strong> {t.rulePetsText}</p>
+              <p><strong>{t.chk_rulePets}</strong> {t.chk_rulePetsText}</p>
             </div>
             <div className={`flex items-start gap-2 p-3 rounded-xl border transition-colors duration-300 ${
               darkMode ? "bg-[#141613] border-[#2C302A]/50" : "bg-[#FAF9F7] border-[#EFEBE4]/50"
             }`}>
               <span className="text-lg">🤫</span>
-              <p><strong>{t.ruleSilence}</strong> {t.ruleSilenceText}</p>
+              <p><strong>{t.chk_ruleSilence}</strong> {t.chk_ruleSilenceText}</p>
             </div>
             <div className={`flex items-start gap-2 p-3 rounded-xl border transition-colors duration-300 ${
               darkMode ? "bg-[#141613] border-[#2C302A]/50" : "bg-[#FAF9F7] border-[#EFEBE4]/50"
             }`}>
               <span className="text-lg">🏊</span>
-              <p><strong>{t.rulePool}</strong> {t.rulePoolText}</p>
+              <p><strong>{t.chk_rulePool}</strong> {t.chk_rulePoolText}</p>
             </div>
           </div>
         </motion.div>
@@ -606,15 +478,15 @@ export default function CheckInPortal() {
         >
           <div className="flex items-center gap-2.5 text-[#5F6F52] dark:text-[#889B73] pb-3 border-b border-[#F5F2EB] dark:border-[#2C302A]">
             <Clock className="w-5 h-5" />
-            <h3 className="font-serif text-base sm:text-lg font-bold text-neutral-900 dark:text-neutral-100">{t.checkoutTitle}</h3>
+            <h3 className="font-serif text-base sm:text-lg font-bold text-neutral-900 dark:text-neutral-100">{t.chk_checkoutTitle}</h3>
           </div>
           
           <div className="space-y-3.5 text-xs text-neutral-600 dark:text-neutral-400">
-            <p>{t.checkoutIntro}</p>
+            <p>{t.chk_checkoutIntro}</p>
             <ol className="space-y-2.5 list-decimal list-inside">
-              <li>{t.checkout1}</li>
-              <li>{t.checkout2}</li>
-              <li>{t.checkout3}</li>
+              <li>{t.chk_checkout1}</li>
+              <li>{t.chk_checkout2}</li>
+              <li>{t.chk_checkout3}</li>
             </ol>
           </div>
         </motion.div>
@@ -630,14 +502,14 @@ export default function CheckInPortal() {
         >
           <div className="flex items-center gap-2.5 text-red-600 dark:text-red-400 pb-3 border-b border-[#F5F2EB] dark:border-[#2C302A]">
             <Phone className="w-5 h-5" />
-            <h3 className="font-serif text-base sm:text-lg font-bold text-neutral-900 dark:text-neutral-100">{t.emergencyTitle}</h3>
+            <h3 className="font-serif text-base sm:text-lg font-bold text-neutral-900 dark:text-neutral-100">{t.chk_emergencyTitle}</h3>
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
             <a href="tel:911" className="flex items-center justify-between p-3 bg-red-50/50 hover:bg-red-50 dark:bg-red-950/10 dark:hover:bg-red-950/20 border border-red-100 dark:border-red-900/30 rounded-xl transition-all group">
               <div className="space-y-0.5">
                 <p className="font-bold text-red-700 dark:text-red-400">911</p>
-                <p className="text-neutral-500 dark:text-neutral-450 text-[10px]">{t.emergency911Desc}</p>
+                <p className="text-neutral-500 dark:text-neutral-450 text-[10px]">{t.chk_emergency911Desc}</p>
               </div>
               <Phone className="w-3.5 h-3.5 text-red-600 dark:text-red-400 group-hover:scale-110 transition-transform" />
             </a>
@@ -645,7 +517,7 @@ export default function CheckInPortal() {
             <a href="tel:107" className="flex items-center justify-between p-3 bg-red-50/50 hover:bg-red-50 dark:bg-red-950/10 dark:hover:bg-red-950/20 border border-red-100 dark:border-red-900/30 rounded-xl transition-all group">
               <div className="space-y-0.5">
                 <p className="font-bold text-red-700 dark:text-red-400">107</p>
-                <p className="text-neutral-500 dark:text-neutral-450 text-[10px]">{t.emergency107Desc}</p>
+                <p className="text-neutral-500 dark:text-neutral-450 text-[10px]">{t.chk_emergency107Desc}</p>
               </div>
               <Phone className="w-3.5 h-3.5 text-red-600 dark:text-red-400 group-hover:scale-110 transition-transform" />
             </a>
@@ -653,7 +525,7 @@ export default function CheckInPortal() {
             <a href="tel:100" className="flex items-center justify-between p-3 bg-red-50/50 hover:bg-red-50 dark:bg-red-950/10 dark:hover:bg-red-950/20 border border-red-100 dark:border-red-900/30 rounded-xl transition-all group">
               <div className="space-y-0.5">
                 <p className="font-bold text-red-700 dark:text-red-400">100</p>
-                <p className="text-neutral-500 dark:text-neutral-450 text-[10px]">{t.emergency100Desc}</p>
+                <p className="text-neutral-500 dark:text-neutral-450 text-[10px]">{t.chk_emergency100Desc}</p>
               </div>
               <Phone className="w-3.5 h-3.5 text-red-600 dark:text-red-400 group-hover:scale-110 transition-transform" />
             </a>
@@ -661,15 +533,15 @@ export default function CheckInPortal() {
             <a href="tel:103" className="flex items-center justify-between p-3 bg-neutral-50 hover:bg-neutral-100/70 dark:bg-neutral-800 dark:hover:bg-neutral-700 border border-[#EFEBE4] dark:border-[#2C302A] rounded-xl transition-all group">
               <div className="space-y-0.5">
                 <p className="font-bold text-neutral-700 dark:text-neutral-300">103</p>
-                <p className="text-neutral-500 dark:text-neutral-450 text-[10px]">{t.emergency103Desc}</p>
+                <p className="text-neutral-500 dark:text-neutral-450 text-[10px]">{t.chk_emergency103Desc}</p>
               </div>
               <Phone className="w-3.5 h-3.5 text-neutral-500 dark:text-neutral-400 group-hover:scale-110 transition-transform" />
             </a>
 
             <a href="tel:+5491145379500" className="sm:col-span-2 flex items-center justify-between p-3.5 bg-[#FAF9F7] hover:bg-[#F5F2EB] dark:bg-neutral-850 dark:hover:bg-neutral-800 border border-[#EFEBE4] dark:border-[#2C302A] rounded-xl transition-all group">
               <div className="space-y-0.5">
-                <p className="font-bold text-neutral-800 dark:text-neutral-200">Jorge (Anfitrión / Host)</p>
-                <p className="text-[#5F6F52] dark:text-[#889B73] font-semibold text-[10px]">{t.emergencyHostDesc}</p>
+                <p className="font-bold text-neutral-800 dark:text-neutral-200">{t.hostJorge}</p>
+                <p className="text-[#5F6F52] dark:text-[#889B73] font-semibold text-[10px]">{t.chk_emergencyHostDesc}</p>
               </div>
               <Phone className="w-4 h-4 text-[#5F6F52] dark:text-[#889B73] group-hover:scale-110 transition-transform" />
             </a>

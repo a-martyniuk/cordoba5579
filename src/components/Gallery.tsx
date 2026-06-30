@@ -92,8 +92,20 @@ export default function Gallery() {
 
   return (
     <div className="space-y-4">
-      {/* Grid Layout (Airbnb Style) */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-3 h-[300px] sm:h-[400px] md:h-[480px] rounded-3xl overflow-hidden relative shadow-lg hover:shadow-xl dark:shadow-black/40 transition-shadow duration-500">
+      {/* Skeleton Loading State */}
+      {loading ? (
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-3 h-[300px] sm:h-[400px] md:h-[480px] rounded-3xl overflow-hidden shadow-lg animate-pulse">
+          <div className="col-span-1 md:col-span-6 h-full bg-neutral-200 dark:bg-neutral-800" />
+          <div className="hidden md:grid col-span-6 grid-cols-2 gap-3 h-full">
+            <div className="h-full bg-neutral-200 dark:bg-neutral-800" />
+            <div className="h-full bg-neutral-200 dark:bg-neutral-800" />
+            <div className="h-full bg-neutral-200 dark:bg-neutral-800" />
+            <div className="h-full bg-neutral-200 dark:bg-neutral-800" />
+          </div>
+        </div>
+      ) : (
+        /* Grid Layout (Airbnb Style) */
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-3 h-[300px] sm:h-[400px] md:h-[480px] rounded-3xl overflow-hidden relative shadow-lg hover:shadow-xl dark:shadow-black/40 transition-shadow duration-500">
         {/* Main large image (Left) */}
         <div
           onClick={() => setLightboxIndex(0)}
@@ -162,6 +174,7 @@ export default function Gallery() {
           <span>Ver todas las fotos</span>
         </button>
       </div>
+      )}
 
       {/* Lightbox Modal */}
       <AnimatePresence>

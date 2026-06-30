@@ -10,15 +10,18 @@
     "sync": "python scripts/sync_airbnb.py"
   },
   "dependencies": {
+    "@ai-sdk/google": "^4.0.3",
     "@google/generative-ai": "^0.24.1",
     "@vercel/analytics": "^2.0.1",
+    "ai": "^7.0.8",
     "framer-motion": "^12.41.0",
     "leaflet": "^1.9.4",
     "lucide-react": "^1.21.0",
     "next": "15.1.11",
     "proj4": "^2.20.9",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-leaflet": "^5.0.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

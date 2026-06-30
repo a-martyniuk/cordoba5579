@@ -1,0 +1,18 @@
+{
+  "pageTitle": "Wine Cellar & Minibar",
+  "pageSubtitle": "Premium selection to enjoy during your stay at Córdoba 5579.",
+  "backBtn": "Back to Home",
+  "headerTag": "Wine Cellar & Minibar (Extra Cost)",
+  "howItWorksTitle": "How it works?",
+  "howItWorksText": "Enjoy the available wines and drinks freely. At checkout, simply let Jorge know what you consumed to coordinate payment.",
+  "disclaimer": "Prices are in US Dollars (USD). Paid upon checkout.",
+  "quantityLabel": "Available in unit: ",
+  "priceLabel": "Price",
+  "noItems": "There are currently no products configured in the cellar.",
+  "rules": [
+    "Fine glassware is available at the bar corner in the living room.",
+    "Please keep white wines and sparkling drinks chilled before consuming.",
+    "Consumption exclusive for guests aged 18 and older."
+  ],
+  "cavaRulesTitle": "Wine Cellar Rules"
+}
