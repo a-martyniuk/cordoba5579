@@ -19,16 +19,24 @@ export default function AmenitiesGrid() {
     };
     amenities.forEach((item: { title: string; subtitle: string; category?: unknown }) => {
       const lower = ((item.title || "") + " " + (item.subtitle || "")).toLowerCase();
-      if (lower.includes("cocina") || lower.includes("heladera") || lower.includes("microondas") || lower.includes("vajilla") || lower.includes("horno") || lower.includes("cafetera") || lower.includes("licuadora") || lower.includes("arrocera") || lower.includes("comedor") || lower.includes("pava") || lower.includes("copas") || lower.includes("congelador") || lower.includes("utensilios") || lower.includes("ollas") || lower.includes("sartenes") || lower.includes("platos") || lower.includes("bowls")) {
+      
+      const isKitchen = lower.match(/(cocina|heladera|microondas|vajilla|horno|cafetera|licuadora|arrocera|comedor|pava|copas|congelador|utensilios|ollas|sartenes|platos|bowls|kitchen|refrigerator|fridge|microwave|dishes|silverware|oven|coffee|espresso|blender|rice|dining|kettle|wine glasses|freezer|utensils|pots|pans|plates|stove|toaster|baking)/);
+      const isBedroom = lower.match(/(cama|almohada|manta|cortina|persiana|ropa|perchas|lavarropas|secarropas|plancha|ténder|placard|armario|guardar|hilos|algodón|bed|pillow|blanket|curtain|blind|clothing|hanger|washer|dryer|iron|drying rack|closet|wardrobe|store|thread|cotton|linen|sheet|darkening)/);
+      const isBathroom = lower.match(/(pelo|shampoo|acondicionador|jabón|bidé|bidet|ducha|agua caliente|gel|secador|hair|conditioner|soap|shower|hot water|body|toilet)/);
+      const isConnectivity = lower.match(/(wifi|ethernet|televisor|tv|ac:|calefacción|split|televisor hd|pulgadas|air conditioning|heating|hdtv|inch|internet|ac -)/);
+      const isSafety = lower.match(/(cámara|humo|monóxido|matafuego|auxilios|seguridad|caja fuerte|alarma|extintor|camera|smoke|carbon monoxide|fire extinguisher|first aid|security|safe|alarm)/);
+
+      if (isKitchen) {
         categories.kitchen.items.push(item);
-      } else if (lower.includes("cama") || lower.includes("almohada") || lower.includes("manta") || lower.includes("cortina") || lower.includes("persiana") || lower.includes("ropa") || lower.includes("perchas") || lower.includes("lavarropas") || lower.includes("secarropas") || lower.includes("plancha") || lower.includes("ténder") || lower.includes("placard") || lower.includes("armario") || lower.includes("guardar") || lower.includes("hilos") || lower.includes("algodón")) {
+      } else if (isBedroom) {
         categories.bedroom.items.push(item);
-      } else if (lower.includes("pelo") || lower.includes("shampoo") || lower.includes("acondicionador") || lower.includes("jabón") || lower.includes("bidé") || lower.includes("bidet") || lower.includes("ducha") || lower.includes("agua caliente") || lower.includes("gel") || lower.includes("secador")) {
+      } else if (isBathroom) {
         categories.bathroom.items.push(item);
-      } else if (lower.includes("wifi") || lower.includes("ethernet") || lower.includes("televisor") || lower.includes("tv") || lower.includes("ac:") || lower.includes("calefacción") || lower.includes("split") || lower.includes("televisor hd") || lower.includes("pulgadas")) {
+      } else if (isConnectivity) {
         categories.connectivity.items.push(item);
-      } else if (lower.includes("cámara") || lower.includes("humo") || lower.includes("monóxido") || lower.includes("matafuego") || lower.includes("auxilios") || lower.includes("seguridad") || lower.includes("caja fuerte") || lower.includes("alarma") || lower.includes("extintor")) {
+      } else if (isSafety) {
         categories.safety.items.push(item);
+
       } else {
         categories.rooftop.items.push(item);
       }
