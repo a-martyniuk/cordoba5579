@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ChevronDown, Phone } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
 
 export default function FAQSection() {

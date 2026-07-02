@@ -11,8 +11,8 @@ import { motion } from "framer-motion";
 import wifiQr from "../../../public/wifi-qr.png";
 import airbnbDetails from "../../data/airbnb-details.json";
 
-// Dynamically import InteractiveMap to avoid SSR errors
-const InteractiveMap = dynamic(() => import("../../components/InteractiveMap"), {
+// Dynamically import NeighbourhoodMap to avoid SSR errors
+const NeighbourhoodMap = dynamic(() => import("../../components/NeighbourhoodMap"), {
   ssr: false,
   loading: () => (
     <div className="h-[280px] w-full bg-neutral-100 dark:bg-neutral-800 animate-pulse rounded-2xl flex items-center justify-center text-xs text-neutral-400 dark:text-neutral-500">
@@ -250,7 +250,7 @@ export default function CheckInPortal() {
 
                 {/* Embedded Interactive Map */}
                 <div className="mt-2">
-                  <InteractiveMap lang={lang} darkMode={darkMode} />
+                  <NeighbourhoodMap lang={lang} compact={true} />
                 </div>
               </div>
             </div>

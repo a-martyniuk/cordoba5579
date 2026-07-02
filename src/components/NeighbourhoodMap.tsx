@@ -316,9 +316,10 @@ const getCategoryHtmlIcon = (type: string, subLine?: string, isFireStation?: boo
 interface NeighbourhoodMapProps {
   sheetUrl?: string;
   lang?: "es" | "en";
+  compact?: boolean;
 }
 
-export default function NeighbourhoodMap({ sheetUrl, lang = "es" }: NeighbourhoodMapProps) {
+export default function NeighbourhoodMap({ sheetUrl, lang = "es", compact = false }: NeighbourhoodMapProps) {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
   const markersLayerRef = useRef<any>(null);
@@ -971,6 +972,22 @@ export default function NeighbourhoodMap({ sheetUrl, lang = "es" }: Neighbourhoo
     if (selectedCategory === "all") return true;
     return place.type === selectedCategory;
   });
+
+  if (compact) {
+    return (
+      <div className="relative w-full rounded-2xl overflow-hidden border border-[#EFEBE4] dark:border-[#2C302A] h-[280px] shadow-sm transition-colors duration-300">
+        {!leafletLoaded && (
+          <div className="absolute inset-0 bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center text-sm text-neutral-500 dark:text-neutral-400">
+            <div className="text-center space-y-2">
+              <div className="w-6 h-6 border-2 border-neutral-400 dark:border-neutral-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
+              <p>{t.loading}</p>
+            </div>
+          </div>
+        )}
+        <div ref={mapContainerRef} className="w-full h-full z-10" />
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white dark:bg-[#252824] border border-[#EFEBE4] dark:border-[#353A33] rounded-3xl p-6 md:p-8 space-y-6 transition-colors duration-300">
