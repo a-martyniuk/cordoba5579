@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Key, Wifi, Copy, Check, ShieldAlert, Clock, ArrowLeft, Phone } from "lucide-react";
+import { Key, Wifi, Copy, Check, ShieldAlert, Clock, ArrowLeft, Phone, Moon, Sun } from "lucide-react";
 import { useLanguage } from "../../context/LanguageContext";
 import { useTheme } from "../../context/ThemeContext";
 import Link from "next/link";
@@ -51,46 +51,61 @@ export default function CheckInPortal() {
     <div className={`min-h-screen font-sans antialiased pb-12 transition-colors duration-300 ${
       darkMode ? "bg-[#141613] text-neutral-200" : "bg-[#FAF9F7] text-neutral-800"
     }`}>
-      {/* Top Banner */}
-      <div className="bg-[#5F6F52] text-white py-8 px-4 text-center relative shadow-md">
-        <Link 
-          href="/" 
-          className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center gap-1 text-xs text-white/90 hover:text-white font-semibold transition-all"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          <span className="hidden sm:inline">{t.chk_back}</span>
-        </Link>
-        
-        {/* Language & Theme selector toggle */}
-        <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2.5">
-          {/* Theme Toggle */}
-          <button
-            onClick={toggleTheme}
-            className="w-7 h-7 rounded-lg bg-white/10 hover:bg-white/20 border border-white/20 text-white/90 hover:text-white transition-all text-xs flex items-center justify-center shadow-sm"
-            title={t.themeToggle}
+      {/* Top Navigation */}
+      <header className="sticky top-0 z-50 backdrop-blur-md bg-[#FAF9F7]/80 dark:bg-[#141613]/80 border-b border-[#EFEBE4] dark:border-[#2C302A] transition-all">
+        <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between">
+          <Link 
+            href="/"
+            className="inline-flex items-center gap-2 text-xs font-semibold text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors"
           >
-            {darkMode ? "☀️" : "🌙"}
-          </button>
+            <ArrowLeft className="w-4 h-4" />
+            <span className="hidden sm:inline">{t.chk_back}</span>
+          </Link>
 
-          {/* Language Toggle */}
-          <div className="flex items-center bg-white/10 rounded-lg p-0.5 border border-white/20 text-[10px] font-bold">
+          {/* Language and Theme Switcher */}
+          <div className="flex items-center gap-2">
             <button
-              onClick={() => setLanguage("es")}
-              className={`px-2.5 py-1 rounded transition-all ${lang === "es" ? "bg-white text-[#5F6F52]" : "text-white/80 hover:text-white"}`}
+              onClick={toggleTheme}
+              title={t.themeToggle}
+              className="p-1.5 rounded-xl bg-[#FAF9F7] dark:bg-[#1E211D] border border-[#EFEBE4] dark:border-[#2C302A] text-neutral-500 hover:text-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-200 transition-colors"
             >
-              ES
+              {darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
             </button>
-            <button
-              onClick={() => setLanguage("en")}
-              className={`px-2.5 py-1 rounded transition-all ${lang === "en" ? "bg-white text-[#5F6F52]" : "text-white/80 hover:text-white"}`}
-            >
-              EN
-            </button>
+
+            <div className="flex items-center gap-1.5 bg-[#FAF9F7] dark:bg-[#1E211D] border border-[#EFEBE4] dark:border-[#2C302A] p-1 rounded-xl">
+              <button
+                onClick={() => setLanguage("es")}
+                className={`text-[10px] font-bold px-2.5 py-1.5 rounded-lg transition-all ${
+                  lang === "es"
+                    ? "bg-[#5F6F52] text-white shadow-sm"
+                    : "text-neutral-500 hover:text-neutral-800 dark:hover:text-neutral-300"
+                }`}
+              >
+                ES
+              </button>
+              <button
+                onClick={() => setLanguage("en")}
+                className={`text-[10px] font-bold px-2.5 py-1.5 rounded-lg transition-all ${
+                  lang === "en"
+                    ? "bg-[#5F6F52] text-white shadow-sm"
+                    : "text-neutral-500 hover:text-neutral-800 dark:hover:text-neutral-300"
+                }`}
+              >
+                EN
+              </button>
+            </div>
           </div>
         </div>
+      </header>
 
-        <h1 className="font-serif text-2xl sm:text-3xl font-bold tracking-tight">{t.chk_title}</h1>
-        <p className="text-xs sm:text-sm text-emerald-100 mt-1 font-medium">{t.chk_subtitle}</p>
+      {/* Main content header */}
+      <div className="text-center space-y-4 mt-10 mb-6 px-4">
+        <h1 className="font-serif text-3xl sm:text-4xl font-bold text-neutral-900 dark:text-white leading-tight">
+          {t.chk_title}
+        </h1>
+        <p className="text-sm text-neutral-500 dark:text-neutral-400 font-light leading-relaxed max-w-lg mx-auto">
+          {t.chk_subtitle}
+        </p>
       </div>
 
       <div className="max-w-2xl mx-auto px-4 sm:px-6 mt-10 space-y-8">
