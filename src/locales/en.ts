@@ -75,7 +75,7 @@ export const en = {
   faq8Q: "Is there a laundry service available?",
   faq8A: "Yes, guests enjoy free access to the building's shared laundry room with washers and dryers. A drying rack is also provided inside the apartment.",
   faq9Q: "Do you have fast Internet for Home Office?",
-  faq9A: "Yes, we provide a very stable, high-speed fiber optic connection, ideal for video calls, streaming, remote work, or digital nomads.",
+  faq9A: "Yes, we have a very stable 300 Mbps fiber optic connection by Personal, ideal for video calls, streaming, remote work, or digital nomads.",
   faq10Q: "Can I drop off my luggage before check-in or after check-out?",
   faq10A: "Of course! If your flight arrives early or departs late, we offer luggage drop-off service (subject to availability) so you can explore the city unburdened. Just ask us to coordinate.",
   faq11Q: "Are pets allowed?",

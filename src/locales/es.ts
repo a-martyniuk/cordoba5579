@@ -75,7 +75,7 @@ export const es = {
   faq8Q: "¿Hay servicio de lavadero o laundry disponible?",
   faq8A: "Sí, todos los huéspedes tienen acceso sin costo adicional al laundry de uso común en el edificio, equipado con lavarropas y secadoras. Además, el departamento cuenta con ténder para colgar la ropa.",
   faq9Q: "¿Tienen Internet rápido para hacer Home Office?",
-  faq9A: "Sí, contamos con una conexión de fibra óptica de alta velocidad muy estable, ideal para videollamadas, streaming y trabajo remoto o nómades digitales.",
+  faq9A: "Sí, contamos con una conexión de fibra óptica de Personal de 300 megas, muy estable e ideal para videollamadas, streaming y trabajo remoto o nómades digitales.",
   faq10Q: "¿Puedo dejar mi equipaje antes del horario de entrada o después de la salida?",
   faq10A: "¡Claro! Si tu vuelo llega temprano o sale tarde, ofrecemos servicio de guardado de equipaje (luggage drop-off) sujeto a disponibilidad para que puedas recorrer la ciudad sin cargas. Consúltanos para coordinarlo.",
   faq11Q: "¿Se permiten mascotas?",
