@@ -26,25 +26,25 @@ CODES = [
         "name": "cava",
         "url": f"{BASE_URL}/cava",
         "label": "Cava & Minibar",
-        "sublabel": "Escaneá para ver el menú",
+        "sublabel": "Menú Digital de Vinos",
         "color": "#5F6F52",         # Olive green
         "bg": "#FAF9F7",
     },
     {
         "name": "checkin",
         "url": f"{BASE_URL}/checkin",
-        "label": "Check-In Digital",
-        "sublabel": "Portal del Huésped",
-        "color": "#3B5998",         # Deep blue
-        "bg": "#F0F4FF",
+        "label": "Check-In Autónomo",
+        "sublabel": "Guía de Ingreso y WiFi",
+        "color": "#5F6F52",         # Olive green
+        "bg": "#FAF9F7",
     },
     {
         "name": "whatsapp",
         "url": WHATSAPP_URL,
         "label": "Contacto Directo",
-        "sublabel": "WhatsApp con Jorge",
-        "color": "#25D366",         # WhatsApp green
-        "bg": "#F0FFF4",
+        "sublabel": "WhatsApp Anfitrión",
+        "color": "#5F6F52",         # Olive green
+        "bg": "#FAF9F7",
     },
 ]
 
@@ -71,54 +71,85 @@ def make_card(code: dict) -> Image.Image:
     card = Image.new("RGBA", (W, H), code["bg"])
     draw = ImageDraw.Draw(card)
 
-    # Header bar
-    draw.rectangle([(0, 0), (W, 80)], fill=code["color"])
+    # Use premium system fonts if available
+    try:
+        font_logo = ImageFont.truetype("georgiab.ttf", 26) # Georgia Bold for serif logo
+        font_title = ImageFont.truetype("georgiab.ttf", 38)
+        font_label = ImageFont.truetype("segoeuib.ttf", 34) # Segoe UI Bold
+        font_sublabel = ImageFont.truetype("segoeui.ttf", 22)
+        font_url = ImageFont.truetype("segoeui.ttf", 16)
+    except IOError:
+        # Fallback to standard times / arial
+        try:
+            font_logo = ImageFont.truetype("timesbd.ttf", 26)
+            font_title = ImageFont.truetype("timesbd.ttf", 38)
+            font_label = ImageFont.truetype("arialbd.ttf", 34)
+            font_sublabel = ImageFont.truetype("arial.ttf", 22)
+            font_url = ImageFont.truetype("arial.ttf", 16)
+        except IOError:
+            font_logo = ImageFont.load_default()
+            font_title = font_logo
+            font_label = font_logo
+            font_sublabel = font_logo
+            font_url = font_logo
 
-    # Rounded card border (simulate with rectangle)
-    border_margin = 30
+    # Draw a premium border
+    margin = 40
+    # Outer thin border
     draw.rounded_rectangle(
-        [border_margin, border_margin, W - border_margin, H - border_margin],
-        radius=32,
+        [margin, margin, W - margin, H - margin],
+        radius=24,
+        outline="#EFEBE4", # Site light border
+        width=2
+    )
+    # Inner elegant border
+    draw.rounded_rectangle(
+        [margin + 8, margin + 8, W - margin - 8, H - margin - 8],
+        radius=16,
         outline=code["color"],
-        width=4
+        width=1
     )
 
-    # Property name in header
-    try:
-        font_title = ImageFont.truetype("arial.ttf", 28)
-        font_label = ImageFont.truetype("arial.ttf", 40)
-        font_sublabel = ImageFont.truetype("arial.ttf", 26)
-        font_url = ImageFont.truetype("arial.ttf", 20)
-    except IOError:
-        font_title = ImageFont.load_default()
-        font_label = font_title
-        font_sublabel = font_title
-        font_url = font_title
+    # Top Brand Label (mimicking the site logo)
+    logo_text = "CÓRDOBA 5579"
+    draw.text((W // 2, 90), logo_text, fill="#252824", font=font_logo, anchor="mm")
+    
+    # Subtitle for logo
+    draw.text((W // 2, 125), "PALERMO HOLLYWOOD", fill="#888888", font=font_url, anchor="mm")
 
-    draw.text((W // 2, 40), "Córdoba 5579 · Palermo Hollywood", fill="white",
-              font=font_title, anchor="mm")
+    # Dynamic Title of the card
+    draw.text((W // 2, 210), code["label"], fill=code["color"], font=font_title, anchor="mm")
 
     # QR code
+    # Ensure QR background matches card background
     qr_img = make_qr(code["url"], code["color"], code["bg"])
-    qr_size = 480
+    qr_size = 420
     qr_img = qr_img.resize((qr_size, qr_size), Image.LANCZOS)
     qr_x = (W - qr_size) // 2
-    qr_y = 120
+    qr_y = 280
+    
+    # Draw a subtle background card container for the QR
+    draw.rounded_rectangle(
+        [qr_x - 15, qr_y - 15, qr_x + qr_size + 15, qr_y + qr_size + 15],
+        radius=16,
+        fill="white",
+        outline="#EFEBE4",
+        width=1
+    )
     card.paste(qr_img, (qr_x, qr_y), mask=qr_img)
 
-    # Label
-    draw.text((W // 2, qr_y + qr_size + 50), code["label"], fill=code["color"],
-              font=font_label, anchor="mm")
-    draw.text((W // 2, qr_y + qr_size + 100), code["sublabel"], fill="#666666",
-              font=font_sublabel, anchor="mm")
+    # Sublabel
+    draw.text((W // 2, 770), code["sublabel"], fill="#252824", font=font_label, anchor="mm")
+    
+    # Action instruction
+    draw.text((W // 2, 820), "Escaneá el código QR con tu celular", fill="#888888", font=font_sublabel, anchor="mm")
 
     # Divider line
-    y_div = qr_y + qr_size + 140
-    draw.line([(80, y_div), (W - 80, y_div)], fill=code["color"], width=2)
+    y_div = 880
+    draw.line([(120, y_div), (W - 120, y_div)], fill="#EFEBE4", width=1)
 
-    # URL hint at bottom
-    draw.text((W // 2, y_div + 40), code["url"][:60], fill="#999999",
-              font=font_url, anchor="mm")
+    # URL at bottom
+    draw.text((W // 2, 920), code["url"], fill="#A0A0A0", font=font_url, anchor="mm")
 
     return card.convert("RGB")
 
