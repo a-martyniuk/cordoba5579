@@ -25,24 +25,30 @@ CODES = [
     {
         "name": "cava",
         "url": f"{BASE_URL}/cava",
-        "label": "Cava & Minibar",
-        "sublabel": "Menú Digital de Vinos",
+        "label_es": "Cava & Minibar",
+        "label_en": "Wine Cellar & Minibar",
+        "sublabel_es": "Menú Digital de Vinos",
+        "sublabel_en": "Digital Wine Menu",
         "color": "#5F6F52",         # Olive green
         "bg": "#FAF9F7",
     },
     {
         "name": "checkin",
         "url": f"{BASE_URL}/checkin",
-        "label": "Check-In Autónomo",
-        "sublabel": "Guía de Ingreso y WiFi",
+        "label_es": "Check-In Autónomo",
+        "label_en": "Self Check-In",
+        "sublabel_es": "Guía de Ingreso y WiFi",
+        "sublabel_en": "Entry Guide & WiFi",
         "color": "#5F6F52",         # Olive green
         "bg": "#FAF9F7",
     },
     {
         "name": "whatsapp",
         "url": WHATSAPP_URL,
-        "label": "Contacto Directo",
-        "sublabel": "WhatsApp Anfitrión",
+        "label_es": "Contacto Directo",
+        "label_en": "Direct Contact",
+        "sublabel_es": "WhatsApp Anfitrión",
+        "sublabel_en": "Host WhatsApp",
         "color": "#5F6F52",         # Olive green
         "bg": "#FAF9F7",
     },
@@ -74,21 +80,24 @@ def make_card(code: dict) -> Image.Image:
     # Use premium system fonts if available
     try:
         font_logo = ImageFont.truetype("georgiab.ttf", 26) # Georgia Bold for serif logo
-        font_title = ImageFont.truetype("georgiab.ttf", 38)
-        font_label = ImageFont.truetype("segoeuib.ttf", 34) # Segoe UI Bold
-        font_sublabel = ImageFont.truetype("segoeui.ttf", 22)
+        font_title_es = ImageFont.truetype("georgiab.ttf", 36)
+        font_title_en = ImageFont.truetype("georgiai.ttf", 26) # Georgia Italic
+        font_label = ImageFont.truetype("segoeuib.ttf", 26) # Segoe UI Bold
+        font_sublabel = ImageFont.truetype("segoeui.ttf", 20)
         font_url = ImageFont.truetype("segoeui.ttf", 16)
     except IOError:
         # Fallback to standard times / arial
         try:
             font_logo = ImageFont.truetype("timesbd.ttf", 26)
-            font_title = ImageFont.truetype("timesbd.ttf", 38)
-            font_label = ImageFont.truetype("arialbd.ttf", 34)
-            font_sublabel = ImageFont.truetype("arial.ttf", 22)
+            font_title_es = ImageFont.truetype("timesbd.ttf", 36)
+            font_title_en = ImageFont.truetype("timesi.ttf", 26)
+            font_label = ImageFont.truetype("arialbd.ttf", 26)
+            font_sublabel = ImageFont.truetype("arial.ttf", 20)
             font_url = ImageFont.truetype("arial.ttf", 16)
         except IOError:
             font_logo = ImageFont.load_default()
-            font_title = font_logo
+            font_title_es = font_logo
+            font_title_en = font_logo
             font_label = font_logo
             font_sublabel = font_logo
             font_url = font_logo
@@ -117,16 +126,17 @@ def make_card(code: dict) -> Image.Image:
     # Subtitle for logo
     draw.text((W // 2, 125), "PALERMO HOLLYWOOD", fill="#888888", font=font_url, anchor="mm")
 
-    # Dynamic Title of the card
-    draw.text((W // 2, 210), code["label"], fill=code["color"], font=font_title, anchor="mm")
+    # Dynamic Title of the card (Bilingual Stacked)
+    draw.text((W // 2, 195), code["label_es"], fill=code["color"], font=font_title_es, anchor="mm")
+    draw.text((W // 2, 238), code["label_en"], fill="#889B73", font=font_title_en, anchor="mm")
 
     # QR code
     # Ensure QR background matches card background
     qr_img = make_qr(code["url"], code["color"], code["bg"])
-    qr_size = 420
+    qr_size = 400
     qr_img = qr_img.resize((qr_size, qr_size), Image.LANCZOS)
     qr_x = (W - qr_size) // 2
-    qr_y = 280
+    qr_y = 275
     
     # Draw a subtle background card container for the QR
     draw.rounded_rectangle(
@@ -138,11 +148,13 @@ def make_card(code: dict) -> Image.Image:
     )
     card.paste(qr_img, (qr_x, qr_y), mask=qr_img)
 
-    # Sublabel
-    draw.text((W // 2, 770), code["sublabel"], fill="#252824", font=font_label, anchor="mm")
+    # Sublabel (Combined on one line with separator)
+    sublabel_text = f"{code['sublabel_es']}  •  {code['sublabel_en']}"
+    draw.text((W // 2, 750), sublabel_text, fill="#252824", font=font_label, anchor="mm")
     
-    # Action instruction
-    draw.text((W // 2, 820), "Escaneá el código QR con tu celular", fill="#888888", font=font_sublabel, anchor="mm")
+    # Action instructions (Bilingual Stacked)
+    draw.text((W // 2, 795), "Escaneá el código QR con tu celular", fill="#888888", font=font_sublabel, anchor="mm")
+    draw.text((W // 2, 825), "Scan the QR code with your phone", fill="#a3a3a3", font=font_sublabel, anchor="mm")
 
     # Divider line
     y_div = 880
