@@ -167,8 +167,8 @@ def make_card(code: dict) -> Image.Image:
 
 
 def make_unified_sheet() -> Image.Image:
-    """Generate a single unified A4 portrait guide (2400×3400px) with all 3 QRs."""
-    W, H = 2400, 3400
+    """Generate a single unified landscape guide (3400×2400px) with 3 QRs side-by-side."""
+    W, H = 3400, 2400
     card = Image.new("RGBA", (W, H), "#FAF9F7")
     draw = ImageDraw.Draw(card)
 
@@ -206,7 +206,7 @@ def make_unified_sheet() -> Image.Image:
             font_url = font_logo
             font_footer = font_logo
 
-    # Draw double border for A4 Sheet
+    # Draw double border for landscape sheet
     margin = 80
     draw.rounded_rectangle(
         [margin, margin, W - margin, H - margin],
@@ -221,24 +221,24 @@ def make_unified_sheet() -> Image.Image:
         width=2
     )
 
-    # Header section
-    draw.text((W // 2, 240), "CÓRDOBA 5579", fill="#252824", font=font_logo, anchor="mm")
-    draw.text((W // 2, 310), "PALERMO HOLLYWOOD", fill="#888888", font=font_logo_sub, anchor="mm")
-    draw.text((W // 2, 380), "Portal Digital de Huéspedes  •  Guest Services Directory", fill="#5F6F52", font=font_logo_tag, anchor="mm")
+    # Header section (Shifted slightly up for landscape)
+    draw.text((W // 2, 170), "CÓRDOBA 5579", fill="#252824", font=font_logo, anchor="mm")
+    draw.text((W // 2, 230), "PALERMO HOLLYWOOD", fill="#888888", font=font_logo_sub, anchor="mm")
+    draw.text((W // 2, 290), "Portal Digital de Huéspedes  •  Guest Services Directory", fill="#5F6F52", font=font_logo_tag, anchor="mm")
 
     # Header divider
-    draw.line([(180, 460), (W - 180, 460)], fill="#EFEBE4", width=2)
+    draw.line([(180, 350), (W - 180, 350)], fill="#EFEBE4", width=2)
 
-    # 3 Column Centers
-    col_centers = [480, 1200, 1920]
+    # 3 Column Centers (wider layout for 3400px width)
+    col_centers = [680, 1700, 2720]
     
-    # Render columns side-by-side with balanced vertical distribution
+    # Render columns side-by-side (landscape aspect ratio)
     for idx, code in enumerate(CODES):
         cx = col_centers[idx]
         
-        # 1. Column card backing (Y=520 to Y=2820)
+        # 1. Column card backing (Y=420 to Y=1960)
         draw.rounded_rectangle(
-            [cx - 280, 520, cx + 280, 2820],
+            [cx - 440, 420, cx + 440, 1960],
             radius=20,
             fill="white",
             outline="#EFEBE4",
@@ -247,23 +247,23 @@ def make_unified_sheet() -> Image.Image:
         
         # 2. Icon placeholder / top bar
         draw.rounded_rectangle(
-            [cx - 280, 520, cx + 280, 545],
+            [cx - 440, 420, cx + 440, 445],
             radius=20,
             fill=code["color"]
         )
         # Cover bottom corners of top bar
-        draw.rectangle([cx - 280, 535, cx + 280, 545], fill=code["color"])
+        draw.rectangle([cx - 440, 435, cx + 440, 445], fill=code["color"])
 
         # 3. Titles (Spaced out vertically)
-        draw.text((cx, 650), code["label_es"], fill="#252824", font=font_title_es, anchor="mm")
-        draw.text((cx, 705), code["label_en"], fill="#5F6F52", font=font_title_en, anchor="mm")
+        draw.text((cx, 510), code["label_es"], fill="#252824", font=font_title_es, anchor="mm")
+        draw.text((cx, 565), code["label_en"], fill="#5F6F52", font=font_title_en, anchor="mm")
 
-        # 4. QR Code
+        # 4. QR Code (Centered in the card)
         qr_img = make_qr(code["url"], code["color"], "white")
-        qr_size = 420
+        qr_size = 400
         qr_img = qr_img.resize((qr_size, qr_size), Image.LANCZOS)
         qr_x = cx - qr_size // 2
-        qr_y = 800
+        qr_y = 650
         
         # QR Backing outline
         draw.rounded_rectangle(
@@ -276,24 +276,27 @@ def make_unified_sheet() -> Image.Image:
         card.paste(qr_img, (qr_x, qr_y), mask=qr_img)
 
         # 5. Divider
-        draw.line([(cx - 180, 1340), (cx + 180, 1340)], fill="#EFEBE4", width=1)
+        draw.line([(cx - 280, 1160), (cx + 280, 1160)], fill="#EFEBE4", width=1)
 
-        # 6. Description / Sublabels (with generous vertical padding)
-        draw.text((cx, 1480), code["sublabel_es"], fill="#252824", font=font_label, anchor="mm")
-        draw.text((cx, 1530), code["sublabel_en"], fill="#888888", font=font_sublabel, anchor="mm")
+        # 6. Description / Sublabels
+        draw.text((cx, 1260), code["sublabel_es"], fill="#252824", font=font_label, anchor="mm")
+        draw.text((cx, 1300), code["sublabel_en"], fill="#888888", font=font_sublabel, anchor="mm")
 
         # 7. Action instruction
-        draw.text((cx, 1720), "Escaneá el código con tu celular", fill="#888888", font=font_sublabel, anchor="mm")
-        draw.text((cx, 1765), "Scan the QR code with your phone", fill="#a3a3a3", font=font_sublabel, anchor="mm")
+        draw.text((cx, 1460), "Escaneá el código con tu celular", fill="#888888", font=font_sublabel, anchor="mm")
+        draw.text((cx, 1500), "Scan the QR code with your phone", fill="#a3a3a3", font=font_sublabel, anchor="mm")
 
         # 8. Web URL
-        draw.text((cx, 2000), code["url"].replace("https://", ""), fill="#B0B0B0", font=font_url, anchor="mm")
+        draw.text((cx, 1720), code["url"].replace("https://", ""), fill="#B0B0B0", font=font_url, anchor="mm")
 
     # Bottom Footer section
-    draw.line([(300, 2980), (W - 300, 2980)], fill="#EFEBE4", width=2)
-    draw.text((W // 2, 3130), "¡Que disfrutes tu estadía!  •  Enjoy your stay!", fill="#5F6F52", font=font_footer, anchor="mm")
+    draw.line([(300, 2080), (W - 300, 2080)], fill="#EFEBE4", width=2)
+    draw.text((W // 2, 2190), "¡Que disfrutes tu estadía!  •  Enjoy your stay!", fill="#5F6F52", font=font_footer, anchor="mm")
 
     return card.convert("RGB")
+
+
+
 
 
 
