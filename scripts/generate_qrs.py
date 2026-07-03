@@ -11,6 +11,7 @@ CODES = [
     {
         "name": "portal",
         "url": BASE_URL,
+        "display_url": "alexismartyniuk.com.ar/cordoba5579",
         "label_es": "Guía Digital",
         "label_en": "Digital Guest Guide",
         "sublabel_es": "Portal del Huésped y Manual",
@@ -21,6 +22,7 @@ CODES = [
     {
         "name": "checkin",
         "url": f"{BASE_URL}/checkin",
+        "display_url": "alexismartyniuk.com.ar/cordoba5579/checkin",
         "label_es": "Check-In Autónomo",
         "label_en": "Self Check-In",
         "sublabel_es": "Guía de Ingreso y WiFi",
@@ -31,6 +33,7 @@ CODES = [
     {
         "name": "cava",
         "url": f"{BASE_URL}/cava",
+        "display_url": "alexismartyniuk.com.ar/cordoba5579/cava",
         "label_es": "Cava & Minibar",
         "label_en": "Wine Cellar & Minibar",
         "sublabel_es": "Servicio con cargo. Contactar a Jorge",
@@ -38,10 +41,10 @@ CODES = [
         "color": "#5F6F52",         # Olive green
         "bg": "#FAF9F7",
     },
-
     {
         "name": "whatsapp",
         "url": WHATSAPP_URL,
+        "display_url": "wa.me/5491145379500",
         "label_es": "Contacto Directo",
         "label_en": "Direct Contact",
         "sublabel_es": "WhatsApp Anfitrión",
@@ -158,7 +161,10 @@ def make_card(code: dict) -> Image.Image:
     draw.line([(120, y_div), (W - 120, y_div)], fill="#EFEBE4", width=1)
 
     # URL at bottom
-    draw.text((W // 2, 940), code["url"], fill="#A0A0A0", font=font_url, anchor="mm")
+    display_text = code.get("display_url", code["url"])
+    draw.text((W // 2, 940), display_text, fill="#A0A0A0", font=font_url, anchor="mm")
+
+
 
     return card.convert("RGB")
 
@@ -291,7 +297,10 @@ def make_unified_sheet() -> Image.Image:
         draw.text((text_x, cy + 80), "Scan the QR code with your phone", fill="#a3a3a3", font=font_sublabel, anchor="la")
 
         # Web URL
-        draw.text((text_x, cy + 150), code["url"].replace("https://", ""), fill="#B0B0B0", font=font_url, anchor="la")
+        display_text = code.get("display_url", code["url"])
+        draw.text((text_x, cy + 150), display_text, fill="#B0B0B0", font=font_url, anchor="la")
+
+
 
     # Bottom Footer section
     draw.line([(300, 2950), (W - 300, 2950)], fill="#EFEBE4", width=2)
