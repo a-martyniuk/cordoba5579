@@ -1,17 +1,3 @@
-"""
-QR Code Generator for Córdoba 5579
-Generates print-ready QR codes for:
-  - /cava  (minibar menu → place in minibar)
-  - /checkin (check-in portal → place on coffee table)
-  - WhatsApp (direct contact with Jorge → place anywhere)
-
-Requirements:
-  pip install qrcode[pil] pillow
-
-Output: public/qr/ directory
-Usage:  python scripts/generate_qrs.py
-"""
-
 import qrcode
 import qrcode.image.svg
 from PIL import Image, ImageDraw, ImageFont
@@ -23,12 +9,12 @@ WHATSAPP_URL = "https://wa.me/5491145379500?text=Hola%21%20Quería%20consultar%2
 
 CODES = [
     {
-        "name": "cava",
-        "url": f"{BASE_URL}/cava",
-        "label_es": "Cava & Minibar",
-        "label_en": "Wine Cellar & Minibar",
-        "sublabel_es": "Menú Digital de Vinos",
-        "sublabel_en": "Digital Wine Menu",
+        "name": "portal",
+        "url": BASE_URL,
+        "label_es": "Guía Digital",
+        "label_en": "Digital Guest Guide",
+        "sublabel_es": "Portal del Huésped y Manual",
+        "sublabel_en": "Guest Portal & House Manual",
         "color": "#5F6F52",         # Olive green
         "bg": "#FAF9F7",
     },
@@ -39,6 +25,16 @@ CODES = [
         "label_en": "Self Check-In",
         "sublabel_es": "Guía de Ingreso y WiFi",
         "sublabel_en": "Entry Guide & WiFi",
+        "color": "#5F6F52",         # Olive green
+        "bg": "#FAF9F7",
+    },
+    {
+        "name": "cava",
+        "url": f"{BASE_URL}/cava",
+        "label_es": "Cava & Minibar",
+        "label_en": "Wine Cellar & Minibar",
+        "sublabel_es": "Menú Digital de Vinos",
+        "sublabel_en": "Digital Wine Menu",
         "color": "#5F6F52",         # Olive green
         "bg": "#FAF9F7",
     },
@@ -167,7 +163,7 @@ def make_card(code: dict) -> Image.Image:
 
 
 def make_unified_sheet() -> Image.Image:
-    """Generate a single unified A4 portrait guide (2400×3400px) with 3 horizontal rows of QRs."""
+    """Generate a single unified A4 portrait guide (2400×3400px) with 4 horizontal rows of QRs."""
     W, H = 2400, 3400
     card = Image.new("RGBA", (W, H), "#FAF9F7")
     draw = ImageDraw.Draw(card)
@@ -224,23 +220,23 @@ def make_unified_sheet() -> Image.Image:
     )
 
     # Header section
-    draw.text((W // 2, 240), "CÓRDOBA 5579", fill="#252824", font=font_logo, anchor="mm")
-    draw.text((W // 2, 310), "PALERMO HOLLYWOOD", fill="#888888", font=font_logo_sub, anchor="mm")
-    draw.text((W // 2, 380), "Guía de Servicios Digitales  •  Guest Services Directory", fill="#5F6F52", font=font_logo_tag, anchor="mm")
+    draw.text((W // 2, 220), "CÓRDOBA 5579", fill="#252824", font=font_logo, anchor="mm")
+    draw.text((W // 2, 290), "PALERMO HOLLYWOOD", fill="#888888", font=font_logo_sub, anchor="mm")
+    draw.text((W // 2, 360), "Guía de Servicios Digitales  •  Guest Services Directory", fill="#5F6F52", font=font_logo_tag, anchor="mm")
 
     # Header divider
-    draw.line([(180, 460), (W - 180, 460)], fill="#EFEBE4", width=2)
+    draw.line([(180, 430), (W - 180, 430)], fill="#EFEBE4", width=2)
 
-    # Row Center Y-coordinates (equally distributed vertically)
-    row_centers = [950, 1750, 2550]
+    # 4 Row Centers Y-coordinates (equally distributed)
+    row_centers = [750, 1340, 1930, 2520]
     
-    # Render rows vertically stacked with larger QR codes
+    # Render 4 rows vertically stacked
     for idx, code in enumerate(CODES):
         cy = row_centers[idx]
         
-        # 1. Row card backing (X=160 to X=2240, height 620px)
+        # 1. Row card backing (X=160 to X=2240, height 520px)
         draw.rounded_rectangle(
-            [160, cy - 310, 2240, cy + 310],
+            [160, cy - 260, 2240, cy + 260],
             radius=20,
             fill="white",
             outline="#EFEBE4",
@@ -249,19 +245,19 @@ def make_unified_sheet() -> Image.Image:
         
         # 2. Left side color vertical bar accent
         draw.rounded_rectangle(
-            [160, cy - 310, 185, cy + 310],
+            [160, cy - 260, 185, cy + 260],
             radius=20,
             fill=code["color"]
         )
         # Cover right corners of accent bar
-        draw.rectangle([170, cy - 310, 185, cy + 310], fill=code["color"])
+        draw.rectangle([170, cy - 260, 185, cy + 260], fill=code["color"])
 
-        # 3. QR Code (placed on the left side of the row - increased size to 520px)
+        # 3. QR Code (enlarged size to 440px inside 520px height)
         qr_img = make_qr(code["url"], code["color"], "white")
-        qr_size = 520
+        qr_size = 440
         qr_img = qr_img.resize((qr_size, qr_size), Image.LANCZOS)
-        qr_x = 240
-        qr_y = cy - 260
+        qr_x = 250
+        qr_y = cy - 220
         
         # QR Backing outline
         draw.rounded_rectangle(
@@ -274,25 +270,51 @@ def make_unified_sheet() -> Image.Image:
         card.paste(qr_img, (qr_x, qr_y), mask=qr_img)
 
         # 4. Vertical inner divider line between QR and details
-        draw.line([(820, cy - 230), (820, cy + 230)], fill="#EFEBE4", width=1)
+        draw.line([(800, cy - 190), (800, cy + 190)], fill="#EFEBE4", width=1)
 
         # 5. Text details (placed on the right side of the row, left-aligned)
-        text_x = 880
+        text_x = 860
         
         # Titles
-        draw.text((text_x, cy - 240), code["label_es"], fill="#252824", font=font_title_es, anchor="la")
-        draw.text((text_x, cy - 175), code["label_en"], fill="#5F6F52", font=font_title_en, anchor="la")
+        draw.text((text_x, cy - 200), code["label_es"], fill="#252824", font=font_title_es, anchor="la")
+        draw.text((text_x, cy - 145), code["label_en"], fill="#5F6F52", font=font_title_en, anchor="la")
 
         # Sublabels
-        draw.text((text_x, cy - 85), code["sublabel_es"], fill="#252824", font=font_label, anchor="la")
-        draw.text((text_x, cy - 45), code["sublabel_en"], fill="#888888", font=font_sublabel, anchor="la")
+        draw.text((text_x, cy - 65), code["sublabel_es"], fill="#252824", font=font_label, anchor="la")
+        draw.text((text_x, cy - 25), code["sublabel_en"], fill="#888888", font=font_sublabel, anchor="la")
 
         # Instructions
-        draw.text((text_x, cy + 45), "Escaneá el código QR con tu celular", fill="#888888", font=font_sublabel, anchor="la")
-        draw.text((text_x, cy + 90), "Scan the QR code with your phone", fill="#a3a3a3", font=font_sublabel, anchor="la")
+        draw.text((text_x, cy + 40), "Escaneá el código QR con tu celular", fill="#888888", font=font_sublabel, anchor="la")
+        draw.text((text_x, cy + 80), "Scan the QR code with your phone", fill="#a3a3a3", font=font_sublabel, anchor="la")
 
         # Web URL
-        draw.text((text_x, cy + 175), code["url"].replace("https://", ""), fill="#B0B0B0", font=font_url, anchor="la")
+        draw.text((text_x, cy + 150), code["url"].replace("https://", ""), fill="#B0B0B0", font=font_url, anchor="la")
+
+    # Bottom Footer section
+    draw.line([(300, 2950), (W - 300, 2950)], fill="#EFEBE4", width=2)
+    draw.text((W // 2, 3080), "¡Que disfrutes tu estadía!  •  Enjoy your stay!", fill="#5F6F52", font=font_footer, anchor="mm")
+
+    return card.convert("RGB")
+
+
+def main():
+    print("Generating QR Cards for Cordoba 5579...")
+    for code in CODES:
+        card = make_card(code)
+        out_path = os.path.join(OUTPUT_DIR, f"qr_{code['name']}.png")
+        card.save(out_path, "PNG", dpi=(300, 300))
+        print(f"  [OK] Saved: {out_path}")
+        
+    print("\nGenerating Unified Guide Sheet...")
+    sheet = make_unified_sheet()
+    sheet_path = os.path.join(OUTPUT_DIR, "qr_unified_sheet.png")
+    sheet.save(sheet_path, "PNG", dpi=(300, 300))
+    print(f"  [OK] Saved: {sheet_path}")
+    
+    print(f"\n[DONE] Find your print-ready QR cards in: {OUTPUT_DIR}")
+    print("   Recommended print size: 10x12.5 cm at 300 DPI")
+
+
 
 
 
