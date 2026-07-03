@@ -145,22 +145,24 @@ def make_card(code: dict) -> Image.Image:
     )
     card.paste(qr_img, (qr_x, qr_y), mask=qr_img)
 
-    # Sublabel (Combined on one line with separator)
-    sublabel_text = f"{code['sublabel_es']}  •  {code['sublabel_en']}"
-    draw.text((W // 2, 750), sublabel_text, fill="#252824", font=font_label, anchor="mm")
+    # Sublabels Stacked
+    draw.text((W // 2, 735), code["sublabel_es"], fill="#252824", font=font_label, anchor="mm")
+    draw.text((W // 2, 775), code["sublabel_en"], fill="#888888", font=font_sublabel, anchor="mm")
     
     # Action instructions (Bilingual Stacked)
-    draw.text((W // 2, 795), "Escaneá el código QR con tu celular", fill="#888888", font=font_sublabel, anchor="mm")
-    draw.text((W // 2, 825), "Scan the QR code with your phone", fill="#a3a3a3", font=font_sublabel, anchor="mm")
+    draw.text((W // 2, 825), "Escaneá el código QR con tu celular", fill="#888888", font=font_sublabel, anchor="mm")
+    draw.text((W // 2, 855), "Scan the QR code with your phone", fill="#a3a3a3", font=font_sublabel, anchor="mm")
 
     # Divider line
-    y_div = 880
+    y_div = 900
     draw.line([(120, y_div), (W - 120, y_div)], fill="#EFEBE4", width=1)
 
     # URL at bottom
-    draw.text((W // 2, 920), code["url"], fill="#A0A0A0", font=font_url, anchor="mm")
+    draw.text((W // 2, 940), code["url"], fill="#A0A0A0", font=font_url, anchor="mm")
 
     return card.convert("RGB")
+
+
 
 
 def make_unified_sheet() -> Image.Image:
