@@ -167,8 +167,8 @@ def make_card(code: dict) -> Image.Image:
 
 
 def make_unified_sheet() -> Image.Image:
-    """Generate a single unified landscape guide (3400×2400px) with 3 QRs side-by-side."""
-    W, H = 3400, 2400
+    """Generate a single unified A4 portrait guide (2400×3400px) with 3 horizontal rows of QRs."""
+    W, H = 2400, 3400
     card = Image.new("RGBA", (W, H), "#FAF9F7")
     draw = ImageDraw.Draw(card)
 
@@ -177,11 +177,12 @@ def make_unified_sheet() -> Image.Image:
         font_logo = ImageFont.truetype("georgiab.ttf", 60) # Large Serif Logo
         font_logo_sub = ImageFont.truetype("segoeui.ttf", 26)
         font_logo_tag = ImageFont.truetype("georgiai.ttf", 32)
-        font_title_es = ImageFont.truetype("georgiab.ttf", 34)
-        font_title_en = ImageFont.truetype("georgiai.ttf", 24)
-        font_label = ImageFont.truetype("segoeuib.ttf", 22)
-        font_sublabel = ImageFont.truetype("segoeui.ttf", 18)
-        font_url = ImageFont.truetype("segoeui.ttf", 16)
+        
+        font_title_es = ImageFont.truetype("georgiab.ttf", 36)
+        font_title_en = ImageFont.truetype("georgiai.ttf", 26)
+        font_label = ImageFont.truetype("segoeuib.ttf", 24)
+        font_sublabel = ImageFont.truetype("segoeui.ttf", 20)
+        font_url = ImageFont.truetype("segoeui.ttf", 18)
         font_footer = ImageFont.truetype("georgiai.ttf", 32)
     except IOError:
         # Fallback to standard times / arial
@@ -189,11 +190,12 @@ def make_unified_sheet() -> Image.Image:
             font_logo = ImageFont.truetype("timesbd.ttf", 60)
             font_logo_sub = ImageFont.truetype("arial.ttf", 26)
             font_logo_tag = ImageFont.truetype("timesi.ttf", 32)
-            font_title_es = ImageFont.truetype("timesbd.ttf", 34)
+            
+            font_title_es = ImageFont.truetype("timesbd.ttf", 36)
             font_title_en = ImageFont.truetype("timesi.ttf", 26)
-            font_label = ImageFont.truetype("arialbd.ttf", 22)
-            font_sublabel = ImageFont.truetype("arial.ttf", 18)
-            font_url = ImageFont.truetype("arial.ttf", 16)
+            font_label = ImageFont.truetype("arialbd.ttf", 24)
+            font_sublabel = ImageFont.truetype("arial.ttf", 20)
+            font_url = ImageFont.truetype("arial.ttf", 18)
             font_footer = ImageFont.truetype("timesi.ttf", 32)
         except IOError:
             font_logo = ImageFont.load_default()
@@ -206,7 +208,7 @@ def make_unified_sheet() -> Image.Image:
             font_url = font_logo
             font_footer = font_logo
 
-    # Draw double border for landscape sheet
+    # Draw double border for A4 Sheet
     margin = 80
     draw.rounded_rectangle(
         [margin, margin, W - margin, H - margin],
@@ -221,49 +223,45 @@ def make_unified_sheet() -> Image.Image:
         width=2
     )
 
-    # Header section (Shifted slightly up for landscape)
-    draw.text((W // 2, 170), "CÓRDOBA 5579", fill="#252824", font=font_logo, anchor="mm")
-    draw.text((W // 2, 230), "PALERMO HOLLYWOOD", fill="#888888", font=font_logo_sub, anchor="mm")
-    draw.text((W // 2, 290), "Portal Digital de Huéspedes  •  Guest Services Directory", fill="#5F6F52", font=font_logo_tag, anchor="mm")
+    # Header section
+    draw.text((W // 2, 240), "CÓRDOBA 5579", fill="#252824", font=font_logo, anchor="mm")
+    draw.text((W // 2, 310), "PALERMO HOLLYWOOD", fill="#888888", font=font_logo_sub, anchor="mm")
+    draw.text((W // 2, 380), "Guía de Servicios Digitales  •  Guest Services Directory", fill="#5F6F52", font=font_logo_tag, anchor="mm")
 
     # Header divider
-    draw.line([(180, 350), (W - 180, 350)], fill="#EFEBE4", width=2)
+    draw.line([(180, 460), (W - 180, 460)], fill="#EFEBE4", width=2)
 
-    # 3 Column Centers (wider layout for 3400px width)
-    col_centers = [680, 1700, 2720]
+    # Row Center Y-coordinates (equally distributed vertically)
+    row_centers = [950, 1750, 2550]
     
-    # Render columns side-by-side (landscape aspect ratio)
+    # Render rows vertically stacked
     for idx, code in enumerate(CODES):
-        cx = col_centers[idx]
+        cy = row_centers[idx]
         
-        # 1. Column card backing (Y=420 to Y=1960)
+        # 1. Row card backing (X=160 to X=2240, height 580px)
         draw.rounded_rectangle(
-            [cx - 440, 420, cx + 440, 1960],
+            [160, cy - 290, 2240, cy + 290],
             radius=20,
             fill="white",
             outline="#EFEBE4",
             width=1
         )
         
-        # 2. Icon placeholder / top bar
+        # 2. Left side color vertical bar accent
         draw.rounded_rectangle(
-            [cx - 440, 420, cx + 440, 445],
+            [160, cy - 290, 185, cy + 290],
             radius=20,
             fill=code["color"]
         )
-        # Cover bottom corners of top bar
-        draw.rectangle([cx - 440, 435, cx + 440, 445], fill=code["color"])
+        # Cover right corners of accent bar
+        draw.rectangle([170, cy - 290, 185, cy + 290], fill=code["color"])
 
-        # 3. Titles (Spaced out vertically)
-        draw.text((cx, 510), code["label_es"], fill="#252824", font=font_title_es, anchor="mm")
-        draw.text((cx, 565), code["label_en"], fill="#5F6F52", font=font_title_en, anchor="mm")
-
-        # 4. QR Code (Centered in the card)
+        # 3. QR Code (placed on the left side of the row)
         qr_img = make_qr(code["url"], code["color"], "white")
-        qr_size = 400
+        qr_size = 420
         qr_img = qr_img.resize((qr_size, qr_size), Image.LANCZOS)
-        qr_x = cx - qr_size // 2
-        qr_y = 650
+        qr_x = 260
+        qr_y = cy - 210
         
         # QR Backing outline
         draw.rounded_rectangle(
@@ -275,25 +273,35 @@ def make_unified_sheet() -> Image.Image:
         )
         card.paste(qr_img, (qr_x, qr_y), mask=qr_img)
 
-        # 5. Divider
-        draw.line([(cx - 280, 1160), (cx + 280, 1160)], fill="#EFEBE4", width=1)
+        # 4. Vertical inner divider line between QR and details
+        draw.line([(760, cy - 200), (760, cy + 200)], fill="#EFEBE4", width=1)
 
-        # 6. Description / Sublabels
-        draw.text((cx, 1260), code["sublabel_es"], fill="#252824", font=font_label, anchor="mm")
-        draw.text((cx, 1300), code["sublabel_en"], fill="#888888", font=font_sublabel, anchor="mm")
+        # 5. Text details (placed on the right side of the row, left-aligned)
+        text_x = 820
+        
+        # Titles
+        draw.text((text_x, cy - 210), code["label_es"], fill="#252824", font=font_title_es, anchor="la")
+        draw.text((text_x, cy - 150), code["label_en"], fill="#5F6F52", font=font_title_en, anchor="la")
 
-        # 7. Action instruction
-        draw.text((cx, 1460), "Escaneá el código con tu celular", fill="#888888", font=font_sublabel, anchor="mm")
-        draw.text((cx, 1500), "Scan the QR code with your phone", fill="#a3a3a3", font=font_sublabel, anchor="mm")
+        # Sublabels
+        draw.text((text_x, cy - 70), code["sublabel_es"], fill="#252824", font=font_label, anchor="la")
+        draw.text((text_x, cy - 30), code["sublabel_en"], fill="#888888", font=font_sublabel, anchor="la")
 
-        # 8. Web URL
-        draw.text((cx, 1720), code["url"].replace("https://", ""), fill="#B0B0B0", font=font_url, anchor="mm")
+        # Instructions
+        draw.text((text_x, cy + 40), "Escaneá el código QR con tu celular", fill="#888888", font=font_sublabel, anchor="la")
+        draw.text((text_x, cy + 80), "Scan the QR code with your phone", fill="#a3a3a3", font=font_sublabel, anchor="la")
+
+        # Web URL
+        draw.text((text_x, cy + 155), code["url"].replace("https://", ""), fill="#B0B0B0", font=font_url, anchor="la")
 
     # Bottom Footer section
-    draw.line([(300, 2080), (W - 300, 2080)], fill="#EFEBE4", width=2)
-    draw.text((W // 2, 2190), "¡Que disfrutes tu estadía!  •  Enjoy your stay!", fill="#5F6F52", font=font_footer, anchor="mm")
+    draw.line([(300, 3050), (W - 300, 3050)], fill="#EFEBE4", width=2)
+    draw.text((W // 2, 3160), "¡Que disfrutes tu estadía!  •  Enjoy your stay!", fill="#5F6F52", font=font_footer, anchor="mm")
 
     return card.convert("RGB")
+
+
+
 
 
 
