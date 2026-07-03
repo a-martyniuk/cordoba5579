@@ -162,7 +162,8 @@ export const es = {
   cava_backBtn: "Volver al Inicio",
   cava_headerTag: "Cava & Minibar (Costo Adicional)",
   cava_howItWorksTitle: "¿Cómo funciona?",
-  cava_howItWorksText: "Disfrutá libremente de los vinos y bebidas disponibles. Al momento de tu check-out, simplemente informale a Jorge qué consumiste para coordinar el cobro.",
+  cava_howItWorksText: "El uso de la cava de vinos es de pago. Ponete en contacto por WhatsApp con el anfitrión Jorge Orlando para que te brinde la clave de acceso, precios y detalles de la carta de vinos.",
+
   cava_disclaimer: "Los precios están expresados en dólares estadounidenses (USD). Se abonan al finalizar la estadía.",
   cava_quantityLabel: "Disponibles en unidad: ",
   cava_priceLabel: "Precio",

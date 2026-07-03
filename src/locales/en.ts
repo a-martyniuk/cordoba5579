@@ -162,7 +162,8 @@ export const en = {
   cava_backBtn: "Back to Home",
   cava_headerTag: "Wine Cellar & Minibar (Extra Cost)",
   cava_howItWorksTitle: "How it works?",
-  cava_howItWorksText: "Enjoy the available wines and drinks freely. At checkout, simply let Jorge know what you consumed to coordinate payment.",
+  cava_howItWorksText: "The use of the wine cellar is paid. Please contact your host Jorge Orlando via WhatsApp so he can provide you with the access code, prices, and wine list details.",
+
   cava_disclaimer: "Prices are in US Dollars (USD). Paid upon checkout.",
   cava_quantityLabel: "Available in unit: ",
   cava_priceLabel: "Price",

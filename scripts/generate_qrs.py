@@ -33,11 +33,12 @@ CODES = [
         "url": f"{BASE_URL}/cava",
         "label_es": "Cava & Minibar",
         "label_en": "Wine Cellar & Minibar",
-        "sublabel_es": "Menú Digital de Vinos",
-        "sublabel_en": "Digital Wine Menu",
+        "sublabel_es": "Servicio con cargo. Contactar a Jorge",
+        "sublabel_en": "Paid wine service. Ask Jorge for details",
         "color": "#5F6F52",         # Olive green
         "bg": "#FAF9F7",
     },
+
     {
         "name": "whatsapp",
         "url": WHATSAPP_URL,
