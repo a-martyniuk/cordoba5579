@@ -234,13 +234,13 @@ def make_unified_sheet() -> Image.Image:
     # Row Center Y-coordinates (equally distributed vertically)
     row_centers = [950, 1750, 2550]
     
-    # Render rows vertically stacked
+    # Render rows vertically stacked with larger QR codes
     for idx, code in enumerate(CODES):
         cy = row_centers[idx]
         
-        # 1. Row card backing (X=160 to X=2240, height 580px)
+        # 1. Row card backing (X=160 to X=2240, height 620px)
         draw.rounded_rectangle(
-            [160, cy - 290, 2240, cy + 290],
+            [160, cy - 310, 2240, cy + 310],
             radius=20,
             fill="white",
             outline="#EFEBE4",
@@ -249,19 +249,19 @@ def make_unified_sheet() -> Image.Image:
         
         # 2. Left side color vertical bar accent
         draw.rounded_rectangle(
-            [160, cy - 290, 185, cy + 290],
+            [160, cy - 310, 185, cy + 310],
             radius=20,
             fill=code["color"]
         )
         # Cover right corners of accent bar
-        draw.rectangle([170, cy - 290, 185, cy + 290], fill=code["color"])
+        draw.rectangle([170, cy - 310, 185, cy + 310], fill=code["color"])
 
-        # 3. QR Code (placed on the left side of the row)
+        # 3. QR Code (placed on the left side of the row - increased size to 520px)
         qr_img = make_qr(code["url"], code["color"], "white")
-        qr_size = 420
+        qr_size = 520
         qr_img = qr_img.resize((qr_size, qr_size), Image.LANCZOS)
-        qr_x = 260
-        qr_y = cy - 210
+        qr_x = 240
+        qr_y = cy - 260
         
         # QR Backing outline
         draw.rounded_rectangle(
@@ -274,25 +274,27 @@ def make_unified_sheet() -> Image.Image:
         card.paste(qr_img, (qr_x, qr_y), mask=qr_img)
 
         # 4. Vertical inner divider line between QR and details
-        draw.line([(760, cy - 200), (760, cy + 200)], fill="#EFEBE4", width=1)
+        draw.line([(820, cy - 230), (820, cy + 230)], fill="#EFEBE4", width=1)
 
         # 5. Text details (placed on the right side of the row, left-aligned)
-        text_x = 820
+        text_x = 880
         
         # Titles
-        draw.text((text_x, cy - 210), code["label_es"], fill="#252824", font=font_title_es, anchor="la")
-        draw.text((text_x, cy - 150), code["label_en"], fill="#5F6F52", font=font_title_en, anchor="la")
+        draw.text((text_x, cy - 240), code["label_es"], fill="#252824", font=font_title_es, anchor="la")
+        draw.text((text_x, cy - 175), code["label_en"], fill="#5F6F52", font=font_title_en, anchor="la")
 
         # Sublabels
-        draw.text((text_x, cy - 70), code["sublabel_es"], fill="#252824", font=font_label, anchor="la")
-        draw.text((text_x, cy - 30), code["sublabel_en"], fill="#888888", font=font_sublabel, anchor="la")
+        draw.text((text_x, cy - 85), code["sublabel_es"], fill="#252824", font=font_label, anchor="la")
+        draw.text((text_x, cy - 45), code["sublabel_en"], fill="#888888", font=font_sublabel, anchor="la")
 
         # Instructions
-        draw.text((text_x, cy + 40), "Escaneá el código QR con tu celular", fill="#888888", font=font_sublabel, anchor="la")
-        draw.text((text_x, cy + 80), "Scan the QR code with your phone", fill="#a3a3a3", font=font_sublabel, anchor="la")
+        draw.text((text_x, cy + 45), "Escaneá el código QR con tu celular", fill="#888888", font=font_sublabel, anchor="la")
+        draw.text((text_x, cy + 90), "Scan the QR code with your phone", fill="#a3a3a3", font=font_sublabel, anchor="la")
 
         # Web URL
-        draw.text((text_x, cy + 155), code["url"].replace("https://", ""), fill="#B0B0B0", font=font_url, anchor="la")
+        draw.text((text_x, cy + 175), code["url"].replace("https://", ""), fill="#B0B0B0", font=font_url, anchor="la")
+
+
 
     # Bottom Footer section
     draw.line([(300, 3050), (W - 300, 3050)], fill="#EFEBE4", width=2)
