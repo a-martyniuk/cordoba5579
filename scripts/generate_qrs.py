@@ -232,71 +232,13 @@ def make_unified_sheet() -> Image.Image:
     # 3 Column Centers
     col_centers = [480, 1200, 1920]
     
-    # Render each QR card side-by-side
+    # Render columns side-by-side with balanced vertical distribution
     for idx, code in enumerate(CODES):
         cx = col_centers[idx]
         
-        # Draw a beautiful column card backing
-        col_w = 600
-        col_h = 2200
-        cy = 1680 # Y Center of column bounds
-        
+        # 1. Column card backing (Y=520 to Y=2820)
         draw.rounded_rectangle(
-            [cx - col_w//2, cy - col_h//2, cx + col_w//2, cy + col_h//2],
-            radius=24,
-            fill="#FAF9F7",
-            outline="#EFEBE4",
-            width=1
-        )
-
-        # Title Stacked
-        draw.text((cx, 680), code["label_es"], fill=code["color"], font=font_title_es, anchor="mm")
-        draw.text((cx, 725), code["label_en"], fill="#889B73", font=font_title_en, anchor="mm")
-
-        # QR code
-        qr_img = make_qr(code["url"], code["color"], "#FAF9F7")
-        qr_size = 400
-        qr_img = qr_img.resize((qr_size, qr_size), Image.LANCZOS)
-        qr_x = cx - qr_size // 2
-        qr_y = 780
-        
-        # QR backing
-        draw.rounded_rectangle(
-            [qr_x - 15, qr_y - 15, qr_x + qr_size + 15, qr_y + qr_size + 15],
-            radius=16,
-            fill="white",
-            outline="#EFEBE4",
-            width=1
-        )
-        card.paste(qr_img, (qr_x, qr_y), mask=qr_img)
-
-        # Subtitle details (stacked)
-        draw.text((cx, 1270), code["sublabel_es"], fill="#252824", font=font_label, anchor="mm")
-        draw.text((cx, 1310), code["sublabel_en"], fill="#888888", font=font_sublabel, anchor="mm")
-
-        # Action (stacked)
-        draw.text((cx, 1380), "Escaneá con tu celular", fill="#a3a3a3", font=font_sublabel, anchor="mm")
-        draw.text((cx, 1410), "Scan with your phone", fill="#c2c2c2", font=font_url, anchor="mm")
-
-        # Column Divider
-        draw.line([(cx - 150, 1470), (cx + 150, 1470)], fill="#EFEBE4", width=1)
-
-        # Dynamic URL
-        draw.text((cx, 1515), code["url"].replace("https://www.", ""), fill="#A0A0A0", font=font_url, anchor="mm")
-
-    # Translate column positions to fit in A4 Grid (Y offsets)
-    # The above loop Y coordinates were relative, but let's shift the elements down appropriately:
-    # Top of columns = 550, Bottom = 3000
-    
-    # We will clear column content drawing area and redraw with absolute positions to prevent overlap.
-    # Redraw everything on top of the card
-    # To keep it extremely precise, let's draw:
-    for idx, code in enumerate(CODES):
-        cx = col_centers[idx]
-        
-        # 1. Column card backing
-        draw.rounded_rectangle(
-            [cx - 280, 520, cx + 280, 2920],
+            [cx - 280, 520, cx + 280, 2820],
             radius=20,
             fill="white",
             outline="#EFEBE4",
@@ -312,20 +254,20 @@ def make_unified_sheet() -> Image.Image:
         # Cover bottom corners of top bar
         draw.rectangle([cx - 280, 535, cx + 280, 545], fill=code["color"])
 
-        # 3. Titles
-        draw.text((cx, 620), code["label_es"], fill="#252824", font=font_title_es, anchor="mm")
-        draw.text((cx, 665), code["label_en"], fill="#5F6F52", font=font_title_en, anchor="mm")
+        # 3. Titles (Spaced out vertically)
+        draw.text((cx, 650), code["label_es"], fill="#252824", font=font_title_es, anchor="mm")
+        draw.text((cx, 705), code["label_en"], fill="#5F6F52", font=font_title_en, anchor="mm")
 
         # 4. QR Code
         qr_img = make_qr(code["url"], code["color"], "white")
         qr_size = 420
         qr_img = qr_img.resize((qr_size, qr_size), Image.LANCZOS)
         qr_x = cx - qr_size // 2
-        qr_y = 730
+        qr_y = 800
         
         # QR Backing outline
         draw.rounded_rectangle(
-            [qr_x - 10, qr_y - 10, qr_x + qr_size + 10, qr_y + qr_size + 10],
+            [qr_x - 12, qr_y - 12, qr_x + qr_size + 12, qr_y + qr_size + 12],
             radius=16,
             fill="white",
             outline="#FAF9F7",
@@ -334,24 +276,27 @@ def make_unified_sheet() -> Image.Image:
         card.paste(qr_img, (qr_x, qr_y), mask=qr_img)
 
         # 5. Divider
-        draw.line([(cx - 180, 1220), (cx + 180, 1220)], fill="#EFEBE4", width=1)
+        draw.line([(cx - 180, 1340), (cx + 180, 1340)], fill="#EFEBE4", width=1)
 
-        # 6. Description / Sublabels
-        draw.text((cx, 1280), code["sublabel_es"], fill="#252824", font=font_label, anchor="mm")
-        draw.text((cx, 1320), code["sublabel_en"], fill="#888888", font=font_sublabel, anchor="mm")
+        # 6. Description / Sublabels (with generous vertical padding)
+        draw.text((cx, 1480), code["sublabel_es"], fill="#252824", font=font_label, anchor="mm")
+        draw.text((cx, 1530), code["sublabel_en"], fill="#888888", font=font_sublabel, anchor="mm")
 
         # 7. Action instruction
-        draw.text((cx, 1390), "Escaneá el código con tu celular", fill="#888888", font=font_sublabel, anchor="mm")
-        draw.text((cx, 1425), "Scan the QR code with your phone", fill="#a3a3a3", font=font_sublabel, anchor="mm")
+        draw.text((cx, 1720), "Escaneá el código con tu celular", fill="#888888", font=font_sublabel, anchor="mm")
+        draw.text((cx, 1765), "Scan the QR code with your phone", fill="#a3a3a3", font=font_sublabel, anchor="mm")
 
         # 8. Web URL
-        draw.text((cx, 1485), code["url"].replace("https://", ""), fill="#B0B0B0", font=font_url, anchor="mm")
+        draw.text((cx, 2000), code["url"].replace("https://", ""), fill="#B0B0B0", font=font_url, anchor="mm")
 
     # Bottom Footer section
-    draw.line([(300, 3050), (W - 300, 3050)], fill="#EFEBE4", width=2)
-    draw.text((W // 2, 3140), "¡Que disfrutes tu estadía!  •  Enjoy your stay!", fill="#5F6F52", font=font_footer, anchor="mm")
+    draw.line([(300, 2980), (W - 300, 2980)], fill="#EFEBE4", width=2)
+    draw.text((W // 2, 3130), "¡Que disfrutes tu estadía!  •  Enjoy your stay!", fill="#5F6F52", font=font_footer, anchor="mm")
 
     return card.convert("RGB")
+
+
+
 
 
 def main():
