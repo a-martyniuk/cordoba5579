@@ -45,9 +45,9 @@ export const cordoba5579Knowledge: PropertyKnowledge = {
     en: "There is a shared laundry room in the building with washing machines and dryers available for guests at no additional cost."
   },
   wine: {
-    keys: ["vino", "cava", "botella", "alcohol", "wine", "bar", "champagne", "fernet", "bebida", "minibar", "precios", "precio", "costo", "costos", "price", "prices"],
-    es: "El departamento cuenta con una cava de vinos y minibar con costo adicional (Malbec, Syrah, Torrontés, Champagne, Fernet, etc.). Podés consultar la lista de productos disponibles, cantidades y precios actualizados en: https://www.alexismartyniuk.com.ar/cordoba5579/cava (o escaneando el código QR en el minibar).",
-    en: "The apartment features a wine cellar and minibar for an extra cost (Malbec, Syrah, Torrontés, Champagne, Fernet, etc.). You can view the list of available products, quantities, and updated prices at: https://www.alexismartyniuk.com.ar/cordoba5579/cava (or by scanning the QR code in the minibar)."
+    keys: ["vino", "cava", "botella", "alcohol", "wine", "bar", "champagne", "fernet", "bebida", "minibar", "precios", "precio", "costo", "costos", "price", "prices", "torrontes", "malbec", "syrah", "cabernet"],
+    es: "La cava de vinos y minibar del departamento tiene costo adicional. Carta completa disponible en https://www.alexismartyniuk.com.ar/cordoba5579/cava. Selección disponible: Torrontés (USD 4.40), Chenin Dulce (USD 8.80), Malbec (USD 4.80), Cabernet Sauvignon (USD 5.40), Syrah/Cabernet (USD 5.80), Champagne Cosecha Tardía Norton (USD 13.85), Champagne Extra Brut Suter (USD 17.30), Fernet Branca (USD 17.40), Coca-Cola 2.5l (USD 3.35). Para acceder y coordinar el pago, contactar a Jorge Orlando por WhatsApp. Los pagos se realizan al Banco Santander (Alias/CBU a solicitar al anfitrión).",
+    en: "The wine cellar and minibar are available for an extra charge. Full menu at https://www.alexismartyniuk.com.ar/cordoba5579/cava. Available selection: Torrontés (USD 4.40), Chenin Dulce (USD 8.80), Malbec (USD 4.80), Cabernet Sauvignon (USD 5.40), Syrah/Cabernet (USD 5.80), Champagne Late Harvest Norton (USD 13.85), Champagne Extra Brut Suter (USD 17.30), Fernet Branca (USD 17.40), Coca-Cola 2.5l (USD 3.35). To access and arrange payment, contact host Jorge Orlando via WhatsApp. Payments are made to Banco Santander (Alias/CBU provided by the host on request)."
   },
   parking: {
     keys: ["estacionamiento", "cochera", "auto", "garage", "parking", "vehiculo", "vehículo"],

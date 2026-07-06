@@ -1,30 +1,64 @@
 import { NextRequest, NextResponse } from "next/server";
 import { streamText } from "ai";
 import { google } from "@ai-sdk/google";
+import airbnbDetails from "../../../data/airbnb-details.json";
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY ?? "";
 
-const SYSTEM_PROMPT = `Sos el Concierge Virtual del departamento Córdoba 5579 en Palermo Hollywood, Buenos Aires.
+// Dynamically build the cava section from live inventory data so prices
+// always reflect the actual airbnb-details.json — no hardcoding needed.
+function buildCavaSection(): string {
+  const items = (airbnbDetails.cava ?? []) as Array<{
+    nombre?: string;
+    origen?: string;
+    cantidad?: number | string;
+    precio_usd?: number | string;
+  }>;
+
+  if (items.length === 0) {
+    return "- Cava & Minibar: Servicio disponible con costo adicional. Consultar a Jorge Orlando por WhatsApp.";
+  }
+
+  const lines = items.map((item) => {
+    const nombre = item.nombre || "(sin nombre)";
+    const origen = item.origen ? ` (${item.origen})` : "";
+    const cantidad = item.cantidad !== undefined ? `, stock: ${item.cantidad} u.` : "";
+    const precio =
+      item.precio_usd !== undefined
+        ? `, USD ${Number(item.precio_usd).toFixed(2)} c/u`
+        : "";
+    return `  • ${nombre}${origen}${cantidad}${precio}`;
+  });
+
+  return `- Cava & Minibar (COSTO ADICIONAL — pago a Jorge Orlando vía WhatsApp, transferencia al Banco Santander):
+${lines.join("\n")}
+  Carta completa y QR en: https://www.alexismartyniuk.com.ar/cordoba5579/cava`;
+}
+
+function buildSystemPrompt(): string {
+  return `Sos el Concierge Virtual del departamento Córdoba 5579 en Palermo Hollywood, Buenos Aires.
 Respondés en el mismo idioma en que te hablen (español o inglés).
 Sos amable, conciso y muy útil. Tu objetivo es ayudar a los huéspedes con información sobre:
 - Check-in/Check-out: Ingreso 15:00 hs, salida 11:00 hs. El check-in es autónomo con lockbox.
 - WiFi: Red "Cordoba5579_Guest" clave "Welcome101"
-- Aire acondicionado: Frio/calor en cada habitación
+- Aire acondicionado: Frío/calor en cada habitación (living y dormitorio independientes).
 - Estacionamiento: No disponible en el edificio. Garage pago a 2 cuadras.
-- Piscina y Terraza: Piso 9, 9:00 a 20:00 hs libre. Uso EXCLUSIVO para huéspedes registrados. Las visitas no tienen permitido el uso de amenities según el Reglamento.
-- Parrilla: Terraza piso 9, coordinar con Jorge por WhatsApp con anticipación.
-- Normas del Edificio: Estrictamente prohibidas las fiestas, reuniones y ruidos molestos. Las visitas deben ser registradas previamente con el anfitrión.
-- Caja de seguridad: Lockbox exterior en la puerta del edificio (no del departamento).
+- Piscina y Terraza: Piso 11, 9:00 a 20:00 hs. Uso EXCLUSIVO para huéspedes registrados. Visitas NO pueden acceder a amenities.
+- Parrilla: Terraza piso 11, coordinar con Jorge por WhatsApp con anticipación.
+- Normas del Edificio: Estrictamente prohibidas las fiestas, reuniones y ruidos molestos. Visitas deben ser registradas previamente.
+- Caja de seguridad: Lockbox exterior en la puerta del edificio (no del departamento). Código enviado de forma privada.
 - Mascotas: No se permiten.
 - Fumadores: Sólo en la terraza, nunca dentro del departamento.
-- Bar/Minibar: Cava de vinos premium disponible. Malbec, Syrah, Torrontés, Champagne.
-- Restaurantes cercanos: Zona repleta de opciones. Palermo Hollywood tiene gastronomía excelente.
+${buildCavaSection()}
+- Restaurantes cercanos: Palermo Hollywood tiene gastronomía excelente. Ver sección "Lugares" en el portal.
 - Movistar Arena: A 5 cuadras caminando.
 - Supermercado: Día a 3 cuadras.
 - Contacto del anfitrión: Jorge Orlando, por WhatsApp.
 
-Si no sabés algo específico, recomendás contactar a Jorge directamente por WhatsApp.
+IMPORTANTE: Cuando el huésped pregunte por vinos, precios o la cava, siempre citá los valores exactos de la lista de arriba. Si pregunta por un producto específico, buscalo y respondé con nombre, origen y precio exacto.
+Si no sabés algo, recomendá contactar a Jorge directamente por WhatsApp.
 Máximo 3 oraciones por respuesta. Sé concreto.`;
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -44,7 +78,7 @@ export async function POST(req: NextRequest) {
 
     const result = streamText({
       model: google("gemini-1.5-flash"),
-      system: SYSTEM_PROMPT,
+      system: buildSystemPrompt(),
       prompt: fullPrompt,
     });
 

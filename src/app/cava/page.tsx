@@ -11,6 +11,7 @@ interface CavaItem {
   categoria?: string;
   nombre?: string;
   descripcion?: string;
+  origen?: string;
   cantidad?: number | string;
   precio_usd?: number | string;
 }
@@ -32,16 +33,14 @@ export default function CavaPage() {
   };
 
   cavaItems.forEach((item: CavaItem) => {
-    const name = item.categoria || item.nombre || "";
-    const lower = name.toLowerCase();
-    
-    if (lower.includes("tinto") || lower.includes("red")) {
+    const cat = (item.categoria || "").toLowerCase().trim();
+    if (cat === "tinto") {
       categories.tinto.items.push(item);
-    } else if (lower.includes("blanco") || lower.includes("white") || lower.includes("torrontes") || lower.includes("torrontés")) {
+    } else if (cat === "blanco") {
       categories.blanco.items.push(item);
-    } else if (lower.includes("champagne") || lower.includes("espumante") || lower.includes("sparkling") || lower.includes("demi sec") || lower.includes("burbuja")) {
+    } else if (cat === "burbujas") {
       categories.burbujas.items.push(item);
-    } else if (lower.includes("fernet") || lower.includes("coca") || lower.includes("classic") || lower.includes("trago")) {
+    } else if (cat === "clasico") {
       categories.clasico.items.push(item);
     } else {
       categories.otros.items.push(item);
@@ -141,9 +140,12 @@ export default function CavaPage() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {cat.items.map((item, idx) => {
-                    const name = item.categoria || item.nombre || "";
+                    const name = item.nombre || item.categoria || "";
                     const desc = item.descripcion || "";
-                    const price = item.precio_usd || 0;
+                    const origen = item.origen || "";
+                    const price = typeof item.precio_usd === "number"
+                      ? item.precio_usd.toFixed(2)
+                      : item.precio_usd || "0";
                     const stock = item.cantidad || 0;
 
                     return (
@@ -156,8 +158,13 @@ export default function CavaPage() {
                             <h3 className="font-bold text-sm sm:text-base text-neutral-900 dark:text-neutral-100 leading-tight">
                               {name}
                             </h3>
+                            {origen && (
+                              <span className="inline-block text-[10px] font-semibold tracking-wider uppercase text-[#5F6F52] dark:text-[#889B73] bg-[#5F6F52]/10 dark:bg-[#889B73]/10 px-2 py-0.5 rounded-full">
+                                {origen}
+                              </span>
+                            )}
                             {desc && (
-                              <p className="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed font-light">
+                              <p className="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed font-light pt-0.5">
                                 {desc}
                               </p>
                             )}
@@ -176,7 +183,7 @@ export default function CavaPage() {
                           <span className="text-[10px] text-neutral-400 uppercase tracking-wider font-semibold">
                             {currentT.cava_priceLabel}
                           </span>
-                          <span className="text-lg font-serif font-bold text-[#5F6F52] dark:text-[#889B73]">
+                          <span className="text-xl font-serif font-bold text-[#5F6F52] dark:text-[#889B73]">
                             USD {price}
                           </span>
                         </div>
