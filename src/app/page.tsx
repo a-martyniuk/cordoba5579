@@ -646,7 +646,7 @@ export default function Home() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {airbnbDetails.cava && airbnbDetails.cava.length > 0 ? (
                   airbnbDetails.cava.map((item: { categoria?: string; nombre?: string; descripcion?: string; cantidad?: number | string; precio_usd?: number | string }, idx: number) => {
-                    const name = item.categoria || item.nombre || "";
+                    const name = item.nombre || item.categoria || "";
                     const desc = item.descripcion || "";
                     const price = item.precio_usd || 0;
                     
@@ -654,7 +654,7 @@ export default function Home() {
                     let categoryTagEn = "Minibar";
                     let tagColor = "bg-neutral-50 dark:bg-neutral-950/20 text-neutral-700 dark:text-neutral-400";
                     
-                    const lower = name.toLowerCase();
+                    const lower = ((item.categoria || "") + " " + name).toLowerCase();
                     if (lower.includes("tinto") || lower.includes("red")) {
                       categoryTagEs = "Tinto";
                       categoryTagEn = "Red";
@@ -663,11 +663,11 @@ export default function Home() {
                       categoryTagEs = "Blanco";
                       categoryTagEn = "White";
                       tagColor = "bg-amber-50 dark:bg-amber-950/20 text-amber-700 dark:text-amber-400";
-                    } else if (lower.includes("champagne") || lower.includes("espumante") || lower.includes("sparkling") || lower.includes("demi sec") || lower.includes("burbuja")) {
+                    } else if (lower.includes("champagne") || lower.includes("espumante") || lower.includes("sparkling") || lower.includes("demi sec") || lower.includes("burbuja") || lower.includes("burbujas")) {
                       categoryTagEs = "Burbujas";
                       categoryTagEn = "Sparkling";
                       tagColor = "bg-yellow-50 dark:bg-yellow-950/20 text-yellow-700 dark:text-yellow-400";
-                    } else if (lower.includes("fernet") || lower.includes("coca") || lower.includes("classic")) {
+                    } else if (lower.includes("fernet") || lower.includes("coca") || lower.includes("classic") || lower.includes("clasico") || lower.includes("clásico")) {
                       categoryTagEs = "Clásico";
                       categoryTagEn = "Classic";
                       tagColor = "bg-emerald-50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-400";

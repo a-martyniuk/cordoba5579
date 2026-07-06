@@ -266,6 +266,8 @@ def main():
                             item["cantidad"] = int(val.strip()) if val.strip().isdigit() else val.strip()
                         elif h == "precio_usd":
                             item["precio_usd"] = float(val.strip()) if val.strip().replace(".", "", 1).isdigit() else val.strip()
+                        elif h == "origen":
+                            item["origen"] = val.strip()
                 cava_list.append(item)
             print(f"Parsed {len(cava_list)} Cava items.")
         except Exception as e:

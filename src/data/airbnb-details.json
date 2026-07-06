@@ -12,39 +12,76 @@
   "weekendPrice": 600,
   "cava": [
     {
-      "categoria": "Vino Tinto Malbec",
-      "nombre": "",
-      "descripcion": "",
+      "categoria": "blanco",
+      "nombre": "Torrontés",
+      "descripcion": "Para disfrutar de su frescura y exquisita esencia",
       "cantidad": 3,
-      "precio_usd": 15.0
+      "precio_usd": 4.4,
+      "origen": "Mendoza"
     },
     {
-      "categoria": "Vino Tinto Syrah",
-      "nombre": "",
-      "descripcion": "Cabernet Sauvignon",
-      "cantidad": 6,
-      "precio_usd": 20.0
+      "categoria": "blanco",
+      "nombre": "Chenin / Dulce",
+      "descripcion": "Suave y delicado con notas frutas blancas, citrus aroma flor.",
+      "cantidad": 3,
+      "precio_usd": 8.8,
+      "origen": "Mendoza"
     },
     {
-      "categoria": "Vino Blanco Torrontés",
-      "nombre": "",
-      "descripcion": "Dulce Natural",
-      "cantidad": 6,
-      "precio_usd": 25.0
+      "categoria": "tinto",
+      "nombre": "Malbec",
+      "descripcion": "Suave con aroma guindas, fresas, vainillas aportadas por el paso del roble Francés",
+      "cantidad": 3,
+      "precio_usd": 4.8,
+      "origen": "San Juan"
     },
     {
-      "categoria": "Champagne Demi Sec",
-      "nombre": "",
-      "descripcion": "Dulce",
-      "cantidad": 4,
-      "precio_usd": 22.0
+      "categoria": "tinto",
+      "nombre": "Cabernet Sauvignon",
+      "descripcion": "Aroma intenso con un toque frutado con taninos suaves",
+      "cantidad": 3,
+      "precio_usd": 5.4,
+      "origen": "Mendoza"
     },
     {
-      "categoria": "Fernet Branca + CocaCola",
-      "nombre": "",
-      "descripcion": "",
+      "categoria": "tinto",
+      "nombre": "Syrah / Cabernet",
+      "descripcion": "Perfil frutado, un blend bien equilibrado.",
+      "cantidad": 3,
+      "precio_usd": 5.8,
+      "origen": "San Juan"
+    },
+    {
+      "categoria": "burbujas",
+      "nombre": "Champagne Cosecha Tardía – Norton",
+      "descripcion": "Suave sedoso con notas a miel y durazno con cítricos",
+      "cantidad": 2,
+      "precio_usd": 13.85,
+      "origen": "Norton"
+    },
+    {
+      "categoria": "burbujas",
+      "nombre": "Champagne Extra Brut – Suter",
+      "descripcion": "Una perfecta combinación de aromas a levaduras, pan tostado, flores blancas, elegante y sensual.",
+      "cantidad": 2,
+      "precio_usd": 17.3,
+      "origen": "Suter"
+    },
+    {
+      "categoria": "clasico",
+      "nombre": "Fernet Branca",
+      "descripcion": "Con una combinación de hierbas serranas (excelente con gaseosa cola)",
       "cantidad": 1,
-      "precio_usd": 21.0
+      "precio_usd": 17.4,
+      "origen": "Córdoba"
+    },
+    {
+      "categoria": "clasico",
+      "nombre": "Coca-Cola 2.5 l",
+      "descripcion": "Ideal para acompañar el Fernet",
+      "cantidad": 3,
+      "precio_usd": 3.35,
+      "origen": "Bs.As."
     }
   ],
   "guests": 4,
@@ -96,10 +133,6 @@
       },
       {
         "title": "Lavarropas: gratis en el edificio",
-        "subtitle": ""
-      },
-      {
-        "title": "Secarropas por gratis en el edificio",
         "subtitle": ""
       },
       {
@@ -247,10 +280,6 @@
         "subtitle": "Alojamiento sin escaleras"
       },
       {
-        "title": "Se permite dejar el equipaje",
-        "subtitle": "Opción de llegar temprano o salir tarde para la comodidad de los huéspedes"
-      },
-      {
         "title": "Disponible para estadías largas",
         "subtitle": "Permite estadías de 28 días o más"
       },
@@ -334,10 +363,6 @@
       },
       {
         "title": "Free washer – In building",
-        "subtitle": ""
-      },
-      {
-        "title": "Free dryer – In building",
         "subtitle": ""
       },
       {
@@ -483,10 +508,6 @@
       {
         "title": "Single level home",
         "subtitle": "No stairs in home"
-      },
-      {
-        "title": "Luggage dropoff allowed",
-        "subtitle": "For guests' convenience when they have early arrival or late departure"
       },
       {
         "title": "Long term stays allowed",

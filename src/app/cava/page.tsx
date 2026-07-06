@@ -1,10 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Wine, Sparkles, ArrowLeft, Info, Moon, Sun } from "lucide-react";
 import { useLanguage } from "../../context/LanguageContext";
 import { useTheme } from "../../context/ThemeContext";
+import { parseCSV } from "../../utils/csvParser";
 import airbnbDetails from "../../data/airbnb-details.json";
 
 interface CavaItem {
@@ -19,9 +20,50 @@ interface CavaItem {
 export default function CavaPage() {
   const { t: currentT, language, setLanguage } = useLanguage();
   const { darkMode, toggleTheme } = useTheme();
+  const [cavaItems, setCavaItems] = useState<CavaItem[]>(airbnbDetails.cava || []);
+  const [isLive, setIsLive] = useState<boolean>(false);
 
-
-  const cavaItems = airbnbDetails.cava || [];
+  useEffect(() => {
+    async function loadLiveCava() {
+      try {
+        const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlUx7LNTseRM1DhoYGmw-9ZfuWpobnDFF5pLt4AuIdMiLLVEqVN_54OTZm0YbMUTp3-iHsk6Dbx4YP/pub?gid=286973474&output=csv";
+        const response = await fetch(csvUrl, { cache: "no-store" });
+        if (!response.ok) throw new Error("Network response was not ok");
+        const csvText = await response.text();
+        const parsedData = parseCSV(csvText);
+        
+        if (parsedData.length > 1) {
+          const headers = parsedData[0].map(h => h.trim().toLowerCase());
+          
+          const items: CavaItem[] = parsedData.slice(1).map((row) => {
+            const getVal = (colName: string, fallback: string = ""): string => {
+              const idx = headers.indexOf(colName);
+              return idx !== -1 && row[idx] !== undefined ? row[idx].trim() : fallback;
+            };
+            
+            const qtyStr = getVal("cantidad");
+            const priceStr = getVal("precio_usd");
+            
+            return {
+              categoria: getVal("categoria"),
+              nombre: getVal("nombre"),
+              descripcion: getVal("descripcion"),
+              cantidad: parseInt(qtyStr, 10) || qtyStr || 0,
+              precio_usd: parseFloat(priceStr) || priceStr || 0,
+              origen: getVal("origen")
+            };
+          });
+          
+          setCavaItems(items);
+          setIsLive(true);
+        }
+      } catch (error) {
+        console.error("Error loading live Cava menu, using fallback data:", error);
+      }
+    }
+    
+    loadLiveCava();
+  }, []);
 
   // Group items by category
   const categories: { [key: string]: { title: string; icon: string; items: CavaItem[] } } = {
@@ -103,9 +145,17 @@ export default function CavaPage() {
         
         {/* Header Hero */}
         <div className="text-center space-y-3">
-          <div className="inline-flex items-center gap-1.5 bg-[#5F6F52]/10 dark:bg-[#889B73]/10 text-[#5F6F52] dark:text-[#889B73] px-3.5 py-1.5 rounded-full text-[10px] font-bold tracking-wider uppercase">
-            <Wine className="w-3.5 h-3.5" />
-            <span>{currentT.cava_headerTag}</span>
+          <div className="flex items-center justify-center gap-2">
+            <div className="inline-flex items-center gap-1.5 bg-[#5F6F52]/10 dark:bg-[#889B73]/10 text-[#5F6F52] dark:text-[#889B73] px-3.5 py-1.5 rounded-full text-[10px] font-bold tracking-wider uppercase">
+              <Wine className="w-3.5 h-3.5" />
+              <span>{currentT.cava_headerTag}</span>
+            </div>
+            {isLive && (
+              <div className="inline-flex items-center gap-1 bg-emerald-500/10 text-emerald-600 dark:text-emerald-450 px-2.5 py-1.5 rounded-full text-[10px] font-bold tracking-wider uppercase">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                <span>Google Sheets En Vivo</span>
+              </div>
+            )}
           </div>
           <h1 className="font-serif text-3xl sm:text-4xl font-bold text-neutral-900 dark:text-white leading-tight pt-1">
             {currentT.cava_pageTitle}
