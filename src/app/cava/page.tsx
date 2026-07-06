@@ -22,6 +22,13 @@ export default function CavaPage() {
   const { darkMode, toggleTheme } = useTheme();
   const [cavaItems, setCavaItems] = useState<CavaItem[]>(airbnbDetails.cava || []);
   const [isLive, setIsLive] = useState<boolean>(false);
+  const [copiedKey, setCopiedKey] = useState<string | null>(null);
+
+  const copyToClipboard = (text: string, key: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedKey(key);
+    setTimeout(() => setCopiedKey(null), 2000);
+  };
 
   useEffect(() => {
     async function loadLiveCava() {
@@ -248,6 +255,91 @@ export default function CavaPage() {
               {currentT.cava_noItems}
             </div>
           )}
+        </div>
+
+        {/* Payment & Consumption Card */}
+        <div className="bg-white dark:bg-[#1E211D] border border-[#EFEBE4] dark:border-[#2C302A] rounded-3xl p-6 md:p-8 space-y-6 shadow-sm transition-colors duration-300">
+          <h4 className="font-serif text-base sm:text-lg font-bold text-neutral-900 dark:text-neutral-100 flex items-center gap-2">
+            <Sparkles className="w-5 h-5 text-[#5F6F52] dark:text-[#889B73]" />
+            {currentT.cava_payment_title}
+          </h4>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 font-light leading-relaxed">
+            <div className="space-y-4">
+              <div>
+                <h5 className="font-semibold text-neutral-800 dark:text-neutral-200 mb-1">
+                  {currentT.cava_access_title}
+                </h5>
+                <p>
+                  {currentT.cava_access_desc}
+                </p>
+              </div>
+              <div>
+                <h5 className="font-semibold text-neutral-800 dark:text-neutral-200 mb-1">
+                  {currentT.cava_refill_title}
+                </h5>
+                <p>
+                  {currentT.cava_refill_desc}
+                </p>
+              </div>
+            </div>
+            
+            <div className="bg-[#FAF9F7] dark:bg-[#141613] border border-[#EFEBE4] dark:border-[#2C302A] rounded-2xl p-5 space-y-3 shadow-sm">
+              <h5 className="font-semibold text-neutral-850 dark:text-neutral-150 flex items-center gap-1.5 border-b border-[#EFEBE4]/60 dark:border-[#2C302A]/60 pb-2 mb-2">
+                <span className="text-base">🏦</span>
+                <span>Banco Santander</span>
+              </h5>
+              
+              <div className="space-y-2.5 font-sans">
+                <div className="flex justify-between items-center gap-2">
+                  <div>
+                    <span className="text-[10px] text-neutral-400 dark:text-neutral-500 uppercase tracking-wider block">Titular</span>
+                    <span className="font-medium text-neutral-800 dark:text-neutral-200">Martyniuk Jorge Orlando</span>
+                  </div>
+                </div>
+                
+                <div className="flex justify-between items-center gap-2">
+                  <div>
+                    <span className="text-[10px] text-neutral-400 dark:text-neutral-500 uppercase tracking-wider block">DNI</span>
+                    <span className="font-medium text-neutral-800 dark:text-neutral-200">13.671.433</span>
+                  </div>
+                </div>
+
+                <div className="flex justify-between items-center gap-2">
+                  <div>
+                    <span className="text-[10px] text-neutral-400 dark:text-neutral-500 uppercase tracking-wider block">Cuenta en Pesos</span>
+                    <span className="font-mono text-neutral-850 dark:text-neutral-250">533-005211/7</span>
+                  </div>
+                </div>
+
+                <div className="border-t border-[#EFEBE4]/50 dark:border-[#2C302A]/50 pt-2 flex justify-between items-center gap-2">
+                  <div className="flex-grow">
+                    <span className="text-[10px] text-neutral-400 dark:text-neutral-500 uppercase tracking-wider block">Alias</span>
+                    <span className="font-mono text-neutral-850 dark:text-neutral-250 font-semibold select-all">ARENA.DIESEL.CUENCA</span>
+                  </div>
+                  <button
+                    onClick={() => copyToClipboard("ARENA.DIESEL.CUENCA", "alias")}
+                    className="text-[10px] font-bold text-[#5F6F52] dark:text-[#889B73] hover:underline flex-shrink-0"
+                  >
+                    {copiedKey === "alias" ? currentT.cava_copied_msg : currentT.cava_copy_btn}
+                  </button>
+                </div>
+
+                <div className="flex justify-between items-center gap-2">
+                  <div className="flex-grow">
+                    <span className="text-[10px] text-neutral-400 dark:text-neutral-500 uppercase tracking-wider block">CBU</span>
+                    <span className="font-mono text-xs text-neutral-850 dark:text-neutral-250 break-all select-all">0720533088000000521172</span>
+                  </div>
+                  <button
+                    onClick={() => copyToClipboard("0720533088000000521172", "cbu")}
+                    className="text-[10px] font-bold text-[#5F6F52] dark:text-[#889B73] hover:underline flex-shrink-0"
+                  >
+                    {copiedKey === "cbu" ? currentT.cava_copied_msg : currentT.cava_copy_btn}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Wine cellar guidelines block */}

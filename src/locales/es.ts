@@ -168,6 +168,13 @@ export const es = {
   cava_quantityLabel: "Disponibles en unidad: ",
   cava_priceLabel: "Precio",
   cava_noItems: "No hay productos configurados en la cava actualmente.",
+  cava_payment_title: "Instrucciones de Consumo y Pago",
+  cava_access_title: "Acceso a la Cava",
+  cava_access_desc: "Si estás interesado, comunicate por WhatsApp con Jorge Orlando. Te daremos las instrucciones de las combinaciones y candados para abrir la cava.",
+  cava_refill_title: "Reposición de Bebidas",
+  cava_refill_desc: "Si deseas reposición de bebidas durante tu estadía, podés solicitarla directamente al mismo WhatsApp.",
+  cava_copy_btn: "Copiar",
+  cava_copied_msg: "Copiado al portapapeles",
   cava_rules: [
     "Cristalería fina disponible en el rincón bar del living.",
     "Por favor, mantén refrigerados los blancos y burbujas antes de consumir.",

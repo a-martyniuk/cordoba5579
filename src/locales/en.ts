@@ -168,6 +168,13 @@ export const en = {
   cava_quantityLabel: "Available in unit: ",
   cava_priceLabel: "Price",
   cava_noItems: "There are currently no products configured in the cellar.",
+  cava_payment_title: "Consumption & Payment Instructions",
+  cava_access_title: "Cellar Access",
+  cava_access_desc: "If interested, please contact Jorge Orlando via WhatsApp. We will provide you with the combination and padlock instructions to open the cellar.",
+  cava_refill_title: "Beverage Refill",
+  cava_refill_desc: "If you need a beverage refill during your stay, you can request it directly via the same WhatsApp.",
+  cava_copy_btn: "Copy",
+  cava_copied_msg: "Copied to clipboard",
   cava_rules: [
     "Fine glassware is available at the bar corner in the living room.",
     "Please keep white wines and sparkling drinks chilled before consuming.",
