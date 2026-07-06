@@ -88,7 +88,7 @@ ${lines.join("\n")}
   • Datos Bancarios para transferir (Banco Santander):
     - Titular: Martyniuk Jorge Orlando
     - DNI: 13671433
-    - Cuenta en Pesos: 533-005211/7
+    - Cuenta (Pesos y Dólares): 533-005211/7
     - CBU: 0720533088000000521172
     - Alias: ARENA.DIESEL.CUENCA
   Carta completa y QR en: https://www.alexismartyniuk.com.ar/cordoba5579/cava`;

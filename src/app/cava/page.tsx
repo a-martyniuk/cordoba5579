@@ -307,7 +307,9 @@ export default function CavaPage() {
 
                 <div className="flex justify-between items-center gap-2">
                   <div>
-                    <span className="text-[10px] text-neutral-400 dark:text-neutral-500 uppercase tracking-wider block">Cuenta en Pesos</span>
+                    <span className="text-[10px] text-neutral-400 dark:text-neutral-500 uppercase tracking-wider block">
+                      {language === "es" ? "Cuenta en Pesos / Dólares" : "Account in Pesos / USD"}
+                    </span>
                     <span className="font-mono text-neutral-850 dark:text-neutral-250">533-005211/7</span>
                   </div>
                 </div>
