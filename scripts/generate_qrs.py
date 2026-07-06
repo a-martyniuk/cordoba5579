@@ -5,7 +5,7 @@ import os
 import io
 
 BASE_URL = "https://www.alexismartyniuk.com.ar/cordoba5579"
-WHATSAPP_URL = "https://wa.me/5491145379500?text=Hola%21%20Quería%20consultar%20disponibilidad%20para%20el%20departamento%20de%20Córdoba%205579."
+WHATSAPP_URL = "https://wa.me/5491145379500?text=Hola%20Jorge%21%20Te%20escribo%20desde%20el%20depto%20C%C3%B3rdoba%205579."
 
 CODES = [
     {
@@ -307,43 +307,6 @@ def make_unified_sheet() -> Image.Image:
     draw.text((W // 2, 3080), "¡Que disfrutes tu estadía!  •  Enjoy your stay!", fill="#5F6F52", font=font_footer, anchor="mm")
 
     return card.convert("RGB")
-
-
-def main():
-    print("Generating QR Cards for Cordoba 5579...")
-    for code in CODES:
-        card = make_card(code)
-        out_path = os.path.join(OUTPUT_DIR, f"qr_{code['name']}.png")
-        card.save(out_path, "PNG", dpi=(300, 300))
-        print(f"  [OK] Saved: {out_path}")
-        
-    print("\nGenerating Unified Guide Sheet...")
-    sheet = make_unified_sheet()
-    sheet_path = os.path.join(OUTPUT_DIR, "qr_unified_sheet.png")
-    sheet.save(sheet_path, "PNG", dpi=(300, 300))
-    print(f"  [OK] Saved: {sheet_path}")
-    
-    print(f"\n[DONE] Find your print-ready QR cards in: {OUTPUT_DIR}")
-    print("   Recommended print size: 10x12.5 cm at 300 DPI")
-
-
-
-
-
-    # Bottom Footer section
-    draw.line([(300, 3050), (W - 300, 3050)], fill="#EFEBE4", width=2)
-    draw.text((W // 2, 3160), "¡Que disfrutes tu estadía!  •  Enjoy your stay!", fill="#5F6F52", font=font_footer, anchor="mm")
-
-    return card.convert("RGB")
-
-
-
-
-
-
-
-
-
 
 
 def main():
