@@ -12,79 +12,41 @@
   "weekendPrice": 600,
   "cava": [
     {
-      "categoria": "blanco",
-      "nombre": "Torrontés",
-      "descripcion": "Para disfrutar de su frescura y exquisita esencia",
-      "origen": "Mendoza",
+      "categoria": "Vino Tinto Malbec",
+      "nombre": "",
+      "descripcion": "",
       "cantidad": 3,
-      "precio_usd": 4.40
+      "precio_usd": 15.0
     },
     {
-      "categoria": "blanco",
-      "nombre": "Chenin / Dulce",
-      "descripcion": "Suave y delicado con notas frutas blancas, citrus aroma flor.",
-      "origen": "Mendoza",
-      "cantidad": 3,
-      "precio_usd": 8.80
+      "categoria": "Vino Tinto Syrah",
+      "nombre": "",
+      "descripcion": "Cabernet Sauvignon",
+      "cantidad": 6,
+      "precio_usd": 20.0
     },
     {
-      "categoria": "tinto",
-      "nombre": "Malbec",
-      "descripcion": "Suave con aroma guindas, fresas, vainillas aportadas por el paso del roble Francés",
-      "origen": "San Juan",
-      "cantidad": 3,
-      "precio_usd": 4.80
+      "categoria": "Vino Blanco Torrontés",
+      "nombre": "",
+      "descripcion": "Dulce Natural",
+      "cantidad": 6,
+      "precio_usd": 25.0
     },
     {
-      "categoria": "tinto",
-      "nombre": "Cabernet Sauvignon",
-      "descripcion": "Aroma intenso con un toque frutado con taninos suaves",
-      "origen": "Mendoza",
-      "cantidad": 3,
-      "precio_usd": 5.40
+      "categoria": "Champagne Demi Sec",
+      "nombre": "",
+      "descripcion": "Dulce",
+      "cantidad": 4,
+      "precio_usd": 22.0
     },
     {
-      "categoria": "tinto",
-      "nombre": "Syrah / Cabernet",
-      "descripcion": "Perfil frutado un blend bien equilibrado.",
-      "origen": "San Juan",
-      "cantidad": 3,
-      "precio_usd": 5.80
-    },
-    {
-      "categoria": "burbujas",
-      "nombre": "Champagne Cosecha Tardía – Norton",
-      "descripcion": "Suave sedoso con notas a miel y durazno con cítricos",
-      "origen": "Norton",
-      "cantidad": 2,
-      "precio_usd": 13.85
-    },
-    {
-      "categoria": "burbujas",
-      "nombre": "Champagne Extra Brut – Suter",
-      "descripcion": "Una perfecta combinación de aromas a levaduras, pan tostado flores blancas, elegante y sensual.",
-      "origen": "Suter",
-      "cantidad": 2,
-      "precio_usd": 17.30
-    },
-    {
-      "categoria": "clasico",
-      "nombre": "Fernet Branca",
-      "descripcion": "Con una combinación de hiervas serranas (una excelente combinación con gaseosa cola)",
-      "origen": "Córdoba",
+      "categoria": "Fernet Branca + CocaCola",
+      "nombre": "",
+      "descripcion": "",
       "cantidad": 1,
-      "precio_usd": 17.40
-    },
-    {
-      "categoria": "clasico",
-      "nombre": "Coca-Cola 2.5 l",
-      "descripcion": "Ideal para acompañar el Fernet",
-      "origen": "Bs.As.",
-      "cantidad": 3,
-      "precio_usd": 3.35
+      "precio_usd": 21.0
     }
   ],
-
   "guests": 4,
   "lockboxCode": "1579",
   "es": {
