@@ -20,7 +20,7 @@ export const cordoba5579Knowledge: PropertyKnowledge = {
     en: "The apartment features high-speed internet. The network credentials and auto-connect QR code are printed on framed signs inside the property. Wifi password is 'Welcome101'."
   },
   checkin: {
-    keys: ["check-in", "checkin", "ingres", "llave", "entrar", "lockbox", "code", "codigo", "código", "caja fuerte", "candado"],
+    keys: ["check-in", "checkin", "ingres", "llave", "entrar", "lockbox", "code", "codigo", "código", "candado"],
     es: "El check-in es autónomo desde las 15:00 hs. Ubicá la caja de seguridad (lockbox) 'Depto 101' a la derecha del ingreso exterior (Av. Córdoba 5579). Ingresá la combinación que te enviamos por mensaje de confirmación, deslizá la traba y retirá las llaves. Aproximá el llavero magnético azul/negro al lector del hall exterior. Más detalles en /checkin.",
     en: "Self-check-in starts at 3:00 PM. Locate the lockbox labeled 'Depto 101' at the right of the outer entrance (Av. Córdoba 5579). Enter the combination code sent to you via confirmation message, slide the latch, and retrieve the keys. Use the blue/black magnetic tag on the outer lobby reader. Learn more at /checkin."
   },
@@ -30,9 +30,19 @@ export const cordoba5579Knowledge: PropertyKnowledge = {
     en: "Check-out time is strictly by 11:00 AM. Please turn off all air conditioners and lights, lock the door, return the keys to the outer lockbox (scrambling the code wheels), and notify Jorge via WhatsApp."
   },
   grill: {
-    keys: ["parrilla", "asado", "grill", "bbq"],
-    es: "La parrilla se encuentra en la terraza. Podés utilizarla reservándola previamente con Jorge por WhatsApp (tiene un costo de limpieza adicional).",
-    en: "The grill is located on the rooftop terrace. It is available to guests but requires prior booking and carries an extra cleaning fee. Please coordinate with Jorge via WhatsApp to reserve."
+    keys: ["parrilla", "asado", "grill", "bbq", "sum", "salon", "salón"],
+    es: "La parrilla/SUM se encuentra en la terraza (piso 11). Por reglamento interno del consorcio, su uso requiere el pago de un arancel de $10.000 ARS destinados a la limpieza. Coordiná la reserva previa con Jorge por WhatsApp.",
+    en: "The grill/SUM is located on the rooftop terrace (11th floor). Per building regulations, its use carries a $10,000 ARS fee for cleaning. Please coordinate your reservation in advance with Jorge via WhatsApp."
+  },
+  safe: {
+    keys: ["caja fuerte", "safe", "fuerte", "caja de seguridad de la habitacion", "caja de seguridad del depto", "caja de seguridad del departamento"],
+    es: "La caja fuerte del departamento funciona con una llave física. Si deseas utilizarla, por favor solicítale la llave a Jorge Orlando por WhatsApp.",
+    en: "The safe in the apartment operates with a physical key. If you wish to use it, please request the key from Jorge Orlando via WhatsApp."
+  },
+  luggage: {
+    keys: ["equipaje", "valija", "bolso", "maleta", "luggage", "baggage", "bag", "dropoff", "drop-off", "guardar"],
+    es: "Por reglamento del consorcio, no está permitido el guardado de equipaje en las áreas comunes. Sin embargo, podés consultar a Jorge eventualmente según tu necesidad para ver si es posible coordinar alguna alternativa.",
+    en: "Per building regulations, luggage storage is not generally allowed. However, you can consult Jorge eventually depending on your needs to see if any alternative can be coordinated."
   },
   pool: {
     keys: ["piscina", "pileta", "pool", "solarium", "terraza", "rooftop", "solárium"],

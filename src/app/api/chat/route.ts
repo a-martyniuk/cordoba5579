@@ -104,9 +104,11 @@ Sos amable, conciso y muy útil. Tu objetivo es ayudar a los huéspedes con info
 - Aire acondicionado: Frío/calor en cada habitación (living y dormitorio independientes).
 - Estacionamiento: No disponible en el edificio. Garage pago a 2 cuadras.
 - Piscina y Terraza: Piso 11, 9:00 a 20:00 hs. Uso EXCLUSIVO para huéspedes registrados. Visitas NO pueden acceder a amenities.
-- Parrilla: Terraza piso 11, coordinar con Jorge por WhatsApp con anticipación.
+- Parrilla y SUM: Terraza piso 11, coordinar con Jorge por WhatsApp con anticipación. Por reglamento del consorcio, su uso requiere el pago de $10.000 ARS destinados a limpieza.
 - Normas del Edificio: Estrictamente prohibidas las fiestas, reuniones y ruidos molestos. Visitas deben ser registradas previamente.
-- Caja de seguridad: Lockbox exterior en la puerta del edificio (no del departamento). Código enviado de forma privada.
+- Caja de seguridad para llaves: Lockbox exterior en la puerta del edificio (no del departamento). Código enviado de forma privada.
+- Caja fuerte de la habitación: Se encuentra dentro del departamento y funciona con llave física (el huésped debe solicitar la llave a Jorge Orlando por WhatsApp para usarla).
+- Equipaje: Por reglamento del consorcio, no está permitido el guardado de equipaje de forma general. El huésped debe consultar eventualmente a Jorge Orlando por WhatsApp según su necesidad para ver si hay alternativas.
 - Mascotas: No se permiten.
 - Fumadores: Sólo en la terraza, nunca dentro del departamento.
 ${cavaSection}

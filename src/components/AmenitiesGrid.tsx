@@ -18,27 +18,43 @@ export default function AmenitiesGrid() {
       rooftop: { titleEs: "Terraza, Accesibilidad y Servicios", titleEn: "Rooftop & Accessibility", icon: "🌇", items: [] as { title: string; subtitle: string }[] },
     };
     amenities.forEach((item: { title: string; subtitle: string; category?: unknown }) => {
-      const lower = ((item.title || "") + " " + (item.subtitle || "")).toLowerCase();
+      let title = item.title || "";
+      let subtitle = item.subtitle || "";
+      const lowerTitle = title.toLowerCase().trim();
+      
+      if (lowerTitle === "caja fuerte") {
+        subtitle = "Con llave física (solicitar al anfitrión)";
+      } else if (lowerTitle === "safe") {
+        subtitle = "With physical key (request from host)";
+      } else if (lowerTitle === "se permite dejar el equipaje") {
+        title = "Guardado de equipaje";
+        subtitle = "No permitido de forma general. Consultar eventualmente según necesidad.";
+      } else if (lowerTitle === "luggage dropoff allowed") {
+        title = "Luggage storage";
+        subtitle = "Not allowed generally. Consult host eventually if needed.";
+      }
+      
+      const newItem = { title, subtitle };
+      const lower = (title + " " + subtitle).toLowerCase();
       
       const isKitchen = lower.match(/(cocina|heladera|microondas|vajilla|horno|cafetera|licuadora|arrocera|comedor|pava|copas|congelador|utensilios|ollas|sartenes|platos|bowls|kitchen|refrigerator|fridge|microwave|dishes|silverware|oven|coffee|espresso|blender|rice|dining|kettle|wine glasses|freezer|utensils|pots|pans|plates|stove|toaster|baking)/);
       const isBedroom = lower.match(/(cama|almohada|manta|cortina|persiana|ropa|perchas|lavarropas|secarropas|plancha|ténder|placard|armario|guardar|hilos|algodón|bed|pillow|blanket|curtain|blind|clothing|hanger|washer|dryer|iron|drying rack|closet|wardrobe|store|thread|cotton|linen|sheet|darkening)/);
       const isBathroom = lower.match(/(pelo|shampoo|acondicionador|jabón|bidé|bidet|ducha|agua caliente|gel|secador|hair|conditioner|soap|shower|hot water|body|toilet)/);
       const isConnectivity = lower.match(/(wifi|ethernet|televisor|tv|ac:|calefacción|split|televisor hd|pulgadas|air conditioning|heating|hdtv|inch|internet|ac -)/);
       const isSafety = lower.match(/(cámara|humo|monóxido|matafuego|auxilios|seguridad|caja fuerte|alarma|extintor|camera|smoke|carbon monoxide|fire extinguisher|first aid|security|safe|alarm)/);
-
+ 
       if (isKitchen) {
-        categories.kitchen.items.push(item);
+        categories.kitchen.items.push(newItem);
       } else if (isBedroom) {
-        categories.bedroom.items.push(item);
+        categories.bedroom.items.push(newItem);
       } else if (isBathroom) {
-        categories.bathroom.items.push(item);
+        categories.bathroom.items.push(newItem);
       } else if (isConnectivity) {
-        categories.connectivity.items.push(item);
+        categories.connectivity.items.push(newItem);
       } else if (isSafety) {
-        categories.safety.items.push(item);
-
+        categories.safety.items.push(newItem);
       } else {
-        categories.rooftop.items.push(item);
+        categories.rooftop.items.push(newItem);
       }
     });
 

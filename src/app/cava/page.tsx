@@ -241,7 +241,7 @@ export default function CavaPage() {
                             {currentT.cava_priceLabel}
                           </span>
                           <span className="text-xl font-serif font-bold text-[#5F6F52] dark:text-[#889B73]">
-                            USD {price}
+                            USD ${price}
                           </span>
                         </div>
                       </div>

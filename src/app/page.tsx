@@ -688,7 +688,7 @@ export default function Home() {
                         </div>
                         <div className="text-right flex flex-col justify-between items-end flex-shrink-0">
                           <span className="text-sm font-bold text-neutral-900 dark:text-neutral-200">
-                            USD {price}
+                            USD ${price}
                           </span>
                         </div>
                       </div>
