@@ -73,7 +73,7 @@ export const en = {
   faq7Q: "Is the building wheelchair accessible and does it have an elevator?",
   faq7A: "Yes, entrance from the sidewalk to the lobby is completely step-free. We have a spacious elevator going directly to the 1st floor. Please note that the bathroom features a traditional bathtub, which may require assistance for guests with reduced mobility.",
   faq8Q: "Is there a laundry service available?",
-  faq8A: "Yes, guests enjoy free access to the building's shared laundry room with washers and dryers. A drying rack is also provided inside the apartment.",
+  faq8A: "Yes, guests enjoy free access to the building's shared laundry room with washing machines. A drying rack is also provided inside the apartment.",
   faq9Q: "Do you have fast Internet for Home Office?",
   faq9A: "Yes, we have a very stable 300 Mbps fiber optic connection by Personal, ideal for video calls, streaming, remote work, or digital nomads.",
   faq10Q: "Can I drop off my luggage before check-in or after check-out?",

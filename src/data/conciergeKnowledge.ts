@@ -50,9 +50,9 @@ export const cordoba5579Knowledge: PropertyKnowledge = {
     en: "The outdoor pool, showers, and solarium are on the rooftop terrace (9th floor). The pool is open to guests (closes at 8:00 PM). Taking a shower before swimming is mandatory. No unregistered visitors allowed."
   },
   laundry: {
-    keys: ["laundry", "lavadero", "lavar", "secar", "washing", "dryer", "ropa"],
-    es: "El edificio cuenta con un sector de laundry (lavadero) con lavadoras y secadoras de uso común para huéspedes sin costo adicional.",
-    en: "There is a shared laundry room in the building with washing machines and dryers available for guests at no additional cost."
+    keys: ["laundry", "lavadero", "lavar", "washing", "ropa"],
+    es: "El edificio cuenta con un sector de laundry (lavadero) con lavarropas de uso común para huéspedes sin costo adicional.",
+    en: "There is a shared laundry room in the building with washing machines available for guests at no additional cost."
   },
   wine: {
     keys: ["vino", "cava", "botella", "alcohol", "wine", "bar", "champagne", "fernet", "bebida", "minibar", "precios", "precio", "costo", "costos", "price", "prices", "torrontes", "malbec", "syrah", "cabernet"],

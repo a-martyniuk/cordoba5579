@@ -73,7 +73,7 @@ export const es = {
   faq7Q: "¿El edificio cuenta con ascensor y accesibilidad para silla de ruedas?",
   faq7A: "Sí, el ingreso desde la vereda al lobby es libre de escalones. Contamos con un ascensor amplio que llega directo al piso 1. Ten en cuenta que el baño cuenta con una bañera tradicional, lo que puede requerir asistencia para personas con movilidad reducida.",
   faq8Q: "¿Hay servicio de lavadero o laundry disponible?",
-  faq8A: "Sí, todos los huéspedes tienen acceso sin costo adicional al laundry de uso común en el edificio, equipado con lavarropas y secadoras. Además, el departamento cuenta con ténder para colgar la ropa.",
+  faq8A: "Sí, todos los huéspedes tienen acceso sin costo adicional al laundry de uso común en el edificio, equipado con lavarropas. Además, el departamento cuenta con ténder para colgar la ropa.",
   faq9Q: "¿Tienen Internet rápido para hacer Home Office?",
   faq9A: "Sí, contamos con una conexión de fibra óptica de Personal de 300 megas, muy estable e ideal para videollamadas, streaming y trabajo remoto o nómades digitales.",
   faq10Q: "¿Puedo dejar mi equipaje antes del horario de entrada o después de la salida?",
