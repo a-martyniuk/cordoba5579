@@ -42,6 +42,17 @@ CODES = [
         "bg": "#FAF9F7",
     },
     {
+        "name": "inventario",
+        "url": f"{BASE_URL}/inventario",
+        "display_url": "alexismartyniuk.com.ar/cordoba5579/inventario",
+        "label_es": "Inventario Completo",
+        "label_en": "Complete Inventory",
+        "sublabel_es": "Equipamiento y vajilla del depto",
+        "sublabel_en": "Apartment tableware & equipment",
+        "color": "#5F6F52",         # Olive green
+        "bg": "#FAF9F7",
+    },
+    {
         "name": "whatsapp",
         "url": WHATSAPP_URL,
         "display_url": "wa.me/5491145379500",
@@ -169,39 +180,37 @@ def make_card(code: dict) -> Image.Image:
     return card.convert("RGB")
 
 
-
-
 def make_unified_sheet() -> Image.Image:
-    """Generate a single unified A4 portrait guide (2400×3400px) with 4 horizontal rows of QRs."""
+    """Generate a single unified A4 portrait guide (2400×3400px) with 5 horizontal rows of QRs."""
     W, H = 2400, 3400
     card = Image.new("RGBA", (W, H), "#FAF9F7")
     draw = ImageDraw.Draw(card)
 
     # Use premium system fonts if available
     try:
-        font_logo = ImageFont.truetype("georgiab.ttf", 60) # Large Serif Logo
-        font_logo_sub = ImageFont.truetype("segoeui.ttf", 26)
-        font_logo_tag = ImageFont.truetype("georgiai.ttf", 32)
+        font_logo = ImageFont.truetype("georgiab.ttf", 80) # Large Serif Logo
+        font_logo_sub = ImageFont.truetype("segoeui.ttf", 32)
+        font_logo_tag = ImageFont.truetype("georgiai.ttf", 40)
         
-        font_title_es = ImageFont.truetype("georgiab.ttf", 36)
-        font_title_en = ImageFont.truetype("georgiai.ttf", 26)
-        font_label = ImageFont.truetype("segoeuib.ttf", 24)
-        font_sublabel = ImageFont.truetype("segoeui.ttf", 20)
-        font_url = ImageFont.truetype("segoeui.ttf", 18)
-        font_footer = ImageFont.truetype("georgiai.ttf", 32)
+        font_title_es = ImageFont.truetype("georgiab.ttf", 56)
+        font_title_en = ImageFont.truetype("georgiai.ttf", 40)
+        font_label = ImageFont.truetype("segoeuib.ttf", 36)
+        font_sublabel = ImageFont.truetype("segoeui.ttf", 30)
+        font_url = ImageFont.truetype("segoeui.ttf", 28)
+        font_footer = ImageFont.truetype("georgiai.ttf", 44)
     except IOError:
         # Fallback to standard times / arial
         try:
-            font_logo = ImageFont.truetype("timesbd.ttf", 60)
-            font_logo_sub = ImageFont.truetype("arial.ttf", 26)
-            font_logo_tag = ImageFont.truetype("timesi.ttf", 32)
+            font_logo = ImageFont.truetype("timesbd.ttf", 80)
+            font_logo_sub = ImageFont.truetype("arial.ttf", 32)
+            font_logo_tag = ImageFont.truetype("timesi.ttf", 40)
             
-            font_title_es = ImageFont.truetype("timesbd.ttf", 36)
-            font_title_en = ImageFont.truetype("timesi.ttf", 26)
-            font_label = ImageFont.truetype("arialbd.ttf", 24)
-            font_sublabel = ImageFont.truetype("arial.ttf", 20)
-            font_url = ImageFont.truetype("arial.ttf", 18)
-            font_footer = ImageFont.truetype("timesi.ttf", 32)
+            font_title_es = ImageFont.truetype("timesbd.ttf", 56)
+            font_title_en = ImageFont.truetype("timesi.ttf", 40)
+            font_label = ImageFont.truetype("arialbd.ttf", 36)
+            font_sublabel = ImageFont.truetype("arial.ttf", 30)
+            font_url = ImageFont.truetype("arial.ttf", 28)
+            font_footer = ImageFont.truetype("timesi.ttf", 44)
         except IOError:
             font_logo = ImageFont.load_default()
             font_logo_sub = font_logo
@@ -236,16 +245,16 @@ def make_unified_sheet() -> Image.Image:
     # Header divider
     draw.line([(180, 430), (W - 180, 430)], fill="#EFEBE4", width=2)
 
-    # 4 Row Centers Y-coordinates (equally distributed)
-    row_centers = [750, 1340, 1930, 2520]
+    # 5 Row Centers Y-coordinates (equally distributed)
+    row_centers = [660, 1150, 1640, 2130, 2620]
     
-    # Render 4 rows vertically stacked
+    # Render 5 rows vertically stacked
     for idx, code in enumerate(CODES):
         cy = row_centers[idx]
         
-        # 1. Row card backing (X=160 to X=2240, height 520px)
+        # 1. Row card backing (X=160 to X=2240, height 420px)
         draw.rounded_rectangle(
-            [160, cy - 260, 2240, cy + 260],
+            [160, cy - 210, 2240, cy + 210],
             radius=20,
             fill="white",
             outline="#EFEBE4",
@@ -254,19 +263,19 @@ def make_unified_sheet() -> Image.Image:
         
         # 2. Left side color vertical bar accent
         draw.rounded_rectangle(
-            [160, cy - 260, 185, cy + 260],
+            [160, cy - 210, 185, cy + 210],
             radius=20,
             fill=code["color"]
         )
         # Cover right corners of accent bar
-        draw.rectangle([170, cy - 260, 185, cy + 260], fill=code["color"])
+        draw.rectangle([170, cy - 210, 185, cy + 210], fill=code["color"])
 
-        # 3. QR Code (enlarged size to 440px inside 520px height)
+        # 3. QR Code (enlarged size to 340px inside 420px height)
         qr_img = make_qr(code["url"], code["color"], "white")
-        qr_size = 440
+        qr_size = 340
         qr_img = qr_img.resize((qr_size, qr_size), Image.LANCZOS)
         qr_x = 250
-        qr_y = cy - 220
+        qr_y = cy - 170
         
         # QR Backing outline
         draw.rounded_rectangle(
@@ -279,32 +288,30 @@ def make_unified_sheet() -> Image.Image:
         card.paste(qr_img, (qr_x, qr_y), mask=qr_img)
 
         # 4. Vertical inner divider line between QR and details
-        draw.line([(800, cy - 190), (800, cy + 190)], fill="#EFEBE4", width=1)
+        draw.line([(800, cy - 150), (800, cy + 150)], fill="#EFEBE4", width=1)
 
         # 5. Text details (placed on the right side of the row, left-aligned)
         text_x = 860
         
         # Titles
-        draw.text((text_x, cy - 200), code["label_es"], fill="#252824", font=font_title_es, anchor="la")
-        draw.text((text_x, cy - 145), code["label_en"], fill="#5F6F52", font=font_title_en, anchor="la")
+        draw.text((text_x, cy - 170), code["label_es"], fill="#252824", font=font_title_es, anchor="la")
+        draw.text((text_x, cy - 105), code["label_en"], fill="#5F6F52", font=font_title_en, anchor="la")
 
         # Sublabels
-        draw.text((text_x, cy - 65), code["sublabel_es"], fill="#252824", font=font_label, anchor="la")
-        draw.text((text_x, cy - 25), code["sublabel_en"], fill="#888888", font=font_sublabel, anchor="la")
+        draw.text((text_x, cy - 45), code["sublabel_es"], fill="#252824", font=font_label, anchor="la")
+        draw.text((text_x, cy - 5), code["sublabel_en"], fill="#888888", font=font_sublabel, anchor="la")
 
         # Instructions
-        draw.text((text_x, cy + 40), "Escaneá el código QR con tu celular", fill="#888888", font=font_sublabel, anchor="la")
-        draw.text((text_x, cy + 80), "Scan the QR code with your phone", fill="#a3a3a3", font=font_sublabel, anchor="la")
+        draw.text((text_x, cy + 45), "Escaneá el código QR con tu celular", fill="#888888", font=font_sublabel, anchor="la")
+        draw.text((text_x, cy + 85), "Scan the QR code with your phone", fill="#a3a3a3", font=font_sublabel, anchor="la")
 
         # Web URL
         display_text = code.get("display_url", code["url"])
-        draw.text((text_x, cy + 150), display_text, fill="#B0B0B0", font=font_url, anchor="la")
-
-
+        draw.text((text_x, cy + 135), display_text, fill="#B0B0B0", font=font_url, anchor="la")
 
     # Bottom Footer section
-    draw.line([(300, 2950), (W - 300, 2950)], fill="#EFEBE4", width=2)
-    draw.text((W // 2, 3080), "¡Que disfrutes tu estadía!  •  Enjoy your stay!", fill="#5F6F52", font=font_footer, anchor="mm")
+    draw.line([(300, 3080), (W - 300, 3080)], fill="#EFEBE4", width=2)
+    draw.text((W // 2, 3190), "¡Que disfrutes tu estadía!  •  Enjoy your stay!", fill="#5F6F52", font=font_footer, anchor="mm")
 
     return card.convert("RGB")
 
