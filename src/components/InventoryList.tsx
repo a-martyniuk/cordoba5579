@@ -228,7 +228,7 @@ export default function InventoryList({ sheetUrl, lang = "es" }: InventoryListPr
             return (
               <div
                 key={idx}
-                className={`bg-white border border-[#EFEBE4] rounded-2xl p-4.5 transition-all hover:shadow-md duration-200 flex flex-col justify-between ${
+                className={`bg-white border border-[#EFEBE4] rounded-2xl p-5 transition-all hover:shadow-md duration-200 flex flex-col justify-between ${
                   isWine ? "ring-1 ring-amber-100 bg-amber-50/10 border-amber-200" : ""
                 }`}
               >
