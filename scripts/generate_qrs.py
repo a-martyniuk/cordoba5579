@@ -192,11 +192,11 @@ def make_unified_sheet() -> Image.Image:
         font_logo_sub = ImageFont.truetype("segoeui.ttf", 32)
         font_logo_tag = ImageFont.truetype("georgiai.ttf", 40)
         
-        font_title_es = ImageFont.truetype("georgiab.ttf", 56)
-        font_title_en = ImageFont.truetype("georgiai.ttf", 40)
-        font_label = ImageFont.truetype("segoeuib.ttf", 36)
-        font_sublabel = ImageFont.truetype("segoeui.ttf", 30)
-        font_url = ImageFont.truetype("segoeui.ttf", 28)
+        font_title_es = ImageFont.truetype("georgiab.ttf", 64)
+        font_title_en = ImageFont.truetype("georgiai.ttf", 44)
+        font_label = ImageFont.truetype("segoeuib.ttf", 42)
+        font_sublabel = ImageFont.truetype("segoeui.ttf", 34)
+        font_url = ImageFont.truetype("segoeui.ttf", 32)
         font_footer = ImageFont.truetype("georgiai.ttf", 44)
     except IOError:
         # Fallback to standard times / arial
@@ -205,11 +205,11 @@ def make_unified_sheet() -> Image.Image:
             font_logo_sub = ImageFont.truetype("arial.ttf", 32)
             font_logo_tag = ImageFont.truetype("timesi.ttf", 40)
             
-            font_title_es = ImageFont.truetype("timesbd.ttf", 56)
-            font_title_en = ImageFont.truetype("timesi.ttf", 40)
-            font_label = ImageFont.truetype("arialbd.ttf", 36)
-            font_sublabel = ImageFont.truetype("arial.ttf", 30)
-            font_url = ImageFont.truetype("arial.ttf", 28)
+            font_title_es = ImageFont.truetype("timesbd.ttf", 64)
+            font_title_en = ImageFont.truetype("timesi.ttf", 44)
+            font_label = ImageFont.truetype("arialbd.ttf", 42)
+            font_sublabel = ImageFont.truetype("arial.ttf", 34)
+            font_url = ImageFont.truetype("arial.ttf", 32)
             font_footer = ImageFont.truetype("timesi.ttf", 44)
         except IOError:
             font_logo = ImageFont.load_default()
@@ -245,16 +245,16 @@ def make_unified_sheet() -> Image.Image:
     # Header divider
     draw.line([(180, 430), (W - 180, 430)], fill="#EFEBE4", width=2)
 
-    # 5 Row Centers Y-coordinates (equally distributed)
-    row_centers = [660, 1150, 1640, 2130, 2620]
+    # 5 Row Centers Y-coordinates (distributed to fill the A4 height)
+    row_centers = [720, 1230, 1740, 2250, 2760]
     
     # Render 5 rows vertically stacked
     for idx, code in enumerate(CODES):
         cy = row_centers[idx]
         
-        # 1. Row card backing (X=160 to X=2240, height 420px)
+        # 1. Row card backing (X=160 to X=2240, height 480px)
         draw.rounded_rectangle(
-            [160, cy - 210, 2240, cy + 210],
+            [160, cy - 240, 2240, cy + 240],
             radius=20,
             fill="white",
             outline="#EFEBE4",
@@ -263,19 +263,19 @@ def make_unified_sheet() -> Image.Image:
         
         # 2. Left side color vertical bar accent
         draw.rounded_rectangle(
-            [160, cy - 210, 185, cy + 210],
+            [160, cy - 240, 185, cy + 240],
             radius=20,
             fill=code["color"]
         )
         # Cover right corners of accent bar
-        draw.rectangle([170, cy - 210, 185, cy + 210], fill=code["color"])
+        draw.rectangle([170, cy - 240, 185, cy + 240], fill=code["color"])
 
-        # 3. QR Code (enlarged size to 340px inside 420px height)
+        # 3. QR Code (enlarged size to 380px inside 480px height)
         qr_img = make_qr(code["url"], code["color"], "white")
-        qr_size = 340
+        qr_size = 380
         qr_img = qr_img.resize((qr_size, qr_size), Image.LANCZOS)
         qr_x = 250
-        qr_y = cy - 170
+        qr_y = cy - 190
         
         # QR Backing outline
         draw.rounded_rectangle(
@@ -288,26 +288,26 @@ def make_unified_sheet() -> Image.Image:
         card.paste(qr_img, (qr_x, qr_y), mask=qr_img)
 
         # 4. Vertical inner divider line between QR and details
-        draw.line([(800, cy - 150), (800, cy + 150)], fill="#EFEBE4", width=1)
+        draw.line([(800, cy - 180), (800, cy + 180)], fill="#EFEBE4", width=1)
 
         # 5. Text details (placed on the right side of the row, left-aligned)
         text_x = 860
         
         # Titles
-        draw.text((text_x, cy - 170), code["label_es"], fill="#252824", font=font_title_es, anchor="la")
-        draw.text((text_x, cy - 105), code["label_en"], fill="#5F6F52", font=font_title_en, anchor="la")
+        draw.text((text_x, cy - 195), code["label_es"], fill="#252824", font=font_title_es, anchor="la")
+        draw.text((text_x, cy - 125), code["label_en"], fill="#5F6F52", font=font_title_en, anchor="la")
 
         # Sublabels
-        draw.text((text_x, cy - 45), code["sublabel_es"], fill="#252824", font=font_label, anchor="la")
+        draw.text((text_x, cy - 55), code["sublabel_es"], fill="#252824", font=font_label, anchor="la")
         draw.text((text_x, cy - 5), code["sublabel_en"], fill="#888888", font=font_sublabel, anchor="la")
 
         # Instructions
-        draw.text((text_x, cy + 45), "Escaneá el código QR con tu celular", fill="#888888", font=font_sublabel, anchor="la")
-        draw.text((text_x, cy + 85), "Scan the QR code with your phone", fill="#a3a3a3", font=font_sublabel, anchor="la")
+        draw.text((text_x, cy + 55), "Escaneá el código QR con tu celular", fill="#888888", font=font_sublabel, anchor="la")
+        draw.text((text_x, cy + 100), "Scan the QR code with your phone", fill="#a3a3a3", font=font_sublabel, anchor="la")
 
         # Web URL
         display_text = code.get("display_url", code["url"])
-        draw.text((text_x, cy + 135), display_text, fill="#B0B0B0", font=font_url, anchor="la")
+        draw.text((text_x, cy + 155), display_text, fill="#B0B0B0", font=font_url, anchor="la")
 
     # Bottom Footer section
     draw.line([(300, 3080), (W - 300, 3080)], fill="#EFEBE4", width=2)
