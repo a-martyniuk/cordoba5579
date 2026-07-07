@@ -320,15 +320,23 @@ def main():
     print("Generating QR Cards for Cordoba 5579...")
     for code in CODES:
         card = make_card(code)
-        out_path = os.path.join(OUTPUT_DIR, f"qr_{code['name']}.png")
-        card.save(out_path, "PNG", dpi=(300, 300))
-        print(f"  [OK] Saved: {out_path}")
+        # Save PNG
+        out_png_path = os.path.join(OUTPUT_DIR, f"qr_{code['name']}.png")
+        card.save(out_png_path, "PNG", dpi=(300, 300))
+        # Save PDF
+        out_pdf_path = os.path.join(OUTPUT_DIR, f"qr_{code['name']}.pdf")
+        card.save(out_pdf_path, "PDF", resolution=300.0, dpi=(300, 300))
+        print(f"  [OK] Saved: {out_png_path} and .pdf")
         
     print("\nGenerating Unified Guide Sheet...")
     sheet = make_unified_sheet()
-    sheet_path = os.path.join(OUTPUT_DIR, "qr_unified_sheet.png")
-    sheet.save(sheet_path, "PNG", dpi=(300, 300))
-    print(f"  [OK] Saved: {sheet_path}")
+    # Save PNG
+    sheet_png_path = os.path.join(OUTPUT_DIR, "qr_unified_sheet.png")
+    sheet.save(sheet_png_path, "PNG", dpi=(300, 300))
+    # Save PDF
+    sheet_pdf_path = os.path.join(OUTPUT_DIR, "qr_unified_sheet.pdf")
+    sheet.save(sheet_pdf_path, "PDF", resolution=300.0, dpi=(300, 300))
+    print(f"  [OK] Saved: {sheet_png_path} and .pdf")
     
     print(f"\n[DONE] Find your print-ready QR cards in: {OUTPUT_DIR}")
     print("   Recommended print size: 10x12.5 cm at 300 DPI")
