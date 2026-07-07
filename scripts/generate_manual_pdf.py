@@ -152,6 +152,7 @@ def build_pdf():
     # Custom Paragraph Styles
     style_normal = ParagraphStyle('AppNormal', parent=styles['Normal'], fontName=FONTS['SegoeUI'], fontSize=10, leading=15, textColor=COLOR_DARK)
     style_normal_bold = ParagraphStyle('AppNormalBold', parent=style_normal, fontName=FONTS['SegoeUI-Bold'])
+    style_header_cell = ParagraphStyle('HeaderCell', parent=style_normal_bold, textColor=HexColor('#FFFFFF'))
     style_body_italic = ParagraphStyle('AppNormalItalic', parent=style_normal, fontName=FONTS['Georgia-Italic'], textColor=COLOR_GRAY)
     
     style_title_main = ParagraphStyle('TitleMain', fontName=FONTS['Georgia-Bold'], fontSize=38, leading=46, textColor=HexColor('#FFFFFF'), alignment=TA_CENTER)
@@ -505,10 +506,10 @@ def build_pdf():
     
     # Inventory Table
     inv_headers = [
-        Paragraph("<b>Categoría</b>", style_normal_bold),
-        Paragraph("<b>Elemento</b>", style_normal_bold),
-        Paragraph("<b>Cant.</b>", style_normal_bold),
-        Paragraph("<b>Detalles / Marca</b>", style_normal_bold)
+        Paragraph("<b>Categoría</b>", style_header_cell),
+        Paragraph("<b>Elemento</b>", style_header_cell),
+        Paragraph("<b>Cant.</b>", style_header_cell),
+        Paragraph("<b>Detalles / Marca</b>", style_header_cell)
     ]
     
     inv_rows = [
@@ -538,9 +539,6 @@ def build_pdf():
         ('TOPPADDING', (0,1), (-1,-1), 6),
         ('BOTTOMPADDING', (0,1), (-1,-1), 6),
     ]))
-    # Quick fix for text color in header
-    for i in range(4):
-        inv_rows[0][i].style.textColor = HexColor('#FFFFFF')
         
     story.append(inv_table)
     story.append(Spacer(1, 20))
