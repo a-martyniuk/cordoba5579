@@ -317,17 +317,233 @@
     ]
   },
   "en": {
-    "title": "",
-    "rating": 4.9,
-    "reviewsCount": 120,
-    "description": "",
-    "space": "",
-    "access": "",
-    "notes": "",
-    "amenities": [],
-    "photos": [],
-    "capacityText": "4 huéspedes · 1 dormitorio · 1 cama · 1.5 baños",
+    "title": "Modern, Spacious Apartment & Pool",
+    "rating": 5.0,
+    "reviewsCount": 42,
+    "description": "Welcome to your urban oasis in Palermo Hollywood. This modern apartment combines top-notch contemporary design and functional comfort. Ideal for both digital nomads and discerning travelers.\n\nLocated steps from the best restaurants and specialty cafes, and only a 15-minute walk from the Movistar Arena. Enjoy high-speed Wi-Fi, self-check-in via a lockbox, and a spectacular terrace with a pool, solarium, and grill.",
+    "space": "The apartment is meticulously designed to comfortably accommodate up to 4 guests, and is notable for its spaciousness and natural light.\n\nThe Living-Dining Room: An open space for relaxation and entertainment. It has a state-of-the-art 55\" Smart TV, split system air conditioning (cooling/heating), and a bar area equipped with a cellar of selected wines and fine glassware. For additional guests, the living room has a premium queen-size sofa bed that opens easily and offers great comfort.\nThe Bedroom: Your retreat for absolute rest. Equipped with a queen-size double bed, imported 600-thread-count pure Egyptian cotton sheets, blackout curtains to ensure a restful sleep, independent split air conditioning, and a 42\" Smart TV.\nBathrooms (1.5 Bathrooms): A key and unusual convenience for one-bedroom apartments. The accommodation has a full master bathroom with a bathtub and hairdryer, and an additional toilet (half bathroom) for visitors or for greater privacy when four people are staying.\nThe Kitchen: Fully equipped with premium appliances and high-quality tableware. It includes a refrigerator with freezer, stainless steel electric stove, microwave, electric oven, glass jar blender, oil-free fryer (Air Fryer) and espresso machine with milk frother so you can enjoy your morning coffee.\nThe Terrace and Building Amenities: You will have full access to the building's rooftop on the 11th floor, where you will find a heated outdoor pool (available from October to April), a sun deck with lounge chairs, an outdoor shower and a barbecue area (prior reservation required). You will also have access to the building's laundry room with a free washing machine.",
+    "access": "You will have exclusive, private access to the entire apartment, including the bedroom, full bathroom, half bathroom, fully equipped kitchen, and living room.\nIn addition, you will have access to the following common areas of the building:\nRooftop and Pool (11th Floor): A spectacular terrace with a heated outdoor pool (available in season from October to April) with lounge chairs, an outdoor shower, and excellent panoramic views of the city.\nGrill area (11th floor): Space with a grill on the terrace available for lunches or dinners (prior reservation required and subject to availability with the host).\nLaundry (10th Floor): Access to the building's laundry room equipped with a washing machine available for guest use free of charge (a clothesline is provided for hanging clothes).\nImportant note per condominium regulations: The common areas (terrace, pool and grill) are exclusively for the guests listed in the booking. External visitors are not allowed to enter these areas of the building.",
+    "notes": "In accordance with the Co-ownership Regulations of the horizontal property at Av. Córdoba 5579, we ask you to respect the following essential rules to ensure excellent coexistence in the building:\n\nMaximum capacity: The apartment accommodates up to 4 guests maximum.\nUse of the Terrace and Pool: Access to the rooftop, solarium and pool is allowed only for guests registered in the reservation. Access to these areas of the building by outside guests is strictly forbidden. It is mandatory to shower before entering the water.\nNo Smoking: Smoking is not allowed inside the apartment or in the common areas of the building (corridors, elevators, lobby, terrace).\nQuiet Hours and Noise: According to the condominium association's rules, quiet hours must be respected, and parties, events, or making bothersome noise are strictly prohibited.\nPet Care: By regulation, pets are not allowed in the unit.",
+    "amenities": [
+      {
+        "title": "Hair dryer",
+        "subtitle": ""
+      },
+      {
+        "title": "Cleaning products",
+        "subtitle": ""
+      },
+      {
+        "title": "Dove shampoo",
+        "subtitle": ""
+      },
+      {
+        "title": "Dove conditioner",
+        "subtitle": ""
+      },
+      {
+        "title": "Dove body soap",
+        "subtitle": ""
+      },
+      {
+        "title": "Bidet",
+        "subtitle": ""
+      },
+      {
+        "title": "Outdoor shower",
+        "subtitle": ""
+      },
+      {
+        "title": "Hot water",
+        "subtitle": ""
+      },
+      {
+        "title": "Shower gel",
+        "subtitle": ""
+      },
+      {
+        "title": "Free washer – In building",
+        "subtitle": ""
+      },
+      {
+        "title": "Hangers",
+        "subtitle": ""
+      },
+      {
+        "title": "Bed linens",
+        "subtitle": "Egyptian cotton 600 hilos linens"
+      },
+      {
+        "title": "Extra pillows and blankets",
+        "subtitle": ""
+      },
+      {
+        "title": "Room-darkening shades",
+        "subtitle": ""
+      },
+      {
+        "title": "Iron",
+        "subtitle": ""
+      },
+      {
+        "title": "Drying rack for clothing",
+        "subtitle": ""
+      },
+      {
+        "title": "Safe",
+        "subtitle": ""
+      },
+      {
+        "title": "Clothing storage: closet and wardrobe",
+        "subtitle": ""
+      },
+      {
+        "title": "Ethernet connection",
+        "subtitle": ""
+      },
+      {
+        "title": "55 inch HDTV",
+        "subtitle": ""
+      },
+      {
+        "title": "Books and reading material",
+        "subtitle": ""
+      },
+      {
+        "title": "AC - split type ductless system",
+        "subtitle": ""
+      },
+      {
+        "title": "Heating - split type ductless system",
+        "subtitle": ""
+      },
+      {
+        "title": "Exterior security cameras on property",
+        "subtitle": "Security cameras are installed only in the building's common areas, including the main entrance, lobby, hallways, elevators and rooftop amenities (pool, solarium and BBQ area). There are no cameras inside the apartment or in any private guest areas."
+      },
+      {
+        "title": "Smoke alarm",
+        "subtitle": ""
+      },
+      {
+        "title": "Carbon monoxide alarm",
+        "subtitle": ""
+      },
+      {
+        "title": "Fire extinguisher",
+        "subtitle": ""
+      },
+      {
+        "title": "First aid kit",
+        "subtitle": ""
+      },
+      {
+        "title": "Wifi",
+        "subtitle": ""
+      },
+      {
+        "title": "Samsung refrigerator",
+        "subtitle": ""
+      },
+      {
+        "title": "Microwave",
+        "subtitle": ""
+      },
+      {
+        "title": "Cooking basics",
+        "subtitle": "Pots and pans, oil, salt and pepper"
+      },
+      {
+        "title": "Dishes and silverware",
+        "subtitle": "Bowls, chopsticks, plates, cups, etc."
+      },
+      {
+        "title": "Freezer",
+        "subtitle": ""
+      },
+      {
+        "title": "Other stainless steel electric stove",
+        "subtitle": ""
+      },
+      {
+        "title": "Hot water kettle",
+        "subtitle": ""
+      },
+      {
+        "title": "Coffee maker: espresso machine",
+        "subtitle": ""
+      },
+      {
+        "title": "Wine glasses",
+        "subtitle": ""
+      },
+      {
+        "title": "Blender",
+        "subtitle": ""
+      },
+      {
+        "title": "Rice maker",
+        "subtitle": ""
+      },
+      {
+        "title": "Dining table",
+        "subtitle": ""
+      },
+      {
+        "title": "Shared BBQ grill: charcoal, wood-burning",
+        "subtitle": ""
+      },
+      {
+        "title": "Free street parking",
+        "subtitle": ""
+      },
+      {
+        "title": "Shared outdoor pool - available seasonally, open specific hours, rooftop",
+        "subtitle": "Available from Oct to Apr, open from 8:00 AM to 8:00 PM"
+      },
+      {
+        "title": "Elevator",
+        "subtitle": "The home or building has an elevator that’s at least 52 inches deep and a doorway at least 32 inches wide"
+      },
+      {
+        "title": "Single level home",
+        "subtitle": "No stairs in home"
+      },
+      {
+        "title": "Long term stays allowed",
+        "subtitle": "Allow stay for 28 days or more"
+      },
+      {
+        "title": "Self check-in",
+        "subtitle": ""
+      },
+      {
+        "title": "Lockbox",
+        "subtitle": ""
+      }
+    ],
+    "photos": [
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1716762976739155303/original/f9a4d034-ac6a-42d0-9dd6-76782f465062.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1716762976739155303/original/c3625b05-7402-4130-b23d-a04255713283.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1716762976739155303/original/ee01c89b-03b9-40c4-b537-050dd8da4ecd.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1716762976739155303/original/a82588fa-001a-4c6b-a40d-68c1e80b351b.jpeg",
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1716762976739155303/original/78831bbc-6b5a-42e4-8d73-d0be59b7b123.jpeg"
+    ],
+    "capacityText": "Condo in Buenos Aires · ★New · 1 bedroom · 2 beds · 1.5 baths",
     "guests": 4,
-    "hosts": []
+    "hosts": [
+      {
+        "name": "Alexis",
+        "role": "Host",
+        "profilePictureUrl": "https://a0.muscache.com/im/pictures/user/User-558992318/original/7a47e3bc-f188-4882-8c69-ba96eeb49844.jpeg",
+        "isSuperhost": false
+      },
+      {
+        "name": "Jorge Orlando",
+        "role": "Co-host",
+        "profilePictureUrl": "https://a0.muscache.com/im/pictures/user/User/original/bee9ddf4-3f9e-4c8c-bf3d-7a927ab61fc7.jpeg?aki_policy=profile_x_medium",
+        "isSuperhost": false
+      }
+    ]
   }
 }
