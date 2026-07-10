@@ -14,36 +14,6 @@ interface ImageItem {
 // Fallback images shown immediately (real Airbnb listing photos)
 import airbnbDetails from "../data/airbnb-details.json";
 
-const LISTING_ID = "1716762976739155303";
-const BASE = `https://a0.muscache.com/im/pictures/hosting/Hosting-${LISTING_ID}/original`;
-
-const FALLBACK_IMAGES: ImageItem[] = [
-  {
-    url: `${BASE}/f9a4d034-ac6a-42d0-9dd6-76782f465062.jpeg`,
-    title: "Living / Sala Principal",
-    desc: "Espacio amplio con iluminación natural, TV y rincón bar.",
-  },
-  {
-    url: `${BASE}/c3625b05-7402-4130-b23d-a04255713283.jpeg`,
-    title: "Dormitorio Principal",
-    desc: "Cama Queen size con sábanas premium y Smart TV.",
-  },
-  {
-    url: `${BASE}/ee01c89b-03b9-40c4-b537-050dd8da4ecd.jpeg`,
-    title: "Cocina Equipada",
-    desc: "Cocina completa con electrodomésticos Samsung y Tramontina.",
-  },
-  {
-    url: `${BASE}/a82588fa-001a-4c6b-a40d-68c1e80b351b.jpeg`,
-    title: "Piscina / Solárium",
-    desc: "Terraza compartida con piscina exterior y áreas de relax.",
-  },
-  {
-    url: `${BASE}/78831bbc-6b5a-42e4-8d73-d0be59b7b123.jpeg`,
-    title: "Vista General",
-    desc: "Departamento luminoso en Palermo Hollywood, Buenos Aires.",
-  },
-];
 
 const SYNCED_IMAGES: ImageItem[] = airbnbDetails.photos.map((url, idx) => {
   let title = `Foto ${idx + 1}`;
