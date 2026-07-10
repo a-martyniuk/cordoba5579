@@ -54,21 +54,26 @@ export async function GET() {
       );
     }
     
-    const photos = photosList.map((url: string, idx: number) => {
-      let title = `Foto ${idx + 1}`;
-      let desc = "Córdoba 5579 — Palermo Hollywood";
+    const photos = photosList.map((item: string | { url: string; title?: string; desc?: string }, idx: number) => {
+      if (typeof item === "string") {
+        let title = `Foto ${idx + 1}`;
+        let desc = "Córdoba 5579 — Palermo Hollywood";
+        
+        if (item.includes("f9a4d034")) { title = "Living / Sala Principal"; desc = "Espacio amplio con iluminación natural, TV y rincón bar."; }
+        else if (item.includes("c3625b05")) { title = "Dormitorio Principal"; desc = "Cama Queen size con sábanas premium y Smart TV."; }
+        else if (item.includes("ee01c89b")) { title = "Cocina Equipada"; desc = "Cocina completa con electrodomésticos Samsung y Tramontina."; }
+        else if (item.includes("a82588fa") || item.includes("pileta") || item.includes("pool")) { title = "Piscina / Solárium"; desc = "Terraza compartida con piscina exterior y áreas de relax."; }
+        else if (item.includes("78831bbc")) { title = "Vista General"; desc = "Departamento luminoso en Palermo Hollywood, Buenos Aires."; }
 
-      if (url.includes("f9a4d034")) { title = "Living / Sala Principal"; desc = "Espacio amplio con iluminación natural, TV y rincón bar."; }
-      else if (url.includes("c3625b05")) { title = "Dormitorio Principal"; desc = "Cama Queen size con sábanas premium y Smart TV."; }
-      else if (url.includes("ee01c89b")) { title = "Cocina Equipada"; desc = "Cocina completa con electrodomésticos Samsung y Tramontina."; }
-      else if (url.includes("a82588fa") || url.includes("pileta") || url.includes("pool")) { title = "Piscina / Solárium"; desc = "Terraza compartida con piscina exterior y áreas de relax."; }
-      else if (url.includes("78831bbc")) { title = "Vista General"; desc = "Departamento luminoso en Palermo Hollywood, Buenos Aires."; }
-
-      return {
-        url,
-        title,
-        desc,
-      };
+        return { url: item, title, desc };
+      } else {
+        // New structured format from scraper
+        return {
+          url: item.url,
+          title: item.title || `Foto ${idx + 1}`,
+          desc: item.desc || "Córdoba 5579 — Palermo Hollywood",
+        };
+      }
     });
     
     return NextResponse.json(
