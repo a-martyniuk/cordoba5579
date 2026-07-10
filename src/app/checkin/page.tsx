@@ -228,7 +228,8 @@ export default function CheckInPortal() {
             ) : (
               <div 
                 onClick={() => setVideoPlaying(true)}
-                className="bg-neutral-950 rounded-2xl overflow-hidden aspect-video relative flex flex-col justify-end p-4 border border-neutral-800 group shadow-inner cursor-pointer"
+                className="bg-neutral-950 rounded-2xl overflow-hidden aspect-video relative flex flex-col justify-end p-4 border border-neutral-800 group shadow-inner cursor-pointer bg-cover bg-center"
+                style={{ backgroundImage: `url('/cordoba5579/video/guia-poster.jpg')` }}
               >
                 <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-900/40 to-transparent flex items-center justify-center">
                   <div className="w-16 h-16 bg-[#5F6F52]/95 hover:bg-[#5F6F52] text-white rounded-full flex items-center justify-center shadow-lg transition-all active:scale-95 group-hover:scale-105">
