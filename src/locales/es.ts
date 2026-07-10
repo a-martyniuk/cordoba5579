@@ -131,7 +131,7 @@ export const es = {
   chk_step2Title: "2. Retiro de Llaves (Lockbox)",
   chk_step2Desc: "A la derecha de la puerta de entrada exterior verás las cajas de seguridad. Ubicá la caja de color NEGRO (actualmente sin inscripción). Ingresá el código de combinación que te indicamos previamente por mensaje de confirmación, deslizá la traba hacia abajo y retirá el juego de llaves.",
   chk_step3Title: "3. Llavero Magnético en Entrada Exterior",
-  chk_step3Desc: "Aproximá el llavero magnético circular (azul o negro) al lector electromagnético del ingreso exterior para abrir la puerta de vidrio del hall. El lector es el rectángulo negro ubicado a la derecha del portero, como se muestra en la imagen. Luego dirigite a los ascensores o escaleras y subí al piso 1.",
+  chk_step3Desc: "Aproximá el llavero magnético circular de color negro al lector electromagnético del ingreso exterior para abrir la puerta de vidrio del hall. El lector es el rectángulo negro ubicado a la derecha del portero, como se muestra en la imagen. Luego dirigite a los ascensores o escaleras y subí al piso 1.",
   chk_step4Title: "4. Acceso al Departamento 101",
   chk_step4Desc: "El departamento es el 101 (piso 1). Introduce la llave física en la cerradura, girala dos vueltas a la izquierda ¡y bienvenido a tu departamento de diseño!",
   chk_rulesTitle: "Normas Clave de Convivencia",

@@ -10,6 +10,9 @@ import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import wifiQr from "../../../public/wifi-qr.png";
 import airbnbDetails from "../../data/airbnb-details.json";
+import lockbox1 from "../../../public/img/lockbox1.jpg";
+import lockbox2 from "../../../public/img/lockbox2.jpg";
+import portero from "../../../public/img/portero.jpg";
 
 // Dynamically import NeighbourhoodMap to avoid SSR errors
 const NeighbourhoodMap = dynamic(() => import("../../components/NeighbourhoodMap"), {
@@ -216,7 +219,7 @@ export default function CheckInPortal() {
               <div className="bg-neutral-950 rounded-2xl overflow-hidden aspect-video border border-neutral-800 shadow-lg">
                 <video
                   className="w-full h-full object-cover bg-black"
-                  src="/video/guia.mp4"
+                  src="/cordoba5579/video/guia.mp4"
                   controls
                   autoPlay
                   playsInline
@@ -283,10 +286,10 @@ export default function CheckInPortal() {
                   </p>
                   <div className="grid grid-cols-2 gap-2 mt-2">
                     <div className="relative aspect-[9/16] rounded-xl overflow-hidden border border-[#EFEBE4] dark:border-[#2C302A] shadow-sm">
-                      <Image src="/img/lockbox1.jpg" alt="Ubicación de la caja" fill className="object-cover" sizes="(max-width: 768px) 50vw, 33vw" />
+                      <Image src={lockbox1} alt="Ubicación de la caja" fill className="object-cover" sizes="(max-width: 768px) 50vw, 33vw" />
                     </div>
                     <div className="relative aspect-[9/16] rounded-xl overflow-hidden border border-[#EFEBE4] dark:border-[#2C302A] shadow-sm">
-                      <Image src="/img/lockbox2.jpg" alt="Caja de seguridad negra" fill className="object-cover" sizes="(max-width: 768px) 50vw, 33vw" />
+                      <Image src={lockbox2} alt="Caja de seguridad negra" fill className="object-cover" sizes="(max-width: 768px) 50vw, 33vw" />
                     </div>
                   </div>
                 </div>
@@ -431,7 +434,7 @@ export default function CheckInPortal() {
                   {t.chk_step3Desc}
                 </p>
                 <div className="relative w-[180px] aspect-square rounded-xl overflow-hidden border border-[#EFEBE4] dark:border-[#2C302A] shadow-sm">
-                  <Image src="/img/portero.jpg" alt="Lector de acceso magnético" fill className="object-cover" sizes="180px" />
+                  <Image src={portero} alt="Lector de acceso magnético" fill className="object-cover" sizes="180px" />
                 </div>
               </div>
             </div>

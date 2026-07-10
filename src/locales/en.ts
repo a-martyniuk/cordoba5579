@@ -131,7 +131,7 @@ export const en = {
   chk_step2Title: "2. Retrieve Keys (Lockbox)",
   chk_step2Desc: "To the right of the outer entrance door, you will see the security lockboxes. Find the BLACK lockbox (currently it has no label). Enter the combination code sent to you previously via confirmation message, slide the latch down, and retrieve the set of keys.",
   chk_step3Title: "3. Magnetic Tag at Outer Entrance",
-  chk_step3Desc: "Hold the circular magnetic key tag (blue or black) close to the electromagnetic reader at the outer entrance to unlock the glass lobby door. The reader is the black rectangle located to the right of the intercom, as shown in the image. Then go to the elevators or stairs and go up to the 1st floor.",
+  chk_step3Desc: "Hold the black circular magnetic key tag close to the electromagnetic reader at the outer entrance to unlock the glass lobby door. The reader is the black rectangle located to the right of the intercom, as shown in the image. Then go to the elevators or stairs and go up to the 1st floor.",
   chk_step4Title: "4. Access Apartment 101",
   chk_step4Desc: "The apartment is 101 (1st floor). Insert the physical key into the lock, turn it twice to the left, and welcome to your design apartment!",
   chk_rulesTitle: "Key House Rules",
