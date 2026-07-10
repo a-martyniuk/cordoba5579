@@ -55,14 +55,19 @@ export async function GET() {
     }
     
     const photos = photosList.map((url: string, idx: number) => {
-      const fallback = FALLBACK_PHOTOS[idx] || {
-        title: `Foto ${idx + 1}`,
-        desc: "Córdoba 5579 — Palermo Hollywood",
-      };
+      let title = `Foto ${idx + 1}`;
+      let desc = "Córdoba 5579 — Palermo Hollywood";
+
+      if (url.includes("f9a4d034")) { title = "Living / Sala Principal"; desc = "Espacio amplio con iluminación natural, TV y rincón bar."; }
+      else if (url.includes("c3625b05")) { title = "Dormitorio Principal"; desc = "Cama Queen size con sábanas premium y Smart TV."; }
+      else if (url.includes("ee01c89b")) { title = "Cocina Equipada"; desc = "Cocina completa con electrodomésticos Samsung y Tramontina."; }
+      else if (url.includes("a82588fa") || url.includes("pileta") || url.includes("pool")) { title = "Piscina / Solárium"; desc = "Terraza compartida con piscina exterior y áreas de relax."; }
+      else if (url.includes("78831bbc")) { title = "Vista General"; desc = "Departamento luminoso en Palermo Hollywood, Buenos Aires."; }
+
       return {
         url,
-        title: fallback.title,
-        desc: fallback.desc,
+        title,
+        desc,
       };
     });
     
