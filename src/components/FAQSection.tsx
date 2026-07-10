@@ -30,7 +30,8 @@ export default function FAQSection() {
             { q: t.faq8Q, a: t.faq8A },
             { q: t.faq9Q, a: t.faq9A },
             { q: t.faq10Q, a: t.faq10A },
-            { q: t.faq11Q, a: t.faq11A }
+            { q: t.faq11Q, a: t.faq11A },
+            { q: t.faq12Q, a: t.faq12A }
           ].map((item, idx) => {
             const isOpen = openFaq === idx;
             return (

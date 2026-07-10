@@ -63,6 +63,17 @@ CODES = [
         "color": "#5F6F52",         # Olive green
         "bg": "#FAF9F7",
     },
+    {
+        "name": "airbnb",
+        "url": "https://airbnb.com.ar/h/cordoba5579",
+        "display_url": "airbnb.com.ar/h/cordoba5579",
+        "label_es": "Dejar Reseña",
+        "label_en": "Leave a Review",
+        "sublabel_es": "Airbnb",
+        "sublabel_en": "Airbnb",
+        "color": "#5F6F52",         # Olive green
+        "bg": "#FAF9F7",
+    },
 ]
 
 OUTPUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "public", "qr")
@@ -249,7 +260,7 @@ def make_unified_sheet() -> Image.Image:
     row_centers = [720, 1230, 1740, 2250, 2760]
     
     # Render 5 rows vertically stacked
-    for idx, code in enumerate(CODES):
+    for idx, code in enumerate(CODES[:5]):
         cy = row_centers[idx]
         
         # 1. Row card backing (X=160 to X=2240, height 480px)
@@ -317,16 +328,23 @@ def make_unified_sheet() -> Image.Image:
 
 
 def main():
-    print("Generating QR Cards for Cordoba 5579...")
+    print("Generating QR Codes for Cordoba 5579...")
     for code in CODES:
+        # 1. Save RAW QR code (without text/borders) for PDF manual and web embed
+        raw_qr = make_qr(code["url"], code["color"], code["bg"])
+        # Resize it nicely
+        raw_qr_resized = raw_qr.resize((500, 500), Image.LANCZOS)
+        out_raw_path = os.path.join(OUTPUT_DIR, f"qr_{code['name']}.png")
+        raw_qr_resized.save(out_raw_path, "PNG")
+        print(f"  [OK] Saved Raw QR: {out_raw_path}")
+        
+        # 2. Save PRINT-READY CARD (with text, logo, borders)
         card = make_card(code)
-        # Save PNG
-        out_png_path = os.path.join(OUTPUT_DIR, f"qr_{code['name']}.png")
-        card.save(out_png_path, "PNG", dpi=(300, 300))
-        # Save PDF
-        out_pdf_path = os.path.join(OUTPUT_DIR, f"qr_{code['name']}.pdf")
-        card.save(out_pdf_path, "PDF", resolution=300.0, dpi=(300, 300))
-        print(f"  [OK] Saved: {out_png_path} and .pdf")
+        out_card_png = os.path.join(OUTPUT_DIR, f"qr_card_{code['name']}.png")
+        card.save(out_card_png, "PNG", dpi=(300, 300))
+        out_card_pdf = os.path.join(OUTPUT_DIR, f"qr_card_{code['name']}.pdf")
+        card.save(out_card_pdf, "PDF", resolution=300.0, dpi=(300, 300))
+        print(f"  [OK] Saved Card: {out_card_png} and .pdf")
         
     print("\nGenerating Unified Guide Sheet...")
     sheet = make_unified_sheet()

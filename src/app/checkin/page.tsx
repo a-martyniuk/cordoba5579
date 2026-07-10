@@ -214,13 +214,13 @@ export default function CheckInPortal() {
           <div className="w-full">
             {videoPlaying ? (
               <div className="bg-neutral-950 rounded-2xl overflow-hidden aspect-video border border-neutral-800 shadow-lg">
-                <iframe
-                  className="w-full h-full"
-                  src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"
-                  title="Video Guide"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
-                ></iframe>
+                <video
+                  className="w-full h-full object-cover bg-black"
+                  src="/video/guia.mp4"
+                  controls
+                  autoPlay
+                  playsInline
+                />
               </div>
             ) : (
               <div 
@@ -276,11 +276,19 @@ export default function CheckInPortal() {
                 2
               </div>
               <div className="space-y-4 flex-grow">
-                <div>
+                <div className="space-y-3">
                   <h4 className="font-bold text-xs sm:text-sm text-neutral-900 dark:text-neutral-100">{t.chk_step2Title}</h4>
                   <p className="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">
                     {t.chk_step2Desc}
                   </p>
+                  <div className="grid grid-cols-2 gap-2 mt-2">
+                    <div className="relative aspect-[9/16] rounded-xl overflow-hidden border border-[#EFEBE4] dark:border-[#2C302A] shadow-sm">
+                      <Image src="/img/lockbox1.jpg" alt="Ubicación de la caja" fill className="object-cover" sizes="(max-width: 768px) 50vw, 33vw" />
+                    </div>
+                    <div className="relative aspect-[9/16] rounded-xl overflow-hidden border border-[#EFEBE4] dark:border-[#2C302A] shadow-sm">
+                      <Image src="/img/lockbox2.jpg" alt="Caja de seguridad negra" fill className="object-cover" sizes="(max-width: 768px) 50vw, 33vw" />
+                    </div>
+                  </div>
                 </div>
 
                 {/* Lockbox Interactive Widget Container */}
@@ -417,11 +425,14 @@ export default function CheckInPortal() {
               <div className="w-8 h-8 rounded-full bg-[#5F6F52] text-white flex items-center justify-center font-bold text-sm flex-shrink-0 mt-0.5">
                 3
               </div>
-              <div className="space-y-1">
+              <div className="space-y-3 flex-grow">
                 <h4 className="font-bold text-xs sm:text-sm text-neutral-900 dark:text-neutral-100">{t.chk_step3Title}</h4>
                 <p className="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">
                   {t.chk_step3Desc}
                 </p>
+                <div className="relative w-[180px] aspect-square rounded-xl overflow-hidden border border-[#EFEBE4] dark:border-[#2C302A] shadow-sm">
+                  <Image src="/img/portero.jpg" alt="Lector de acceso magnético" fill className="object-cover" sizes="180px" />
+                </div>
               </div>
             </div>
 
@@ -503,6 +514,33 @@ export default function CheckInPortal() {
               <li>{t.chk_checkout2}</li>
               <li>{t.chk_checkout3}</li>
             </ol>
+            
+            <div className={`mt-5 p-4 rounded-2xl border transition-colors duration-300 flex flex-col sm:flex-row items-center gap-5 ${
+              darkMode ? "bg-[#141613] border-[#2C302A]" : "bg-[#FAF9F7] border-[#EFEBE4]"
+            }`}>
+              <div className="flex-1 space-y-3 w-full text-center sm:text-left">
+                <p className="font-bold text-neutral-900 dark:text-neutral-100 text-sm">Aviso de Salida Rápida</p>
+                <p className="text-[11px] leading-relaxed">Si lo prefiere, presione el botón para enviar un mensaje automático por WhatsApp a Jorge confirmando que ha completado su check-out.</p>
+                <a 
+                  href="https://wa.me/5491145379500?text=Hola%20Jorge.%20Ya%20hicimos%20el%20check-out%20en%20C%C3%B3rdoba%205579.%20Las%20llaves%20est%C3%A1n%20en%20el%20buz%C3%B3n."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 bg-[#5F6F52] hover:bg-[#4F5D43] text-white py-2.5 px-4 rounded-xl text-xs font-bold transition-all shadow-sm active:scale-95 w-full sm:w-auto"
+                >
+                  <Phone className="w-4 h-4" />
+                  Avisar por WhatsApp
+                </a>
+              </div>
+              <div className="flex flex-col items-center gap-1.5 shrink-0">
+                <span className="text-[9px] font-bold text-neutral-400 dark:text-neutral-500 uppercase tracking-wider">O Escanee</span>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img 
+                  src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&color=5F6F52&data=https%3A%2F%2Fwa.me%2F5491145379500%3Ftext%3DHola%2520Jorge.%2520Ya%2520hicimos%2520el%2520check-out%2520en%2520C%25C3%25B3rdoba%25205579.%2520Las%2520llaves%2520est%25C3%25A1n%2520en%2520el%2520buz%25C3%25B3n."
+                  alt="QR WhatsApp Check-out"
+                  className="w-20 h-20 bg-white p-1 rounded-lg border border-[#EFEBE4] dark:border-neutral-700"
+                />
+              </div>
+            </div>
           </div>
         </motion.div>
 
