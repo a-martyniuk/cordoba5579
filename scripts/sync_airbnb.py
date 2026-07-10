@@ -194,10 +194,21 @@ def fetch_listing_for_locale(url_base, locale):
                                 extract_photos(item)
                     
                     extract_photos(pdp_data)
-                    # If we found detailed photos, overwrite the JSON-LD photos list
+                    # Reorder detailed photos to match the top Hero images from JSON-LD first
                     if detailed_photos:
-                        photos = detailed_photos
+                        ordered_photos = []
+                        # 1. Add the ones present in JSON-LD (in the JSON-LD order)
+                        for url in photos:
+                            match = next((p for p in detailed_photos if p["url"] == url), None)
+                            if match:
+                                ordered_photos.append(match)
                         
+                        # 2. Append the rest
+                        for dp in detailed_photos:
+                            if dp["url"] not in photos:
+                                ordered_photos.append(dp)
+                                
+                        photos = ordered_photos
             except Exception as e:
                 print(f"⚠️ Error parsing deferred state details for {locale}:", e)
 
