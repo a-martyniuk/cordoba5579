@@ -66,7 +66,7 @@ class NumberedCanvas(canvas.Canvas):
         W, H = A4
         if self._pageNumber == 1:
             try:
-                self.drawImage("public/img/cover_background.png", 0, 0, width=W, height=H, preserveAspectRatio=False)
+                self.drawImage("public/img/cover_background.jpg", 0, 0, width=W, height=H, preserveAspectRatio=False)
                 self.setFillColor(Color(0.1, 0.1, 0.1, alpha=0.3))
                 self.rect(0, 0, W, H, fill=True, stroke=False)
             except Exception:
