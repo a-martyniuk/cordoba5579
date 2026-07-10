@@ -13,6 +13,7 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
 from reportlab.graphics.barcode import qr
 from reportlab.graphics.shapes import Drawing
+from reportlab.lib.utils import ImageReader
 OUTPUT_DIR = "public"
 OUTPUT_PDF = os.path.join(OUTPUT_DIR, "manual_cordoba5579.pdf")
 
@@ -66,7 +67,15 @@ class NumberedCanvas(canvas.Canvas):
         W, H = A4
         if self._pageNumber == 1:
             try:
-                self.drawImage("public/img/cover_background.jpg", 0, 0, width=W, height=H, preserveAspectRatio=False)
+                img_path = "public/img/cover_background.jpg"
+                img = ImageReader(img_path)
+                img_w, img_h = img.getSize()
+                scale = max(W / img_w, H / img_h)
+                new_w = img_w * scale
+                new_h = img_h * scale
+                x = (W - new_w) / 2
+                y = (H - new_h) / 2
+                self.drawImage(img_path, x, y, width=new_w, height=new_h, preserveAspectRatio=False)
                 self.setFillColor(Color(0.1, 0.1, 0.1, alpha=0.3))
                 self.rect(0, 0, W, H, fill=True, stroke=False)
             except Exception:
