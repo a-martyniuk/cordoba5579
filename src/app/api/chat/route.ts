@@ -80,17 +80,14 @@ async function buildCavaSection(): Promise<string> {
     return `  • ${nombre}${origen}${cantidad}${precio}`;
   });
 
-  return `- Cava & Minibar (COSTO ADICIONAL — pago a Jorge Orlando vía WhatsApp, transferencia al Banco Santander):
+  return `- Cava & Minibar (COSTO ADICIONAL — pago a Jorge Orlando vía WhatsApp):
 ${lines.join("\n")}
   Instrucciones de Acceso y Pago:
   • Acceso: Si estás interesado en consumir, comunícate con Jorge Orlando por WhatsApp. Él te dará las instrucciones de las combinaciones de candados para abrir la cava.
   • Reposición: Si querés reposición de bebidas, solicitala al mismo WhatsApp.
-  • Datos Bancarios para transferir (Banco Santander):
-    - Titular: Martyniuk Jorge Orlando
-    - DNI: 13671433
-    - Cuenta (Pesos y Dólares): 533-005211/7
-    - CBU: 0720533088000000521172
-    - Alias: ARENA.DIESEL.CUENCA
+  PAYMENTS (CAVA / MINIBAR):
+  - National (ARS): Transfer to Banco Santander. Titular: Martyniuk Jorge Orlando, DNI: 13.671.433, CBU: 0720533088000000521172, Alias: ARENA.DIESEL.CUENCA.
+  - International (USD): Payoneer. Bank: First Century Bank, Account Type: CHECKING, Transfer Type: Local, Routing (ABA): 061120084, SWIFT: FCNSUS32, Account: 4030000417878, Beneficiary: Alexis Martyniuk.
   Carta completa y QR en: https://www.alexismartyniuk.com.ar/cordoba5579/cava`;
 }
 

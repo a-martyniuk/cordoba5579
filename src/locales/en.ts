@@ -95,7 +95,7 @@ export const en = {
   footerProject: "A project hosted inside",
   minibarTitle: "Wine Cellar & Minibar (Extra Cost)",
   minibarSubtitle: "Enjoy selected wines in the apartment. Contact Jorge via WhatsApp to open the cellar (combinations) or request refills.",
-  minibarFootnote: "Payments via transfer to Banco Santander (CBU/Alias in the Digital Menu).",
+  minibarFootnote: "Payments via transfer to Santander or Payoneer USD (Details in the Digital Menu).",
   minibarItemRed: "Malbec / Syrah Red Wine",
   minibarDescRed: "Premium selection from Mendoza wineries.",
   minibarItemWhite: "Torrontés White Wine",

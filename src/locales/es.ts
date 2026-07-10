@@ -95,7 +95,7 @@ export const es = {
   footerProject: "Un proyecto alojado dentro de",
   minibarTitle: "Cava de Vinos y Minibar (Costo Extra)",
   minibarSubtitle: "Disfrutá de etiquetas seleccionadas en el depto. Contactá a Jorge por WhatsApp para abrir la cava (combinaciones) o pedir reposición.",
-  minibarFootnote: "Pagos por transferencia a Banco Santander (CBU/Alias en la Carta Digital).",
+  minibarFootnote: "Pagos por transferencia a Santander o Payoneer USD (Detalles en la Carta Digital).",
   minibarItemRed: "Vino Tinto Malbec / Syrah",
   minibarDescRed: "Selección de bodegas mendocinas premium.",
   minibarItemWhite: "Vino Blanco Torrontés",
