@@ -173,6 +173,30 @@ def fetch_listing_for_locale(url_base, locale):
                                     access = clean_text
                                 elif item_title in ["Otros aspectos para tener en cuenta", "Other things to note"]:
                                     notes = clean_text
+                                    
+                    # Extract ALL photos with their categorized labels
+                    detailed_photos = []
+                    def extract_photos(obj):
+                        if isinstance(obj, dict):
+                            label = obj.get("accessibilityLabel", "")
+                            if label and ("Imagen de" in label or "Image of" in label):
+                                url = obj.get("baseUrl") or obj.get("large") or obj.get("xlarge") or obj.get("xxlarge")
+                                if not url and "picture" in obj and isinstance(obj["picture"], str):
+                                    url = obj["picture"]
+                                if url and url not in [i["url"] for i in detailed_photos]:
+                                    cat = label.replace("Imagen de ", "").replace("Image of ", "")
+                                    cat = re.sub(r'\s*\d+$', '', cat).strip()
+                                    detailed_photos.append({"title": cat, "url": url, "desc": "Córdoba 5579 — Palermo Hollywood"})
+                            for k, v in obj.items():
+                                extract_photos(v)
+                        elif isinstance(obj, list):
+                            for item in obj:
+                                extract_photos(item)
+                    
+                    extract_photos(pdp_data)
+                    # If we found detailed photos, overwrite the JSON-LD photos list
+                    if detailed_photos:
+                        photos = detailed_photos
                         
             except Exception as e:
                 print(f"⚠️ Error parsing deferred state details for {locale}:", e)
