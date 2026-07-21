@@ -1,7 +1,133 @@
 {
-  "rating": 4.9,
-  "reviewsCount": 120,
-  "photos": [],
+  "rating": 5.0,
+  "reviewsCount": 42,
+  "photos": [
+    {
+      "title": "Comedor",
+      "url": "https://a0.muscache.com/im/pictures/hosting/Hosting-1716762976739155303/original/283cef13-bcd7-4f23-84b0-bed311a4f3da.jpeg",
+      "desc": "Córdoba 5579 — Palermo Hollywood"
+    },
+    {
+      "title": "Dormitorio",
+      "url": "https://a0.muscache.com/im/pictures/hosting/Hosting-1716762976739155303/original/760bceee-c567-4b60-8855-9a5f771cf855.jpeg",
+      "desc": "Córdoba 5579 — Palermo Hollywood"
+    },
+    {
+      "title": "Terraza",
+      "url": "https://a0.muscache.com/im/pictures/hosting/Hosting-1716762976739155303/original/ec8a0a97-e054-423d-96ab-51f3419b1a21.jpeg",
+      "desc": "Córdoba 5579 — Palermo Hollywood"
+    },
+    {
+      "title": "Comedor",
+      "url": "https://a0.muscache.com/im/pictures/hosting/Hosting-1716762976739155303/original/b7afcd54-60f4-462f-af25-7e5c00e27d47.jpeg",
+      "desc": "Córdoba 5579 — Palermo Hollywood"
+    },
+    {
+      "title": "Comedor",
+      "url": "https://a0.muscache.com/im/pictures/hosting/Hosting-1716762976739155303/original/ddd07b13-32c8-4c01-a3d3-c0b76e95904d.jpeg",
+      "desc": "Córdoba 5579 — Palermo Hollywood"
+    },
+    {
+      "title": "Dormitorio",
+      "url": "https://a0.muscache.com/im/pictures/hosting/Hosting-1716762976739155303/original/97d9cd7d-1009-42af-9979-0cbb8ec78dcc.jpeg",
+      "desc": "Córdoba 5579 — Palermo Hollywood"
+    },
+    {
+      "title": "Dormitorio",
+      "url": "https://a0.muscache.com/im/pictures/hosting/Hosting-1716762976739155303/original/f8a9c653-8644-4a8a-ae15-01a1499bdaa7.jpeg",
+      "desc": "Córdoba 5579 — Palermo Hollywood"
+    },
+    {
+      "title": "Dormitorio",
+      "url": "https://a0.muscache.com/im/pictures/hosting/Hosting-1716762976739155303/original/94d9d02a-3c95-41e2-b6e3-553be9aba0c4.jpeg",
+      "desc": "Córdoba 5579 — Palermo Hollywood"
+    },
+    {
+      "title": "Cocina completa",
+      "url": "https://a0.muscache.com/im/pictures/hosting/Hosting-1716762976739155303/original/f9438a35-20d4-4b59-b65d-e647fe9f6bc8.jpeg",
+      "desc": "Córdoba 5579 — Palermo Hollywood"
+    },
+    {
+      "title": "Cocina completa",
+      "url": "https://a0.muscache.com/im/pictures/hosting/Hosting-1716762976739155303/original/d0d6c324-6b63-40d2-96e7-b5abf6b88b51.jpeg",
+      "desc": "Córdoba 5579 — Palermo Hollywood"
+    },
+    {
+      "title": "Cocina completa",
+      "url": "https://a0.muscache.com/im/pictures/hosting/Hosting-1716762976739155303/original/ef59e4dc-547c-4691-8e67-36e9064a63e6.jpeg",
+      "desc": "Córdoba 5579 — Palermo Hollywood"
+    },
+    {
+      "title": "Cocina completa",
+      "url": "https://a0.muscache.com/im/pictures/hosting/Hosting-1716762976739155303/original/f4bd9bd9-4f0c-4ace-aca7-2fb3a9b68b59.jpeg",
+      "desc": "Córdoba 5579 — Palermo Hollywood"
+    },
+    {
+      "title": "Cocina completa",
+      "url": "https://a0.muscache.com/im/pictures/hosting/Hosting-1716762976739155303/original/62d2fec8-d0d5-4780-817f-3bae7fa99fb6.jpeg",
+      "desc": "Córdoba 5579 — Palermo Hollywood"
+    },
+    {
+      "title": "Cocina completa",
+      "url": "https://a0.muscache.com/im/pictures/hosting/Hosting-1716762976739155303/original/5bcd4d79-4db6-4018-95b6-d8d13d426c42.jpeg",
+      "desc": "Córdoba 5579 — Palermo Hollywood"
+    },
+    {
+      "title": "Comedor",
+      "url": "https://a0.muscache.com/im/pictures/hosting/Hosting-1716762976739155303/original/64ae60a4-d0bf-4430-bcfb-e835345d0e2e.jpeg",
+      "desc": "Córdoba 5579 — Palermo Hollywood"
+    },
+    {
+      "title": "Comedor",
+      "url": "https://a0.muscache.com/im/pictures/hosting/Hosting-1716762976739155303/original/c03612c1-b3a4-426b-a683-83b6f68fe359.jpeg",
+      "desc": "Córdoba 5579 — Palermo Hollywood"
+    },
+    {
+      "title": "Baño completo",
+      "url": "https://a0.muscache.com/im/pictures/hosting/Hosting-1716762976739155303/original/2d11e259-92e8-4282-bba8-b1b0280903fc.jpeg",
+      "desc": "Córdoba 5579 — Palermo Hollywood"
+    },
+    {
+      "title": "Baño completo",
+      "url": "https://a0.muscache.com/im/pictures/hosting/Hosting-1716762976739155303/original/72c7fd71-aeb7-4872-8911-485ba9fbdf11.jpeg",
+      "desc": "Córdoba 5579 — Palermo Hollywood"
+    },
+    {
+      "title": "Baño de visitas",
+      "url": "https://a0.muscache.com/im/pictures/hosting/Hosting-1716762976739155303/original/d84e6e06-686b-4b6d-8881-942d4dfc93fc.jpeg",
+      "desc": "Córdoba 5579 — Palermo Hollywood"
+    },
+    {
+      "title": "Baño de visitas",
+      "url": "https://a0.muscache.com/im/pictures/hosting/Hosting-1716762976739155303/original/a215bc53-532d-4d9e-8f75-182bc507d036.jpeg",
+      "desc": "Córdoba 5579 — Palermo Hollywood"
+    },
+    {
+      "title": "Terraza",
+      "url": "https://a0.muscache.com/im/pictures/hosting/Hosting-1716762976739155303/original/4d5b06d0-266a-45b0-abde-1b1eb38460a0.jpeg",
+      "desc": "Córdoba 5579 — Palermo Hollywood"
+    },
+    {
+      "title": "Terraza",
+      "url": "https://a0.muscache.com/im/pictures/hosting/Hosting-1716762976739155303/original/acd63f4e-fe51-44da-8c1d-53632c5468bf.jpeg",
+      "desc": "Córdoba 5579 — Palermo Hollywood"
+    },
+    {
+      "title": "Lavadero",
+      "url": "https://a0.muscache.com/im/pictures/hosting/Hosting-1716762976739155303/original/0d76409a-64c3-444c-a3d3-e5c4aba27a19.jpeg",
+      "desc": "Córdoba 5579 — Palermo Hollywood"
+    },
+    {
+      "title": "Lavadero",
+      "url": "https://a0.muscache.com/im/pictures/hosting/Hosting-1716762976739155303/original/90be5f59-ec76-4948-b785-14348fb053ae.jpeg",
+      "desc": "Córdoba 5579 — Palermo Hollywood"
+    },
+    {
+      "title": "Lavadero",
+      "url": "https://a0.muscache.com/im/pictures/hosting/Hosting-1716762976739155303/original/e7e58f7b-72ee-4852-b935-ebb83b3cc71c.jpeg",
+      "desc": "Córdoba 5579 — Palermo Hollywood"
+    }
+  ],
   "price": 500,
   "weekendPrice": 600,
   "cava": [
