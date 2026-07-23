@@ -63,7 +63,7 @@ export const es = {
   faq2Q: "¿Cómo funciona el check-in autónomo?",
   faq2A: "Es muy sencillo. Antes de tu llegada te enviaremos el código de seguridad para retirar las llaves de una caja de seguridad (lockbox) en la entrada exterior del edificio. Podés encontrar un simulador e instrucciones detalladas en la sección de Check-in de esta web.",
   faq3Q: "¿El departamento cuenta con cochera o estacionamiento?",
-  faq3A: "No disponemos de cochera propia en el edificio, pero a solo unos metros sobre Av. Córdoba y Fitz Roy hay varios estacionamientos comerciales techados con tarifas por hora o estadía las 24 hs. Estacionar en la calle en esta zona suele ser medido o difícil.",
+  faq3A: "El departamento no cuenta con cochera propia en el edificio, pero a solo 50 metros (sobre Av. Córdoba y Fitz Roy) disponés de un garaje comercial techado de 24 hs. Además, encontrás alternativas a 2-3 cuadras sobre Fitz Roy 1500, Humboldt 1650 (Parking Dazzler) y Av. Niceto Vega 5500. Podés ver su ubicación exacta en el mapa de nuestro portal. Nota: Sobre Av. Córdoba está prohibido estacionar y en las calles laterales es limitado o medido.",
   faq4Q: "¿Se admiten visitas adicionales o eventos?",
   faq4A: "Por respeto a los vecinos y según el Reglamento del edificio, están prohibidas las fiestas, reuniones y los ruidos molestos. Las visitas adicionales deben registrarse previamente con el anfitrión, y no tienen permitido el uso de los amenities.",
   faq5Q: "¿Cómo se organiza el acceso a la piscina y la parrilla?",

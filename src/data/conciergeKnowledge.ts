@@ -61,8 +61,8 @@ export const cordoba5579Knowledge: PropertyKnowledge = {
   },
   parking: {
     keys: ["estacionamiento", "cochera", "auto", "garage", "parking", "vehiculo", "vehículo"],
-    es: "El departamento no cuenta con cochera propia. Hay estacionamiento gratis en la calle, o bien estacionamiento de pago a solo 50 metros sobre la misma avenida.",
-    en: "The apartment does not have its own parking space. Free parking is available on the street, or you can use a paid parking garage located 50 meters away on the same avenue."
+    es: "El departamento no cuenta con cochera propia en el edificio, pero disponés de varias opciones comerciales cercanas de 24 hs: 1) Garaje comercial a solo 50 metros sobre Av. Córdoba casi Fitz Roy. 2) Cocheras sobre Fitz Roy 1500 (a 150m). 3) Parking Dazzler en Humboldt 1650 (a 350m). 4) Garajes sobre Av. Niceto Vega 5500 (a 350m). Podés consultar la ubicación en el mapa de nuestro portal. Nota: Sobre Av. Córdoba está prohibido estacionar y en las calles laterales es limitado o medido.",
+    en: "The apartment does not have private parking in the building, but there are several 24/7 commercial options nearby: 1) Covered garage just 50m away on Av. Córdoba near Fitz Roy. 2) Parking on Fitz Roy 1500 (150m away). 3) Parking Dazzler on Humboldt 1650 (350m away). 4) Garages on Av. Niceto Vega 5500 (350m away). You can view their exact locations on our interactive map."
   },
   beds: {
     keys: ["cama", "sabana", "sábana", "toalla", "acolchado", "frazada", "blanket", "bed", "sheet", "pillow", "almohada"],

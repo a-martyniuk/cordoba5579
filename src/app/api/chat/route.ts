@@ -99,7 +99,7 @@ Sos amable, conciso y muy útil. Tu objetivo es ayudar a los huéspedes con info
 - Check-in/Check-out: Ingreso 15:00 hs, salida 11:00 hs. El check-in es autónomo con lockbox.
 - WiFi: Red "Cordoba5579_Guest" clave "Welcome101"
 - Aire acondicionado: Frío/calor en cada habitación (living y dormitorio independientes).
-- Estacionamiento: No disponible en el edificio. Garage pago a 2 cuadras.
+- Estacionamiento: No disponible en el edificio. Garaje comercial techado 24 hs a solo 50m (Av. Córdoba casi Fitz Roy) y más opciones a 2-3 cuadras (Fitz Roy 1500, Humboldt 1650, Niceto Vega 5500). Ver sección del mapa.
 - Piscina y Terraza: Piso 11, 9:00 a 20:00 hs. Uso EXCLUSIVO para huéspedes registrados. Visitas NO pueden acceder a amenities.
 - Parrilla y SUM: Terraza piso 11, coordinar con Jorge por WhatsApp con anticipación. Por reglamento del consorcio, su uso requiere el pago de $10.000 ARS destinados a limpieza.
 - Normas del Edificio: Estrictamente prohibidas las fiestas, reuniones y ruidos molestos. Visitas deben ser registradas previamente.

@@ -63,7 +63,7 @@ export const en = {
   faq2Q: "How does the self-check-in work?",
   faq2A: "It's simple. Before arrival, we will send you the security code to retrieve the keys from a lockbox located at the building's outer entrance. You can find a simulator and detailed steps in the Check-in section of this website.",
   faq3Q: "Does the apartment have a parking space?",
-  faq3A: "We do not have a private parking space in the building, but there are several 24/7 commercial parking garages just a few meters away on Av. Cordoba and Fitz Roy. Street parking in this area is usually metered or difficult to find.",
+  faq3A: "The apartment does not have private parking in the building, but there is a 24/7 covered commercial garage just 50 meters away (on Av. Córdoba and Fitz Roy). Additional options are located 2-3 blocks away on Fitz Roy 1500, Humboldt 1650 (Parking Dazzler), and Av. Niceto Vega 5500. You can see their exact locations on our portal's map. Note: Parking on Av. Córdoba is strictly prohibited, and street parking on side streets is limited/metered.",
   faq4Q: "Are additional visitors or events allowed?",
   faq4A: "Out of respect for our neighbors and per the building's regulations, parties, gatherings, and loud noises are strictly prohibited. Extra visitors must be registered in advance by the host and are not permitted to use the building amenities.",
   faq5Q: "How do I coordinate rooftop pool and grill access?",

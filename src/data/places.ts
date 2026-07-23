@@ -1,6 +1,6 @@
 export interface PlaceOfInterest {
   name: string;
-  type: "stay" | "subway" | "metrobus" | "shopping" | "supermarket" | "food" | "hospital" | "security" | "park" | "museum" | "theater" | "tourist";
+  type: "stay" | "parking" | "subway" | "metrobus" | "shopping" | "supermarket" | "food" | "hospital" | "security" | "park" | "museum" | "theater" | "tourist";
   distance: string;
   desc: string;
   lat: number;
@@ -25,6 +25,46 @@ export const fallbackPlaces: PlaceOfInterest[] = [
     "phone": "+54 9 11 4537-9500",
     "hours": "24 hs",
     "address": "Av. Córdoba 5579, Palermo Hollywood"
+  },
+  {
+    "name": "Estacionamiento Comercial Córdoba 5520",
+    "type": "parking",
+    "distance": "50m (1 min. a pie)",
+    "desc": "Garaje comercial techado las 24 hs. Opción más cercana e inmediata al departamento (Av. Córdoba casi Fitz Roy).",
+    "lat": -34.5872,
+    "lng": -58.4398,
+    "address": "Av. Córdoba 5520, Palermo Hollywood",
+    "hours": "24 hs"
+  },
+  {
+    "name": "Estacionamiento & Cocheras Fitz Roy 1500",
+    "type": "parking",
+    "distance": "150m (2 min. a pie)",
+    "desc": "Playas de estacionamiento y cocheras privadas por hora y estadía sobre la calle Fitz Roy.",
+    "lat": -34.5866,
+    "lng": -58.4385,
+    "address": "Fitz Roy 1450, Palermo Hollywood",
+    "hours": "24 hs"
+  },
+  {
+    "name": "Parking Dazzler (Humboldt 1650)",
+    "type": "parking",
+    "distance": "350m (4 min. a pie)",
+    "desc": "Garaje privado techado con seguridad y control de accesos las 24 hs.",
+    "lat": -34.5855,
+    "lng": -58.4372,
+    "address": "Humboldt 1650, Palermo Hollywood",
+    "hours": "24 hs"
+  },
+  {
+    "name": "Estacionamiento Niceto Vega 5550",
+    "type": "parking",
+    "distance": "350m (4 min. a pie)",
+    "desc": "Playas de estacionamiento comercial por hora, estadía diaria y mensual sobre Av. Niceto Vega.",
+    "lat": -34.5888,
+    "lng": -58.4378,
+    "address": "Av. Niceto Vega 5550, Palermo Hollywood",
+    "hours": "24 hs"
   },
   {
     "name": "Aeroparque Jorge Newbery (AEP)",

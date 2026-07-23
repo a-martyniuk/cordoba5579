@@ -189,6 +189,7 @@ function getSubwayLineColor(line: string | undefined): string {
 
 const categories = [
   { id: "all", name: "Todos", icon: "✨" },
+  { id: "parking", name: "Estacionamiento", icon: "🅿️" },
   { id: "subway", name: "Subtes", icon: "🚇" },
   { id: "metrobus", name: "Metrobús", icon: "🚌" },
   { id: "shopping", name: "Shoppings", icon: "🛍️" },
@@ -218,6 +219,7 @@ const datasetUrls: Record<string, { name: string; url: string }> = {
 const getCategoryColor = (type: string, subLine?: string, isFireStation?: boolean): string => {
   switch (type) {
     case "stay": return "#5F6F52"; // Olive Green
+    case "parking": return "#0056B3"; // Deep Blue
     case "subway": return getSubwayLineColor(subLine); // Oficial SBASE line color
     case "metrobus": return "#F2C94C"; // Amber Yellow
     case "shopping": return "#9B51E0"; // Purple
