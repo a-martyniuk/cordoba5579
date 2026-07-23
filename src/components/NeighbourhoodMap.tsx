@@ -189,7 +189,7 @@ function getSubwayLineColor(line: string | undefined): string {
 
 const categories = [
   { id: "all", name: "Todos", icon: "✨" },
-  { id: "parking", name: "Estacionamiento", icon: "🅿️" },
+  { id: "parking", name: "Estacionamiento", icon: "E" },
   { id: "subway", name: "Subtes", icon: "🚇" },
   { id: "metrobus", name: "Metrobús", icon: "🚌" },
   { id: "shopping", name: "Shoppings", icon: "🛍️" },
@@ -288,6 +288,8 @@ const getCategoryHtmlIcon = (type: string, subLine?: string, isFireStation?: boo
   switch (type) {
     case "stay":
       return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`;
+    case "parking":
+      return `<span style="font-size: 11px; font-weight: 900; font-family: system-ui, -apple-system, sans-serif; line-height: 1;">E</span>`;
     case "subway":
       return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="16" rx="2"/><path d="M4 11h16"/><path d="M12 3v8"/><path d="m8 19-2 3"/><path d="m16 19 2 3"/></svg>`;
     case "metrobus":
