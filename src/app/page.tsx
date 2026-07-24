@@ -26,6 +26,7 @@ import FAQSection from "../components/FAQSection";
 import Gallery from "../components/Gallery";
 import CalendarWidget from "../components/CalendarWidget";
 import NeighbourhoodMap from "../components/NeighbourhoodMap";
+import StreetParkingGuide from "../components/StreetParkingGuide";
 import InstallPrompt from "../components/InstallPrompt";
 import { cordoba5579Knowledge } from "../data/conciergeKnowledge";
 
@@ -771,11 +772,15 @@ export default function Home() {
         </div>
         </ScrollReveal>
 
-        {/* Neighbourhood Map Section (Full Width 12/12) */}
+        {/* Neighbourhood Map & Street Parking Section (Full Width 12/12) */}
         <ScrollReveal delay={0.05}>
         <div id="barrio" className="space-y-6">
           <NeighbourhoodMap sheetUrl={googleSheetPlacesUrl} lang={language} />
           
+          <ScrollReveal delay={0.05}>
+            <StreetParkingGuide />
+          </ScrollReveal>
+
           <ScrollReveal delay={0.05}>
             <FoodGuide />
           </ScrollReveal>
