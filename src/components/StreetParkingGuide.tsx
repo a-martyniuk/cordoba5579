@@ -7,7 +7,6 @@ import {
   CheckCircle2, 
   XCircle, 
   Clock, 
-  AlertTriangle, 
   Info, 
   ShieldCheck, 
   Copy, 
@@ -15,8 +14,7 @@ import {
   MapPin, 
   ChevronDown, 
   ChevronUp, 
-  Sparkles,
-  ExternalLink
+  Sparkles
 } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
 
