@@ -27,6 +27,7 @@ import Gallery from "../components/Gallery";
 import CalendarWidget from "../components/CalendarWidget";
 import NeighbourhoodMap from "../components/NeighbourhoodMap";
 import StreetParkingGuide from "../components/StreetParkingGuide";
+import SofaBedVideoGuide from "../components/SofaBedVideoGuide";
 import InstallPrompt from "../components/InstallPrompt";
 import { cordoba5579Knowledge } from "../data/conciergeKnowledge";
 
@@ -761,6 +762,9 @@ export default function Home() {
                   <span>{language === "es" ? "Carta Digital & Precios" : "Digital Cellar Menu"}</span>
                 </Link>
               </div>
+
+              {/* Sofa Bed Video Guide */}
+              <SofaBedVideoGuide />
             </div>
           </div>
 

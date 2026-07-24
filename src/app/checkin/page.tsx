@@ -11,6 +11,7 @@ import { motion } from "framer-motion";
 import wifiQr from "../../../public/wifi-qr.png";
 import airbnbDetails from "../../data/airbnb-details.json";
 import StreetParkingGuide from "../../components/StreetParkingGuide";
+import SofaBedVideoGuide from "../../components/SofaBedVideoGuide";
 import lockbox1 from "../../../public/img/lockbox1.jpg";
 import lockbox2 from "../../../public/img/lockbox2.jpg";
 import portero from "../../../public/img/portero.jpg";
@@ -547,6 +548,15 @@ export default function CheckInPortal() {
               </div>
             </div>
           </div>
+        </motion.div>
+
+        {/* Sofa Bed Video Guide */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.4 }}
+        >
+          <SofaBedVideoGuide />
         </motion.div>
 
         {/* Street Parking Guide */}

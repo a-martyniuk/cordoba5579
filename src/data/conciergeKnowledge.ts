@@ -69,6 +69,11 @@ export const cordoba5579Knowledge: PropertyKnowledge = {
     es: "El departamento cuenta con 1 cama Queen con sábanas de hilo egipcio de 600h y un sofá cama en el living. En estadías superiores a 7 noches se ofrece un nuevo juego de toallas. En estadías de 14 noches o más se reemplazan sábanas, toallas y se realiza un repaso de limpieza.",
     en: "The apartment has 1 Queen-size bed with premium 600-thread-count Egyptian cotton sheets, plus a sofa bed in the living room. For stays over 7 nights, we provide a fresh set of towels. For 14+ nights, sheets and towels are replaced, and a light cleaning is included."
   },
+  sofabed: {
+    keys: ["sillon", "sillón", "sofa", "sofá", "sillon cama", "sillón cama", "cama living", "desplegar cama", "abrir cama"],
+    es: "El living cuenta con un sillón cama cómodo de 2 plazas. Para armarlo: 1) Retirá los almohadones del respaldo. 2) Tirá de la manija inferior hacia arriba y afuera. 3) Desplegá la estructura metálica en el piso. Las sábanas y almohadas adicionales están en el placar del dormitorio. Ver video-guía en el portal digital (/checkin).",
+    en: "The living room features a comfortable 2-person sofa bed. To open it: 1) Remove backrest cushions. 2) Pull front handle up and out. 3) Unfold the metal frame onto the floor. Extra sheets/pillows are in the bedroom closet. Video tutorial available at /checkin."
+  },
   kitchen: {
     keys: ["cocina", "licuadora", "tostadora", "cafetera", "horno", "heladera", "microondas", "freidora", "arrocera", "olla", "sarten", "sartén", "vajilla", "cubiertos"],
     es: "La cocina está equipada con heladera y microondas Samsung, freidora sin aceite, horno por convección, arrocera, licuadora, tostadora, cafetera con espumadera, ollas/sartenes Tramontina y vajilla Carol. Podés ver el listado completo en la pestaña de Inventario (/inventario).",
