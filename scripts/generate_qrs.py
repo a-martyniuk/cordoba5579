@@ -60,7 +60,7 @@ CODES = [
         "label_en": "Contact Host",
         "sublabel_es": "Jorge Orlando (+54 9 11 4537-9500)",
         "sublabel_en": "Jorge Orlando (+54 9 11 4537-9500)",
-        "color": "#25D366",         # WhatsApp green
+        "color": "#5F6F52",         # Olive green
         "bg": "#FAF9F7",
     },
     {
@@ -71,7 +71,7 @@ CODES = [
         "label_en": "BOTI CABA Street Parking",
         "sublabel_es": "Chatbot Oficial CABA (+54 9 11 5050-0147)",
         "sublabel_en": "Official City WhatsApp Bot",
-        "color": "#25D366",         # WhatsApp green
+        "color": "#5F6F52",         # Olive green
         "bg": "#FAF9F7",
     },
     {
