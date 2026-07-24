@@ -35,11 +35,21 @@
     "directions_title": "Cómo llegar",
     "directions_intro": "El edificio está ubicado sobre <b>Avenida Córdoba 5579</b>, entre las calles Fitz Roy y Humboldt, en el barrio de Palermo Hollywood, CABA.",
     "directions": [
-      {"title": "En Auto o Apps de Transporte:", "content": "Desde Ezeiza (EZE) o Aeroparque (AEP), <b>recomendamos enfáticamente usar Uber o Cabify</b> por cuestiones de seguridad y facilidad de pago. El acceso es directo por la Avenida Córdoba. Tenga en cuenta que el edificio no cuenta con cochera propia; hay cocheras de pago a 50 metros."},
+      {"title": "En Auto o Apps de Transporte:", "content": "Desde Ezeiza (EZE) Aeroparque (AEP), <b>recomendamos usar Uber o Cabify</b>. El acceso es directo por Av. Córdoba. Tenga en cuenta que el edificio no cuenta con cochera propia; hay cocheras de pago a 50m y estacionamiento gratuito en la calle."},
       {"title": "En Subte (Línea D):", "content": "La estación más cercana es <b>Ministro Carranza</b> (a 5 cuadras) o la estación <b>Palermo</b>. Es la línea directa para ir al centro, Plaza de Mayo y Recoleta."},
       {"title": "En Tren:", "content": "La estación <b>Ministro Carranza</b> de la Línea Mitre se encuentra a solo 5 cuadras del departamento."},
       {"title": "En Colectivo (Metrobus):", "content": "Múltiples líneas pasan por la puerta del edificio sobre Av. Córdoba (140, 151, 168) o a pocas cuadras sobre Av. Santa Fe y Av. Juan B. Justo."}
-    ]
+    ],
+    "parking_title": "Estacionamiento en la Calle (Datos Oficiales BOTI CABA - 23/07/2026)",
+    "parking_intro": "Normativa oficial relevada a la fecha mediante el chatbot inteligente BOTI CABA:",
+    "parking_items": [
+      {"title": "Fitz Roy 1301-1400 (a 50m):", "content": "<b>PERMITIDO 24 HS de ambos lados (GRATIS)</b>. Opción recomendada ⭐️"},
+      {"title": "Humboldt 1301-1400 (a 100m):", "content": "<b>PERMITIDO 24 HS mano derecha</b> (mano izquierda prohibido 24 hs)."},
+      {"title": "Av. Niceto Vega 5513-5600 (a 150m):", "content": "<b>PERMITIDO 24 HS mano derecha</b>."},
+      {"title": "Castillo 1301-1400 (a 200m):", "content": "<b>PERMITIDO 24 HS de ambos lados</b>."},
+      {"title": "Av. Córdoba 5500 (frente depto):", "content": "Mano derecha permitido de noche (21 a 07 hs) y fines de semana 24 hs. Prohibido días hábiles de 07 a 21 hs."}
+    ],
+    "boti_info": "<b>Consulta por WhatsApp a BOTI CABA (+54 9 11 5050-0147):</b> Envié un mensaje de WhatsApp -> Seleccione la opción <b>B</b> (Por dirección) -> Escriba la calle deseada (ej: <i>'Fitz Roy entre Niceto Vega y Av. Córdoba'</i>) para obtener la regla oficial en tiempo real."
   },
   "local_tips": {
     "title": "Tips Locales para Turistas",
@@ -89,7 +99,17 @@
       {"title": "Cuidado Ambiental:", "content": "Apague los equipos obligatoriamente al salir del departamento. Ayúdenos a conservar energía."}
     ],
     "safe_title": "3. Caja Fuerte de la Habitación:",
-    "safe_content": "Para resguardar sus objetos de valor, la habitación cuenta con una caja de seguridad <b>mecánica</b> (con llave física) dentro del placar.<br/><b>Nota importante:</b> La llave de la caja fuerte se encuentra unida al mismo llavero principal que contiene las llaves de ingreso al departamento."
+    "safe_content": "Para resguardar sus objetos de valor, la habitación cuenta con una caja de seguridad <b>mecánica</b> (con llave física) dentro del placar.<br/><b>Nota importante:</b> La llave de la caja fuerte se encuentra unida al mismo llavero principal que contiene las llaves de ingreso al departamento.",
+    "sofa_bed_title": "4. Guía de Armado del Sillón Cama (Living):",
+    "sofa_bed_intro": "El living cuenta con un sillón cama convertible de 2 plazas. Siga las instrucciones paso a paso:",
+    "sofa_bed_steps": [
+      {"step": "Paso 1", "content": "Retirar los almohadones del respaldo del sillón."},
+      {"step": "Paso 2", "content": "Tirar de la manija inferior metálica hacia arriba y afuera."},
+      {"step": "Paso 3", "content": "Desplegar el soporte de patas metálicas hasta apoyarlo al suelo."},
+      {"step": "Paso 4", "content": "Extender el colchón desplegable completamente."},
+      {"step": "Paso 5", "content": "Colocar el juego de sábanas de hilo egipcio de 600h."},
+      {"step": "Paso 6", "content": "Acomodar almohadas adicionales (ubicadas en el placar)."}
+    ]
   },
   "kitchen": {
     "title": "Uso del Departamento - Cocina y Minibar",

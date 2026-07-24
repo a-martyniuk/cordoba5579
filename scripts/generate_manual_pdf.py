@@ -291,14 +291,32 @@ def build_pdf(page_map=None):
     story.append(Bookmark("welcome", page_map))
     story.append(Paragraph(t["welcome"]["title"], style_h1))
     story.append(Paragraph(t["welcome"]["subtitle"], style_h2))
-    story.append(Spacer(1, 15))
+    story.append(Spacer(1, 12))
     story.append(Paragraph(t["welcome"]["intro"], style_normal))
-    story.append(Spacer(1, 25))
+    story.append(Spacer(1, 15))
     story.append(Paragraph(t["welcome"]["directions_title"], style_h3))
     story.append(Paragraph(t["welcome"]["directions_intro"], style_normal))
-    story.append(Spacer(1, 10))
+    story.append(Spacer(1, 8))
     arrive_data = [[Paragraph(f"<b>{i['title']}</b>", style_normal_bold), Paragraph(i['content'], style_normal)] for i in t["welcome"]["directions"]]
-    story.append(build_card_table(arrive_data, [120, 340]))
+    story.append(build_card_table(arrive_data, [120, 340], padding=6))
+    story.append(Spacer(1, 15))
+
+    # On-Street Parking Section
+    if "parking_title" in t["welcome"]:
+        story.append(Paragraph(t["welcome"]["parking_title"], style_h3))
+        story.append(Paragraph(t["welcome"]["parking_intro"], style_normal))
+        story.append(Spacer(1, 8))
+        parking_data = [[Paragraph(f"<b>{i['title']}</b>", style_normal_bold), Paragraph(i['content'], style_normal)] for i in t["welcome"]["parking_items"]]
+        story.append(build_card_table(parking_data, [150, 310], padding=6))
+        story.append(Spacer(1, 8))
+        boti_box = Table([[Paragraph(t["welcome"]["boti_info"], style_card_body)]], colWidths=[460])
+        boti_box.setStyle(TableStyle([
+            ('BACKGROUND', (0,0), (-1,-1), HexColor('#E8F5E9')),
+            ('BOX', (0,0), (-1,-1), 1, HexColor('#C8E6C9')),
+            ('PADDING', (0,0), (-1,-1), 8)
+        ]))
+        story.append(boti_box)
+
     story.append(PageBreak())
     
     # ---- PAGE 4: CHECK-IN ----
@@ -318,20 +336,57 @@ def build_pdf(page_map=None):
     story.append(caution_table)
     story.append(PageBreak())
     
-    # ---- PAGE 5: CLIMATE & SAFE ----
+    # ---- PAGE 5: CLIMATE & SAFE & SOFA BED ----
     story.append(Bookmark("climate_safe", page_map))
     story.append(Paragraph(t["climate_safe"]["title"], style_h1))
     story.append(Paragraph(t["climate_safe"]["subtitle"], style_h2))
-    story.append(Spacer(1, 15))
-    story.append(Paragraph(t["climate_safe"]["door"], style_normal))
-    story.append(Spacer(1, 15))
-    story.append(Paragraph(t["climate_safe"]["ac_intro"], style_normal))
     story.append(Spacer(1, 10))
+    story.append(Paragraph(t["climate_safe"]["door"], style_normal))
+    story.append(Spacer(1, 10))
+    story.append(Paragraph(t["climate_safe"]["ac_intro"], style_normal))
+    story.append(Spacer(1, 6))
     ac_data = [[Paragraph(f"<b>{i['title']}</b>", style_normal_bold), Paragraph(i['content'], style_normal)] for i in t["climate_safe"]["ac_items"]]
-    story.append(build_card_table(ac_data, [130, 330]))
-    story.append(Spacer(1, 20))
+    story.append(build_card_table(ac_data, [130, 330], padding=5))
+    story.append(Spacer(1, 10))
     story.append(Paragraph(t["climate_safe"]["safe_title"], style_h3))
     story.append(Paragraph(t["climate_safe"]["safe_content"], style_normal))
+    story.append(Spacer(1, 12))
+
+    # Sofa Bed Guide with 6 Thumbnails
+    if "sofa_bed_title" in t["climate_safe"]:
+        story.append(Paragraph(t["climate_safe"]["sofa_bed_title"], style_h3))
+        story.append(Paragraph(t["climate_safe"]["sofa_bed_intro"], style_normal))
+        story.append(Spacer(1, 8))
+
+        sofa_grid = []
+        steps = t["climate_safe"]["sofa_bed_steps"]
+        # Build 3 columns per row (Row 1: steps 0,1,2; Row 2: steps 3,4,5)
+        for row_idx in range(0, 6, 3):
+            img_cells = []
+            txt_cells = []
+            for col_idx in range(3):
+                idx = row_idx + col_idx
+                img_path = f"public/img/sillon/{idx+1}.jpeg"
+                if os.path.exists(img_path):
+                    img = RLImage(img_path, width=140, height=85, kind='proportional')
+                else:
+                    img = Paragraph(f"Paso {idx+1}", style_normal)
+                img_cells.append(img)
+                txt_cells.append(Paragraph(f"<b>{steps[idx]['step']}</b><br/>{steps[idx]['content']}", style_card_body))
+            sofa_grid.append(img_cells)
+            sofa_grid.append(txt_cells)
+
+        sofa_table = Table(sofa_grid, colWidths=[150, 150, 150])
+        sofa_table.setStyle(TableStyle([
+            ('ALIGN', (0,0), (-1,-1), 'CENTER'),
+            ('VALIGN', (0,0), (-1,-1), 'TOP'),
+            ('BACKGROUND', (0,0), (-1,-1), HexColor('#FAF9F7')),
+            ('BOX', (0,0), (-1,-1), 1, COLOR_BORDER),
+            ('INNERGRID', (0,0), (-1,-1), 0.5, COLOR_BORDER),
+            ('PADDING', (0,0), (-1,-1), 5)
+        ]))
+        story.append(sofa_table)
+
     story.append(PageBreak())
     
     # ---- PAGE 6: KITCHEN ----
