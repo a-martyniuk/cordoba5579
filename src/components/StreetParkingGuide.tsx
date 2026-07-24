@@ -220,7 +220,7 @@ export default function StreetParkingGuide() {
         <div className="space-y-1.5">
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 dark:text-emerald-400 rounded-full text-xs font-bold">
             <ShieldCheck className="w-3.5 h-3.5" />
-            <span>{isEn ? "Verified BOTI CABA Transit Code Data" : "Verificado Inteligencia BOTI CABA"}</span>
+            <span>{isEn ? "Verified BOTI CABA Data (Updated July 23, 2026)" : "Verificado Inteligencia BOTI CABA (Actualizado al 23 de Julio de 2026)"}</span>
           </div>
           <h3 className="font-serif text-2xl md:text-3xl font-semibold text-neutral-900 dark:text-white flex items-center gap-2">
             <Car className="w-7 h-7 text-[#5F6F52] dark:text-[#889B73]" />
@@ -322,6 +322,12 @@ export default function StreetParkingGuide() {
               </>
             )}
           </ul>
+
+          <p className="text-[11px] font-semibold text-emerald-800 dark:text-emerald-300 pt-1.5 border-t border-emerald-500/15 italic">
+            {isEn
+              ? "Note: The transit regulations in this guide reflect official real-time BOTI CABA queries updated as of today (July 23, 2026)."
+              : "Nota: La normativa informada en esta guía refleja las consultas oficiales en tiempo real relevadas a la fecha (23 de Julio de 2026)."}
+          </p>
         </div>
       </div>
 
