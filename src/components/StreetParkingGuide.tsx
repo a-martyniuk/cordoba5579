@@ -14,7 +14,9 @@ import {
   MapPin, 
   ChevronDown, 
   ChevronUp, 
-  Sparkles
+  Sparkles,
+  MessageCircle,
+  ExternalLink
 } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
 
@@ -269,6 +271,57 @@ export default function StreetParkingGuide() {
               )}
             </p>
           </div>
+        </div>
+      </div>
+
+      {/* BOTI WhatsApp Verification Card */}
+      <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-2xl p-4 md:p-5 space-y-3">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-[#25D366] text-white flex items-center justify-center flex-shrink-0 shadow-md">
+              <MessageCircle className="w-5 h-5" />
+            </div>
+            <div>
+              <h4 className="font-bold text-sm md:text-base text-neutral-900 dark:text-white flex items-center gap-2">
+                <span>{isEn ? "Real-Time BOTI WhatsApp Verification (CABA)" : "Verificación en Tiempo Real por WhatsApp con BOTI (CABA)"}</span>
+              </h4>
+              <p className="text-xs text-neutral-600 dark:text-neutral-400">
+                {isEn ? "Official City of Buenos Aires Chatbot (+54 9 11 5050-0147)" : "Bot oficial de la Ciudad de Buenos Aires (+54 9 11 5050-0147)"}
+              </p>
+            </div>
+          </div>
+
+          <a
+            href="https://wa.me/5491150500147"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-[#25D366] hover:bg-[#20ba5a] text-white font-bold rounded-xl text-xs shadow-sm transition-all self-start sm:self-auto flex-shrink-0"
+          >
+            <MessageCircle className="w-4 h-4" />
+            <span>{isEn ? "Ask Boti on WhatsApp" : "Consultar a BOTI por WhatsApp"}</span>
+            <ExternalLink className="w-3.5 h-3.5" />
+          </a>
+        </div>
+
+        <div className="pt-2 border-t border-emerald-500/20 text-xs text-neutral-700 dark:text-neutral-300 space-y-1.5">
+          <p className="font-semibold text-neutral-900 dark:text-white">
+            {isEn ? "How to check any street block:" : "¿Cómo consultar una dirección específica?"}
+          </p>
+          <ul className="list-disc list-inside space-y-1 text-neutral-600 dark:text-neutral-300 leading-relaxed">
+            {isEn ? (
+              <>
+                <li>Send a WhatsApp message to <strong>+54 9 11 5050-0147</strong> or click the button above.</li>
+                <li>Type the exact address, for example: <em>&quot;Estacionamiento en Fitz Roy 1350&quot;</em> or <em>&quot;¿Puedo estacionar en Av. Córdoba 5550?&quot;</em>.</li>
+                <li>The official City bot will reply immediately confirming if parking is allowed on that exact block!</li>
+              </>
+            ) : (
+              <>
+                <li>Enviá un mensaje a BOTI al <strong>+54 9 11 5050-0147</strong> (o hace clic en el botón superior).</li>
+                <li>Escribile la dirección exacta, por ejemplo: <em>&quot;Estacionamiento en Fitz Roy 1350&quot;</em> o <em>&quot;¿Puedo estacionar en Av. Córdoba 5550?&quot;</em>.</li>
+                <li>BOTI te responderá de forma automática e inmediata confirmando la norma oficial vigente para esa cuadra.</li>
+              </>
+            )}
+          </ul>
         </div>
       </div>
 
