@@ -134,8 +134,8 @@ export default function CheckInPortal() {
                 </h3>
                 <p className="text-xs text-neutral-500 dark:text-neutral-400">
                   {lang === "en" 
-                    ? "15-page editorial guest guide ready to print or save offline." 
-                    : "Guía editorial de 15 páginas lista para imprimir o consultar offline."}
+                    ? "21-page editorial guest guide ready to print or save offline." 
+                    : "Guía editorial de 21 páginas lista para imprimir o consultar offline."}
                 </p>
               </div>
             </div>
