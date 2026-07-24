@@ -307,21 +307,25 @@ export default function StreetParkingGuide() {
           <p className="font-semibold text-neutral-900 dark:text-white">
             {isEn ? "How to check any street block:" : "¿Cómo consultar una dirección específica?"}
           </p>
-          <ul className="list-disc list-inside space-y-1 text-neutral-600 dark:text-neutral-300 leading-relaxed">
+          <ol className="list-decimal list-inside space-y-1.5 text-neutral-600 dark:text-neutral-300 leading-relaxed">
             {isEn ? (
               <>
-                <li>Send a WhatsApp message to <strong>+54 9 11 5050-0147</strong> or click the button above.</li>
-                <li>Type the exact address, for example: <em>&quot;Estacionamiento en Fitz Roy 1350&quot;</em> or <em>&quot;¿Puedo estacionar en Av. Córdoba 5550?&quot;</em>.</li>
-                <li>The official City bot will reply immediately confirming if parking is allowed on that exact block!</li>
+                <li>Send a WhatsApp message to BOTI at <strong>+54 9 11 5050-0147</strong> (or click the button above).</li>
+                <li>Write your query, e.g.: <em>&quot;Where to park on Fitz Roy&quot;</em>.</li>
+                <li>When BOTI shows the options menu (A, B, C, D, E), reply with letter <strong>B</strong> (By address).</li>
+                <li>Type the exact street block or intersection, e.g.: <em>&quot;Fitz Roy entre Niceto Vega y Av. Córdoba&quot;</em>.</li>
+                <li>BOTI will immediately reply with official City rules for that exact street block!</li>
               </>
             ) : (
               <>
-                <li>Enviá un mensaje a BOTI al <strong>+54 9 11 5050-0147</strong> (o hace clic en el botón superior).</li>
-                <li>Escribile la dirección exacta, por ejemplo: <em>&quot;Estacionamiento en Fitz Roy 1350&quot;</em> o <em>&quot;¿Puedo estacionar en Av. Córdoba 5550?&quot;</em>.</li>
-                <li>BOTI te responderá de forma automática e inmediata confirmando la norma oficial vigente para esa cuadra.</li>
+                <li>Enviá un mensaje a BOTI por WhatsApp al <strong>+54 9 11 5050-0147</strong> (o hacé clic en el botón superior).</li>
+                <li>Escribile tu duda, por ejemplo: <em>&quot;¿Puedo estacionar en Fitz Roy?&quot;</em>.</li>
+                <li>Cuando BOTI te despliegue el menú de opciones (A, B, C, D, E), respondé únicamente enviando la letra <strong>B</strong> (Por dirección).</li>
+                <li>Ingresá la calle y altura o intersección, por ejemplo: <em>&quot;Fitz Roy entre Niceto Vega y Av. Córdoba&quot;</em>.</li>
+                <li>BOTI te responderá de forma automática e inmediata con la norma oficial vigente para esa cuadra.</li>
               </>
             )}
-          </ul>
+          </ol>
 
           <p className="text-[11px] font-semibold text-emerald-800 dark:text-emerald-300 pt-1.5 border-t border-emerald-500/15 italic">
             {isEn
