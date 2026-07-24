@@ -260,11 +260,13 @@ export default function CheckInPortal() {
               <div className="bg-neutral-950 rounded-2xl overflow-hidden aspect-video border border-neutral-800 shadow-lg">
                 <video
                   className="w-full h-full object-cover bg-black"
-                  src="/cordoba5579/video/guia.mp4"
                   controls
                   autoPlay
                   playsInline
-                />
+                >
+                  <source src="/cordoba5579/video/guia-checkin-estilizada.webm" type="video/webm" />
+                  <source src="/cordoba5579/video/guia.mp4" type="video/mp4" />
+                </video>
               </div>
             ) : (
               <div 
