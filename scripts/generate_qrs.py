@@ -56,11 +56,22 @@ CODES = [
         "name": "whatsapp",
         "url": WHATSAPP_URL,
         "display_url": "wa.me/5491145379500",
-        "label_es": "Contacto Directo",
-        "label_en": "Direct Contact",
-        "sublabel_es": "WhatsApp Anfitrión",
-        "sublabel_en": "Host WhatsApp",
-        "color": "#5F6F52",         # Olive green
+        "label_es": "Contacto Anfitrión",
+        "label_en": "Contact Host",
+        "sublabel_es": "Jorge Orlando (+54 9 11 4537-9500)",
+        "sublabel_en": "Jorge Orlando (+54 9 11 4537-9500)",
+        "color": "#25D366",         # WhatsApp green
+        "bg": "#FAF9F7",
+    },
+    {
+        "name": "boti",
+        "url": "https://wa.me/5491150500147",
+        "display_url": "wa.me/5491150500147",
+        "label_es": "BOTI CABA Estacionamiento",
+        "label_en": "BOTI CABA Street Parking",
+        "sublabel_es": "Chatbot Oficial CABA (+54 9 11 5050-0147)",
+        "sublabel_en": "Official City WhatsApp Bot",
+        "color": "#25D366",         # WhatsApp green
         "bg": "#FAF9F7",
     },
     {

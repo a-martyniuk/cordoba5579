@@ -278,15 +278,18 @@ export default function StreetParkingGuide() {
       <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-2xl p-4 md:p-5 space-y-3">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#25D366] text-white flex items-center justify-center flex-shrink-0 shadow-md">
-              <MessageCircle className="w-5 h-5" />
-            </div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/cordoba5579/qr/qr_boti.png"
+              alt="QR BOTI CABA WhatsApp"
+              className="w-16 h-16 bg-white p-1 rounded-xl border border-emerald-500/30 shadow-sm flex-shrink-0"
+            />
             <div>
               <h4 className="font-bold text-sm md:text-base text-neutral-900 dark:text-white flex items-center gap-2">
                 <span>{isEn ? "Real-Time BOTI WhatsApp Verification (CABA)" : "Verificación en Tiempo Real por WhatsApp con BOTI (CABA)"}</span>
               </h4>
               <p className="text-xs text-neutral-600 dark:text-neutral-400">
-                {isEn ? "Official City of Buenos Aires Chatbot (+54 9 11 5050-0147)" : "Bot oficial de la Ciudad de Buenos Aires (+54 9 11 5050-0147)"}
+                {isEn ? "Official City Chatbot (+54 9 11 5050-0147) • Scan or click button" : "Bot oficial CABA (+54 9 11 5050-0147) • Escaneá el QR o usá el botón"}
               </p>
             </div>
           </div>

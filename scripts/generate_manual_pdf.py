@@ -287,32 +287,39 @@ def build_pdf(page_map=None):
         pass
     story.append(PageBreak())
     
-    # ---- PAGE 3: WELCOME ----
+    # ---- PAGE 3: WELCOME & PARKING ----
     story.append(Bookmark("welcome", page_map))
     story.append(Paragraph(t["welcome"]["title"], style_h1))
     story.append(Paragraph(t["welcome"]["subtitle"], style_h2))
-    story.append(Spacer(1, 12))
+    story.append(Spacer(1, 10))
     story.append(Paragraph(t["welcome"]["intro"], style_normal))
-    story.append(Spacer(1, 15))
+    story.append(Spacer(1, 12))
     story.append(Paragraph(t["welcome"]["directions_title"], style_h3))
     story.append(Paragraph(t["welcome"]["directions_intro"], style_normal))
-    story.append(Spacer(1, 8))
+    story.append(Spacer(1, 6))
     arrive_data = [[Paragraph(f"<b>{i['title']}</b>", style_normal_bold), Paragraph(i['content'], style_normal)] for i in t["welcome"]["directions"]]
-    story.append(build_card_table(arrive_data, [120, 340], padding=6))
-    story.append(Spacer(1, 15))
+    story.append(build_card_table(arrive_data, [120, 340], padding=5))
+    story.append(Spacer(1, 10))
 
-    # On-Street Parking Section
+    # On-Street Parking Section with BOTI QR Code
     if "parking_title" in t["welcome"]:
         story.append(Paragraph(t["welcome"]["parking_title"], style_h3))
         story.append(Paragraph(t["welcome"]["parking_intro"], style_normal))
-        story.append(Spacer(1, 8))
+        story.append(Spacer(1, 6))
         parking_data = [[Paragraph(f"<b>{i['title']}</b>", style_normal_bold), Paragraph(i['content'], style_normal)] for i in t["welcome"]["parking_items"]]
-        story.append(build_card_table(parking_data, [150, 310], padding=6))
+        story.append(build_card_table(parking_data, [150, 310], padding=5))
         story.append(Spacer(1, 8))
-        boti_box = Table([[Paragraph(t["welcome"]["boti_info"], style_card_body)]], colWidths=[460])
+
+        try:
+            qr_boti_img = RLImage("public/qr/qr_boti.png", width=65, height=65)
+            boti_box = Table([[qr_boti_img, Paragraph(t["welcome"]["boti_info"], style_card_body)]], colWidths=[75, 385])
+        except Exception:
+            boti_box = Table([[Paragraph(t["welcome"]["boti_info"], style_card_body)]], colWidths=[460])
+            
         boti_box.setStyle(TableStyle([
             ('BACKGROUND', (0,0), (-1,-1), HexColor('#E8F5E9')),
             ('BOX', (0,0), (-1,-1), 1, HexColor('#C8E6C9')),
+            ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
             ('PADDING', (0,0), (-1,-1), 8)
         ]))
         story.append(boti_box)
@@ -336,45 +343,61 @@ def build_pdf(page_map=None):
     story.append(caution_table)
     story.append(PageBreak())
     
-    # ---- PAGE 5: CLIMATE & SAFE & SOFA BED ----
+    # ---- PAGE 5: CLIMATE & SAFE ----
     story.append(Bookmark("climate_safe", page_map))
     story.append(Paragraph(t["climate_safe"]["title"], style_h1))
     story.append(Paragraph(t["climate_safe"]["subtitle"], style_h2))
-    story.append(Spacer(1, 10))
+    story.append(Spacer(1, 12))
     story.append(Paragraph(t["climate_safe"]["door"], style_normal))
-    story.append(Spacer(1, 10))
+    story.append(Spacer(1, 12))
     story.append(Paragraph(t["climate_safe"]["ac_intro"], style_normal))
-    story.append(Spacer(1, 6))
+    story.append(Spacer(1, 8))
     ac_data = [[Paragraph(f"<b>{i['title']}</b>", style_normal_bold), Paragraph(i['content'], style_normal)] for i in t["climate_safe"]["ac_items"]]
-    story.append(build_card_table(ac_data, [130, 330], padding=5))
-    story.append(Spacer(1, 10))
+    story.append(build_card_table(ac_data, [130, 330], padding=6))
+    story.append(Spacer(1, 15))
     story.append(Paragraph(t["climate_safe"]["safe_title"], style_h3))
     story.append(Paragraph(t["climate_safe"]["safe_content"], style_normal))
-    story.append(Spacer(1, 12))
+    story.append(PageBreak())
 
-    # Sofa Bed Guide with 6 Thumbnails
+    # ---- PAGE 6: DEDICATED SOFA BED GUIDE ----
     if "sofa_bed_title" in t["climate_safe"]:
-        story.append(Paragraph(t["climate_safe"]["sofa_bed_title"], style_h3))
-        story.append(Paragraph(t["climate_safe"]["sofa_bed_intro"], style_normal))
-        story.append(Spacer(1, 8))
+        story.append(Bookmark("sofabed", page_map))
+        story.append(Paragraph(t["climate_safe"]["sofa_bed_title"], style_h1))
+        story.append(Paragraph(t["climate_safe"]["sofa_bed_intro"], style_h2))
+        story.append(Spacer(1, 15))
 
         sofa_grid = []
         steps = t["climate_safe"]["sofa_bed_steps"]
-        # Build 3 columns per row (Row 1: steps 0,1,2; Row 2: steps 3,4,5)
-        for row_idx in range(0, 6, 3):
-            img_cells = []
-            txt_cells = []
-            for col_idx in range(3):
-                idx = row_idx + col_idx
-                img_path = f"public/img/sillon/{idx+1}.jpeg"
-                if os.path.exists(img_path):
-                    img = RLImage(img_path, width=140, height=85, kind='proportional')
-                else:
-                    img = Paragraph(f"Paso {idx+1}", style_normal)
-                img_cells.append(img)
-                txt_cells.append(Paragraph(f"<b>{steps[idx]['step']}</b><br/>{steps[idx]['content']}", style_card_body))
-            sofa_grid.append(img_cells)
-            sofa_grid.append(txt_cells)
+
+        # Row 1: Steps 1, 2, 3
+        row1 = []
+        for idx in range(3):
+            img_path = f"public/img/sillon/{idx+1}.jpeg"
+            img = RLImage(img_path, width=135, height=90, kind='proportional') if os.path.exists(img_path) else Paragraph(f"Paso {idx+1}", style_normal)
+            p = Paragraph(f"<b>{steps[idx]['step']}</b><br/>{steps[idx]['content']}", style_card_body)
+            cell_table = Table([[img], [Spacer(1, 4)], [p]], colWidths=[135])
+            cell_table.setStyle(TableStyle([
+                ('ALIGN', (0,0), (-1,-1), 'CENTER'),
+                ('VALIGN', (0,0), (-1,-1), 'TOP'),
+                ('PADDING', (0,0), (-1,-1), 2)
+            ]))
+            row1.append(cell_table)
+        sofa_grid.append(row1)
+
+        # Row 2: Steps 4, 5, 6
+        row2 = []
+        for idx in range(3, 6):
+            img_path = f"public/img/sillon/{idx+1}.jpeg"
+            img = RLImage(img_path, width=135, height=90, kind='proportional') if os.path.exists(img_path) else Paragraph(f"Paso {idx+1}", style_normal)
+            p = Paragraph(f"<b>{steps[idx]['step']}</b><br/>{steps[idx]['content']}", style_card_body)
+            cell_table = Table([[img], [Spacer(1, 4)], [p]], colWidths=[135])
+            cell_table.setStyle(TableStyle([
+                ('ALIGN', (0,0), (-1,-1), 'CENTER'),
+                ('VALIGN', (0,0), (-1,-1), 'TOP'),
+                ('PADDING', (0,0), (-1,-1), 2)
+            ]))
+            row2.append(cell_table)
+        sofa_grid.append(row2)
 
         sofa_table = Table(sofa_grid, colWidths=[150, 150, 150])
         sofa_table.setStyle(TableStyle([
@@ -383,11 +406,21 @@ def build_pdf(page_map=None):
             ('BACKGROUND', (0,0), (-1,-1), HexColor('#FAF9F7')),
             ('BOX', (0,0), (-1,-1), 1, COLOR_BORDER),
             ('INNERGRID', (0,0), (-1,-1), 0.5, COLOR_BORDER),
-            ('PADDING', (0,0), (-1,-1), 5)
+            ('PADDING', (0,0), (-1,-1), 8)
         ]))
         story.append(sofa_table)
+        story.append(Spacer(1, 15))
 
-    story.append(PageBreak())
+        # Additional tip box for sofa bed
+        sofa_tip = [[Paragraph("<b>CONSEJO DE SEGURIDAD PARA EL PLEGADO:</b><br/>Al volver a cerrar el sillón cama, levante desde el centro de la estructura metálica sin forzar las bisagras. Verifique que las sábanas o frazadas no queden enganchadas en los pliegues metálicos.", style_card_warning)]]
+        sofa_tip_table = Table(sofa_tip, colWidths=[460])
+        sofa_tip_table.setStyle(TableStyle([
+            ('BACKGROUND', (0,0), (-1,-1), HexColor('#FFF8E1')),
+            ('BOX', (0,0), (-1,-1), 1, HexColor('#FFE082')),
+            ('PADDING', (0,0), (-1,-1), 10)
+        ]))
+        story.append(sofa_tip_table)
+        story.append(PageBreak())
     
     # ---- PAGE 6: KITCHEN ----
     story.append(Bookmark("kitchen", page_map))
