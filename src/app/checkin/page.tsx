@@ -257,9 +257,9 @@ export default function CheckInPortal() {
           {/* Video Placeholder Card (Lazy Loading) */}
           <div className="w-full">
             {videoPlaying ? (
-              <div className="bg-neutral-950 rounded-2xl overflow-hidden aspect-video border border-neutral-800 shadow-lg">
+              <div className="bg-neutral-950 rounded-2xl overflow-hidden border border-neutral-800 shadow-lg flex items-center justify-center">
                 <video
-                  className="w-full h-full object-cover bg-black"
+                  className="w-full max-h-[75vh] object-contain bg-black rounded-2xl"
                   controls
                   autoPlay
                   playsInline
