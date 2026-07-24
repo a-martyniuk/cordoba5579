@@ -56,10 +56,17 @@ export default function SofaBedVideoGuide() {
 
             {/* Video Label Footer */}
             <div className="z-10 text-white space-y-1 pointer-events-none">
-              <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-emerald-400 bg-neutral-900/80 backdrop-blur-md px-2.5 py-0.5 rounded-full border border-emerald-400/30">
-                <Sparkles className="w-3 h-3" />
-                <span>{isEn ? "Video Tutorial (30s)" : "Tutorial en Video (30s)"}</span>
-              </span>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-emerald-400 bg-neutral-900/80 backdrop-blur-md px-2.5 py-0.5 rounded-full border border-emerald-400/30">
+                  <Sparkles className="w-3 h-3" />
+                  <span>{isEn ? "Video Tutorial (30s)" : "Tutorial en Video (30s)"}</span>
+                </span>
+                {isEn && (
+                  <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-amber-300 bg-neutral-900/80 backdrop-blur-md px-2.5 py-0.5 rounded-full border border-amber-300/30">
+                    <span>ENGLISH STEPS BELOW</span>
+                  </span>
+                )}
+              </div>
               <h4 className="font-serif font-bold text-base sm:text-xl text-white drop-shadow-md">
                 {isEn ? "How to open and fold the sofa bed" : "Cómo desplegar y cerrar el sillón cama"}
               </h4>
