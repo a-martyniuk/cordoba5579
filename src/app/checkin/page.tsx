@@ -254,37 +254,41 @@ export default function CheckInPortal() {
             <h3 className="font-serif text-base sm:text-lg font-bold text-neutral-900 dark:text-neutral-100">{t.chk_manualTitle}</h3>
           </div>
 
-          {/* Video Placeholder Card (Lazy Loading) */}
-          <div className="w-full">
-            {videoPlaying ? (
-              <div className="bg-neutral-950 rounded-2xl overflow-hidden border border-neutral-800 shadow-lg flex items-center justify-center">
-                <video
-                  className="w-full max-h-[75vh] object-contain bg-black rounded-2xl"
-                  controls
-                  autoPlay
-                  playsInline
+          {/* Video Placeholder Card (9:16 Vertical Reel Player) */}
+          <div className="w-full flex justify-center">
+            <div className="w-full max-w-sm">
+              {videoPlaying ? (
+                <div className="bg-neutral-950 rounded-3xl overflow-hidden aspect-[9/16] border border-neutral-800 shadow-2xl flex items-center justify-center">
+                  <video
+                    className="w-full h-full object-contain bg-black rounded-3xl"
+                    controls
+                    autoPlay
+                    playsInline
+                  >
+                    <source src="/cordoba5579/video/guia-checkin-estilizada.webm" type="video/webm" />
+                    <source src="/cordoba5579/video/guia.mp4" type="video/mp4" />
+                  </video>
+                </div>
+              ) : (
+                <div 
+                  onClick={() => setVideoPlaying(true)}
+                  className="bg-neutral-950 rounded-3xl overflow-hidden aspect-[9/16] relative flex flex-col justify-end p-5 border border-neutral-800 group shadow-xl cursor-pointer bg-cover bg-center transition-all hover:border-[#5F6F52]"
+                  style={{ backgroundImage: `url('/cordoba5579/video/guia-poster.jpg')` }}
                 >
-                  <source src="/cordoba5579/video/guia-checkin-estilizada.webm" type="video/webm" />
-                  <source src="/cordoba5579/video/guia.mp4" type="video/mp4" />
-                </video>
-              </div>
-            ) : (
-              <div 
-                onClick={() => setVideoPlaying(true)}
-                className="bg-neutral-950 rounded-2xl overflow-hidden aspect-video relative flex flex-col justify-end p-4 border border-neutral-800 group shadow-inner cursor-pointer bg-cover bg-center"
-                style={{ backgroundImage: `url('/cordoba5579/video/guia-poster.jpg')` }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-900/40 to-transparent flex items-center justify-center">
-                  <div className="w-16 h-16 bg-[#5F6F52]/95 hover:bg-[#5F6F52] text-white rounded-full flex items-center justify-center shadow-lg transition-all active:scale-95 group-hover:scale-105">
-                    <span className="text-2xl ml-1">▶</span>
+                  <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/90 via-neutral-900/20 to-transparent flex items-center justify-center">
+                    <div className="w-16 h-16 bg-[#5F6F52]/95 hover:bg-[#5F6F52] text-white rounded-full flex items-center justify-center shadow-2xl transition-all active:scale-95 group-hover:scale-110">
+                      <span className="text-2xl ml-1">▶</span>
+                    </div>
+                  </div>
+                  <div className="z-10 text-white space-y-1 pointer-events-none">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-2.5 py-1 rounded-full inline-block">
+                      {t.chk_videoLabel}
+                    </span>
+                    <h5 className="font-bold text-sm sm:text-base leading-snug">{t.chk_videoTitle}</h5>
                   </div>
                 </div>
-                <div className="z-10 text-white space-y-0.5 pointer-events-none">
-                  <span className="text-[9px] font-bold uppercase tracking-wider text-emerald-400">{t.chk_videoLabel}</span>
-                  <h5 className="font-bold text-xs sm:text-sm">{t.chk_videoTitle}</h5>
-                </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
 
           {/* Steps list */}
