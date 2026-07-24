@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Key, Wifi, Copy, Check, ShieldAlert, Clock, ArrowLeft, Phone, Moon, Sun } from "lucide-react";
+import { Key, Wifi, Copy, Check, ShieldAlert, Clock, ArrowLeft, Phone, Moon, Sun, Download, FileText } from "lucide-react";
 import { useLanguage } from "../../context/LanguageContext";
 import { useTheme } from "../../context/ThemeContext";
 import Link from "next/link";
@@ -114,6 +114,45 @@ export default function CheckInPortal() {
       </div>
 
       <div className="max-w-2xl mx-auto px-4 sm:px-6 mt-10 space-y-8">
+        {/* PDF Manual Download Banner */}
+        <motion.div 
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.05 }}
+          className={`border rounded-3xl p-5 shadow-sm transition-colors duration-300 ${
+            darkMode ? "bg-[#1E211D] border-[#2C302A]" : "bg-white border-[#EFEBE4]"
+          }`}
+        >
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="flex items-center gap-3.5">
+              <div className="w-11 h-11 rounded-2xl bg-[#5F6F52]/10 border border-[#5F6F52]/20 text-[#5F6F52] dark:text-[#889B73] flex items-center justify-center flex-shrink-0">
+                <FileText className="w-6 h-6" />
+              </div>
+              <div className="space-y-0.5">
+                <h3 className="font-serif text-base sm:text-lg font-bold text-neutral-900 dark:text-neutral-100">
+                  {lang === "en" ? "Official Print Manual (PDF)" : "Manual Completo de la Casa (PDF)"}
+                </h3>
+                <p className="text-xs text-neutral-500 dark:text-neutral-400">
+                  {lang === "en" 
+                    ? "15-page editorial guest guide ready to print or save offline." 
+                    : "Guía editorial de 15 páginas lista para imprimir o consultar offline."}
+                </p>
+              </div>
+            </div>
+
+            <a
+              href="/cordoba5579/manual_cordoba5579.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              download="manual_cordoba5579.pdf"
+              className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#5F6F52] hover:bg-[#4F5D43] dark:bg-[#889B73] dark:hover:bg-[#778A62] text-white font-bold rounded-2xl text-xs shadow-md hover:shadow-lg transition-all active:scale-95 flex-shrink-0"
+            >
+              <Download className="w-4 h-4" />
+              <span>{lang === "en" ? "Download PDF Manual" : "Descargar Manual PDF"}</span>
+            </a>
+          </div>
+        </motion.div>
+
         {/* Welcome Card */}
         <motion.div 
           initial={{ opacity: 0, y: 15 }}
