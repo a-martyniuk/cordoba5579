@@ -254,13 +254,13 @@ export default function CheckInPortal() {
             <h3 className="font-serif text-base sm:text-lg font-bold text-neutral-900 dark:text-neutral-100">{t.chk_manualTitle}</h3>
           </div>
 
-          {/* Video Placeholder Card (9:16 Vertical Reel Player) */}
+          {/* Video Placeholder Card (Tight Fit Vertical Reel Player) */}
           <div className="w-full flex justify-center">
-            <div className="w-full max-w-sm">
+            <div className="w-full max-w-[340px] sm:max-w-[360px]">
               {videoPlaying ? (
-                <div className="bg-neutral-950 rounded-3xl overflow-hidden aspect-[9/16] border border-neutral-800 shadow-2xl flex items-center justify-center">
+                <div className="bg-neutral-950 rounded-3xl overflow-hidden border border-neutral-800 shadow-2xl">
                   <video
-                    className="w-full h-full object-contain bg-black rounded-3xl"
+                    className="w-full h-auto block rounded-3xl"
                     controls
                     autoPlay
                     playsInline
@@ -272,15 +272,20 @@ export default function CheckInPortal() {
               ) : (
                 <div 
                   onClick={() => setVideoPlaying(true)}
-                  className="bg-neutral-950 rounded-3xl overflow-hidden aspect-[9/16] relative flex flex-col justify-end p-5 border border-neutral-800 group shadow-xl cursor-pointer bg-cover bg-center transition-all hover:border-[#5F6F52]"
-                  style={{ backgroundImage: `url('/cordoba5579/video/guia-poster.jpg')` }}
+                  className="bg-neutral-950 rounded-3xl overflow-hidden relative flex flex-col justify-end border border-neutral-800 group shadow-xl cursor-pointer transition-all hover:border-[#5F6F52]"
                 >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/cordoba5579/video/guia-poster.jpg"
+                    alt="Poster Guía Check-in"
+                    className="w-full h-auto block object-cover rounded-3xl"
+                  />
                   <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/90 via-neutral-900/20 to-transparent flex items-center justify-center">
                     <div className="w-16 h-16 bg-[#5F6F52]/95 hover:bg-[#5F6F52] text-white rounded-full flex items-center justify-center shadow-2xl transition-all active:scale-95 group-hover:scale-110">
                       <span className="text-2xl ml-1">▶</span>
                     </div>
                   </div>
-                  <div className="z-10 text-white space-y-1 pointer-events-none">
+                  <div className="absolute bottom-5 left-5 right-5 z-10 text-white space-y-1 pointer-events-none">
                     <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-2.5 py-1 rounded-full inline-block">
                       {t.chk_videoLabel}
                     </span>
