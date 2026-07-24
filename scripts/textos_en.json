@@ -1,0 +1,216 @@
+{
+  "cover": {
+    "title": "CÓRDOBA 5579",
+    "subtitle": "PALERMO HOLLYWOOD",
+    "tag": "WELCOME GUIDE & HOUSE MANUAL",
+    "footer": "Unit 101  •  Buenos Aires, Argentina"
+  },
+  "toc_page": {
+    "title": "Index & Quick Information",
+    "subtitle": "Quick Start Guide",
+    "quick_info": [
+      {
+        "title": "WI-FI NETWORK:",
+        "content": "SSID: Cordoba5579_Guest<br/>Password: Welcome101"
+      },
+      {
+        "title": "STAY SCHEDULE:",
+        "content": "Check-In: 3:00 PM (15:00 hs)<br/>Check-Out: 11:00 AM (11:00 hs)"
+      },
+      {
+        "title": "HOST CONTACT:",
+        "content": "Jorge Orlando: +54 9 11 4537-9500<br/>Emergencies: 911 (SAME Urgent: 107)"
+      },
+      {
+        "title": "GUEST PORTAL:",
+        "content": "alexismartyniuk.com.ar/cordoba5579<br/>Interactive maps, chat & real-time guides."
+      }
+    ],
+    "toc_header": "TABLE OF CONTENTS:"
+  },
+  "welcome": {
+    "title": "Welcome to Córdoba 5579",
+    "subtitle": "Welcome Letter & Directions",
+    "intro": "Hello and welcome to Buenos Aires!<br/><br/>We are delighted to have you as our guest at Córdoba 5579. This apartment was thoughtfully designed and equipped to offer you a premium, comfortable, and unforgettable stay in one of the city's finest neighborhoods: Palermo Hollywood.<br/><br/>We have prepared this detailed house manual to help you get acquainted with the apartment, its appliances, and building rules. Please read it carefully to ensure a seamless and enjoyable experience.<br/><br/>Jorge Orlando (project manager) and our entire team are at your complete disposal to assist you. Enjoy your stay!",
+    "directions_title": "How to Get Here",
+    "directions_intro": "The building is located at <b>Av. Córdoba 5579</b>, between Fitz Roy and Humboldt streets, Palermo Hollywood, CABA.",
+    "directions": [
+      {"title": "By Car or Ride-Hailing Apps:", "content": "From Ezeiza (EZE) or Aeroparque (AEP), <b>we strongly recommend using Uber or Cabify</b> for safety and convenient payment. Access is direct via Av. Córdoba. The building has no private garage; paid commercial garages are 50m away."},
+      {"title": "By Subway (Line D):", "content": "The nearest stations are <b>Ministro Carranza</b> (5 blocks away) or <b>Palermo</b>. Line D connects directly to Downtown, Plaza de Mayo, and Recoleta."},
+      {"title": "By Train (Mitre Line):", "content": "<b>Ministro Carranza Station</b> (Mitre Line) is located just 5 blocks from the building."},
+      {"title": "By Bus (Metrobus):", "content": "Multiple bus lines stop right in front on Av. Córdoba (140, 151, 168) or nearby on Av. Santa Fe and Av. Juan B. Justo Metrobus corridors."}
+    ],
+    "parking_title": "On-Street Free Parking Guide (Official BOTI CABA Data - July 23, 2026)",
+    "parking_intro": "Official transit regulations verified via City of Buenos Aires BOTI chatbot:",
+    "parking_items": [
+      {"title": "Fitz Roy 1301-1400 (50m away):", "content": "<b>FREE 24/7 PARKING permitted on BOTH SIDES</b>. Top recommendation ⭐️"},
+      {"title": "Humboldt 1301-1400 (100m away):", "content": "<b>FREE 24/7 RIGHT SIDE ONLY</b> (left side prohibited 24/7)."},
+      {"title": "Av. Niceto Vega 5513-5600 (150m away):", "content": "<b>FREE 24/7 RIGHT SIDE ONLY</b>."},
+      {"title": "Castillo 1301-1400 (200m away):", "content": "<b>FREE 24/7 PARKING on BOTH SIDES</b>."},
+      {"title": "Av. Córdoba 5500 (in front):", "content": "Right side permitted OVERNIGHT (9 PM - 7 AM) & Weekends/Holidays 24h. Prohibited weekdays 7 AM - 9 PM."}
+    ],
+    "boti_info": "<b>Real-Time Verification on WhatsApp with BOTI (+54 9 11 5050-0147):</b> Send a WhatsApp message -> Select Option <b>B</b> (By Address) -> Type the street block (e.g., <i>'Fitz Roy entre Niceto Vega y Av. Córdoba'</i>) for instant official rules."
+  },
+  "local_tips": {
+    "title": "Local Tourist Survival Tips",
+    "subtitle": "Money, transport & essential tips",
+    "intro": "Essential information for international travelers visiting Buenos Aires:",
+    "items": [
+      {"title": "PUBLIC TRANSPORT (SUBE Card)", "content": "In Buenos Aires, buses and subways do not accept cash. You must buy a rechargeable <b>SUBE card</b> (available at subway stations or large kiosks) and top it up before riding. One card can be shared by multiple travelers on the same journey."},
+      {"title": "MONEY & EXCHANGE RATES (USD in Argentina)", "content": "Argentina operates with multiple exchange rates. Key options for tourists:<br/>• <b>Official Dollar:</b> Traditional bank rate, least favorable for tourists.<br/>• <b>Blue Dollar (Parallel):</b> Free market rate, higher value. Traded in cash at exchange houses.<br/>• <b>MEP Dollar (Card):</b> <b>The recommended option!</b> Paying with foreign credit/debit cards (Visa/Mastercard) automatically converts your spend at near-Blue rates. It is safe, legal, and convenient for restaurants and supermarkets.<br/><br/><i>Scan the QR code to check real-time exchange rates.</i>", "qr_link": "https://dolarhoy.com/"}
+    ]
+  },
+  "checkin": {
+    "title": "Self Check-In Guide",
+    "subtitle": "Step-by-step entry instructions",
+    "intro": "For your convenience and schedule flexibility, check-in is 100% autonomous starting at <b>3:00 PM (15:00 hs)</b>. Please follow these detailed steps to enter:",
+    "steps": [
+      {"step": "STEP 1", "content": "Locate the metal key lockbox labeled <b>'Depto 101'</b> installed on the outer wall to the right of the building main entrance (Av. Córdoba 5579)."},
+      {"step": "STEP 2", "content": "Enter the 4-digit combination code sent to you via Airbnb message a few hours prior to arrival."},
+      {"step": "STEP 3", "content": "Slide the side release latch down and open the lockbox compartment to retrieve your set of keys."},
+      {"step": "STEP 4", "content": "Tap the blue/black magnetic fob against the circular electronic reader on the entrance wall. The glass lobby door will unlock automatically."},
+      {"step": "STEP 5", "content": "Enter the lobby and head up to the 1st floor via elevator or stairs. Apartment is <b>Unit 101</b>. Use the physical key to unlock the main front door."}
+    ],
+    "caution_title": "SECURITY WARNING:",
+    "caution": "• Never share the lockbox code with unregistered third parties.<br/>• After taking the keys, close the lockbox and scramble the number dials so the code is not exposed."
+  },
+  "rules": {
+    "title": "House & Building Rules",
+    "subtitle": "Community guidelines & regulations",
+    "intro": "To ensure a pleasant stay and maintain great relations with building neighbors, please strictly observe the internal regulations:",
+    "items": [
+      {"title": "NO SMOKING", "content": "Smoking traditional or electronic cigarettes inside the apartment, balcony, or hallways is strictly prohibited. Smoking is only allowed outdoors on the 11th-floor rooftop terrace."},
+      {"title": "NO PETS", "content": "Pets of any kind are not permitted under any circumstances."},
+      {"title": "QUIET HOURS & NO PARTIES", "content": "Parties, events, and loud noise are strictly prohibited. Building quiet hours are from 10:00 PM to 8:00 AM. Please respect neighbors' rest."},
+      {"title": "NO UNREGISTERED GUESTS", "content": "For safety, common amenities (pool, SUM, laundry) are strictly for registered guests. External visitors are not allowed in amenity areas."},
+      {"title": "DRESS CODE", "content": "Walking shirtless or in swimwear in hallways, elevators, or lobby is strictly prohibited. Proper attire is required (swimwear allowed only in pool area)." }
+    ],
+    "penalty": "<b>PENALTIES & FINES:</b> Violations of building regulations incur heavy HOA fines, which will be charged directly to the guest."
+  },
+  "climate_safe": {
+    "title": "Apartment Guide - Access & Climate",
+    "subtitle": "Door locks, air conditioning & safe box",
+    "door": "<b>1. Main Door Lock:</b><br/>The front door lock automatically latches upon closing. Push or pull firm to ensure it catches properly.<br/><b>Important!</b> Always carry your keys with you when stepping out to prevent lockouts.",
+    "ac_intro": "<b>2. Air Conditioning & Climate:</b><br/>The apartment features two split AC units (living room & bedroom) with hot/cool modes.",
+    "ac_items": [
+      {"title": "Turning On:", "content": "Use the remote control for each unit. Press power and select COOL or HEAT mode."},
+      {"title": "Recommended Temp:", "content": "Set to 24 °C (75 °F) in summer and 22 °C (71 °F) in winter for optimal energy efficiency."},
+      {"title": "Common Mistakes:", "content": "Do not operate AC units with windows or balcony door open. This overworks the compressor and reduces cooling efficiency."},
+      {"title": "Eco Friendly:", "content": "Always turn off AC units when leaving the apartment to conserve energy."}
+    ],
+    "safe_title": "3. Bedroom Safe Box:",
+    "safe_content": "A mechanical key-operated safe box is located inside the bedroom closet for your valuables.<br/><b>Note:</b> The key to the safe is attached to your main apartment key ring.",
+    "sofa_bed_title": "4. Sofa Bed Setup Guide (Living Room):",
+    "sofa_bed_intro": "The living room includes a comfortable 2-person pull-out sofa bed. Follow these step-by-step instructions:",
+    "sofa_bed_steps": [
+      {"step": "Step 1", "content": "Remove backrest cushions and set aside."},
+      {"step": "Step 2", "content": "Pull the lower metal handle upward and outward."},
+      {"step": "Step 3", "content": "Unfold the metal frame leg supports onto the floor."},
+      {"step": "Step 4", "content": "Extend the foldable mattress completely."},
+      {"step": "Step 5", "content": "Fitted sheet with 600h Egyptian cotton bed linens."},
+      {"step": "Step 6", "content": "Arrange extra pillows (located in bedroom closet)."}
+    ]
+  },
+  "kitchen": {
+    "title": "Apartment Guide - Kitchen & Minibar",
+    "subtitle": "Appliances, coffee maker & wine cellar",
+    "intro": "The kitchen is fully equipped with Samsung appliances and Carol dinnerware for your stay:",
+    "items": [
+      {"title": "Electric Cooktop:", "content": "Electric resistance burner. Do not place wet pan bottoms on hot elements and allow to cool before cleaning. <b>No built-in wall oven</b>."},
+      {"title": "Countertop Oven & Air Fryer:", "content": "Includes a countertop electric oven combined with Air Fryer. Use wooden or silicone tools to protect non-stick surfaces."},
+      {"title": "Coffee Maker & Milk Frother:", "content": "Specialty coffee maker with built-in milk frother. Ideal for espresso, lattes, or cappuccino. Clean filter after use."},
+      {"title": "Fridge, Microwave & Toaster:", "content": "Samsung refrigerator with digital temp control. No metals in microwave. Electric kettle and toaster are on the counter."},
+      {"title": "Rice Cooker & Blender:", "content": "High-power blender with glass jar and electric rice cooker for quick meal prep."}
+    ],
+    "cava_title": "Wine Cellar & Minibar (Extra Charge)",
+    "cava_content": "The wine fridge in the kitchen features curated Argentinian wines (Malbec, Cabernet, Torrontés), sparkling wines, and Fernet with Coke.<br/>• <b>Menu & Prices:</b> Scan the QR code or visit <font color='#5F6F52'>alexismartyniuk.com.ar/cordoba5579/cava</font><br/>• <b>Unlock & Restock:</b> Contact host Jorge on WhatsApp to get the lock combination or request bottle restocks."
+  },
+  "amenities": {
+    "title": "Building Amenities - Laundry & SUM",
+    "subtitle": "Rooftop terrace, pool & laundry room",
+    "laundry_intro": "<b>1. Shared Building Laundry:</b>",
+    "laundry_items": [
+      {"title": "Location:", "content": "Located on the <b>10th floor</b>. Free for guests."},
+      {"title": "Washing Machines:", "content": "Commercial washing machines available. Detergent is not included (can be bought at local supermarkets)."},
+      {"title": "Drying:", "content": "There is no tumble dryer. A portable clothes drying rack is provided inside your apartment closet."}
+    ],
+    "sum_intro": "<b>2. Rooftop Terrace & Barbecue (SUM):</b>",
+    "sum_items": [
+      {"title": "Swimming Pool:", "content": "Located on the 9th/11th floor rooftop. Open during season until 8:00 PM. Taking a shower before entering is mandatory."},
+      {"title": "SUM / Grill (Parrilla):", "content": "Rooftop event lounge with Argentine grill. Requires prior reservation and cleaning fee ($10,000 ARS). Keys on 8th floor."}
+    ]
+  },
+  "guide": {
+    "title": "Neighborhood Guide & Top Attractions",
+    "subtitle": "Palermo Hollywood highlights near Córdoba 5579",
+    "intro": "Palermo Hollywood is famous for gastronomy, specialty coffee, and nightlife. Top recommendations within walking distance:",
+    "items": [
+      {"title": "Movistar Arena (5 min walk):", "content": "Concert venue just 5 blocks away. Ideal location for show attendees."},
+      {"title": "Mercado de las Pulgas (3 blocks):", "content": "Iconic vintage & antique market on Av. Alvarez Thomas & Dorrego."},
+      {"title": "Gastronomy & Bars:", "content": "Surrounded by top spots like Cuervo Café, Frank's Bar, Uptown, Don Julio Parrilla, and El Preferido de Palermo."},
+      {"title": "Plaza Serrano & Armenia (15 min):", "content": "Flea markets, designer boutiques, outdoor bars, and vibrant street art."}
+    ],
+    "tip": "Tip: Open our interactive map on the guest portal to navigate all spots with live GPS navigation."
+  },
+  "cleaning": {
+    "title": "Cleaning, Trash & Hygiene",
+    "subtitle": "Disposal rules & towel replacement",
+    "garbage": "<b>Trash & Recycling:</b><br/>Please deposit bagged trash in the building refuse room located on the 1st floor near the elevator. Recyclables (clean paper, plastic, glass) can be disposed of in green street bins.",
+    "plumbing_intro": "<b>Plumbing & Toilet Care:</b>",
+    "plumbing_warning": "<b>IMPORTANT: DO NOT FLUSH SANITARY PADS, WIPES, OR PAPER TOWELS DOWN THE TOILET.</b><br/>Argentine plumbing systems clog easily. Use trash bins provided.",
+    "linen": "<b>Linens & Towels Policy:</b><br/>• Stays 7+ nights: Fresh towel set provided.<br/>• Stays 14+ nights: Full sheet & towel replacement + complimentary light cleaning."
+  },
+  "security": {
+    "title": "Security, Outages & Emergencies",
+    "subtitle": "Emergency numbers & safety guidelines",
+    "intro": "Essential contacts and procedures for peace of mind:",
+    "items": [
+      {"title": "General Police (Emergency):", "content": "Call <b>911</b>"},
+      {"title": "SAME Medical Emergency:", "content": "Call <b>107</b>"},
+      {"title": "Fire Department:", "content": "Call <b>100</b>"},
+      {"title": "Host Jorge (24/7 Urgent):", "content": "Call or WhatsApp <b>+54 9 11 4537-9500</b>"}
+    ]
+  },
+  "inventory": {
+    "title": "Apartment Inventory List",
+    "intro": "Tableware, cookware, and equipment provided in Unit 101:",
+    "headers": ["ITEM / APPLIANCE", "QTY", "LOCATION / DETAIL"],
+    "warning": "Please report any broken or missing items upon check-in. Guests are responsible for damages during stay."
+  },
+  "faq": {
+    "title": "Frequently Asked Questions (FAQs)",
+    "subtitle": "Quick answers to common questions",
+    "items": [
+      {"q": "What is the Wi-Fi password?", "a": "Network: Cordoba5579_Guest / Password: Welcome101"},
+      {"q": "Where can I park on the street for free?", "a": "Fitz Roy St (1300 block) is 50m away and free 24/7 on both sides. Check our BOTI CABA guide in section 1."},
+      {"q": "Can I leave luggage before check-in or after check-out?", "a": "Luggage storage depends on availability. Contact host Jorge on WhatsApp to arrange."},
+      {"q": "Is tap water safe to drink?", "a": "Yes, tap water in Buenos Aires is drinkable, though bottled water is widely preferred for taste."}
+    ]
+  },
+  "checkout": {
+    "title": "Check-Out Checklist",
+    "subtitle": "Steps before departing by 11:00 AM",
+    "intro": "Check-out time is strictly <b>11:00 AM</b>. Please follow these departure steps:",
+    "steps": [
+      "1. Turn off all air conditioning units and lights.",
+      "2. Close all windows and balcony door firmly.",
+      "3. Wash used dishes and clear kitchen trash.",
+      "4. Lock the main apartment door with the physical key.",
+      "5. Drop all key sets into the building ground-floor mailbox labeled '101' (or lockbox as agreed)."
+    ],
+    "thank_you_title": "Thank You for Staying With Us!",
+    "thank_you_text": "We hope you enjoyed Palermo Hollywood! Safe travels ahead.",
+    "review_qr": "<b>LEAVE A REVIEW ON AIRBNB:</b> Scan the QR code to review your stay on Airbnb. Your 5-star feedback means the world to us!"
+  },
+  "back_cover": {
+    "contact": "<b>CÓRDOBA 5579 - PALERMO HOLLYWOOD</b><br/>Host: Jorge Orlando (+54 9 11 4537-9500)<br/>Web: alexismartyniuk.com.ar/cordoba5579",
+    "qr_label": "Scan to open the interactive digital portal on your phone",
+    "thank_you": "THANK YOU FOR VISITING BUENOS AIRES!"
+  },
+  "shared": {
+    "qr_portal": "Digital Guide & Interactive Maps",
+    "qr_whatsapp": "WhatsApp Host Contact",
+    "qr_cava_inv": "Digital Menu & Inventory",
+    "qr_cava_chat": "Contact Jorge for Wine Key"
+  }
+}

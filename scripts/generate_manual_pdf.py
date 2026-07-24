@@ -15,12 +15,15 @@ from reportlab.graphics.barcode import qr
 from reportlab.graphics.shapes import Drawing
 from reportlab.lib.utils import ImageReader
 OUTPUT_DIR = "public"
-OUTPUT_PDF = os.path.join(OUTPUT_DIR, "manual_cordoba5579.pdf")
 
-# Load Texts
-TEXTS_FILE = os.path.join(os.path.dirname(__file__), "textos_es.json")
-with open(TEXTS_FILE, "r", encoding="utf-8") as f:
-    t = json.load(f)
+t = None
+CURRENT_LANG = "es"
+
+def load_texts(lang="es"):
+    filename = f"textos_{lang}.json"
+    texts_file = os.path.join(os.path.dirname(__file__), filename)
+    with open(texts_file, "r", encoding="utf-8") as f:
+        return json.load(f)
 
 # Register system fonts with fallback
 def register_fonts():
@@ -128,19 +131,16 @@ class NumberedCanvas(canvas.Canvas):
         
         self.setFont(FONTS["Georgia-Italic"], 9)
         self.setFillColor(COLOR_GRAY)
-        self.drawRightString(W - 64, 805, "Manual del Huésped")
+        header_title = "Guest House Manual" if CURRENT_LANG == "en" else "Manual del Huésped"
+        self.drawRightString(W - 64, 805, header_title)
         
         self.setStrokeColor(COLOR_BORDER)
         self.setLineWidth(1)
         self.line(64, 795, W - 64, 795)
-        
-        self.line(64, 50, W - 64, 50)
-        
-        self.setFont(FONTS["SegoeUI"], 8)
-        self.setFillColor(COLOR_GRAY)
-        self.drawString(64, 34, "alexismartyniuk.com.ar/cordoba5579")
-        self.drawRightString(W - 64, 34, f"Página {self._pageNumber} de {page_count}")
-        
+
+        self.drawString(64, 40, "alexismartyniuk.com.ar/cordoba5579")
+        page_str = f"Page {self._pageNumber} of {page_count}" if CURRENT_LANG == "en" else f"Página {self._pageNumber} de {page_count}"
+        self.drawRightString(W - 64, 40, page_str)
         self.restoreState()
 
 class Bookmark(Flowable):
@@ -166,11 +166,16 @@ def build_card_table(data, col_widths, background=COLOR_LIGHT_BG, border=COLOR_B
     ]))
     return table
 
-def build_pdf(page_map=None):
+def build_pdf(page_map=None, lang="es"):
+    global t, CURRENT_LANG
+    CURRENT_LANG = lang
+    t = load_texts(lang)
     if page_map is None:
         page_map = {}
         
-    doc = SimpleDocTemplate(OUTPUT_PDF, pagesize=A4, leftMargin=68, rightMargin=68, topMargin=75, bottomMargin=75)
+    output_filename = "manual_cordoba5579.pdf" if lang == "es" else f"manual_cordoba5579_{lang}.pdf"
+    output_path = os.path.join(OUTPUT_DIR, output_filename)
+    doc = SimpleDocTemplate(output_path, pagesize=A4, leftMargin=68, rightMargin=68, topMargin=75, bottomMargin=75)
     styles = getSampleStyleSheet()
     
     style_normal = ParagraphStyle('AppNormal', parent=styles['Normal'], fontName=FONTS['SegoeUI'], fontSize=10, leading=15, textColor=COLOR_DARK)
@@ -691,8 +696,11 @@ def build_pdf(page_map=None):
     return page_map
 
 if __name__ == "__main__":
-    print("Pass 1: Rendering layout to calculate dynamic TOC page numbers...")
-    pages = build_pdf()
-    print("Pass 2: Re-rendering with dynamic TOC...")
-    build_pdf(page_map=pages)
-    print(f"Successfully generated {OUTPUT_PDF}")
+    for l in ["es", "en"]:
+        print(f"\n--- Generating [{l.upper()}] PDF Manual ---")
+        print("Pass 1: Rendering layout to calculate dynamic TOC page numbers...")
+        pages = build_pdf(lang=l)
+        print("Pass 2: Re-rendering with dynamic TOC...")
+        build_pdf(page_map=pages, lang=l)
+        out_name = f"public/manual_cordoba5579{'' if l == 'es' else '_' + l}.pdf"
+        print(f"Successfully generated {out_name}")

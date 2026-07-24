@@ -141,10 +141,10 @@ export default function CheckInPortal() {
             </div>
 
             <a
-              href="/cordoba5579/manual_cordoba5579.pdf"
+              href={lang === "en" ? "/cordoba5579/manual_cordoba5579_en.pdf" : "/cordoba5579/manual_cordoba5579.pdf"}
               target="_blank"
               rel="noopener noreferrer"
-              download="manual_cordoba5579.pdf"
+              download={lang === "en" ? "manual_cordoba5579_en.pdf" : "manual_cordoba5579.pdf"}
               className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#5F6F52] hover:bg-[#4F5D43] dark:bg-[#889B73] dark:hover:bg-[#778A62] text-white font-bold rounded-2xl text-xs shadow-md hover:shadow-lg transition-all active:scale-95 flex-shrink-0"
             >
               <Download className="w-4 h-4" />
