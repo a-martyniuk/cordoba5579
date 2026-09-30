@@ -217,21 +217,21 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
-            <div className="flex-shrink-0">
-              <a href="#" className="font-serif text-lg md:text-xl font-bold tracking-widest text-neutral-900 dark:text-white">
+            <div className="flex-shrink-0 mr-6 lg:mr-10">
+              <a href="#" className="font-serif text-lg md:text-xl font-bold tracking-widest text-neutral-900 dark:text-white whitespace-nowrap">
                 CÓRDOBA 5579
               </a>
             </div>
 
             {/* Desktop Navigation Links */}
             <div className="hidden lg:flex items-center space-x-5 xl:space-x-8 text-[11px] xl:text-xs font-semibold tracking-wider text-neutral-600 dark:text-neutral-300">
-              <a href="#detalles" className="hover:text-neutral-900 dark:hover:text-white transition-colors">{t.navDept}</a>
-              <a href="#amenidades" className="hover:text-neutral-900 dark:hover:text-white transition-colors">{t.navAmen}</a>
-              <Link href="/inventario" className="hover:text-neutral-900 dark:hover:text-white transition-colors">{t.navInve}</Link>
-              <a href="#resenas" className="hover:text-neutral-900 dark:hover:text-white transition-colors">{t.reviewsTitle.toUpperCase()}</a>
-              <a href="#barrio" className="hover:text-neutral-900 dark:hover:text-white transition-colors">{t.navBarr}</a>
-              <a href="#reglas" className="hover:text-neutral-900 dark:hover:text-white transition-colors">{t.navNorm}</a>
-              <a href="#faq" className="hover:text-neutral-900 dark:hover:text-white transition-colors">{t.navFaq}</a>
+              <a href="#detalles" className="hover:text-neutral-900 dark:hover:text-white transition-colors whitespace-nowrap">{t.navDept}</a>
+              <a href="#amenidades" className="hover:text-neutral-900 dark:hover:text-white transition-colors whitespace-nowrap">{t.navAmen}</a>
+              <Link href="/inventario" className="hover:text-neutral-900 dark:hover:text-white transition-colors whitespace-nowrap">{t.navInve}</Link>
+              <a href="#resenas" className="hover:text-neutral-900 dark:hover:text-white transition-colors whitespace-nowrap">{t.reviewsTitle.toUpperCase()}</a>
+              <a href="#barrio" className="hover:text-neutral-900 dark:hover:text-white transition-colors whitespace-nowrap">{t.navBarr}</a>
+              <a href="#reglas" className="hover:text-neutral-900 dark:hover:text-white transition-colors whitespace-nowrap">{t.navNorm}</a>
+              <a href="#faq" className="hover:text-neutral-900 dark:hover:text-white transition-colors whitespace-nowrap">{t.navFaq}</a>
             </div>
 
             {/* Language Switcher and CTA Button */}
