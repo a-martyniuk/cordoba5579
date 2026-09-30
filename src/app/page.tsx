@@ -61,6 +61,24 @@ export default function Home() {
   const [messages, setMessages] = useState<Array<{ sender: "ai" | "user"; text: string }>>([]);
   const [inputValue, setInputValue] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [liveRating, setLiveRating] = useState<number>(airbnbDetails.rating || 5.0);
+  const [liveReviewsCount, setLiveReviewsCount] = useState<number>(airbnbDetails.reviewsCount || 4);
+
+  useEffect(() => {
+    async function fetchStats() {
+      try {
+        const res = await fetch("/cordoba5579/api/airbnb-stats");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.rating) setLiveRating(data.rating);
+          if (data.reviewsCount) setLiveReviewsCount(data.reviewsCount);
+        }
+      } catch {
+        // Fallback
+      }
+    }
+    fetchStats();
+  }, []);
 
   const { t, language, setLanguage } = useLanguage();
   const { darkMode, toggleTheme } = useTheme();
@@ -553,7 +571,7 @@ export default function Home() {
                 <span className="text-xs text-neutral-500 font-semibold flex items-center gap-1.5">
                   <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
                   <span>
-                    {airbnbDetails.rating && airbnbDetails.reviewsCount > 0 ? t.reviewSynced : t.reviewComingSoon}
+                    {liveRating && liveReviewsCount > 0 ? t.reviewSynced : t.reviewComingSoon}
                   </span>
                 </span>
               </div>
@@ -562,25 +580,25 @@ export default function Home() {
                 <div className="space-y-3 max-w-xl">
                   <div className="flex items-center gap-1.5">
                     <span className="bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 text-xs font-bold px-2.5 py-1 rounded-md">
-                      {airbnbDetails.rating && airbnbDetails.reviewsCount > 0 
-                        ? `★ ${airbnbDetails.rating.toFixed(1)} ${t.reviewExcellent}`
+                      {liveRating && liveReviewsCount > 0 
+                        ? `★ ${liveRating.toFixed(1)} ${t.reviewExcellent}`
                         : t.reviewNew}
                     </span>
                   </div>
                   <h4 className="font-serif text-base sm:text-lg font-bold text-neutral-900 dark:text-neutral-100 leading-tight">
-                    {airbnbDetails.rating && airbnbDetails.reviewsCount > 0 
+                    {liveRating && liveReviewsCount > 0 
                       ? t.reviewGuestRatings
                       : t.reviewsNewTitle}
                   </h4>
                   <p className="text-neutral-600 dark:text-neutral-400 text-xs sm:text-sm leading-relaxed">
-                    {airbnbDetails.rating && airbnbDetails.reviewsCount > 0 
+                    {liveRating && liveReviewsCount > 0 
                       ? (language === "es" 
-                          ? `Este alojamiento cuenta con una puntuación perfecta de ${airbnbDetails.rating.toFixed(1)} estrellas en base a ${airbnbDetails.reviewsCount} evaluaciones reales de la comunidad de Airbnb.`
-                          : `This accommodation has a perfect score of ${airbnbDetails.rating.toFixed(1)} stars based on ${airbnbDetails.reviewsCount} real reviews from the Airbnb community.`)
+                          ? `Este alojamiento cuenta con una puntuación perfecta de ${liveRating.toFixed(1)} estrellas en base a ${liveReviewsCount} evaluaciones reales de la comunidad de Airbnb.`
+                          : `This accommodation has a perfect score of ${liveRating.toFixed(1)} stars based on ${liveReviewsCount} real reviews from the Airbnb community.`)
                       : t.reviewsNewDesc}
                   </p>
                   <p className="text-[#5F6F52] dark:text-[#889B73] text-xs font-semibold">
-                    ⭐ {airbnbDetails.rating && airbnbDetails.reviewsCount > 0 
+                    ⭐ {liveRating && liveReviewsCount > 0 
                       ? (language === "es" ? `Sincronizado automáticamente desde Airbnb.` : `Synced automatically from Airbnb.`)
                       : t.reviewsFirstGuest}
                   </p>
