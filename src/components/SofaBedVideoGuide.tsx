@@ -35,7 +35,7 @@ export default function SofaBedVideoGuide() {
           <div className="bg-neutral-950 rounded-2xl overflow-hidden aspect-video border border-neutral-800 shadow-xl">
             <video
               className="w-full h-full object-contain bg-black"
-              src="/cordoba5579/video/sillon-cama-instructivo.webm"
+              src="/cordoba5579/video/guia.mp4"
               controls
               autoPlay
               playsInline
@@ -68,7 +68,7 @@ export default function SofaBedVideoGuide() {
                 )}
               </div>
               <h4 className="font-serif font-bold text-base sm:text-xl text-white drop-shadow-md">
-                {isEn ? "How to open and fold the sofa bed" : "Cómo desplegar y cerrar el sillón cama"}
+                {isEn ? "How to open and fold the sofa bed" : "Cómo desplegar y armar el sillón cama"}
               </h4>
             </div>
           </div>
@@ -76,44 +76,54 @@ export default function SofaBedVideoGuide() {
       </div>
 
       {/* Step Breakdown Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3 text-xs">
         <div className="p-3.5 rounded-2xl bg-white dark:bg-[#252824] border border-[#EFEBE4] dark:border-[#353A33] space-y-1 shadow-sm">
           <div className="flex items-center gap-1.5 font-bold text-[#5F6F52] dark:text-[#889B73]">
             <CheckCircle2 className="w-4 h-4" />
-            <span>{isEn ? "1. Remove Cushions" : "1. Quitar Almohadones"}</span>
+            <span>{isEn ? "1. Remove Cover" : "1. Retirar Cobertor"}</span>
           </div>
           <p className="text-neutral-600 dark:text-neutral-400 leading-snug">
-            {isEn ? "Retract and set aside the backrest cushions." : "Retirá los almohadones del respaldo del sillón."}
+            {isEn ? "Remove the protective sofa cover." : "Retirá el cobertor protector del sillón."}
           </p>
         </div>
 
         <div className="p-3.5 rounded-2xl bg-white dark:bg-[#252824] border border-[#EFEBE4] dark:border-[#353A33] space-y-1 shadow-sm">
           <div className="flex items-center gap-1.5 font-bold text-[#5F6F52] dark:text-[#889B73]">
             <CheckCircle2 className="w-4 h-4" />
-            <span>{isEn ? "2. Lift Structure" : "2. Levantar Estructura"}</span>
+            <span>{isEn ? "2. Pull Strap" : "2. Tirar de la Tira"}</span>
           </div>
           <p className="text-neutral-600 dark:text-neutral-400 leading-snug">
-            {isEn ? "Pull the front handle up and outward smoothly." : "Tirá firmemente de la manija frontal hacia arriba y afuera."}
+            {isEn ? "Pull the central strap on the seat to extract the main block (forming an inverted V)." : "Tomá la tira central del asiento y tirá para extraer el bloque completo (formará una V invertida)."}
           </p>
         </div>
 
         <div className="p-3.5 rounded-2xl bg-white dark:bg-[#252824] border border-[#EFEBE4] dark:border-[#353A33] space-y-1 shadow-sm">
           <div className="flex items-center gap-1.5 font-bold text-[#5F6F52] dark:text-[#889B73]">
             <CheckCircle2 className="w-4 h-4" />
-            <span>{isEn ? "3. Unfold Legs" : "3. Desplegar Patas"}</span>
+            <span>{isEn ? "3. Extend Block" : "3. Extender Bloque"}</span>
           </div>
           <p className="text-neutral-600 dark:text-neutral-400 leading-snug">
-            {isEn ? "Extend the metal legs until resting on the floor." : "Extendé el soporte metálico hasta apoyarlo bien en el piso."}
+            {isEn ? "Extend the block into a flat horizontal position, parallel to the floor." : "Extendé el bloque hasta dejarlo en posición horizontal, paralelo al piso."}
           </p>
         </div>
 
         <div className="p-3.5 rounded-2xl bg-white dark:bg-[#252824] border border-[#EFEBE4] dark:border-[#353A33] space-y-1 shadow-sm">
           <div className="flex items-center gap-1.5 font-bold text-[#5F6F52] dark:text-[#889B73]">
             <CheckCircle2 className="w-4 h-4" />
-            <span>{isEn ? "4. Linens & Pillows" : "4. Sábanas y Almohadas"}</span>
+            <span>{isEn ? "4. Unfold Legs" : "4. Desplegar Patas"}</span>
           </div>
           <p className="text-neutral-600 dark:text-neutral-400 leading-snug">
-            {isEn ? "Extra bed sheets and pillows are in the bedroom closet." : "Las sábanas extra y almohadas están dentro del placar."}
+            {isEn ? "Unfold the support legs until fully extended and firm on the ground." : "Desplegá las patas de apoyo hasta que queden abiertas y firmes sobre el suelo."}
+          </p>
+        </div>
+
+        <div className="p-3.5 rounded-2xl bg-white dark:bg-[#252824] border border-[#EFEBE4] dark:border-[#353A33] space-y-1 shadow-sm">
+          <div className="flex items-center gap-1.5 font-bold text-[#5F6F52] dark:text-[#889B73]">
+            <CheckCircle2 className="w-4 h-4" />
+            <span>{isEn ? "5. Unfold Mattress" : "5. Hoja de Colchón"}</span>
+          </div>
+          <p className="text-neutral-600 dark:text-neutral-400 leading-snug">
+            {isEn ? "Unfold the mattress layer tucked inside the backrest to complete the bed." : "Desplegá la hoja del colchón embutida en el respaldo hasta completar la superficie."}
           </p>
         </div>
       </div>

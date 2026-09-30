@@ -3,7 +3,7 @@ import { ChevronDown } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
 
 export default function FAQSection() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   const handleFaqToggle = (idx: number) => {
@@ -58,6 +58,15 @@ export default function FAQSection() {
                     <p className="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed pl-1">
                       {item.a}
                     </p>
+                    {idx === 11 && (
+                      <div className="mt-3.5 pl-1">
+                        <img
+                          src={language === 'en' ? '/img/plano_basura_en.png' : '/img/plano_basura_es.png'}
+                          alt="Plano Ubicación de Cestos de Basura"
+                          className="w-full max-w-lg rounded-2xl border border-neutral-200 dark:border-neutral-700 shadow-sm"
+                        />
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

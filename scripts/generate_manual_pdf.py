@@ -2,6 +2,7 @@ import os
 import sys
 import json
 import csv
+import shutil
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.colors import HexColor, Color
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak, Image as RLImage
@@ -14,6 +15,7 @@ from reportlab.pdfgen import canvas
 from reportlab.graphics.barcode import qr
 from reportlab.graphics.shapes import Drawing
 from reportlab.lib.utils import ImageReader
+
 OUTPUT_DIR = "public"
 
 t = None
@@ -175,28 +177,31 @@ def build_pdf(page_map=None, lang="es"):
         
     output_filename = "manual_cordoba5579.pdf" if lang == "es" else f"manual_cordoba5579_{lang}.pdf"
     output_path = os.path.join(OUTPUT_DIR, output_filename)
-    doc = SimpleDocTemplate(output_path, pagesize=A4, leftMargin=68, rightMargin=68, topMargin=75, bottomMargin=75)
+    doc = SimpleDocTemplate(output_path, pagesize=A4, leftMargin=68, rightMargin=68, topMargin=65, bottomMargin=65)
     styles = getSampleStyleSheet()
     
-    style_normal = ParagraphStyle('AppNormal', parent=styles['Normal'], fontName=FONTS['SegoeUI'], fontSize=10, leading=15, textColor=COLOR_DARK)
+    style_normal = ParagraphStyle('AppNormal', parent=styles['Normal'], fontName=FONTS['SegoeUI'], fontSize=9, leading=13.5, textColor=COLOR_DARK)
     style_normal_bold = ParagraphStyle('AppNormalBold', parent=style_normal, fontName=FONTS['SegoeUI-Bold'])
-    style_header_cell = ParagraphStyle('HeaderCell', parent=style_normal_bold, textColor=HexColor('#FFFFFF'))
+    style_header_cell = ParagraphStyle('HeaderCell', parent=style_normal_bold, textColor=HexColor('#FFFFFF'), fontSize=8.5, leading=11)
     style_body_italic = ParagraphStyle('AppNormalItalic', parent=style_normal, fontName=FONTS['Georgia-Italic'], textColor=COLOR_GRAY)
     
     style_title_main = ParagraphStyle('TitleMain', fontName=FONTS['Georgia-Bold'], fontSize=38, leading=46, textColor=HexColor('#FFFFFF'), alignment=TA_CENTER)
     style_title_sub = ParagraphStyle('TitleSub', fontName=FONTS['SegoeUI'], fontSize=14, leading=20, textColor=HexColor('#EFEBE4'), alignment=TA_CENTER)
     style_title_tag = ParagraphStyle('TitleTag', fontName=FONTS['Georgia-Italic'], fontSize=20, leading=26, textColor=HexColor('#FFFFFF'), alignment=TA_CENTER)
     
-    style_h1 = ParagraphStyle('AppH1', fontName=FONTS['Georgia-Bold'], fontSize=22, leading=26, textColor=COLOR_PRIMARY, spaceBefore=15, spaceAfter=8)
-    style_h2 = ParagraphStyle('AppH2', fontName=FONTS['Georgia-Italic'], fontSize=14, leading=18, textColor=COLOR_GRAY, spaceBefore=8, spaceAfter=8)
-    style_h3 = ParagraphStyle('AppH3', fontName=FONTS['SegoeUI-Bold'], fontSize=11, leading=14, textColor=COLOR_DARK, spaceBefore=6, spaceAfter=4)
+    style_h1 = ParagraphStyle('AppH1', fontName=FONTS['Georgia-Bold'], fontSize=19, leading=23, textColor=COLOR_PRIMARY, spaceBefore=6, spaceAfter=4)
+    style_h2 = ParagraphStyle('AppH2', fontName=FONTS['Georgia-Italic'], fontSize=12, leading=15, textColor=COLOR_GRAY, spaceBefore=2, spaceAfter=4)
+    style_h3 = ParagraphStyle('AppH3', fontName=FONTS['SegoeUI-Bold'], fontSize=10, leading=13, textColor=COLOR_DARK, spaceBefore=4, spaceAfter=3)
     
-    style_card_title = ParagraphStyle('CardTitle', fontName=FONTS['Georgia-Bold'], fontSize=12, leading=15, textColor=COLOR_PRIMARY)
-    style_card_body = ParagraphStyle('CardBody', fontName=FONTS['SegoeUI'], fontSize=9, leading=13, textColor=COLOR_DARK)
-    style_card_warning = ParagraphStyle('CardWarning', fontName=FONTS['SegoeUI'], fontSize=9, leading=13, textColor=HexColor('#9E2A2B'))
+    style_card_title = ParagraphStyle('CardTitle', fontName=FONTS['Georgia-Bold'], fontSize=10.5, leading=13.5, textColor=COLOR_PRIMARY)
+    style_card_body = ParagraphStyle('CardBody', fontName=FONTS['SegoeUI'], fontSize=8.2, leading=11.5, textColor=COLOR_DARK)
+    style_card_warning = ParagraphStyle('CardWarning', fontName=FONTS['SegoeUI'], fontSize=8.2, leading=11.5, textColor=HexColor('#9E2A2B'))
     
     story = []
     
+    def get_page(key):
+        return str(page_map.get(key, "-"))
+
     # ---- PAGE 1: COVER ----
     story.append(Bookmark("cover", page_map))
     story.append(Spacer(1, 140))
@@ -215,27 +220,32 @@ def build_pdf(page_map=None, lang="es"):
     story.append(Paragraph(t["cover"]["footer"], ParagraphStyle('CoverFooter', fontName=FONTS['SegoeUI-Bold'], fontSize=11, textColor=HexColor('#FAF9F7'), alignment=TA_CENTER)))
     story.append(PageBreak())
     
-    # ---- PAGE 2: TOC ----
+    # ---- PAGE 2: TOC & QUICK INFO ----
     story.append(Bookmark("toc", page_map))
     story.append(Paragraph(t["toc_page"]["title"], style_h1))
     story.append(Paragraph(t["toc_page"]["subtitle"], style_h2))
-    story.append(Spacer(1, 10))
+    story.append(Spacer(1, 6))
     
-    # Quick Info
-    qr_code = qr.QrCodeWidget("WIFI:T:WPA;S:Cordoba5579_Guest;P:Welcome101;;")
-    qr_code.barWidth = 65
-    qr_code.barHeight = 65
-    qr_code.barFillColor = COLOR_PRIMARY
-    qr_code.qrVersion = 1
-    d = Drawing(65, 65)
-    d.add(qr_code)
-    
+    # Quick Info Box
+    try:
+        qr_wifi_img_p2 = RLImage("public/qr/qr_wifi.png", width=55, height=55)
+    except Exception:
+        qr_code = qr.QrCodeWidget("WIFI:T:WPA;S:Cordoba5579_Guest;P:Welcome101;;")
+        qr_code.barWidth = 55
+        qr_code.barHeight = 55
+        qr_code.barFillColor = COLOR_PRIMARY
+        qr_code.qrVersion = 1
+        d = Drawing(55, 55)
+        d.add(qr_code)
+        qr_wifi_img_p2 = d
+
     q_info = t["toc_page"]["quick_info"]
+    wifi_subtext = "(Scan to connect)" if CURRENT_LANG == "en" else "(Escanee para conectar)"
     info_data = [
         [
             Table([
-                [d, Paragraph(f"<b>{q_info[0]['title']}</b><br/>{q_info[0]['content']}<br/><i>(Escanee para conectar)</i>", style_card_body)]
-            ], colWidths=[70, 160], style=[('VALIGN', (0,0), (-1,-1), 'MIDDLE')]),
+                [qr_wifi_img_p2, Paragraph(f"<b>{q_info[0]['title']}</b><br/>{q_info[0]['content']}<br/><i>{wifi_subtext}</i>", style_card_body)]
+            ], colWidths=[60, 170], style=[('VALIGN', (0,0), (-1,-1), 'MIDDLE')]),
             Paragraph(f"<b>{q_info[2]['title']}</b><br/>{q_info[2]['content']}", style_card_body)
         ],
         [
@@ -249,75 +259,87 @@ def build_pdf(page_map=None, lang="es"):
         ('BOX', (0,0), (-1,-1), 1, COLOR_PRIMARY),
         ('INNERGRID', (0,0), (-1,-1), 0.5, COLOR_BORDER),
         ('VALIGN', (0,0), (-1,-1), 'TOP'),
-        ('PADDING', (0,0), (-1,-1), 12),
+        ('PADDING', (0,0), (-1,-1), 6),
     ]))
     story.append(info_table)
-    story.append(Spacer(1, 20))
+    story.append(Spacer(1, 8))
     
-    # TOC
+    # TOC List
     story.append(Paragraph(f"<b>{t['toc_page']['toc_header']}</b>", style_h3))
     
-    def get_page(key):
-        return str(page_map.get(key, "-"))
+    toc_data = []
+    if "toc_items" in t["toc_page"]:
+        for item in t["toc_page"]["toc_items"]:
+            page_str = get_page(item["key"])
+            pg_prefix = "Page" if CURRENT_LANG == "en" else "Pág."
+            toc_data.append([Paragraph(item["title"], style_card_body), Paragraph(f"{pg_prefix} {page_str}", style_normal_bold)])
+    else:
+        default_items = [
+            ("1. Welcome & Directions", "welcome"),
+            ("2. On-Street Free Parking", "parking"),
+            ("3. Self Check-In Guide", "checkin"),
+            ("4. Climate Control & Safe Box", "climate_safe"),
+            ("5. Sofa Bed Setup Guide", "sofabed"),
+            ("6. Kitchen & Appliances", "kitchen"),
+            ("7. Building Amenities (Laundry & SUM)", "amenities"),
+            ("8. Neighborhood Guide", "guide"),
+            ("9. Local Tourist Survival Tips", "local_tips"),
+            ("10. House Rules", "rules"),
+            ("11. Cleaning & Hygiene", "cleaning"),
+            ("12. Security & Emergencies", "security"),
+            ("13. Apartment Inventory", "inventory"),
+            ("14. Frequently Asked Questions", "faq"),
+            ("15. Check-Out Checklist", "checkout")
+        ]
+        for title, key in default_items:
+            page_str = get_page(key)
+            pg_prefix = "Page" if CURRENT_LANG == "en" else "Pág."
+            toc_data.append([Paragraph(title, style_card_body), Paragraph(f"{pg_prefix} {page_str}", style_normal_bold)])
 
-    toc_data = [
-        [Paragraph("1. Bienvenida & Cómo llegar", style_normal), Paragraph(f"Pág. {get_page('welcome')}", style_normal_bold)],
-        [Paragraph("2. Check-In Autónomo (Lockbox)", style_normal), Paragraph(f"Pág. {get_page('checkin')}", style_normal_bold)],
-        [Paragraph("3. Climatización & Caja Fuerte", style_normal), Paragraph(f"Pág. {get_page('climate_safe')}", style_normal_bold)],
-        [Paragraph("4. Cocina, Cafetera & Cava de Vinos", style_normal), Paragraph(f"Pág. {get_page('kitchen')}", style_normal_bold)],
-        [Paragraph("5. Amenities del Edificio (Laundry & SUM)", style_normal), Paragraph(f"Pág. {get_page('amenities')}", style_normal_bold)],
-        [Paragraph("6. Guía Comercial y Atracciones del Barrio", style_normal), Paragraph(f"Pág. {get_page('guide')}", style_normal_bold)],
-        [Paragraph("7. Tips Locales para Turistas", style_normal), Paragraph(f"Pág. {get_page('local_tips')}", style_normal_bold)],
-        [Paragraph("8. Normas de Convivencia", style_normal), Paragraph(f"Pág. {get_page('rules')}", style_normal_bold)],
-        [Paragraph("9. Limpieza, Residuos & Cuidado Sanitario", style_normal), Paragraph(f"Pág. {get_page('cleaning')}", style_normal_bold)],
-        [Paragraph("10. Seguridad, Cortes de Luz & Emergencias", style_normal), Paragraph(f"Pág. {get_page('security')}", style_normal_bold)],
-        [Paragraph("11. Inventario del Departamento", style_normal), Paragraph(f"Pág. {get_page('inventory')}", style_normal_bold)],
-        [Paragraph("12. Preguntas Frecuentes (FAQs)", style_normal), Paragraph(f"Pág. {get_page('faq')}", style_normal_bold)],
-        [Paragraph("13. Check-Out Checklist", style_normal), Paragraph(f"Pág. {get_page('checkout')}", style_normal_bold)],
-    ]
-    toc_table = build_card_table(toc_data, [400, 60], padding=6)
+    toc_table = build_card_table(toc_data, [390, 70], padding=3)
     story.append(toc_table)
-    story.append(Spacer(1, 20))
+    story.append(Spacer(1, 8))
     
     try:
-        qr_portal = RLImage("public/qr/qr_portal.png", width=65, height=65)
-        qr_whatsapp = RLImage("public/qr/qr_whatsapp.png", width=65, height=65)
+        qr_portal = RLImage("public/qr/qr_portal.png", width=50, height=50)
+        qr_whatsapp = RLImage("public/qr/qr_whatsapp.png", width=50, height=50)
         qr_table = Table([
             [qr_portal, Paragraph(t["shared"]["qr_portal"], style_card_body),
              qr_whatsapp, Paragraph(t["shared"]["qr_whatsapp"], style_card_body)]
-        ], colWidths=[70, 160, 70, 160])
-        qr_table.setStyle(TableStyle([('VALIGN', (0,0), (-1,-1), 'MIDDLE'), ('RIGHTPADDING', (0,0), (-1,-1), 10)]))
+        ], colWidths=[55, 175, 55, 175])
+        qr_table.setStyle(TableStyle([('VALIGN', (0,0), (-1,-1), 'MIDDLE'), ('RIGHTPADDING', (0,0), (-1,-1), 6)]))
         story.append(qr_table)
     except Exception:
         pass
     story.append(PageBreak())
     
-    # ---- PAGE 3: WELCOME & PARKING ----
+    # ---- PAGE 3: WELCOME & DIRECTIONS ----
     story.append(Bookmark("welcome", page_map))
     story.append(Paragraph(t["welcome"]["title"], style_h1))
     story.append(Paragraph(t["welcome"]["subtitle"], style_h2))
-    story.append(Spacer(1, 10))
+    story.append(Spacer(1, 8))
     story.append(Paragraph(t["welcome"]["intro"], style_normal))
     story.append(Spacer(1, 12))
     story.append(Paragraph(t["welcome"]["directions_title"], style_h3))
     story.append(Paragraph(t["welcome"]["directions_intro"], style_normal))
     story.append(Spacer(1, 6))
     arrive_data = [[Paragraph(f"<b>{i['title']}</b>", style_normal_bold), Paragraph(i['content'], style_normal)] for i in t["welcome"]["directions"]]
-    story.append(build_card_table(arrive_data, [120, 340], padding=5))
-    story.append(Spacer(1, 10))
-
-    # On-Street Parking Section with BOTI QR Code
+    story.append(build_card_table(arrive_data, [130, 330], padding=6))
+    story.append(PageBreak())
+    
+    # ---- PAGE 4: ON-STREET PARKING GUIDE ----
+    story.append(Bookmark("parking", page_map))
     if "parking_title" in t["welcome"]:
-        story.append(Paragraph(t["welcome"]["parking_title"], style_h3))
-        story.append(Paragraph(t["welcome"]["parking_intro"], style_normal))
-        story.append(Spacer(1, 6))
+        story.append(Paragraph(t["welcome"]["parking_title"], style_h1))
+        story.append(Paragraph(t["welcome"]["parking_intro"], style_h2))
+        story.append(Spacer(1, 10))
         parking_data = [[Paragraph(f"<b>{i['title']}</b>", style_normal_bold), Paragraph(i['content'], style_normal)] for i in t["welcome"]["parking_items"]]
-        story.append(build_card_table(parking_data, [150, 310], padding=5))
-        story.append(Spacer(1, 8))
+        story.append(build_card_table(parking_data, [150, 310], padding=6))
+        story.append(Spacer(1, 12))
 
         try:
-            qr_boti_img = RLImage("public/qr/qr_boti.png", width=65, height=65)
-            boti_box = Table([[qr_boti_img, Paragraph(t["welcome"]["boti_info"], style_card_body)]], colWidths=[75, 385])
+            qr_boti_img = RLImage("public/qr/qr_boti.png", width=60, height=60)
+            boti_box = Table([[qr_boti_img, Paragraph(t["welcome"]["boti_info"], style_card_body)]], colWidths=[70, 390])
         except Exception:
             boti_box = Table([[Paragraph(t["welcome"]["boti_info"], style_card_body)]], colWidths=[460])
             
@@ -328,48 +350,66 @@ def build_pdf(page_map=None, lang="es"):
             ('PADDING', (0,0), (-1,-1), 8)
         ]))
         story.append(boti_box)
-
     story.append(PageBreak())
     
-    # ---- PAGE 4: CHECK-IN ----
+    # ---- PAGE 5: CHECK-IN ----
     story.append(Bookmark("checkin", page_map))
     story.append(Paragraph(t["checkin"]["title"], style_h1))
     story.append(Paragraph(t["checkin"]["subtitle"], style_h2))
-    story.append(Spacer(1, 15))
+    story.append(Spacer(1, 10))
     story.append(Paragraph(t["checkin"]["intro"], style_normal))
-    story.append(Spacer(1, 15))
+    story.append(Spacer(1, 10))
     steps_data = [[Paragraph(f"<font color='#5F6F52'><b>{i['step']}</b></font>", style_normal_bold), Paragraph(i['content'], style_normal)] for i in t["checkin"]["steps"]]
-    story.append(build_card_table(steps_data, [80, 380], padding=10))
-    story.append(Spacer(1, 20))
+    story.append(build_card_table(steps_data, [80, 380], padding=7))
+    story.append(Spacer(1, 12))
     
     caution_data = [[Paragraph(f"<b>{t['checkin']['caution_title']}</b><br/>{t['checkin']['caution']}", style_card_warning)]]
     caution_table = Table(caution_data, colWidths=[460])
-    caution_table.setStyle(TableStyle([('BACKGROUND', (0,0), (-1,-1), HexColor('#FFF0F0')), ('BOX', (0,0), (-1,-1), 1, HexColor('#FFC1C1')), ('PADDING', (0,0), (-1,-1), 12)]))
+    caution_table.setStyle(TableStyle([('BACKGROUND', (0,0), (-1,-1), HexColor('#FFF0F0')), ('BOX', (0,0), (-1,-1), 1, HexColor('#FFC1C1')), ('PADDING', (0,0), (-1,-1), 8)]))
     story.append(caution_table)
     story.append(PageBreak())
     
-    # ---- PAGE 5: CLIMATE & SAFE ----
+    # ---- PAGE 6: CLIMATE & SAFE ----
     story.append(Bookmark("climate_safe", page_map))
     story.append(Paragraph(t["climate_safe"]["title"], style_h1))
     story.append(Paragraph(t["climate_safe"]["subtitle"], style_h2))
-    story.append(Spacer(1, 12))
+    story.append(Spacer(1, 10))
     story.append(Paragraph(t["climate_safe"]["door"], style_normal))
-    story.append(Spacer(1, 12))
+    story.append(Spacer(1, 10))
     story.append(Paragraph(t["climate_safe"]["ac_intro"], style_normal))
-    story.append(Spacer(1, 8))
+    story.append(Spacer(1, 6))
     ac_data = [[Paragraph(f"<b>{i['title']}</b>", style_normal_bold), Paragraph(i['content'], style_normal)] for i in t["climate_safe"]["ac_items"]]
-    story.append(build_card_table(ac_data, [130, 330], padding=6))
-    story.append(Spacer(1, 15))
+    story.append(build_card_table(ac_data, [130, 330], padding=5))
+    story.append(Spacer(1, 12))
     story.append(Paragraph(t["climate_safe"]["safe_title"], style_h3))
     story.append(Paragraph(t["climate_safe"]["safe_content"], style_normal))
+    story.append(Spacer(1, 12))
+    
+    # Wi-Fi Auto-Connect Box (Pág. 6)
+    if "wifi_title" in t["climate_safe"]:
+        story.append(Paragraph(t["climate_safe"]["wifi_title"], style_h3))
+        story.append(Spacer(1, 4))
+        try:
+            qr_wifi_img_p6 = RLImage("public/qr/qr_wifi.png", width=65, height=65)
+            wifi_card = Table([[qr_wifi_img_p6, Paragraph(t["climate_safe"]["wifi_content"], style_card_body)]], colWidths=[75, 385])
+            wifi_card.setStyle(TableStyle([
+                ('BACKGROUND', (0,0), (-1,-1), HexColor('#FAF9F7')),
+                ('BOX', (0,0), (-1,-1), 1, COLOR_PRIMARY),
+                ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
+                ('PADDING', (0,0), (-1,-1), 8)
+            ]))
+            story.append(wifi_card)
+        except Exception:
+            story.append(Paragraph(t["climate_safe"]["wifi_content"], style_normal))
+            
     story.append(PageBreak())
 
-    # ---- PAGE 6: DEDICATED SOFA BED GUIDE ----
+    # ---- PAGE 7: DEDICATED SOFA BED GUIDE ----
     if "sofa_bed_title" in t["climate_safe"]:
         story.append(Bookmark("sofabed", page_map))
         story.append(Paragraph(t["climate_safe"]["sofa_bed_title"], style_h1))
         story.append(Paragraph(t["climate_safe"]["sofa_bed_intro"], style_h2))
-        story.append(Spacer(1, 15))
+        story.append(Spacer(1, 10))
 
         sofa_grid = []
         steps = t["climate_safe"]["sofa_bed_steps"]
@@ -378,9 +418,9 @@ def build_pdf(page_map=None, lang="es"):
         row1 = []
         for idx in range(3):
             img_path = f"public/img/sillon/{idx+1}.jpeg"
-            img = RLImage(img_path, width=135, height=90, kind='proportional') if os.path.exists(img_path) else Paragraph(f"Paso {idx+1}", style_normal)
+            img = RLImage(img_path, width=125, height=80, kind='proportional') if os.path.exists(img_path) else Paragraph(f"Paso {idx+1}", style_normal)
             p = Paragraph(f"<b>{steps[idx]['step']}</b><br/>{steps[idx]['content']}", style_card_body)
-            cell_table = Table([[img], [Spacer(1, 4)], [p]], colWidths=[135])
+            cell_table = Table([[img], [Spacer(1, 3)], [p]], colWidths=[125])
             cell_table.setStyle(TableStyle([
                 ('ALIGN', (0,0), (-1,-1), 'CENTER'),
                 ('VALIGN', (0,0), (-1,-1), 'TOP'),
@@ -393,9 +433,9 @@ def build_pdf(page_map=None, lang="es"):
         row2 = []
         for idx in range(3, 6):
             img_path = f"public/img/sillon/{idx+1}.jpeg"
-            img = RLImage(img_path, width=135, height=90, kind='proportional') if os.path.exists(img_path) else Paragraph(f"Paso {idx+1}", style_normal)
+            img = RLImage(img_path, width=125, height=80, kind='proportional') if os.path.exists(img_path) else Paragraph(f"Paso {idx+1}", style_normal)
             p = Paragraph(f"<b>{steps[idx]['step']}</b><br/>{steps[idx]['content']}", style_card_body)
-            cell_table = Table([[img], [Spacer(1, 4)], [p]], colWidths=[135])
+            cell_table = Table([[img], [Spacer(1, 3)], [p]], colWidths=[125])
             cell_table.setStyle(TableStyle([
                 ('ALIGN', (0,0), (-1,-1), 'CENTER'),
                 ('VALIGN', (0,0), (-1,-1), 'TOP'),
@@ -404,180 +444,194 @@ def build_pdf(page_map=None, lang="es"):
             row2.append(cell_table)
         sofa_grid.append(row2)
 
-        sofa_table = Table(sofa_grid, colWidths=[150, 150, 150])
+        sofa_table = Table(sofa_grid, colWidths=[140, 140, 140])
         sofa_table.setStyle(TableStyle([
             ('ALIGN', (0,0), (-1,-1), 'CENTER'),
             ('VALIGN', (0,0), (-1,-1), 'TOP'),
             ('BACKGROUND', (0,0), (-1,-1), HexColor('#FAF9F7')),
             ('BOX', (0,0), (-1,-1), 1, COLOR_BORDER),
             ('INNERGRID', (0,0), (-1,-1), 0.5, COLOR_BORDER),
-            ('PADDING', (0,0), (-1,-1), 8)
+            ('PADDING', (0,0), (-1,-1), 5)
         ]))
         story.append(sofa_table)
-        story.append(Spacer(1, 15))
+        story.append(Spacer(1, 10))
 
-        # Additional tip box for sofa bed
-        sofa_tip = [[Paragraph("<b>CONSEJO DE SEGURIDAD PARA EL PLEGADO:</b><br/>Al volver a cerrar el sillón cama, levante desde el centro de la estructura metálica sin forzar las bisagras. Verifique que las sábanas o frazadas no queden enganchadas en los pliegues metálicos.", style_card_warning)]]
-        sofa_tip_table = Table(sofa_tip, colWidths=[460])
+        # Localized safety tip box for sofa bed
+        sofa_tip_text = t["climate_safe"].get("sofa_bed_tip", "<b>CONSEJO DE SEGURIDAD PARA EL PLEGADO:</b><br/>Al volver a cerrar el sillón cama, levante desde el centro de la estructura metálica sin forzar las bisagras. Verifique que las sábanas o frazadas no queden enganchadas en los pliegues metálicos.")
+        sofa_tip = [[Paragraph(sofa_tip_text, style_card_warning)]]
+        sofa_tip_table = Table(sofa_tip, colWidths=[440])
         sofa_tip_table.setStyle(TableStyle([
             ('BACKGROUND', (0,0), (-1,-1), HexColor('#FFF8E1')),
             ('BOX', (0,0), (-1,-1), 1, HexColor('#FFE082')),
-            ('PADDING', (0,0), (-1,-1), 10)
+            ('PADDING', (0,0), (-1,-1), 7)
         ]))
         story.append(sofa_tip_table)
         story.append(PageBreak())
     
-    # ---- PAGE 6: KITCHEN ----
+    # ---- PAGE 8: KITCHEN ----
     story.append(Bookmark("kitchen", page_map))
     story.append(Paragraph(t["kitchen"]["title"], style_h1))
     story.append(Paragraph(t["kitchen"]["subtitle"], style_h2))
-    story.append(Spacer(1, 15))
+    story.append(Spacer(1, 8))
     story.append(Paragraph(t["kitchen"]["intro"], style_normal))
-    story.append(Spacer(1, 10))
+    story.append(Spacer(1, 6))
     kitchen_data = [[Paragraph(f"<b>{i['title']}</b>", style_normal_bold), Paragraph(i['content'], style_normal)] for i in t["kitchen"]["items"]]
-    story.append(build_card_table(kitchen_data, [140, 320]))
-    story.append(Spacer(1, 20))
-    story.append(Paragraph(t["kitchen"]["cava_title"], style_h3))
-    story.append(Paragraph(t["kitchen"]["cava_content"], style_normal))
-    story.append(Spacer(1, 15))
-    try:
-        qr_cava = RLImage("public/qr/qr_cava.png", width=65, height=65)
-        qr_whats = RLImage("public/qr/qr_whatsapp.png", width=65, height=65)
-        cava_qr_table = Table([[qr_cava, Paragraph(t["shared"]["qr_cava_inv"], style_card_body), qr_whats, Paragraph(t["shared"]["qr_cava_chat"], style_card_body)]], colWidths=[70, 160, 70, 160])
-        cava_qr_table.setStyle(TableStyle([('VALIGN', (0,0), (-1,-1), 'MIDDLE'), ('RIGHTPADDING', (0,0), (-1,-1), 10)]))
-        story.append(cava_qr_table)
-    except Exception:
-        pass
+    story.append(build_card_table(kitchen_data, [140, 320], padding=5))
     story.append(PageBreak())
     
-    # ---- PAGE 7: AMENITIES ----
+    # ---- PAGE 9: AMENITIES ----
     story.append(Bookmark("amenities", page_map))
     story.append(Paragraph(t["amenities"]["title"], style_h1))
     story.append(Paragraph(t["amenities"]["subtitle"], style_h2))
-    story.append(Spacer(1, 15))
+    story.append(Spacer(1, 10))
     story.append(Paragraph(t["amenities"]["laundry_intro"], style_normal))
-    story.append(Spacer(1, 10))
+    story.append(Spacer(1, 6))
     laundry_data = [[Paragraph(f"<b>{i['title']}</b>", style_normal_bold), Paragraph(i['content'], style_normal)] for i in t["amenities"]["laundry_items"]]
-    story.append(build_card_table(laundry_data, [120, 340]))
-    story.append(Spacer(1, 25))
+    story.append(build_card_table(laundry_data, [120, 340], padding=5))
+    story.append(Spacer(1, 12))
     story.append(Paragraph(t["amenities"]["sum_intro"], style_normal))
-    story.append(Spacer(1, 10))
+    story.append(Spacer(1, 6))
     sum_data = [[Paragraph(f"<b>{i['title']}</b>", style_normal_bold), Paragraph(i['content'], style_normal)] for i in t["amenities"]["sum_items"]]
-    story.append(build_card_table(sum_data, [120, 340]))
+    story.append(build_card_table(sum_data, [120, 340], padding=5))
     story.append(PageBreak())
     
-    # ---- PAGE 8: GUIDE ----
+    # ---- PAGE 10: GUIDE ----
     story.append(Bookmark("guide", page_map))
     story.append(Paragraph(t["guide"]["title"], style_h1))
     story.append(Paragraph(t["guide"]["subtitle"], style_h2))
-    story.append(Spacer(1, 15))
+    story.append(Spacer(1, 6))
     story.append(Paragraph(t["guide"]["intro"], style_normal))
-    story.append(Spacer(1, 15))
+    story.append(Spacer(1, 6))
     
-    # Integrate Mini Map here
     try:
-        map_img = RLImage("public/img/mapa_palermo.png", width=460, height=240, kind="proportional")
+        map_img = RLImage("public/img/mapa_palermo.png", width=460, height=120, kind="proportional")
         story.append(map_img)
-        story.append(Spacer(1, 15))
+        story.append(Spacer(1, 6))
     except Exception as e:
         print(f"Map image not found or error: {e}")
         pass
     
-    guide_data = [[Paragraph(f"<b>{i['title']}</b>", style_normal_bold), Paragraph(i['content'], style_normal)] for i in t["guide"]["items"]]
-    story.append(build_card_table(guide_data, [160, 300], padding=10))
-    story.append(Spacer(1, 20))
+    style_guide_title = ParagraphStyle('GuideTitle', parent=style_card_title, fontSize=9.5, leading=12)
+    style_guide_body = ParagraphStyle('GuideBody', parent=style_card_body, fontSize=8, leading=10.8)
+    
+    guide_data = [[Paragraph(f"<b>{i['title']}</b>", style_guide_title), Paragraph(i['content'], style_guide_body)] for i in t["guide"]["items"]]
+    story.append(build_card_table(guide_data, [140, 320], padding=3.5))
+    story.append(Spacer(1, 6))
     story.append(Paragraph(t["guide"]["tip"], style_body_italic))
     story.append(PageBreak())
     
-    # ---- PAGE 9: LOCAL TIPS ----
+    # ---- PAGE 11: LOCAL TIPS ----
     story.append(Bookmark("local_tips", page_map))
     story.append(Paragraph(t["local_tips"]["title"], style_h1))
     story.append(Paragraph(t["local_tips"]["subtitle"], style_h2))
-    story.append(Spacer(1, 15))
+    story.append(Spacer(1, 10))
     story.append(Paragraph(t["local_tips"]["intro"], style_normal))
-    story.append(Spacer(1, 15))
+    story.append(Spacer(1, 10))
     tips_data = []
     for i in t["local_tips"]["items"]:
         if "qr_link" in i:
             qr_w = qr.QrCodeWidget(i["qr_link"])
-            qr_w.barWidth = 60
-            qr_w.barHeight = 60
+            qr_w.barWidth = 55
+            qr_w.barHeight = 55
             qr_w.barFillColor = COLOR_PRIMARY
             qr_w.qrVersion = 1
-            d = Drawing(60, 60)
+            d = Drawing(55, 55)
             d.add(qr_w)
             tips_data.append([d, Paragraph(f"<b>{i['title']}</b>", style_card_title), Paragraph(i['content'], style_card_body)])
         else:
             tips_data.append(["", Paragraph(f"<b>{i['title']}</b>", style_card_title), Paragraph(i['content'], style_card_body)])
-    story.append(build_card_table(tips_data, [65, 125, 270], padding=12))
+    story.append(build_card_table(tips_data, [60, 130, 270], padding=8))
     story.append(PageBreak())
     
-    # ---- PAGE 10: RULES ----
+    # ---- PAGE 12: RULES ----
     story.append(Bookmark("rules", page_map))
     story.append(Paragraph(t["rules"]["title"], style_h1))
-    story.append(Spacer(1, 15))
+    story.append(Spacer(1, 8))
     story.append(Paragraph(t["rules"]["intro"], style_normal))
-    story.append(Spacer(1, 15))
+    story.append(Spacer(1, 8))
     icon_map = ["icon_smoke.png", "icon_pet.png", "icon_noise.png", "icon_visitor.png", "icon_clothes.png"]
     rules_data = []
     for idx, item in enumerate(t["rules"]["items"]):
         icon_path = f"public/img/{icon_map[idx]}" if idx < 5 else None
         if icon_path and os.path.exists(icon_path):
-            img = RLImage(icon_path, width=32, height=32, kind='proportional')
+            img = RLImage(icon_path, width=26, height=26, kind='proportional')
             rules_data.append([img, Paragraph(f"<b>{item['title']}</b>", style_card_title), Paragraph(item['content'], style_card_body)])
         else:
             rules_data.append(["", Paragraph(f"<b>{item['title']}</b>", style_card_title), Paragraph(item['content'], style_card_body)])
-    story.append(build_card_table(rules_data, [45, 115, 300], padding=10))
-    story.append(Spacer(1, 20))
+    story.append(build_card_table(rules_data, [35, 125, 300], padding=7))
+    story.append(Spacer(1, 10))
     rule_note = [[Paragraph(t["rules"]["penalty"], style_card_warning)]]
     rule_note_table = Table(rule_note, colWidths=[460])
     rule_note_table.setStyle(TableStyle([
         ('BACKGROUND', (0,0), (-1,-1), COLOR_ALERT_BG),
         ('TEXTCOLOR', (0,0), (-1,-1), HexColor('#D32F2F')),
         ('BOX', (0,0), (-1,-1), 1, HexColor('#FFCDD2')),
-        ('PADDING', (0,0), (-1,-1), 10)
+        ('PADDING', (0,0), (-1,-1), 7)
     ]))
     story.append(rule_note_table)
     story.append(PageBreak())
     
-    # ---- PAGE 11: CLEANING ----
+    # ---- PAGE 13: CLEANING ----
     story.append(Bookmark("cleaning", page_map))
     story.append(Paragraph(t["cleaning"]["title"], style_h1))
     story.append(Paragraph(t["cleaning"]["subtitle"], style_h2))
-    story.append(Spacer(1, 15))
+    story.append(Spacer(1, 6))
     story.append(Paragraph(t["cleaning"]["garbage"], style_normal))
-    story.append(Spacer(1, 20))
+    story.append(Spacer(1, 6))
+    
+    try:
+        img_name = "public/img/plano_basura_en.png" if lang == "en" else "public/img/plano_basura_es.png"
+        if not os.path.exists(img_name):
+            img_name = "public/img/plano_basura.png"
+        basura_img = RLImage(img_name, width=460, height=200, kind="proportional")
+        story.append(basura_img)
+        story.append(Spacer(1, 6))
+    except Exception as e:
+        print(f"Plano basura image not found or error: {e}")
+        pass
+
     story.append(Paragraph(t["cleaning"]["plumbing_intro"], style_normal))
-    story.append(Spacer(1, 10))
+    story.append(Spacer(1, 4))
     plumb_data = [[Paragraph(t["cleaning"]["plumbing_warning"], style_card_warning)]]
     plumb_table = Table(plumb_data, colWidths=[460])
-    plumb_table.setStyle(TableStyle([('BACKGROUND', (0,0), (-1,-1), HexColor('#FFF0F0')), ('BOX', (0,0), (-1,-1), 1.5, HexColor('#FFC1C1')), ('PADDING', (0,0), (-1,-1), 14)]))
+    plumb_table.setStyle(TableStyle([('BACKGROUND', (0,0), (-1,-1), HexColor('#FFF0F0')), ('BOX', (0,0), (-1,-1), 1.5, HexColor('#FFC1C1')), ('PADDING', (0,0), (-1,-1), 6)]))
     story.append(plumb_table)
-    story.append(Spacer(1, 25))
+    story.append(Spacer(1, 6))
     story.append(Paragraph(t["cleaning"]["linen"], style_normal))
     story.append(PageBreak())
     
-    # ---- PAGE 12: SECURITY ----
+    # ---- PAGE 14: SECURITY ----
     story.append(Bookmark("security", page_map))
     story.append(Paragraph(t["security"]["title"], style_h1))
     story.append(Paragraph(t["security"]["subtitle"], style_h2))
-    story.append(Spacer(1, 15))
+    story.append(Spacer(1, 10))
     story.append(Paragraph(t["security"]["intro"], style_normal))
-    story.append(Spacer(1, 15))
+    story.append(Spacer(1, 10))
     sec_data = [[Paragraph(f"<b>{i['title']}</b>", style_card_title), Paragraph(i['content'], style_card_body)] for i in t["security"]["items"]]
-    story.append(build_card_table(sec_data, [140, 320], padding=12))
+    story.append(build_card_table(sec_data, [140, 320], padding=8))
     story.append(PageBreak())
     
-    # ---- PAGE 13: INVENTORY ----
+    # ---- PAGE 15: INVENTORY ----
     story.append(Bookmark("inventory", page_map))
     story.append(Paragraph(t["inventory"]["title"], style_h1))
-    story.append(Spacer(1, 10))
+    story.append(Spacer(1, 2))
     story.append(Paragraph(t["inventory"]["intro"], style_normal))
-    story.append(Spacer(1, 15))
+    story.append(Spacer(1, 4))
+    
+    style_inv_cell = ParagraphStyle('InvCell', parent=style_card_body, fontSize=6.4, leading=8.0)
+    style_inv_cat = ParagraphStyle('InvCat', parent=style_normal_bold, fontSize=7.0, leading=8.6, textColor=COLOR_PRIMARY)
+    style_inv_warn = ParagraphStyle('InvWarn', parent=style_card_body, fontSize=7.0, leading=9.0)
     
     inv_rows = []
     inv_rows.append([Paragraph(f"<b>{h}</b>", style_header_cell) for h in t["inventory"]["headers"]])
-    table_styles = [('BACKGROUND', (0,0), (-1,0), COLOR_PRIMARY), ('TEXTCOLOR', (0,0), (-1,0), HexColor('#FFFFFF')), ('ALIGN', (0,0), (-1,-1), 'LEFT'), ('VALIGN', (0,0), (-1,-1), 'MIDDLE'), ('PADDING', (0,0), (-1,-1), 5), ('GRID', (0,0), (-1,-1), 0.5, COLOR_BORDER)]
+    table_styles = [
+        ('BACKGROUND', (0,0), (-1,0), COLOR_PRIMARY),
+        ('TEXTCOLOR', (0,0), (-1,0), HexColor('#FFFFFF')),
+        ('ALIGN', (0,0), (-1,-1), 'LEFT'),
+        ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
+        ('PADDING', (0,0), (-1,-1), 1.0),
+        ('GRID', (0,0), (-1,-1), 0.5, COLOR_BORDER)
+    ]
     
     csv_path = "inventario.csv"
     current_category = None
@@ -592,104 +646,110 @@ def build_pdf(page_map=None, lang="es"):
                 if cat != current_category:
                     current_category = cat
                     idx = len(inv_rows)
-                    inv_rows.append([Paragraph(f"<b>{current_category.upper()}</b>", ParagraphStyle(f'Cat_{idx}', parent=style_normal_bold, textColor=COLOR_PRIMARY)), "", ""])
-                    table_styles.extend([('SPAN', (0, idx), (2, idx)), ('BACKGROUND', (0, idx), (-1, idx), HexColor('#FAF9F7')), ('PADDING', (0, idx), (-1, idx), 7)])
-                inv_rows.append([Paragraph(item, style_card_body), Paragraph(qty, style_card_body), Paragraph(detail, style_card_body)])
+                    inv_rows.append([Paragraph(f"<b>{current_category.upper()}</b>", style_inv_cat), "", ""])
+                    table_styles.extend([
+                        ('SPAN', (0, idx), (2, idx)),
+                        ('BACKGROUND', (0, idx), (-1, idx), HexColor('#FAF9F7')),
+                        ('PADDING', (0, idx), (-1, idx), 1.2)
+                    ])
+                inv_rows.append([Paragraph(item, style_inv_cell), Paragraph(qty, style_inv_cell), Paragraph(detail, style_inv_cell)])
                 
     if len(inv_rows) <= 1:
         inv_rows.append([Paragraph("No se encontró el archivo de inventario.", style_normal), "", ""])
         table_styles.append(('SPAN', (0, 1), (2, 1)))
         
-    inv_table = Table(inv_rows, colWidths=[200, 60, 199], repeatRows=1)
+    inv_table = Table(inv_rows, colWidths=[190, 45, 224], repeatRows=1)
     inv_table.setStyle(TableStyle(table_styles))
     story.append(inv_table)
-    story.append(Spacer(1, 20))
+    story.append(Spacer(1, 3))
     
     try:
-        qr_inv = RLImage("public/qr/qr_inventario.png", width=65, height=65)
-        inv_qr_table = Table([[qr_inv, Paragraph(t["inventory"]["warning"], style_card_body)]], colWidths=[80, 380])
-        inv_qr_table.setStyle(TableStyle([('VALIGN', (0,0), (-1,-1), 'MIDDLE'), ('BACKGROUND', (0,0), (-1,-1), COLOR_ALERT_BG), ('BOX', (0,0), (-1,-1), 1, COLOR_BORDER), ('PADDING', (0,0), (-1,-1), 10)]))
+        qr_inv = RLImage("public/qr/qr_inventario.png", width=34, height=34)
+        inv_qr_table = Table([[qr_inv, Paragraph(t["inventory"]["warning"], style_inv_warn)]], colWidths=[40, 420])
+        inv_qr_table.setStyle(TableStyle([('VALIGN', (0,0), (-1,-1), 'MIDDLE'), ('BACKGROUND', (0,0), (-1,-1), COLOR_ALERT_BG), ('BOX', (0,0), (-1,-1), 1, COLOR_BORDER), ('PADDING', (0,0), (-1,-1), 3)]))
         story.append(inv_qr_table)
     except Exception:
-        story.append(Paragraph(t["inventory"]["warning"], style_normal))
+        story.append(Paragraph(t["inventory"]["warning"], style_inv_warn))
     story.append(PageBreak())
     
-    # ---- PAGE 14: FAQ ----
+    # ---- PAGE 16: FAQ ----
     story.append(Bookmark("faq", page_map))
     story.append(Paragraph(t["faq"]["title"], style_h1))
     story.append(Paragraph(t["faq"]["subtitle"], style_h2))
-    story.append(Spacer(1, 15))
+    story.append(Spacer(1, 8))
     for item in t["faq"]["items"]:
         story.append(Paragraph(f"<b>• {item['q']}</b>", style_normal_bold))
         story.append(Paragraph(item['a'], style_normal))
-        story.append(Spacer(1, 14))
+        story.append(Spacer(1, 8))
     story.append(PageBreak())
     
-    # ---- PAGE 15: CHECKOUT ----
+    # ---- PAGE 17: CHECKOUT ----
     story.append(Bookmark("checkout", page_map))
     story.append(Paragraph(t["checkout"]["title"], style_h1))
     story.append(Paragraph(t["checkout"]["subtitle"], style_h2))
-    story.append(Spacer(1, 15))
+    story.append(Spacer(1, 8))
     story.append(Paragraph(t["checkout"]["intro"], style_normal))
-    story.append(Spacer(1, 15))
+    story.append(Spacer(1, 8))
     for step in t["checkout"]["steps"]:
         story.append(Paragraph(f"• {step}", style_normal))
-        story.append(Spacer(1, 14))
-    story.append(Spacer(1, 15))
+        story.append(Spacer(1, 6))
+    story.append(Spacer(1, 8))
     
     # WhatsApp Check-Out QR
     checkout_url = "https://wa.me/5491145379500?text=Hola%20Jorge.%20Ya%20hicimos%20el%20check-out%20en%20C%C3%B3rdoba%205579.%20Las%20llaves%20est%C3%A1n%20en%20el%20buz%C3%B3n."
     qr_w_co = qr.QrCodeWidget(checkout_url)
-    qr_w_co.barWidth = 70
-    qr_w_co.barHeight = 70
+    qr_w_co.barWidth = 55
+    qr_w_co.barHeight = 55
     qr_w_co.barFillColor = COLOR_PRIMARY
     qr_w_co.qrVersion = 1
-    d_co = Drawing(70, 70)
+    d_co = Drawing(55, 55)
     d_co.add(qr_w_co)
-    co_table = Table([[d_co, Paragraph("<b>AVISO AUTOMÁTICO DE CHECK-OUT</b><br/>Escanee este código QR con su celular para enviar automáticamente el aviso de salida por WhatsApp a Jorge.", style_card_body)]], colWidths=[80, 380])
+    co_title = "AUTOMATIC CHECK-OUT NOTICE" if CURRENT_LANG == "en" else "AVISO AUTOMÁTICO DE CHECK-OUT"
+    co_desc = "Scan this QR code with your phone to automatically send check-out notification via WhatsApp to Jorge." if CURRENT_LANG == "en" else "Escanee este código QR con su celular para enviar automáticamente el aviso de salida por WhatsApp a Jorge."
+    co_table = Table([[d_co, Paragraph(f"<b>{co_title}</b><br/>{co_desc}", style_card_body)]], colWidths=[65, 395])
     co_table.setStyle(TableStyle([
         ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
         ('BACKGROUND', (0,0), (-1,-1), COLOR_ALERT_BG),
         ('BOX', (0,0), (-1,-1), 1, COLOR_BORDER),
-        ('PADDING', (0,0), (-1,-1), 10)
+        ('PADDING', (0,0), (-1,-1), 6)
     ]))
     story.append(co_table)
-    story.append(Spacer(1, 20))
+    story.append(Spacer(1, 10))
     story.append(Paragraph(f"<b>{t['checkout']['thank_you_title']}</b>", style_h3))
     story.append(Paragraph(t["checkout"]["thank_you_text"], style_normal))
-    story.append(Spacer(1, 25))
+    story.append(Spacer(1, 10))
     try:
-        qr_review = RLImage("public/qr/qr_airbnb.png", width=75, height=75)
-        review_table = Table([[qr_review, Paragraph(t["checkout"]["review_qr"], style_card_body)]], colWidths=[90, 370])
-        review_table.setStyle(TableStyle([('VALIGN', (0,0), (-1,-1), 'MIDDLE'), ('BACKGROUND', (0,0), (-1,-1), COLOR_ALERT_BG), ('BOX', (0,0), (-1,-1), 1, COLOR_BORDER), ('PADDING', (0,0), (-1,-1), 10)]))
+        qr_review = RLImage("public/qr/qr_airbnb.png", width=60, height=60)
+        review_table = Table([[qr_review, Paragraph(t["checkout"]["review_qr"], style_card_body)]], colWidths=[70, 390])
+        review_table.setStyle(TableStyle([('VALIGN', (0,0), (-1,-1), 'MIDDLE'), ('BACKGROUND', (0,0), (-1,-1), COLOR_ALERT_BG), ('BOX', (0,0), (-1,-1), 1, COLOR_BORDER), ('PADDING', (0,0), (-1,-1), 6)]))
         story.append(review_table)
     except Exception:
         pass
     story.append(PageBreak())
     
-    # ---- PAGE 16: BACK COVER ----
-    story.append(Spacer(1, 100))
+    # ---- PAGE 18: BACK COVER ----
+    story.append(Spacer(1, 80))
     story.append(Paragraph(t["cover"]["title"], ParagraphStyle('BackTitle', parent=style_title_main, textColor=COLOR_PRIMARY)))
     story.append(Paragraph(t["cover"]["subtitle"], ParagraphStyle('BackSub', parent=style_title_sub, textColor=COLOR_GRAY)))
-    story.append(Spacer(1, 50))
+    story.append(Spacer(1, 40))
     back_line = Table([[""]], colWidths=[100], rowHeights=[2])
     back_line.setStyle(TableStyle([('LINEBELOW', (0,0), (-1,-1), 2, COLOR_PRIMARY), ('ALIGN', (0,0), (-1,-1), 'CENTER')]))
     story.append(back_line)
-    story.append(Spacer(1, 50))
+    story.append(Spacer(1, 40))
     contact_table = Table([[Paragraph(t["back_cover"]["contact"], style_card_body)]], colWidths=[420])
-    contact_table.setStyle(TableStyle([('BACKGROUND', (0,0), (-1,-1), COLOR_ALERT_BG), ('BOX', (0,0), (-1,-1), 1, COLOR_BORDER), ('PADDING', (0,0), (-1,-1), 15)]))
+    contact_table.setStyle(TableStyle([('BACKGROUND', (0,0), (-1,-1), COLOR_ALERT_BG), ('BOX', (0,0), (-1,-1), 1, COLOR_BORDER), ('PADDING', (0,0), (-1,-1), 12)]))
     story.append(contact_table)
-    story.append(Spacer(1, 60))
+    story.append(Spacer(1, 40))
     try:
-        qr_support = RLImage("public/qr/qr_portal.png", width=120, height=120)
+        qr_support = RLImage("public/qr/qr_portal.png", width=110, height=110)
         qr_support_table = Table([[qr_support]], colWidths=[420])
         qr_support_table.setStyle(TableStyle([('ALIGN', (0,0), (-1,-1), 'CENTER'), ('VALIGN', (0,0), (-1,-1), 'MIDDLE')]))
         story.append(qr_support_table)
-        story.append(Spacer(1, 15))
+        story.append(Spacer(1, 12))
         story.append(Paragraph(t["back_cover"]["qr_label"], ParagraphStyle('BackQRLabel', fontName=FONTS['Georgia-Italic'], fontSize=10, textColor=COLOR_GRAY, alignment=TA_CENTER)))
     except Exception:
         pass
-    story.append(Spacer(1, 140))
+    story.append(Spacer(1, 80))
     story.append(Paragraph(t["back_cover"]["thank_you"], ParagraphStyle('BackThankYou', fontName=FONTS['Georgia-Bold'], fontSize=12, textColor=COLOR_PRIMARY, alignment=TA_CENTER)))
     
     doc.build(story, canvasmaker=NumberedCanvas)
@@ -704,3 +764,11 @@ if __name__ == "__main__":
         build_pdf(page_map=pages, lang=l)
         out_name = f"public/manual_cordoba5579{'' if l == 'es' else '_' + l}.pdf"
         print(f"Successfully generated {out_name}")
+        
+    # Copy alias files manual.pdf and manual_en.pdf
+    try:
+        shutil.copyfile("public/manual_cordoba5579.pdf", "public/manual.pdf")
+        shutil.copyfile("public/manual_cordoba5579_en.pdf", "public/manual_en.pdf")
+        print("Successfully created aliases public/manual.pdf and public/manual_en.pdf")
+    except Exception as e:
+        print(f"Error creating alias copies: {e}")

@@ -8,7 +8,7 @@ import {
   AlertTriangle,
   Menu,
   X,
-  Wine,
+  Utensils,
   UserCheck,
   ClipboardList,
   AlertCircle,
@@ -227,7 +227,6 @@ export default function Home() {
             <div className="hidden lg:flex items-center space-x-5 xl:space-x-8 text-[11px] xl:text-xs font-semibold tracking-wider text-neutral-600 dark:text-neutral-300">
               <a href="#detalles" className="hover:text-neutral-900 dark:hover:text-white transition-colors">{t.navDept}</a>
               <a href="#amenidades" className="hover:text-neutral-900 dark:hover:text-white transition-colors">{t.navAmen}</a>
-              <Link href="/cava" className="hover:text-neutral-900 dark:hover:text-white transition-colors">{t.navCava}</Link>
               <Link href="/inventario" className="hover:text-neutral-900 dark:hover:text-white transition-colors">{t.navInve}</Link>
               <a href="#resenas" className="hover:text-neutral-900 dark:hover:text-white transition-colors">{t.reviewsTitle.toUpperCase()}</a>
               <a href="#barrio" className="hover:text-neutral-900 dark:hover:text-white transition-colors">{t.navBarr}</a>
@@ -321,13 +320,6 @@ export default function Home() {
             >
               {t.navAmen}
             </a>
-            <Link 
-              href="/cava" 
-              onClick={() => setMobileMenuOpen(false)}
-              className="block py-2 text-neutral-600 hover:text-neutral-900"
-            >
-              {t.navCava}
-            </Link>
             <Link 
               href="/inventario" 
               onClick={() => setMobileMenuOpen(false)}
@@ -479,7 +471,7 @@ export default function Home() {
 
                 <div className="flex gap-4 p-4 -m-4 rounded-3xl hover:bg-white dark:hover:bg-[#252824] hover:shadow-lg hover:shadow-neutral-200/50 dark:hover:shadow-black/20 transition-all duration-300 group">
                   <div className="p-3 bg-neutral-100 dark:bg-neutral-800 rounded-2xl flex-shrink-0 h-fit group-hover:scale-110 transition-transform duration-300">
-                    <Wine className="w-5 h-5 text-[#5F6F52] dark:text-[#889B73]" />
+                    <Utensils className="w-5 h-5 text-[#5F6F52] dark:text-[#889B73]" />
                   </div>
                   <div className="space-y-1">
                     <h4 className="font-semibold text-sm text-neutral-900 dark:text-white">{t.whyWineTitle}</h4>
@@ -629,143 +621,8 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Minibar & Wine Cellar Premium visual catalog */}
-            <div className="bg-[#FAF9F7] dark:bg-[#1E211D] border border-[#EFEBE4] dark:border-[#2C302A] rounded-3xl p-6 md:p-8 space-y-6 shadow-sm transition-colors duration-300">
-              <div className="flex items-center gap-3 border-b border-[#EFEBE4] dark:border-[#2C302A] pb-4">
-                <div className="p-2.5 bg-[#5F6F52] text-white rounded-xl">
-                  <Wine className="w-5 h-5" />
-                </div>
-                <div>
-                  <h4 className="font-serif text-base sm:text-lg font-bold text-neutral-900 dark:text-neutral-100 leading-tight">
-                    {t.minibarTitle}
-                  </h4>
-                  <p className="text-neutral-500 dark:text-neutral-450 text-xs">
-                    {t.minibarSubtitle}
-                  </p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {airbnbDetails.cava && airbnbDetails.cava.length > 0 ? (
-                  airbnbDetails.cava.map((item: { categoria?: string; nombre?: string; descripcion?: string; cantidad?: number | string; precio_usd?: number | string }, idx: number) => {
-                    const name = item.nombre || item.categoria || "";
-                    const desc = item.descripcion || "";
-                    const price = item.precio_usd || 0;
-                    
-                    let categoryTagEs = "Minibar";
-                    let categoryTagEn = "Minibar";
-                    let tagColor = "bg-neutral-50 dark:bg-neutral-950/20 text-neutral-700 dark:text-neutral-400";
-                    
-                    const lower = ((item.categoria || "") + " " + name).toLowerCase();
-                    if (lower.includes("tinto") || lower.includes("red")) {
-                      categoryTagEs = "Tinto";
-                      categoryTagEn = "Red";
-                      tagColor = "bg-red-50 dark:bg-red-950/20 text-red-700 dark:text-red-400";
-                    } else if (lower.includes("blanco") || lower.includes("white") || lower.includes("torrontes") || lower.includes("torrontés")) {
-                      categoryTagEs = "Blanco";
-                      categoryTagEn = "White";
-                      tagColor = "bg-amber-50 dark:bg-amber-950/20 text-amber-700 dark:text-amber-400";
-                    } else if (lower.includes("champagne") || lower.includes("espumante") || lower.includes("sparkling") || lower.includes("demi sec") || lower.includes("burbuja") || lower.includes("burbujas")) {
-                      categoryTagEs = "Burbujas";
-                      categoryTagEn = "Sparkling";
-                      tagColor = "bg-yellow-50 dark:bg-yellow-950/20 text-yellow-700 dark:text-yellow-400";
-                    } else if (lower.includes("fernet") || lower.includes("coca") || lower.includes("classic") || lower.includes("clasico") || lower.includes("clásico")) {
-                      categoryTagEs = "Clásico";
-                      categoryTagEn = "Classic";
-                      tagColor = "bg-emerald-50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-400";
-                    }
-                    
-                    return (
-                      <div key={idx} className="bg-white dark:bg-[#141613] border border-[#EFEBE4] dark:border-[#2C302A] p-4 rounded-2xl flex justify-between gap-3 shadow-sm hover:shadow-md transition-all duration-300">
-                        <div className="space-y-1">
-                          <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${tagColor}`}>
-                            {language === "es" ? categoryTagEs : categoryTagEn}
-                          </span>
-                          <h5 className="font-bold text-xs sm:text-sm text-neutral-900 dark:text-neutral-200 pt-1">
-                            {name}
-                          </h5>
-                          {desc && (
-                            <p className="text-[11px] text-neutral-500 dark:text-neutral-400 leading-normal">{desc}</p>
-                          )}
-                        </div>
-                        <div className="text-right flex flex-col justify-between items-end flex-shrink-0">
-                          <span className="text-sm font-bold text-neutral-900 dark:text-neutral-200">
-                            USD ${price}
-                          </span>
-                        </div>
-                      </div>
-                    );
-                  })
-                ) : (
-                  <>
-                    {/* Red Wine */}
-                    <div className="bg-white dark:bg-[#141613] border border-[#EFEBE4] dark:border-[#2C302A] p-4 rounded-2xl flex justify-between gap-3 shadow-sm hover:shadow-md transition-all duration-300">
-                      <div className="space-y-1">
-                        <span className="text-[10px] bg-red-50 dark:bg-red-950/20 text-red-700 dark:text-red-400 font-bold px-2 py-0.5 rounded">Tinto / Red</span>
-                        <h5 className="font-bold text-xs sm:text-sm text-neutral-900 dark:text-neutral-200 pt-1">{t.minibarItemRed}</h5>
-                        <p className="text-[11px] text-neutral-500 dark:text-neutral-405">{t.minibarDescRed}</p>
-                      </div>
-                      <div className="text-right flex flex-col justify-between items-end flex-shrink-0">
-                        <span className="text-sm font-bold text-neutral-900 dark:text-neutral-200">USD 15</span>
-                      </div>
-                    </div>
-
-                    {/* White Wine */}
-                    <div className="bg-white dark:bg-[#141613] border border-[#EFEBE4] dark:border-[#2C302A] p-4 rounded-2xl flex justify-between gap-3 shadow-sm hover:shadow-md transition-all duration-300">
-                      <div className="space-y-1">
-                        <span className="text-[10px] bg-amber-50 dark:bg-amber-950/20 text-amber-700 dark:text-amber-400 font-bold px-2 py-0.5 rounded">Blanco / White</span>
-                        <h5 className="font-bold text-xs sm:text-sm text-neutral-900 dark:text-neutral-200 pt-1">{t.minibarItemWhite}</h5>
-                        <p className="text-[11px] text-neutral-500 dark:text-neutral-405">{t.minibarDescWhite}</p>
-                      </div>
-                      <div className="text-right flex flex-col justify-between items-end flex-shrink-0">
-                        <span className="text-sm font-bold text-neutral-900 dark:text-neutral-200">USD 12</span>
-                      </div>
-                    </div>
-
-                    {/* Sparkling */}
-                    <div className="bg-white dark:bg-[#141613] border border-[#EFEBE4] dark:border-[#2C302A] p-4 rounded-2xl flex justify-between gap-3 shadow-sm hover:shadow-md transition-all duration-300">
-                      <div className="space-y-1">
-                        <span className="text-[10px] bg-yellow-50 dark:bg-yellow-950/20 text-yellow-700 dark:text-yellow-400 font-bold px-2 py-0.5 rounded">Burbujas / Sparkling</span>
-                        <h5 className="font-bold text-xs sm:text-sm text-neutral-900 dark:text-neutral-200 pt-1">{t.minibarItemChampagne}</h5>
-                        <p className="text-[11px] text-neutral-500 dark:text-neutral-405">{t.minibarDescChampagne}</p>
-                      </div>
-                      <div className="text-right flex flex-col justify-between items-end flex-shrink-0">
-                        <span className="text-sm font-bold text-neutral-900 dark:text-neutral-200">USD 20</span>
-                      </div>
-                    </div>
-
-                    {/* Local Classic */}
-                    <div className="bg-white dark:bg-[#141613] border border-[#EFEBE4] dark:border-[#2C302A] p-4 rounded-2xl flex justify-between gap-3 shadow-sm hover:shadow-md transition-all duration-300">
-                      <div className="space-y-1">
-                        <span className="text-[10px] bg-emerald-50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-450 font-bold px-2 py-0.5 rounded">Combo Local</span>
-                        <h5 className="font-bold text-xs sm:text-sm text-neutral-900 dark:text-neutral-200 pt-1">{t.minibarItemFernet}</h5>
-                        <p className="text-[11px] text-neutral-500 dark:text-neutral-405">{t.minibarDescFernet}</p>
-                      </div>
-                      <div className="text-right flex flex-col justify-between items-end flex-shrink-0">
-                        <span className="text-sm font-bold text-neutral-900 dark:text-neutral-200">USD 18</span>
-                      </div>
-                    </div>
-                  </>
-                )}
-              </div>
-
-              <div className="flex flex-col sm:flex-row gap-3">
-                <div className="flex-[2] text-[10px] text-neutral-400 dark:text-neutral-500 flex items-center gap-1.5 justify-center bg-white dark:bg-[#141613] border border-[#EFEBE4] dark:border-[#2C302A] py-2.5 rounded-xl font-medium transition-colors duration-300">
-                  <AlertCircle className="w-3.5 h-3.5 text-neutral-400 dark:text-neutral-500" />
-                  <span>{t.minibarFootnote}</span>
-                </div>
-                <Link
-                  href="/cava"
-                  className="flex-1 text-[11px] text-white bg-[#5F6F52] hover:bg-[#4F5D43] dark:bg-[#889B73] dark:hover:bg-[#6E7F5E] flex items-center gap-1.5 justify-center py-2.5 rounded-xl font-bold shadow-sm hover:shadow-md transition-all duration-300"
-                >
-                  <Wine className="w-3.5 h-3.5" />
-                  <span>{language === "es" ? "Carta Digital & Precios" : "Digital Cellar Menu"}</span>
-                </Link>
-              </div>
-
-              {/* Sofa Bed Video Guide */}
-              <SofaBedVideoGuide />
-            </div>
+            {/* Sofa Bed Video Guide */}
+            <SofaBedVideoGuide />
           </div>
 
           {/* Right Column: Sticky Booking Widget (4/12 width) */}

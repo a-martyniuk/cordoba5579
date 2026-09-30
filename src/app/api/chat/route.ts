@@ -15,84 +15,7 @@ interface CavaItem {
   origen?: string;
 }
 
-// Fetch live Cava items from the published Google Sheets URL
-async function fetchLiveCava(): Promise<CavaItem[]> {
-  try {
-    const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlUx7LNTseRM1DhoYGmw-9ZfuWpobnDFF5pLt4AuIdMiLLVEqVN_54OTZm0YbMUTp3-iHsk6Dbx4YP/pub?gid=286973474&output=csv";
-    
-    // 1.2s timeout to ensure the API route remains responsive
-    const controller = new AbortController();
-    const id = setTimeout(() => controller.abort(), 1200);
-    
-    const response = await fetch(csvUrl, { 
-      signal: controller.signal,
-      next: { revalidate: 60 } // Cache for 1 minute
-    });
-    
-    clearTimeout(id);
-    
-    if (!response.ok) throw new Error("Sheets fetch failed");
-    const csvText = await response.text();
-    const parsedData = parseCSV(csvText);
-    
-    if (parsedData.length > 1) {
-      const headers = parsedData[0].map(h => h.trim().toLowerCase());
-      return parsedData.slice(1).map((row) => {
-        const getVal = (colName: string, fallback: string = ""): string => {
-          const idx = headers.indexOf(colName);
-          return idx !== -1 && row[idx] !== undefined ? row[idx].trim() : fallback;
-        };
-        const qtyStr = getVal("cantidad");
-        const priceStr = getVal("precio_usd");
-        return {
-          categoria: getVal("categoria"),
-          nombre: getVal("nombre"),
-          descripcion: getVal("descripcion"),
-          cantidad: parseInt(qtyStr, 10) || qtyStr || 0,
-          precio_usd: parseFloat(priceStr) || priceStr || 0,
-          origen: getVal("origen")
-        };
-      });
-    }
-  } catch (error) {
-    console.warn("Could not fetch live Cava for chat prompt, using fallback:", error);
-  }
-  return airbnbDetails.cava || [];
-}
-
-// Dynamically build the cava section from live inventory data so prices
-// always reflect the actual Google Sheet or airbnb-details.json.
-async function buildCavaSection(): Promise<string> {
-  const items = await fetchLiveCava();
-
-  if (items.length === 0) {
-    return "- Cava & Minibar: Servicio disponible con costo adicional. Consultar a Jorge Orlando por WhatsApp.";
-  }
-
-  const lines = items.map((item) => {
-    const nombre = item.nombre || "(sin nombre)";
-    const origen = item.origen ? ` (${item.origen})` : "";
-    const cantidad = item.cantidad !== undefined ? `, stock: ${item.cantidad} u.` : "";
-    const precio =
-      item.precio_usd !== undefined
-        ? `, USD ${Number(item.precio_usd).toFixed(2)} c/u`
-        : "";
-    return `  • ${nombre}${origen}${cantidad}${precio}`;
-  });
-
-  return `- Cava & Minibar (COSTO ADICIONAL — pago a Jorge Orlando vía WhatsApp):
-${lines.join("\n")}
-  Instrucciones de Acceso y Pago:
-  • Acceso: Si estás interesado en consumir, comunícate con Jorge Orlando por WhatsApp. Él te dará las instrucciones de las combinaciones de candados para abrir la cava.
-  • Reposición: Si querés reposición de bebidas, solicitala al mismo WhatsApp.
-  PAYMENTS (CAVA / MINIBAR):
-  - National (ARS): Transfer to Banco Santander. Titular: Martyniuk Jorge Orlando, DNI: 13.671.433, CBU: 0720533088000000521172, Alias: ARENA.DIESEL.CUENCA.
-  - International (USD): Payoneer. Bank: First Century Bank, Account Type: CHECKING, Transfer Type: Local, Routing (ABA): 061120084, SWIFT: FCNSUS32, Account: 4030000417878, Beneficiary: Alexis Martyniuk.
-  Carta completa y QR en: https://www.alexismartyniuk.com.ar/cordoba5579/cava`;
-}
-
 async function buildSystemPrompt(): Promise<string> {
-  const cavaSection = await buildCavaSection();
   return `Sos el Concierge Virtual del departamento Córdoba 5579 en Palermo Hollywood, Buenos Aires.
 Respondés en el mismo idioma en que te hablen (español o inglés).
 Sos amable, conciso y muy útil. Tu objetivo es ayudar a los huéspedes con información sobre:
@@ -108,13 +31,12 @@ Sos amable, conciso y muy útil. Tu objetivo es ayudar a los huéspedes con info
 - Equipaje: Por reglamento del consorcio, no está permitido el guardado de equipaje de forma general. El huésped debe consultar eventualmente a Jorge Orlando por WhatsApp según su necesidad para ver si hay alternativas.
 - Mascotas: No se permiten.
 - Fumadores: Sólo en la terraza, nunca dentro del departamento.
-${cavaSection}
+- Cava de vinos / Minibar: No disponible en el departamento. Los huéspedes cuentan con heladera para sus propias bebidas.
 - Restaurantes cercanos: Palermo Hollywood tiene gastronomía excelente. Ver sección "Lugares" en el portal.
 - Movistar Arena: A 5 cuadras caminando.
 - Supermercado: Día a 3 cuadras.
 - Contacto del anfitrión: Jorge Orlando, por WhatsApp.
 
-IMPORTANTE: Cuando el huésped pregunte por vinos, precios o la cava, siempre citá los valores exactos de la lista de arriba. Si pregunta por un producto específico, buscalo y respondé con nombre, origen y precio exacto.
 Si no sabés algo, recomendá contactar a Jorge directamente por WhatsApp.
 Máximo 3 oraciones por respuesta. Sé concreto.`;
 }

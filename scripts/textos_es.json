@@ -3,7 +3,7 @@
     "title": "CÓRDOBA 5579",
     "subtitle": "PALERMO HOLLYWOOD",
     "tag": "GUÍA DE BIENVENIDA & MANUAL DE LA CASA",
-    "footer": "Unidad 101  •  Buenos Aires, Argentina"
+    "footer": "Departamento 101  •  Buenos Aires, Argentina"
   },
   "toc_page": {
     "title": "Índice & Información Rápida",
@@ -26,104 +26,122 @@
         "content": "alexismartyniuk.com.ar/cordoba5579<br/>Mapas, chat y manuales en tiempo real."
       }
     ],
-    "toc_header": "CONTENIDO DE ESTA GUÍA:"
+    "toc_header": "CONTENIDO DE ESTA GUÍA:",
+    "toc_items": [
+      {"title": "1. Bienvenida & Cómo llegar", "key": "welcome"},
+      {"title": "2. Estacionamiento en la Calle (GRATIS)", "key": "parking"},
+      {"title": "3. Check-In Autónomo (Lockbox)", "key": "checkin"},
+      {"title": "4. Climatización & Caja Fuerte", "key": "climate_safe"},
+      {"title": "5. Guía de Armado del Sillón Cama", "key": "sofabed"},
+      {"title": "6. Cocina & Electrodomésticos", "key": "kitchen"},
+      {"title": "7. Amenities del Edificio (Laundry & SUM)", "key": "amenities"},
+      {"title": "8. Guía Comercial y Atracciones del Barrio", "key": "guide"},
+      {"title": "9. Tips Locales para Turistas", "key": "local_tips"},
+      {"title": "10. Normas de Convivencia", "key": "rules"},
+      {"title": "11. Limpieza, Residuos & Cuidado Sanitario", "key": "cleaning"},
+      {"title": "12. Seguridad, Cortes de Luz & Emergencias", "key": "security"},
+      {"title": "13. Inventario del Departamento", "key": "inventory"},
+      {"title": "14. Preguntas Frecuentes (FAQs)", "key": "faq"},
+      {"title": "15. Check-Out Checklist", "key": "checkout"}
+    ]
   },
   "welcome": {
     "title": "Bienvenido a Córdoba 5579",
     "subtitle": "Carta de bienvenida y cómo llegar",
-    "intro": "¡Hola y bienvenido a Buenos Aires!<br/><br/>Estamos encantados de tenerte como nuestro huésped en Córdoba 5579. Este departamento fue diseñado y equipado con mucho esmero para ofrecerte una estadía premium, confortable e inolvidable en una de las mejores zonas de la ciudad: Palermo Hollywood.<br/><br/>Hemos preparado este manual detallado para ayudarte a familiarizarte rápidamente con el departamento, el funcionamiento de sus electrodomésticos y las normas de convivencia del edificio. Te pedimos que lo leas con atención para garantizar una experiencia placentera y sin contratiempos.<br/><br/>Jorge Orlando (quien dirige el proyecto) y todo nuestro equipo están a tu entera disposición para asistirte. ¡Que disfrutes tu estadía!",
-    "directions_title": "Cómo llegar",
-    "directions_intro": "El edificio está ubicado sobre <b>Avenida Córdoba 5579</b>, entre las calles Fitz Roy y Humboldt, en el barrio de Palermo Hollywood, CABA.",
+    "intro": "¡Hola y bienvenido a Buenos Aires!<br/><br/>Nos alegra enormemente recibirte como nuestro huésped en Córdoba 5579. Este departamento fue meticulosamente diseñado y equipado para ofrecerte una estadía de primer nivel, confortable e inolvidable en uno de los barrios más dinámicos de la ciudad: Palermo Hollywood.<br/><br/>Hemos preparado este detallado manual de la casa para ayudarte a familiarizarte con las instalaciones, electrodomésticos y normas de convivencia del edificio. Te pedimos leerlo atentamente para asegurar una experiencia fluida y placentera.<br/><br/>Jorge Orlando (manager del proyecto) y todo nuestro equipo están a tu entera disposición para asistirte. ¡Que disfrutes tu estadía!",
+    "directions_title": "Cómo llegar al departamento",
+    "directions_intro": "El edificio se encuentra en <b>Av. Córdoba 5579</b>, entre las calles Fitz Roy y Humboldt, Palermo Hollywood, CABA.",
     "directions": [
-      {"title": "En Auto o Apps de Transporte:", "content": "Desde Ezeiza (EZE) Aeroparque (AEP), <b>recomendamos usar Uber o Cabify</b>. El acceso es directo por Av. Córdoba. Tenga en cuenta que el edificio no cuenta con cochera propia; hay cocheras de pago a 50m y estacionamiento gratuito en la calle."},
-      {"title": "En Subte (Línea D):", "content": "La estación más cercana es <b>Ministro Carranza</b> (a 5 cuadras) o la estación <b>Palermo</b>. Es la línea directa para ir al centro, Plaza de Mayo y Recoleta."},
-      {"title": "En Tren:", "content": "La estación <b>Ministro Carranza</b> de la Línea Mitre se encuentra a solo 5 cuadras del departamento."},
-      {"title": "En Colectivo (Metrobus):", "content": "Múltiples líneas pasan por la puerta del edificio sobre Av. Córdoba (140, 151, 168) o a pocas cuadras sobre Av. Santa Fe y Av. Juan B. Justo."}
+      {"title": "En Auto o Apps de Viaje:", "content": "Desde Ezeiza (EZE) o Aeroparque (AEP), <b>recomendamos utilizar Uber o Cabify</b> por seguridad y tarifa transparente. El acceso es directo por la avenida Córdoba. El edificio no posee cochera propia; hay garajes comerciales a 50m."},
+      {"title": "En Subte (Línea D):", "content": "La estación más cercana es <b>Ministro Carranza</b> (a 5 cuadras) o <b>Palermo</b>. La línea D te conecta directo con el Centro, Plaza de Mayo y Recoleta."},
+      {"title": "En Tren (Línea Mitre):", "content": "La estación <b>Ministro Carranza</b> del tren Mitre te deja a solo 5 cuadras del departamento."},
+      {"title": "En Colectivo (Metrobus):", "content": "Múltiples líneas de colectivo paran en la puerta sobre Av. Córdoba (140, 151, 168) o a pocas cuadras sobre Av. Santa Fe y Av. Juan B. Justo."}
     ],
     "parking_title": "Estacionamiento en la Calle (Datos Oficiales BOTI CABA - 23/07/2026)",
-    "parking_intro": "Normativa oficial relevada a la fecha mediante el chatbot inteligente BOTI CABA:",
+    "parking_intro": "Reglas oficiales de tránsito verificadas a través del asistente BOTI del Gobierno de la Ciudad:",
     "parking_items": [
-      {"title": "Fitz Roy 1301-1400 (a 50m):", "content": "<b>PERMITIDO 24 HS de ambos lados (GRATIS)</b>. Opción recomendada ⭐️"},
-      {"title": "Humboldt 1301-1400 (a 100m):", "content": "<b>PERMITIDO 24 HS mano derecha</b> (mano izquierda prohibido 24 hs)."},
-      {"title": "Av. Niceto Vega 5513-5600 (a 150m):", "content": "<b>PERMITIDO 24 HS mano derecha</b>."},
-      {"title": "Castillo 1301-1400 (a 200m):", "content": "<b>PERMITIDO 24 HS de ambos lados</b>."},
-      {"title": "Av. Córdoba 5500 (frente depto):", "content": "Mano derecha permitido de noche (21 a 07 hs) y fines de semana 24 hs. Prohibido días hábiles de 07 a 21 hs."}
+      {"title": "Fitz Roy 1301-1400 (a 50m):", "content": "<b>PERMITIDO ESTACIONAR GRATIS 24 HS DE AMBOS LADOS</b>. Opción principal recomendada ⭐️"},
+      {"title": "Humboldt 1301-1400 (a 100m):", "content": "<b>PERMITIDO 24 HS MANO DERECHA ÚNICAMENTE</b> (prohibido mano izquierda 24 hs)."},
+      {"title": "Av. Niceto Vega 5513-5600 (a 150m):", "content": "<b>PERMITIDO 24 HS MANO DERECHA ÚNICAMENTE</b>."},
+      {"title": "Castillo 1301-1400 (a 200m):", "content": "<b>PERMITIDO ESTACIONAR GRATIS 24 HS DE AMBOS LADOS</b>."},
+      {"title": "Av. Córdoba 5500 (frente al depto):", "content": "Permitido mano derecha de NOCHE (21 a 07 hs) y Fines de Semana/Feriados 24 hs. Prohibido días hábiles de 07 a 21 hs."}
     ],
-    "boti_info": "<b>Consulta por WhatsApp a BOTI CABA (+54 9 11 5050-0147):</b> Envié un mensaje de WhatsApp -> Seleccione la opción <b>B</b> (Por dirección) -> Escriba la calle deseada (ej: <i>'Fitz Roy entre Niceto Vega y Av. Córdoba'</i>) para obtener la regla oficial en tiempo real."
+    "boti_info": "<b>Verificación en tiempo real por WhatsApp con BOTI (+54 9 11 5050-0147):</b> Enviá un mensaje -> Seleccioná Opción <b>B</b> (Por Dirección) -> Ingresá la altura deseada (ej: <i>'Fitz Roy entre Niceto Vega y Av. Córdoba'</i>) para confirmar normas vigentes al instante."
   },
   "local_tips": {
     "title": "Tips Locales para Turistas",
     "subtitle": "Dinero, transporte y supervivencia básica",
-    "intro": "Información esencial si nos visitas desde el extranjero:",
+    "intro": "Información clave para visitantes internacionales que viajan a Buenos Aires:",
     "items": [
-      {"title": "TRANSPORTE PÚBLICO (Tarjeta SUBE)", "content": "En Buenos Aires, es imposible pagar el bus o subte con efectivo. Debes comprar una tarjeta <b>SUBE</b> (se consigue en estaciones de subte o kioscos grandes) y cargarla con crédito antes de viajar. Una misma tarjeta puede ser usada por varias personas en el mismo viaje."},
-      {"title": "DINERO Y TIPO DE CAMBIO (Dólares en Argentina)", "content": "Argentina tiene múltiples tipos de cambio. Los más importantes son:<br/>• <b>Dólar Oficial:</b> Es el valor bancario tradicional, pero el menos favorable para turistas.<br/>• <b>Dólar Blue (Paralelo):</b> Es el valor del mercado libre, generalmente mucho más alto. Se opera en efectivo en casas de cambio ('cuevas').<br/>• <b>Dólar MEP (Tarjeta):</b> <b>¡La opción recomendada!</b> Si pagas con tu tarjeta de crédito o débito extranjera (Visa/Mastercard), el sistema convierte automáticamente tus gastos a un valor casi idéntico al 'Blue'. Es seguro, legal y muy conveniente para pagar restaurantes y supermercados.<br/><br/><i>Escanee el código QR para ver la cotización de los diferentes dólares en tiempo real hoy.</i>", "qr_link": "https://dolarhoy.com/"}
+      {"title": "TRANSPORTE PÚBLICO (Tarjeta SUBE)", "content": "En Buenos Aires, los colectivos y subtes no aceptan dinero en efectivo. Necesitás una tarjeta <b>SUBE</b> recargable (disponible en estaciones de subte o kioscos grandes) y acreditarle saldo antes de viajar. Una sola tarjeta sirve para varios pasajeros en el mismo viaje."},
+      {"title": "DINERO Y TIPOS DE CAMBIO (Dólares en Argentina)", "content": "Argentina cuenta con un sistema de varios tipos de cambio. Opciones principales para turistas:<br/>• <b>Dólar Oficial:</b> Cotización bancaria tradicional, menos ventajosa para el visitante.<br/>• <b>Dólar Blue (Paralelo):</b> Cotización libre de mercado, de mayor valor. Se opera en efectivo en casas de cambio.<br/>• <b>Dólar MEP (Tarjeta):</b> <b>¡La opción recomendada!</b> Al pagar con tarjetas de crédito/débito extranjeras (Visa/Mastercard), se te aplica automáticamente un tipo de cambio cercano al Dólar Blue. Es seguro, legal y muy cómodo en restaurantes y supermercados.<br/><br/><i>Escanee el código QR para consultar las cotizaciones del día en tiempo real.</i>", "qr_link": "https://dolarhoy.com/"}
     ]
   },
   "checkin": {
     "title": "Check-In Autónomo",
     "subtitle": "Paso a paso para el ingreso autónomo",
-    "intro": "Para su comodidad y flexibilidad de horario, el ingreso al departamento es 100% autónomo a partir de las <b>15:00 horas</b>. Por favor, siga las siguientes instrucciones detalladas para acceder:",
+    "intro": "Para su comodidad y flexibilidad horaria, el ingreso al departamento es 100% autónomo a partir de las <b>15:00 hs (3:00 PM)</b>. Siga estos sencillos pasos:",
     "steps": [
-      {"step": "PASO 1", "content": "Ubique la caja de llaves de seguridad metálica (lockbox) rotulada como <b>'Depto 101'</b> que se encuentra instalada en la pared exterior, a la derecha de la puerta de ingreso principal del edificio (Av. Córdoba 5579)."},
-      {"step": "PASO 2", "content": "Introduzca el código de combinación de 4 dígitos que le enviaremos de forma privada por la mensajería de Airbnb unas horas antes de su arribo."},
-      {"step": "PASO 3", "content": "Deslice la traba metálica lateral hacia abajo y abra la compuerta de la caja para retirar el juego de llaves."},
-      {"step": "PASO 4", "content": "Aproxime el llavero plástico azul o negro (tag magnético) al lector circular ubicado sobre la pared de la entrada del edificio. La puerta de vidrio del hall se destrabará automáticamente."},
-      {"step": "PASO 5", "content": "Ingrese al edificio y diríjase al primer piso por el ascensor o las escaleras. El departamento es la <b>Unidad 101</b>. Utilice la llave física para abrir la cerradura de la puerta principal."}
+      {"step": "PASO 1", "content": "Ubique la caja fuerte metálica rotulada como <b>'Depto 101'</b> instalada en la pared exterior a la derecha de la puerta principal del edificio (Av. Córdoba 5579)."},
+      {"step": "PASO 2", "content": "Ingrese el código de combinación de 4 dígitos enviado por mensaje privado de Airbnb horas antes de su llegada."},
+      {"step": "PASO 3", "content": "Deslice la traba lateral negra hacia abajo y abra la tapa del compartimento para retirar las llaves."},
+      {"step": "PASO 4", "content": "Apoye el llavero magnético circular negro sobre el lector electrónico situado junto al buzón de entrada. La puerta de vidrio del hall se destrabará automáticamente."},
+      {"step": "PASO 5", "content": "Ingrese al hall y diríjase al piso 1 por ascensor o escalera. El departamento es el <b>101</b>. Utilice la llave física para abrir la puerta de entrada."}
     ],
-    "caution_title": "ADVERTENCIA DE SEGURIDAD:",
-    "caution": "• Nunca comparta el código de la caja de llaves con personas ajenas a la reserva.<br/>• Al retirar las llaves, asegúrese de cerrar la caja de seguridad y desordenar los números del código para que no quede expuesto."
+    "caution_title": "CONSEJOS DE SEGURIDAD:",
+    "caution": "• Nunca comparta el código de la caja con terceros ajenos a la reserva.<br/>• Tras retirar las llaves, cierre la caja y desordene los números de la combinación para que no quede expuesta."
   },
   "rules": {
-    "title": "Normas de la Casa",
-    "subtitle": "Normas y convivencia en el edificio",
-    "intro": "Para garantizar una estadía placentera y mantener una buena relación con los vecinos del consorcio, le solicitamos respetar estrictamente el reglamento interno del edificio:",
+    "title": "Normas de Convivencia",
+    "subtitle": "Para garantizar una estadía placentera y mantener una buena convivencia",
+    "intro": "Para garantizar una estadía armónica y el respeto con los vecinos del edificio, le pedimos cumplir estrictamente con el reglamento interno:",
     "items": [
-      {"title": "FUMAR", "content": "Está terminantemente prohibido fumar cigarrillos tradicionales o electrónicos dentro del departamento, en el balcón o en pasillos del edificio. Solo se permite fumar al aire libre en la terraza del piso 11."},
-      {"title": "MASCOTAS", "content": "No se permite el ingreso de ningún tipo de mascota al departamento bajo ninguna circunstancia."},
-      {"title": "RUIDOS Y FIESTAS", "content": "Están prohibidas las fiestas, eventos y ruidos molestos. Las horas de silencio del consorcio rigen de 22:00 a 08:00 hs. Respete el descanso de los vecinos."},
-      {"title": "INVITADOS Y VISITAS", "content": "Por seguridad, el ingreso a las áreas comunes (piscina, SUM, laundry) es exclusivo para los huéspedes registrados en la reserva. No se permite el ingreso de visitas externas a estas áreas."},
-      {"title": "CÓDIGO DE VESTIMENTA", "content": "Por reglamento de copropiedad, está estrictamente prohibido circular sin remera (torso desnudo) en pasillos, ascensor o hall de entrada. Solo se permite en el sector de la piscina en el piso 11."}
+      {"title": "PROHIBIDO FUMAR", "content": "Queda estrictamente prohibido fumar cigarrillos tradicionales o electrónicos dentro del departamento, en el balcón o en pasillos del edificio. Solo está permitido en la terraza al aire libre (Piso 11)."},
+      {"title": "SIN MASCOTAS", "content": "No se admite el ingreso de mascotas de ningún tipo bajo ninguna circunstancia."},
+      {"title": "HORAS DE SILENCIO & SIN FIESTAS", "content": "Están terminantemente prohibidas las fiestas, reuniones o ruidos molestos. El horario de silencio del edificio es de 22:00 a 08:00 hs. Respete el descanso de los vecinos."},
+      {"title": "SIN INVITADOS EXTERNOS", "content": "Por seguridad del edificio, el uso de las instalaciones comunes (pileta, SUM, laundry) es exclusivo para los huéspedes registrados. No se permite el acceso a visitas en estas áreas."},
+      {"title": "CUIDADO DE VESTIMENTA", "content": "No está permitido circular sin remera o en traje de baño por pasillos, ascensores o el hall de entrada del edificio. Use vestimenta adecuada (traje de baño solo en el sector de piscina)."}
     ],
-    "penalty": "<b>MULTAS Y PENALIZACIONES:</b> El incumplimiento de estas normas del consorcio generará multas aplicadas por la administración del edificio, las cuales serán trasladadas directamente al huésped."
+    "penalty": "<b>PENALIZACIONES Y MULTAS:</b> El incumplimiento de las normas del consorcio genera sanciones económicas graves que serán debitadas directamente al huésped."
   },
   "climate_safe": {
     "title": "Uso del Departamento - Accesos y Clima",
     "subtitle": "Cerraduras, aire acondicionado y calefacción",
-    "door": "<b>1. Cerradura de la Puerta Principal:</b><br/>La cerradura de ingreso al departamento cuenta con un mecanismo que traba automáticamente al cerrar la puerta. Asegúrese de tirar o empujar firmemente la hoja al salir para que calce bien.<br/><b>¡Importante!</b> Siempre lleve consigo las llaves físicas antes de salir para evitar quedarse afuera.",
-    "ac_intro": "<b>2. Aire Acondicionado y Climatización:</b><br/>El departamento dispone de dos equipos de aire acondicionado frío/calor (uno en el living y otro en el dormitorio).",
+    "door": "<b>1. Cerradura de la Puerta Principal:</b><br/>La puerta de entrada cuenta con traba automática al cerrar. Empuje o tire firmemente al salir para asegurarse de que haya trabado correctamente.<br/><b>¡Atención!</b> Lleve siempre las llaves consigo al salir para evitar quedar fuera del departamento.",
+    "ac_intro": "<b>2. Aire Acondicionado y Climatización:</b><br/>El departamento posee dos equipos split (living y dormitorio) frío/calor independientes.",
     "ac_items": [
-      {"title": "Encendido:", "content": "Use el control remoto correspondiente a cada equipo. Presione el botón de encendido y seleccione el modo deseado (COOL / Frío o HEAT / Calor)."},
-      {"title": "Temperatura Recomendada:", "content": "Para un uso eficiente, mantenga los aires en 24 °C (75 °F) durante el verano y en 22 °C (71 °F) en invierno."},
-      {"title": "Errores frecuentes:", "content": "No encienda los aires acondicionados con las ventanas o la puerta del balcón abiertas. Esto sobrecarga el motor y disminuye drásticamente el rendimiento."},
-      {"title": "Cuidado Ambiental:", "content": "Apague los equipos obligatoriamente al salir del departamento. Ayúdenos a conservar energía."}
+      {"title": "Encendido:", "content": "Utilice el control remoto de cada unidad. Presione el botón de encendido y seleccione el modo COOL (Frío) o HEAT (Calor)."},
+      {"title": "Temperatura Recomendada:", "content": "Fije la temperatura en 24 °C en verano y 22 °C en invierno para un consumo eficiente de energía."},
+      {"title": "Uso Correcto:", "content": "No mantenga los aires encendidos con las ventanas o la puerta del balcón abiertas. Esto sobrecarga los motores y reduce el rendimiento."},
+      {"title": "Eficiencia:", "content": "Apague siempre los equipos de climatización al retirarse del departamento."}
     ],
     "safe_title": "3. Caja Fuerte de la Habitación:",
     "safe_content": "Para resguardar sus objetos de valor, la habitación cuenta con una caja de seguridad <b>mecánica</b> (con llave física) dentro del placar.<br/><b>Nota importante:</b> La llave de la caja fuerte se encuentra unida al mismo llavero principal que contiene las llaves de ingreso al departamento.",
-    "sofa_bed_title": "4. Guía de Armado del Sillón Cama (Living):",
+    "wifi_title": "4. Conexión Wi-Fi de Alta Velocidad (Fibra Óptica 300 Mbps):",
+    "wifi_content": "<b>Nombre de la red (SSID):</b> Cordoba5579_Guest<br/><b>Contraseña de acceso:</b> Welcome101<br/><i>Escanee el código QR a la izquierda con la cámara de su celular para conectarse a la red Wi-Fi de forma automática o compartir la clave con sus acompañantes.</i>",
+    "sofa_bed_title": "5. Guía de Armado del Sillón Cama (Living):",
     "sofa_bed_intro": "El living cuenta con un sillón cama convertible de 2 plazas. Siga las instrucciones paso a paso:",
     "sofa_bed_steps": [
       {"step": "Paso 1", "content": "Retirar los almohadones del respaldo del sillón."},
-      {"step": "Paso 2", "content": "Tirar de la manija inferior metálica hacia arriba y afuera."},
+      {"step": "Paso 2", "content": "Tirar de la manija metálica inferior hacia arriba y afuera."},
       {"step": "Paso 3", "content": "Desplegar el soporte de patas metálicas hasta apoyarlo al suelo."},
       {"step": "Paso 4", "content": "Extender el colchón desplegable completamente."},
       {"step": "Paso 5", "content": "Colocar el juego de sábanas de hilo egipcio de 600h."},
       {"step": "Paso 6", "content": "Acomodar almohadas adicionales (ubicadas en el placar)."}
-    ]
+    ],
+    "sofa_bed_tip": "<b>CONSEJO DE SEGURIDAD PARA EL PLEGADO:</b><br/>Al volver a cerrar el sillón cama, levante desde el centro de la estructura metálica sin forzar las bisagras. Verifique que las sábanas o frazadas no queden enganchadas en los pliegues metálicos."
   },
   "kitchen": {
-    "title": "Uso del Departamento - Cocina y Minibar",
-    "subtitle": "Electrodomésticos, cafetera y cava de vinos",
+    "title": "Uso del Departamento - Cocina y Electrodomésticos",
+    "subtitle": "Electrodomésticos y cafetera de especialidad",
     "intro": "La cocina está completamente equipada con electrodomésticos Samsung y vajilla Carol de alta calidad para su estadía. Por favor, use los equipos con cuidado:",
     "items": [
-      {"title": "Anafe eléctrico:", "content": "El anafe es de resistencia eléctrica. No apoye recipientes húmedos sobre las resistencias calientes y espere a que se enfríen antes de limpiar. El departamento <b>no posee horno empotrado</b>."},
+      {"title": "Anafe eléctrico:", "content": "El anafe es de resistencia eléctrica de acero inoxidable. No apoye recipientes húmedos sobre las resistencias calientes y espere a que se enfríen antes de limpiar. El departamento <b>no posee horno empotrado</b>."},
       {"title": "Horno eléctrico y Freidora de Aire:", "content": "Cuenta con un horno eléctrico de mesada combinado con Freidora de Aire (Air Fryer). Utilice utensilios plásticos o de madera para no rayar el recubrimiento antiadherente de la canasta."},
-      {"title": "Cafetera y Espumadora:", "content": "Cafetera de especialidad con espumador de leche incorporado. Ideal para café, cortado o capuchino. Limpie el filtro tras cada uso."},
-      {"title": "Heladera, Microondas y Tostadora:", "content": "La heladera Samsung cuenta con regulador digital de frío. No coloque metales en el microondas. La tostadora y pava eléctrica se encuentran en el mesón de cocina."},
+      {"title": "Cafetera y Espumadora:", "content": "Cafetera de especialidad con espumador de leche incorporado. Ideal para café espresso, cortado o capuchino. Limpie el filtro tras cada uso."},
+      {"title": "Heladera, Microondas y Tostadora:", "content": "La heladera Samsung cuenta con freezer y regulador digital de frío. No coloque metales en el microondas. La tostadora y pava eléctrica se encuentran en el mesón de cocina."},
       {"title": "Arrocera y Licuadora:", "content": "Dispone de arrocera eléctrica y licuadora de alta potencia con vaso de vidrio. Perfectas para preparaciones rápidas y saludables."}
-    ],
-    "cava_title": "Cava de Vinos & Minibar (Costo Extra)",
-    "cava_content": "Disfrute de etiquetas seleccionadas directamente en la comodidad del departamento. El minibar y la cava cuentan con bebidas y vinos disponibles a la carta. La cava posee cerradura; solicite la contraseña a Jorge.<br/><br/><b>Cómo consultar precios y reportar el consumo:</b><br/>• Escanee el código QR de la cava para ver el inventario y lista de precios actualizados online.<br/>• Reporte los ítems consumidos a Jorge por WhatsApp para coordinar el cobro al check-out."
+    ]
   },
   "amenities": {
     "title": "Uso del Departamento - Laundry & SUM",
@@ -150,7 +168,7 @@
   "cleaning": {
     "title": "Limpieza, Residuos & Cuidado Sanitario",
     "subtitle": "Pautas de limpieza, residuos y cuidado de cañerías",
-    "garbage": "<b>1. Gestión de Residuos (Separación en Cestos Comunitarios):</b><br/>En la escalera de emergencia de cada piso encontrará dos contenedores. Si estuvieran llenos, baje la basura al contenedor público en la calle.<br/>• <b>Cesto Negro (Húmedos):</b> Restos de comida, papel/cartón sucio, residuos húmedos.<br/>• <b>Cesto Verde (Reciclables):</b> Vidrio, metal, plástico, cartón/papel (siempre limpios y secos).<br/><b>Normas de Higiene:</b> Arroje las bolsas bien cerradas con nudo. Está terminantemente prohibido arrojar líquidos dentro de las bolsas o desechar cajas/bolsas de delivery sueltas, ya que ocupan mucho espacio.",
+    "garbage": "<b>1. Ubicación y Gestión de Residuos (Cestos Comunitarios):</b><br/><b>¿Dónde se encuentran?</b> Al salir del Departamento 101, la <b>1ª puerta a su derecha sobre la misma pared</b> es el acceso a la Escalera de Emergencia. Dentro de ese descansillo se encuentran los contenedores.<br/>• <b>Cesto Negro (Húmedos):</b> Residuos húmedos, restos de comida, papel/cartón sucio, etc.<br/>• <b>Cesto Verde (Reciclables):</b> Vidrio, metal, plástico, cartones y papeles (DEBEN ESTAR SIEMPRE LIMPIOS Y SECOS).<br/><b>Normas del Consorcio (Adm. Steinberg):</b><br/>• Arroje las bolsas de residuos siempre cerradas con nudo. Está prohibido tirar líquidos dentro de las bolsas.<br/>• Está prohibido tirar las bolsas o cajas de delivery directamente en los cestos, ya que ocupan mucho espacio.<br/>• En caso de que el cesto esté lleno, debe tirar la bolsa directamente al contenedor de la calle.",
     "plumbing_intro": "<b>2. Cuidado del Sistema Sanitario (Inodoro):</b><br/>El sistema de cañerías del edificio es sensible a obstrucciones. Rogamos encarecidamente prestar atención a la siguiente norma:",
     "plumbing_warning": "<b>¡ATENCIÓN! QUÉ NO ARROJAR AL INODORO:</b><br/>• Está estrictamente prohibido arrojar toallitas húmedas, apósitos femeninos, pañales, algodón o papel de cocina en el inodoro.<br/>• Utilice únicamente papel higiénico normal y en cantidades moderadas. Descarte todo el resto de los desechos en el tacho de basura del baño.",
     "linen": "<b>3. Recambio de Ropa Blanca:</b><br/>• El departamento se entrega en perfectas condiciones de higiene con sábanas y toallas limpias.<br/>• Para estadías de más de <b>7 noches</b>, se proveerá un juego de toallas limpio de recambio.<br/>• Para estadías de <b>14 noches o más</b>, se incluye un recambio completo de sábanas y toallas."
@@ -189,7 +207,7 @@
       {"q": "¿Puedo dejar mi equipaje en el edificio antes del check-in o después del check-out?", "a": "Por reglamento interno del consorcio del edificio, no se permite el guardado de equipaje en las áreas comunes ni en el hall. Le recomendamos utilizar aplicaciones globales como <b>Bounce</b> o <b>LuggageHero</b>, que le permitirán reservar espacio seguro en tiendas de Palermo a muy bajo costo por hora."},
       {"q": "¿Hay servicio de lavadero o secadora disponible?", "a": "Sí, todos los huéspedes tienen acceso libre y gratuito a los lavarropas de uso común en el sector de laundry (piso 10). Tenga en cuenta que el edificio no cuenta con secadoras de ropa; el departamento dispone de un tender portátil plegable."},
       {"q": "¿Cómo funciona y cuánto cuesta el SUM / Parrilla?", "a": "El SUM y la parrilla (piso 11) se reservan previamente con Jorge. Por normas de copropiedad, se cobra un arancel de limpieza obligatorio fijado por la administración (10.000 pesos argentinos al momento de confeccionar este manual). Consulte con Jorge el valor vigente al momento de su reserva del SUM."},
-      {"q": "¿Cómo se abona el consumo del minibar y la cava de vinos?", "a": "Los valores están detallados en la carta online. Reporte sus consumos a Jorge por mensaje. Si abona por transferencia, coordínelo con él. Si abona en efectivo, por favor deje el importe exacto sobre la mesa de la cocina antes de irse."},
+      {"q": "¿Qué electrodomésticos tiene la cocina?", "a": "La cocina está equipada con heladera Samsung con freezer, anafe eléctrico de acero inoxidable, horno eléctrico con Freidora de Aire (Air Fryer), cafetera express con espumador de leche, licuadora con vaso de vidrio, pava eléctrica, arrocera y tostadora."},
       {"q": "¿La caja fuerte tiene cerradura con llave?", "a": "Sí, la caja fuerte de la habitación funciona con llave física mecánica. La llave de la caja fuerte se encuentra en el mismo llavero principal del departamento, por lo que la tendrá a su disposición desde el momento del check-in."}
     ]
   },
@@ -201,8 +219,7 @@
       "<b>Apagar Climatización:</b> Apague todos los aires acondicionados (living y dormitorio) y las luces del departamento.",
       "<b>Puertas Cerradas:</b> Asegúrese de cerrar bien la puerta del departamento tirando firmemente de ella al salir (traba automáticamente).",
       "<b>Devolución de Llaves:</b> Diríjase a la entrada exterior del edificio y coloque las llaves dentro del mismo lockbox metálico rotulado como 'Depto 101' de donde las retiró al ingresar. Recuerde desordenar las ruedas de combinación.",
-      "<b>Avisar Salida:</b> Envíe un mensaje de WhatsApp rápido a Jorge Orlando confirmando que ha completado su check-out.",
-      "<b>Bebidas y Consumos:</b> En el mismo mensaje de salida, recuerde declarar si ha consumido bebidas del minibar o botellas de la cava de vinos para coordinar el cobro correspondiente."
+      "<b>Avisar Salida:</b> Envíe un mensaje de WhatsApp rápido a Jorge Orlando confirmando que ha completado su check-out."
     ],
     "thank_you_title": "¡Muchas gracias por elegirnos!",
     "thank_you_text": "Esperamos que hayas tenido una hermosa estadía en Córdoba 5579. Si tu experiencia fue grata, te invitamos enormemente a dejarnos una reseña de 5 estrellas en la plataforma de Airbnb. Tu opinión nos ayuda muchísimo a seguir mejorando y a recibir a futuros viajeros.",
@@ -215,8 +232,6 @@
   },
   "shared": {
     "qr_portal": "<b>ESCANEE PARA EL PORTAL DIGITAL</b><br/>Acceda a la versión web móvil del manual con enlaces interactivos.",
-    "qr_whatsapp": "<b>ESCANEE PARA WHATSAPP</b><br/>Chat directo y rápido con su anfitrión Jorge ante dudas o recargas.",
-    "qr_cava_inv": "<b>INVENTARIO Y PRECIOS</b><br/>Escanee para ver el stock de la cava.",
-    "qr_cava_chat": "<b>HABLAR CON JORGE</b><br/>Solicite la clave de la cava."
+    "qr_whatsapp": "<b>ESCANEE PARA WHATSAPP</b><br/>Chat directo y rápido con su anfitrión Jorge ante dudas o recargas."
   }
 }

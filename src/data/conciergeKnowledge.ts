@@ -55,9 +55,9 @@ export const cordoba5579Knowledge: PropertyKnowledge = {
     en: "There is a shared laundry room in the building with washing machines available for guests at no additional cost."
   },
   wine: {
-    keys: ["vino", "cava", "botella", "alcohol", "wine", "bar", "champagne", "fernet", "bebida", "minibar", "precios", "precio", "costo", "costos", "price", "prices", "torrontes", "malbec", "syrah", "cabernet"],
-    es: "La cava de vinos y minibar del departamento tiene costo adicional. Carta completa y precios actualizados en https://www.alexismartyniuk.com.ar/cordoba5579/cava. La selección incluye vinos tintos (Malbec, Cabernet Sauvignon, Syrah), blancos (Torrontés, Chenin Dulce), espumantes y Fernet con Coca-Cola. Para abrir la cava (pedir combinaciones) o pedir reposición de bebidas, contactá a Jorge Orlando por WhatsApp. Pagos Nacionales: Transferencias al Banco Santander: Titular: Martyniuk Jorge Orlando, DNI: 13671433, CBU: 0720533088000000521172, Alias: ARENA.DIESEL.CUENCA. Pagos Internacionales: Payoneer USD (Bank: First Century Bank, Routing: 061120084, SWIFT: FCNSUS32, Account: 4030000417878, Name: Alexis Martyniuk).",
-    en: "The wine cellar and minibar are available for an extra charge. For the full menu and updated prices, please visit https://www.alexismartyniuk.com.ar/cordoba5579/cava. The selection includes red wines (Malbec, Cabernet Sauvignon, Syrah), white wines (Torrontés, Chenin Dulce), sparkling, and Fernet with Coke. To open the cellar (ask for combinations) or request refills, contact Jorge Orlando via WhatsApp. National Payments: Transfers to Banco Santander: Holder: Martyniuk Jorge Orlando, DNI: 13671433, CBU: 0720533088000000521172, Alias: ARENA.DIESEL.CUENCA. International Payments: Payoneer USD (Bank: First Century Bank, Routing: 061120084, SWIFT: FCNSUS32, Account: 4030000417878, Name: Alexis Martyniuk)."
+    keys: ["vino", "cava", "botella", "alcohol", "wine", "bar", "champagne", "fernet", "bebida", "minibar", "precios", "precio", "costo", "costos", "price", "prices"],
+    es: "El departamento no cuenta con servicio de cava de vinos ni minibar. Los huéspedes disponen de heladera y cocina completa para sus propias bebidas.",
+    en: "The apartment does not offer a wine cellar or minibar service. Guests have a full refrigerator and kitchen to store their own beverages."
   },
   parking: {
     keys: ["estacionamiento", "cochera", "auto", "garage", "parking", "vehiculo", "vehículo", "estacionar", "calle", "boti", "multa", "acarreo", "gruta", "grúa"],
@@ -71,8 +71,8 @@ export const cordoba5579Knowledge: PropertyKnowledge = {
   },
   sofabed: {
     keys: ["sillon", "sillón", "sofa", "sofá", "sillon cama", "sillón cama", "cama living", "desplegar cama", "abrir cama"],
-    es: "El living cuenta con un sillón cama cómodo de 2 plazas. Para armarlo: 1) Retirá los almohadones del respaldo. 2) Tirá de la manija inferior hacia arriba y afuera. 3) Desplegá la estructura metálica en el piso. Las sábanas y almohadas adicionales están en el placar del dormitorio. Ver video-guía en el portal digital (/checkin).",
-    en: "The living room features a comfortable 2-person sofa bed. To open it: 1) Remove backrest cushions. 2) Pull front handle up and out. 3) Unfold the metal frame onto the floor. Extra sheets/pillows are in the bedroom closet. Video tutorial available at /checkin."
+    es: "Para armar el sillón cama de 2 plazas: 1) Retire el cobertor del sillón. 2) Tome la tira ubicada en la parte central del asiento y tire de ella para extraer el bloque completo (formará una V invertida). 3) Extienda el bloque hasta dejarlo en posición horizontal, paralelo al piso. 4) Desplegue las patas de apoyo hasta que queden completamente abiertas sobre el suelo. 5) Despliegue la hoja del colchón embutida en el respaldo. Las sábanas extra y almohadas están en el placar del dormitorio. Ver video-guía en el portal digital (/checkin).",
+    en: "To set up the 2-person sofa bed: 1) Remove the sofa cover. 2) Pull the strap located in the center of the seat to extract the main block (it will form an inverted V). 3) Extend the block into a horizontal position, parallel to the floor. 4) Unfold the support legs until fully extended and firm on the ground. 5) Unfold the mattress section tucked in the backrest. Extra sheets and pillows are in the bedroom closet. Video guide at /checkin."
   },
   kitchen: {
     keys: ["cocina", "licuadora", "tostadora", "cafetera", "horno", "heladera", "microondas", "freidora", "arrocera", "olla", "sarten", "sartén", "vajilla", "cubiertos"],
