@@ -130,7 +130,80 @@
   ],
   "price": 500,
   "weekendPrice": 600,
-  "cava": [],
+  "cava": [
+    {
+      "categoria": "blanco",
+      "nombre": "Torrontés",
+      "descripcion": "Para disfrutar de su frescura y exquisita esencia",
+      "cantidad": 3,
+      "precio_usd": 4.4,
+      "origen": "Mendoza"
+    },
+    {
+      "categoria": "blanco",
+      "nombre": "Chenin / Dulce",
+      "descripcion": "Suave y delicado con notas frutas blancas, citrus aroma flor.",
+      "cantidad": 3,
+      "precio_usd": 8.8,
+      "origen": "Mendoza"
+    },
+    {
+      "categoria": "tinto",
+      "nombre": "Malbec",
+      "descripcion": "Suave con aroma guindas, fresas, vainillas aportadas por el paso del roble Francés",
+      "cantidad": 3,
+      "precio_usd": 4.8,
+      "origen": "San Juan"
+    },
+    {
+      "categoria": "tinto",
+      "nombre": "Cabernet Sauvignon",
+      "descripcion": "Aroma intenso con un toque frutado con taninos suaves",
+      "cantidad": 3,
+      "precio_usd": 5.4,
+      "origen": "Mendoza"
+    },
+    {
+      "categoria": "tinto",
+      "nombre": "Syrah / Cabernet",
+      "descripcion": "Perfil frutado, un blend bien equilibrado.",
+      "cantidad": 3,
+      "precio_usd": 5.8,
+      "origen": "San Juan"
+    },
+    {
+      "categoria": "burbujas",
+      "nombre": "Champagne Cosecha Tardía – Norton",
+      "descripcion": "Suave sedoso con notas a miel y durazno con cítricos",
+      "cantidad": 2,
+      "precio_usd": 13.85,
+      "origen": "Norton"
+    },
+    {
+      "categoria": "burbujas",
+      "nombre": "Champagne Extra Brut – Suter",
+      "descripcion": "Una perfecta combinación de aromas a levaduras, pan tostado, flores blancas, elegante y sensual.",
+      "cantidad": 2,
+      "precio_usd": 17.3,
+      "origen": "Suter"
+    },
+    {
+      "categoria": "clasico",
+      "nombre": "Fernet Branca",
+      "descripcion": "Con una combinación de hierbas serranas (excelente con gaseosa cola)",
+      "cantidad": 2,
+      "precio_usd": 17.4,
+      "origen": "Córdoba"
+    },
+    {
+      "categoria": "clasico",
+      "nombre": "Coca-Cola 2.5 l",
+      "descripcion": "Ideal para acompañar el Fernet",
+      "cantidad": 3,
+      "precio_usd": 3.35,
+      "origen": "Bs.As."
+    }
+  ],
   "guests": 4,
   "lockboxCode": "1579",
   "es": {
@@ -138,7 +211,7 @@
     "rating": 4.9,
     "reviewsCount": 120,
     "description": "Bienvenidos a tu oasis urbano en Palermo Hollywood. Este moderno departamento combina diseño contemporáneo de primer nivel y confort funcional. Ideal tanto para nómadas digitales como para viajeros exigentes.\n\nUbicado a pasos de la mejor gastronomía y cafés de especialidad, y a solo 15 minutos a pie del Movistar Arena. Disfrutá de Wi-Fi de alta velocidad, check-in autónomo mediante caja de seguridad y una espectacular terraza con piscina, solárium y parrilla.",
-    "space": "El departamento está diseñado meticulosamente para alojar hasta 4 huéspedes con total comodidad, destacándose por su amplitud y luminosidad natural.\n\nEl Living-Comedor: Un espacio abierto de relax y entretenimiento. Cuenta con un Smart TV de 55\" de última generación, aire acondicionado split (frío/calor) y cristalería fina. Para los huéspedes adicionales, el living dispone de un sofá cama premium tamaño Queen de apertura simple y gran confort.\nEl Dormitorio: Tu refugio de descanso absoluto. Equipado con una cama matrimonial tamaño Queen, sábanas importadas de puro algodón egipcio de 600 hilos, cortinas blackout para garantizar un sueño reparador, aire acondicionado split independiente y un Smart TV de 42\".\nLos Baños (1.5 Baños): Una comodidad clave e inusual para departamentos de un dormitorio. El alojamiento cuenta con un baño principal completo con bañera y secador de pelo, y un toilette (medio baño) adicional para visitas o mayor privacidad cuando se alojan 4 personas.\nLa Cocina: Totalmente equipada con electrodomésticos premium y vajilla de alta calidad. Incluye heladera con freezer, anafe eléctrico de acero inoxidable, microondas, horno eléctrico, licuadora de vaso de vidrio, freidora sin aceite (Air Fryer) y cafetera express con espumador de leche para disfrutar de tu café matutino.\nLa Terraza y Amenities del Edificio: Tendrás acceso completo al rooftop del edificio en el piso 11, donde encontrarás una pileta exterior climatizada (disponible de Octubre a Abril), solárium con reposeras, ducha exterior y zona de parrilla (sujeta a reserva previa). También contarás con acceso al lavadero (laundry) del edificio con lavarropas gratuito.",
+    "space": "El departamento está diseñado meticulosamente para alojar hasta 4 huéspedes con total comodidad, destacándose por su amplitud y luminosidad natural.\n\nEl Living-Comedor: Un espacio abierto de relax y entretenimiento. Cuenta con un Smart TV de 55\" de última generación, aire acondicionado split (frío/calor) y un rincón bar equipado con una cava de vinos seleccionados y cristalería fina. Para los huéspedes adicionales, el living dispone de un sofá cama premium tamaño Queen de apertura simple y gran confort.\nEl Dormitorio: Tu refugio de descanso absoluto. Equipado con una cama matrimonial tamaño Queen, sábanas importadas de puro algodón egipcio de 600 hilos, cortinas blackout para garantizar un sueño reparador, aire acondicionado split independiente y un Smart TV de 42\".\nLos Baños (1.5 Baños): Una comodidad clave e inusual para departamentos de un dormitorio. El alojamiento cuenta con un baño principal completo con bañera y secador de pelo, y un toilette (medio baño) adicional para visitas o mayor privacidad cuando se alojan 4 personas.\nLa Cocina: Totalmente equipada con electrodomésticos premium y vajilla de alta calidad. Incluye heladera con freezer, anafe eléctrico de acero inoxidable, microondas, horno eléctrico, licuadora de vaso de vidrio, freidora sin aceite (Air Fryer) y cafetera express con espumador de leche para disfrutar de tu café matutino.\nLa Terraza y Amenities del Edificio: Tendrás acceso completo al rooftop del edificio en el piso 11, donde encontrarás una pileta exterior climatizada (disponible de Octubre a Abril), solárium con reposeras, ducha exterior y zona de parrilla (sujeta a reserva previa). También contarás con acceso al lavadero (laundry) del edificio con lavarropas gratuito.",
     "access": "Tendrás acceso exclusivo a todo el departamento de forma privada, incluyendo la habitación, el baño completo, el toilette, la cocina totalmente equipada y el living.\nAdemás, tendrás acceso a los siguientes espacios comunes del edificio:\nRooftop y Piscina (Piso 11): Una espectacular terraza con piscina exterior climatizada (disponible en temporada de Octubre a Abril) con reposeras, ducha exterior y excelentes vistas panorámicas de la ciudad.\nZona de Parrilla (Piso 11): Espacio con parrilla en terraza disponible para almuerzos o cenas (sujeto a reserva previa y disponibilidad con el anfitrión).\nLavadero / Laundry (Piso 10): Acceso al lavadero del edificio equipado con lavarropas disponible para uso de los huéspedes de forma gratuita (se provee ténder para colgar la ropa).\nNota importante por reglamento del consorcio: Las áreas comunes (terraza, pileta y parrilla) son de uso exclusivo para los huéspedes registrados en la reserva. No está permitido el ingreso de visitas externas a estas áreas del edificio.",
     "notes": "De acuerdo con el Reglamento de Copropiedad de la propiedad horizontal de Av. Córdoba 5579, te pedimos respetar las siguientes normas esenciales para garantizar una excelente convivencia en el edificio:\n\nCapacidad Máxima: El departamento admite hasta 4 huéspedes como máximo.\nUso de la Terraza y Piscina: El acceso al rooftop, solárium y piscina está permitido únicamente para los huéspedes registrados en la reserva. Queda estrictamente prohibido el acceso a invitados externos a estas áreas del edificio. Es obligatorio ducharse antes de ingresar al agua.\nProhibido Fumar: No se permite fumar dentro del departamento, ni en las áreas comunes del edificio (pasillos, ascensores, lobby, terraza).\nDescanso y Ruido: Por normas del consorcio, se deben respetar las horas de silencio y está totalmente prohibido realizar fiestas, eventos o emitir ruidos molestos.\nCuidado de Mascotas: Por reglamento, no se admiten mascotas en la unidad.",
     "amenities": [
