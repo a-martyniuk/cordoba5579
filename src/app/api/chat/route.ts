@@ -1,19 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { streamText } from "ai";
 import { google } from "@ai-sdk/google";
-import { parseCSV } from "../../../utils/csvParser";
-import airbnbDetails from "../../../data/airbnb-details.json";
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY ?? "";
-
-interface CavaItem {
-  categoria?: string;
-  nombre?: string;
-  descripcion?: string;
-  cantidad?: number | string;
-  precio_usd?: number | string;
-  origen?: string;
-}
 
 async function buildSystemPrompt(): Promise<string> {
   return `Sos el Concierge Virtual del departamento Córdoba 5579 en Palermo Hollywood, Buenos Aires.

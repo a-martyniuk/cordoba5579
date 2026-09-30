@@ -11,7 +11,6 @@ import {
   Utensils,
   UserCheck,
   ClipboardList,
-  AlertCircle,
   MessageCircle,
   Phone
 } from "lucide-react";
@@ -598,9 +597,9 @@ export default function Home() {
               </div>
 
               {/* Individual Review Cards */}
-              {(airbnbDetails as any).reviews && (airbnbDetails as any).reviews.length > 0 && (
+              {"reviews" in airbnbDetails && Array.isArray((airbnbDetails as { reviews: Array<{ author: string; date: string; rating: number; comment: string }> }).reviews) && (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
-                  {(airbnbDetails as any).reviews.map((rev: any, idx: number) => (
+                  {(airbnbDetails as { reviews: Array<{ author: string; date: string; rating: number; comment: string }> }).reviews.map((rev, idx) => (
                     <div key={idx} className="bg-white dark:bg-[#252824] border border-[#EFEBE4] dark:border-[#353A33] rounded-2xl p-5 shadow-sm space-y-2">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
