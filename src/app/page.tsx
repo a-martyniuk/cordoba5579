@@ -596,6 +596,33 @@ export default function Home() {
                   </p>
                 </div>
               </div>
+
+              {/* Individual Review Cards */}
+              {(airbnbDetails as any).reviews && (airbnbDetails as any).reviews.length > 0 && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                  {(airbnbDetails as any).reviews.map((rev: any, idx: number) => (
+                    <div key={idx} className="bg-white dark:bg-[#252824] border border-[#EFEBE4] dark:border-[#353A33] rounded-2xl p-5 shadow-sm space-y-2">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <div className="w-8 h-8 rounded-full bg-[#5F6F52] text-white flex items-center justify-center font-bold text-xs">
+                            {rev.author.substring(0, 1)}
+                          </div>
+                          <div>
+                            <h5 className="font-bold text-xs text-neutral-900 dark:text-neutral-100">{rev.author}</h5>
+                            <p className="text-[10px] text-neutral-400">{rev.date}</p>
+                          </div>
+                        </div>
+                        <div className="flex text-amber-400 text-xs">
+                          {"★".repeat(rev.rating)}
+                        </div>
+                      </div>
+                      <p className="text-xs text-neutral-600 dark:text-neutral-300 italic leading-relaxed">
+                        &quot;{rev.comment}&quot;
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Dynamic Inventory Section Link Card */}
