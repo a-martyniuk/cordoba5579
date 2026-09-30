@@ -19,7 +19,7 @@ const plusJakarta = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
   title: "Córdoba 5579 | Alquiler Temporal Premium en Palermo Hollywood, CABA",
   description:
-    "Disfruta de una estadía exclusiva en este departamento de diseño a estrenar. Con piscina en terraza, solárium, cava de vinos y a pasos de los mejores restaurantes y el Movistar Arena.",
+    "Disfruta de una estadía exclusiva en este departamento de diseño a estrenar. Con piscina en terraza, solárium, Smart TV, WiFi de alta velocidad y a pasos de los mejores restaurantes y el Movistar Arena.",
   keywords: [
     "alquiler temporal",
     "buenos aires",
@@ -53,7 +53,7 @@ const jsonLd = {
   "@type": "Apartment",
   name: "Córdoba 5579 — Palermo Hollywood",
   description:
-    "Departamento de diseño a estrenar en Palermo Hollywood, Buenos Aires. Piscina en terraza, solárium, cava de vinos, Smart TV, WiFi de alta velocidad y a pasos del Movistar Arena.",
+    "Departamento de diseño a estrenar en Palermo Hollywood, Buenos Aires. Piscina en terraza, solárium, Smart TV, WiFi de alta velocidad y a pasos del Movistar Arena.",
   url: "https://www.alexismartyniuk.com.ar/cordoba5579",
   image:
     "https://a0.muscache.com/im/pictures/hosting/Hosting-1716762976739155303/original/f9a4d034-ac6a-42d0-9dd6-76782f465062.jpeg",

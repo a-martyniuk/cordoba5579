@@ -895,7 +895,7 @@ export default function Home() {
                       ];
                     } else {
                       return [
-                        { icon: "🍷", es: "¿Qué vinos tiene el bar y qué costo?", en: "What wines does the bar have and what cost?", labelEs: "Carta del Minibar", labelEn: "Minibar menu" },
+                        { icon: "🍕", es: "¿Dónde pedir delivery?", en: "Where to order delivery?", labelEs: "Pedir Delivery", labelEn: "Order Delivery" },
                         { icon: "🍽️", es: "¿Dónde cenar cerca?", en: "Where to have dinner nearby?", labelEs: "Cenar cerca", labelEn: "Dinner nearby" },
                         { icon: "📶", es: "¿Cuál es la contraseña del WiFi?", en: "What is the WiFi password?", labelEs: "Clave WiFi", labelEn: "WiFi Password" },
                         { icon: "🥩", es: "¿Cómo usar la parrilla?", en: "How to use the grill?", labelEs: "Usar parrilla", labelEn: "Use grill" }
