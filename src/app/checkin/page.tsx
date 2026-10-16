@@ -31,7 +31,7 @@ export default function CheckInPortal() {
   const { darkMode, toggleTheme } = useTheme();
   const [copied, setCopied] = useState(false);
   const [videoPlaying, setVideoPlaying] = useState(false);
-  const wifiPassword = "Welcome101";
+  const wifiPassword = process.env.NEXT_PUBLIC_WIFI_PASS || "Welcome101";
 
   // Lockbox combination wheels states (4 digits)
   const [digit1, setDigit1] = useState(0);
